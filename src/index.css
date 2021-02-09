@@ -242,7 +242,7 @@ body {
 }
 
 #stop:hover,
-#play:hover {
+#start:hover {
   transform: scale(1.1);
 }
 
@@ -254,11 +254,11 @@ body {
   background: var(--red);
 }
 
-#play {
+#start {
   background: var(--green-half);
 }
 
-#play:hover {
+#start:hover {
   background: var(--green);
 }
 

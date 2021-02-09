@@ -12,11 +12,10 @@ export const Samplers = React.createContext();
 export const SetSamplers = React.createContext();
 export const SamplersProvider = ({ children }) => {
   const [samplers, setSamplers] = useState(INITIAL_SAMPLERS);
+
   return (
-    <Samplers.Provider value={samplers}>
-      <SetSamplers.Provider value={setSamplers}>
-        {children}
-      </SetSamplers.Provider>
-    </Samplers.Provider>
+    <SetSamplers.Provider value={{ setSamplers }}>
+      <Samplers.Provider value={{ samplers }}>{children}</Samplers.Provider>
+    </SetSamplers.Provider>
   );
 };

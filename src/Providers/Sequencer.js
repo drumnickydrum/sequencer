@@ -7,13 +7,12 @@ import React, {
 } from 'react';
 import * as Tone from 'tone';
 import { downtempo } from './patterns';
-import { SetSamplers } from './Samplers';
+import { SetPattern } from './Pattern';
 
 export const Sequencer = React.createContext();
 export const SetSequencer = React.createContext();
 export const SequencerProvider = ({ children }) => {
-  const setSamplers = useContext(SetSamplers);
-  const [pattern, setPattern] = useState(downtempo.pattern);
+  const { triggerCell } = useContext(SetPattern);
   const [bpm, setBpm] = useState(downtempo.bpm);
 
   const step = useRef(0);
@@ -27,9 +26,9 @@ export const SequencerProvider = ({ children }) => {
     Tone.Transport.bpm.value = bpm;
   }, [bpm]);
 
-  const play = useCallback(() => {
+  const start = useCallback(() => {
     if (Tone.Transport.state === 'started') return;
-    Tone.Transport.scheduleRepeat(playCell, '16n');
+    Tone.Transport.scheduleRepeat((time) => triggerCell(time, step), '16n');
     Tone.Transport.start();
   });
 
@@ -39,22 +38,10 @@ export const SequencerProvider = ({ children }) => {
     step.current = 0;
   });
 
-  const playCell = (time) => {
-    for (const [inst, vol] of Object.entries(pattern[step.current])) {
-      if (pattern[step.current][inst]) {
-        setSamplers((samplers) => {
-          samplers[inst].triggerAttack('C2', time, vol / 2);
-          return samplers;
-        });
-      }
-    }
-    step.current = step.current === pattern.length - 1 ? 0 : step.current + 1;
-  };
-
   const keyPress = ({ code }) => {
     if (code === 'Space') {
       if (Tone.Transport.state === 'stopped') {
-        play();
+        start();
       } else {
         stop();
       }
@@ -62,7 +49,7 @@ export const SequencerProvider = ({ children }) => {
   };
 
   return (
-    <SetSequencer.Provider value={{ setPattern, setBpm, play, stop }}>
+    <SetSequencer.Provider value={{ setBpm, start, stop }}>
       <Sequencer.Provider value={{ bpm }}>{children}</Sequencer.Provider>
     </SetSequencer.Provider>
   );
@@ -71,5 +58,6 @@ export const SequencerProvider = ({ children }) => {
 const initialClick = async () => {
   await Tone.start();
   console.log('audio ready');
+  document.removeEventListener('click', initialClick);
 };
 document.addEventListener('click', initialClick);
