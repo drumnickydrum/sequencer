@@ -8,7 +8,7 @@ export const PatternProvider = ({ children }) => {
   const { setSamplers } = useContext(SetSamplers);
   const [pattern, setPattern] = useState(downtempo.pattern);
 
-  const triggerCell = (time, step) => {
+  const scheduleCell = (time, step) => {
     for (const [inst, vol] of Object.entries(pattern[step.current])) {
       if (pattern[step.current][inst]) {
         setSamplers((samplers) => {
@@ -21,7 +21,7 @@ export const PatternProvider = ({ children }) => {
   };
 
   return (
-    <SetPattern.Provider value={{ setPattern, triggerCell }}>
+    <SetPattern.Provider value={{ setPattern, scheduleCell }}>
       <Pattern.Provider value={{ pattern }}>{children}</Pattern.Provider>
     </SetPattern.Provider>
   );

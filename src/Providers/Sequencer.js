@@ -12,7 +12,7 @@ import { SetPattern } from './Pattern';
 export const Sequencer = React.createContext();
 export const SetSequencer = React.createContext();
 export const SequencerProvider = ({ children }) => {
-  const { triggerCell } = useContext(SetPattern);
+  const { scheduleCell } = useContext(SetPattern);
   const [bpm, setBpm] = useState(downtempo.bpm);
 
   const step = useRef(0);
@@ -28,7 +28,7 @@ export const SequencerProvider = ({ children }) => {
 
   const start = useCallback(() => {
     if (Tone.Transport.state === 'started') return;
-    Tone.Transport.scheduleRepeat((time) => triggerCell(time, step), '16n');
+    Tone.Transport.scheduleRepeat((time) => scheduleCell(time, step), '16n');
     Tone.Transport.start();
   });
 
