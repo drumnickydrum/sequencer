@@ -3,8 +3,7 @@ import { SamplerProvider } from './Providers/Sampler';
 import { PatternProvider } from './Providers/Pattern';
 import { SequencerProvider } from './Providers/Sequencer';
 import { Transport } from './Sections/Transport';
-import { Grid } from './Sections/Grid';
-import { Instruments } from './Sections/Instruments';
+import { Editor } from './Sections/Editor';
 
 export default function App() {
   return (
@@ -12,13 +11,8 @@ export default function App() {
       <PatternProvider>
         <SequencerProvider>
           <div id='app'>
-            <div id='top'>
-              <Transport />
-            </div>
-            <Grid />
-            <div id='bottom'>
-              <Instruments />
-            </div>
+            <Transport />
+            <Editor />
           </div>
         </SequencerProvider>
       </PatternProvider>
