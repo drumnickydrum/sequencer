@@ -1,5 +1,5 @@
 import React from 'react';
-import { SamplersProvider } from './Providers/Samplers';
+import { SamplerProvider } from './Providers/Sampler';
 import { PatternProvider } from './Providers/Pattern';
 import { SequencerProvider } from './Providers/Sequencer';
 import { Transport } from './Sections/Transport';
@@ -8,7 +8,7 @@ import { Instruments } from './Sections/Instruments';
 
 export default function App() {
   return (
-    <SamplersProvider>
+    <SamplerProvider>
       <PatternProvider>
         <SequencerProvider>
           <div id='app'>
@@ -22,6 +22,6 @@ export default function App() {
           </div>
         </SequencerProvider>
       </PatternProvider>
-    </SamplersProvider>
+    </SamplerProvider>
   );
 }
