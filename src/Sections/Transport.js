@@ -14,10 +14,10 @@ export const Transport = () => {
   return (
     <div id='transport'>
       <button id='stop' onClick={stop}>
-        <StopIcon className='icon' />
+        <StopIcon />
       </button>
       <button id='start' onClick={start}>
-        <StartIcon className='icon' />
+        <StartIcon />
       </button>
       <input id='bpm' value={bpm} onChange={handleChange} />
       <label htmlFor='bpm' id='bpm-label'>

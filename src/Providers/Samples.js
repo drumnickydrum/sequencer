@@ -5,6 +5,7 @@ import { downtempo } from './defaultSequences';
 export const Samples = React.createContext();
 export const SamplesProvider = ({ children }) => {
   const [samples, setSamples] = useState(downtempo.instrument);
+  const [instrument, setInstrument] = useState('kick');
 
   // how to avoid name collisions?
   const newSample = useCallback((name, sample, key) => {
@@ -18,7 +19,9 @@ export const SamplesProvider = ({ children }) => {
   });
 
   return (
-    <Samples.Provider value={{ setSamples, newSample }}>
+    <Samples.Provider
+      value={{ samples, setSamples, newSample, instrument, setInstrument }}
+    >
       {children}
     </Samples.Provider>
   );

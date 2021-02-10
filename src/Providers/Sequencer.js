@@ -28,7 +28,11 @@ export const SequencerProvider = ({ children }) => {
 
   const start = useCallback(() => {
     if (Tone.Transport.state === 'started') return;
-    Tone.Transport.scheduleRepeat((time) => scheduleCell(time, step), '16n');
+    const cells = document.querySelectorAll(`.cell`);
+    Tone.Transport.scheduleRepeat((time) => {
+      animateCell(time, cells[step.current]);
+      scheduleCell(time, step);
+    }, '16n');
     Tone.Transport.start();
   });
 
@@ -61,3 +65,11 @@ const initialClick = async () => {
   document.removeEventListener('click', initialClick);
 };
 document.addEventListener('click', initialClick);
+
+const animateCell = (time, cell) => {
+  Tone.Draw.schedule(() => {
+    cell.classList.remove('on');
+    void cell.offsetWidth; // rm>offset>add to reset css animation
+    cell.classList.add('on');
+  }, time);
+};

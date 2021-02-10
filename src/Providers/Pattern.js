@@ -20,7 +20,7 @@ export const PatternProvider = ({ children }) => {
   });
 
   return (
-    <Pattern.Provider value={{ setPattern, scheduleCell }}>
+    <Pattern.Provider value={{ pattern, setPattern, scheduleCell }}>
       {children}
     </Pattern.Provider>
   );
