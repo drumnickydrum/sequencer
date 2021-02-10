@@ -16,6 +16,7 @@ const grid9 = createGrid(9);
 export const Grid = () => {
   const { pattern, setPattern } = useContext(Pattern);
   const { selectedSample, samples } = useContext(Samples);
+
   const toggleCell = (i) => {
     setPattern((prev) => ({
       ...prev,
@@ -31,7 +32,7 @@ export const Grid = () => {
     }));
   };
 
-  const cells = grid64.map((i) => {
+  const cells = pattern.map((cell, i) => {
     const id = `cell-${i}`;
     let current = null;
     if (selectedSample && pattern[i] && pattern[i][selectedSample])
@@ -39,7 +40,12 @@ export const Grid = () => {
     let classes = 'cell';
     if (current) classes += current === 1 ? ' full' : ' half';
     return (
-      <div key={id} id={id} className={classes}>
+      <div
+        key={id}
+        id={id}
+        className={classes}
+        onMouseDown={() => toggleCell(i)}
+      >
         <CellIcon />
         <div id={id + '-overview'} className='overview'>
           {Object.keys(samples).map((sample, index) => {

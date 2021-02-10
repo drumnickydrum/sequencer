@@ -24,7 +24,9 @@
   --yellow-half: rgba(210, 254, 147, 0.5);
   --bg: rgb(40, 30, 50, 0.45);
   --grey: rgb(150, 140, 170, 1);
-  --grey: rgb(150, 140, 170, 0.5);
+  --grey-half: rgb(150, 140, 170, 0.5);
+  --grey-quarter: rgb(150, 140, 170, 0.25);
+  --none: rgb(150, 140, 170, 0);
   --black: #000;
   --white: rgba(236, 237, 229, 1);
   --white-half: rgba(236, 237, 229, 0.5);
@@ -151,32 +153,32 @@ body {
   justify-content: center;
   align-items: center;
   opacity: 0.5;
-  color: var(--grey);
 }
 
+.cell .icon {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 5px;
+}
 .cell:hover {
   opacity: 1;
   transform: scale(1.1);
 }
 
-.full {
-  color: var(--red);
+.full .icon {
+  fill: var(--red);
 }
 
-.half {
-  color: var(--red-half);
+.half .icon {
+  fill: var(--red-half);
 }
 
 .on {
-  animation: pulse 200ms linear;
+  animation: pulse 250ms ease-out;
 }
 
 @keyframes pulse {
   0% {
-    opacity: 0.5;
-    transform: scale(1);
-  }
-  10% {
     opacity: 1;
     transform: scale(0.8);
   }
