@@ -1,18 +1,18 @@
 import React, { useState, useContext, useCallback } from 'react';
-import { Sampler } from './Sampler';
-import { downtempo } from './patterns';
+import { Samples } from './Samples';
+import { downtempo } from './defaultSequences';
 
 export const Pattern = React.createContext();
 export const PatternProvider = ({ children }) => {
-  const { setSampler } = useContext(Sampler);
+  const { setSamples } = useContext(Samples);
   const [pattern, setPattern] = useState(downtempo.pattern);
 
   const scheduleCell = useCallback((time, step) => {
     for (const [inst, vol] of Object.entries(pattern[step.current])) {
       if (pattern[step.current][inst]) {
-        setSampler((sampler) => {
-          sampler[inst]?.triggerAttack('C2', time, vol / 2);
-          return sampler;
+        setSamples((samples) => {
+          samples[inst]?.sampler.triggerAttack('C2', time, vol / 2);
+          return samples;
         });
       }
     }

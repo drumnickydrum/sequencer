@@ -6,7 +6,7 @@ import React, {
   useContext,
 } from 'react';
 import * as Tone from 'tone';
-import { downtempo } from './patterns';
+import { downtempo } from './defaultSequences';
 import { Pattern } from './Pattern';
 
 export const Sequencer = React.createContext();
