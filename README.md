@@ -11,6 +11,7 @@ Naming is important. Trying to avoid collisions and confusion such as:
 
 - `start()` sequence
 - `trigger()` sample/note
+- 'instrument' is a collection of 'samples' (or in the future oscillators, etc...)
 - working towards the following sequence structure:
 
 ```

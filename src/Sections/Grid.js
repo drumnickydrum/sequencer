@@ -15,28 +15,45 @@ const grid9 = createGrid(9);
 
 export const Grid = () => {
   const { pattern, setPattern } = useContext(Pattern);
-  const { instrument, samples } = useContext(Samples);
+  const { selectedSample, samples } = useContext(Samples);
   const toggleCell = (i) => {
     setPattern((prev) => ({
       ...prev,
       [i]: {
         ...prev[i],
-        [instrument]:
-          prev[i][instrument] === 0 ? 1 : prev[i][instrument] === 1 ? 0.5 : 0,
+        [selectedSample]:
+          prev[i][selectedSample] === 0
+            ? 1
+            : prev[i][selectedSample] === 1
+            ? 0.5
+            : 0,
       },
     }));
   };
 
   const cells = grid64.map((i) => {
-    let current = null;
-    if (instrument && pattern[i] && pattern[i][instrument])
-      current = pattern[i][instrument];
     const id = `cell-${i}`;
+    let current = null;
+    if (selectedSample && pattern[i] && pattern[i][selectedSample])
+      current = pattern[i][selectedSample];
     let classes = 'cell';
     if (current) classes += current === 1 ? ' full' : ' half';
     return (
       <div key={id} id={id} className={classes}>
         <CellIcon />
+        <div id={id + '-overview'} className='overview'>
+          {Object.keys(samples).map((sample, index) => {
+            const sampleId = `${id}-${sample}`;
+            let sampleClass = 'overview-sample';
+            let currentSample = null;
+            if (sample && pattern[i] && pattern[i][sample])
+              currentSample = pattern[i][sample];
+            if (currentSample) sampleClass += ` o${index} full`;
+            return (
+              <div key={sampleId} id={sampleId} className={sampleClass}></div>
+            );
+          })}
+        </div>
       </div>
     );
   });
