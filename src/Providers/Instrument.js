@@ -2,14 +2,13 @@ import React, { useState, useCallback } from 'react';
 import * as Tone from 'tone';
 import { downtempo } from './defaultSequences';
 
-export const Samples = React.createContext();
-export const SamplesProvider = ({ children }) => {
-  const [samples, setSamples] = useState(downtempo.instrument);
-  const [selectedSample, setSelectedSample] = useState('kick');
+export const Instrument = React.createContext();
+export const InstrumentProvider = ({ children }) => {
+  const [instrument, setInstrument] = useState(downtempo.instrument);
 
   // how to avoid name collisions?
   const newSample = useCallback((name, sample, key) => {
-    setSamples((prev) => ({
+    setInstrument((prev) => ({
       ...prev,
       [name]: {
         sampler: new Tone.Sampler({ C2: sample }).toDestination(),
@@ -19,16 +18,14 @@ export const SamplesProvider = ({ children }) => {
   });
 
   return (
-    <Samples.Provider
+    <Instrument.Provider
       value={{
-        samples,
-        setSamples,
+        instrument,
+        setInstrument,
         newSample,
-        selectedSample,
-        setSelectedSample,
       }}
     >
       {children}
-    </Samples.Provider>
+    </Instrument.Provider>
   );
 };

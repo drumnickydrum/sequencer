@@ -102,10 +102,10 @@ body {
 }
 
 /*************************************/
-/************ Instrument *************/
+/*********** SoundSelector ***********/
 /*************************************/
 
-#instrument {
+#sound-selector {
   width: 100%;
   height: 100%;
   display: grid;
@@ -113,7 +113,7 @@ body {
   gap: 0.3rem;
 }
 
-.instrument {
+.sound {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -122,7 +122,7 @@ body {
   border: 1px solid var(--purple-half);
 }
 
-.instrument.selected {
+.sound.selected {
   color: var(--white);
   /* border-color: var(--purple); */
 }
@@ -193,7 +193,7 @@ body {
   }
 }
 
-.overview {
+#overview {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -226,112 +226,112 @@ body {
 .colorDefault .icon {
   fill: var(--purple-half);
 }
-.color1 {
+.color0 {
   color: var(--blue);
 }
-.bg1 {
+.bg0 {
   background-color: var(--blue);
 }
-.border1 {
+.border0 {
   border-color: var(--blue);
 }
-.color1 .icon {
+.color0 .icon {
   fill: var(--blue);
 }
-.color2 {
+.color1 {
   color: var(--lime);
 }
-.bg2 {
+.bg1 {
   background-color: var(--lime);
 }
-.border2 {
+.border1 {
   border-color: var(--lime);
 }
-.color2 .icon {
+.color1 .icon {
   fill: var(--lime);
 }
-.color3 {
+.color2 {
   color: var(--magenta);
 }
-.bg3 {
+.bg2 {
   background-color: var(--magenta);
 }
-.border3 {
+.border2 {
   border-color: var(--magenta);
 }
-.color3 .icon {
+.color2 .icon {
   fill: var(--magenta);
 }
-.color4 {
+.color3 {
   color: var(--yellow);
 }
-.bg4 {
+.bg3 {
   background-color: var(--yellow);
 }
-.border4 {
+.border3 {
   border-color: var(--yellow);
 }
-.color4 .icon {
+.color3 .icon {
   fill: var(--yellow);
 }
-.color5 {
+.color4 {
   color: var(--red);
 }
-.bg5 {
+.bg4 {
   background-color: var(--red);
 }
-.border5 {
+.border4 {
   border-color: var(--red);
 }
-.color5 .icon {
+.color4 .icon {
   fill: var(--red);
 }
-.color6 {
+.color5 {
   color: var(--baby-blue);
 }
-.bg6 {
+.bg5 {
   background-color: var(--baby-blue);
 }
-.border6 {
+.border5 {
   border-color: var(--baby-blue);
 }
-.color6 .icon {
+.color5 .icon {
   fill: var(--baby-blue);
 }
-.color7 {
+.color6 {
   color: var(--orange);
 }
-.bg7 {
+.bg6 {
   background-color: var(--orange);
 }
-.border7 {
+.border6 {
   border-color: var(--orange);
 }
-.color7 .icon {
+.color6 .icon {
   fill: var(--orange);
 }
-.color8 {
+.color7 {
   color: var(--green);
 }
-.bg8 {
+.bg7 {
   background-color: var(--green);
 }
-.border8 {
+.border7 {
   border-color: var(--green);
 }
-.color8 .icon {
+.color7 .icon {
   fill: var(--green);
 }
-.color9 {
+.color8 {
   color: var(--pink);
 }
-.bg9 {
+.bg8 {
   background-color: var(--pink);
 }
-.border9 {
+.border8 {
   border-color: var(--pink);
 }
-.color9 .icon {
+.color8 .icon {
   fill: var(--pink);
 }
 

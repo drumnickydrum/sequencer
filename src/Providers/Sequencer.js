@@ -7,14 +7,13 @@ import React, {
 } from 'react';
 import * as Tone from 'tone';
 import { downtempo } from './defaultSequences';
-import { Pattern } from './Pattern';
+import { Editor } from './Editor';
 
 export const Sequencer = React.createContext();
 export const SetSequencer = React.createContext();
 export const SequencerProvider = ({ children }) => {
-  const { scheduleCell } = useContext(Pattern);
+  const { schedulePattern } = useContext(Editor);
   const [bpm, setBpm] = useState(downtempo.bpm);
-
   const step = useRef(0);
 
   useEffect(() => {
@@ -28,11 +27,7 @@ export const SequencerProvider = ({ children }) => {
 
   const start = useCallback(() => {
     if (Tone.Transport.state === 'started') return;
-    const cells = document.querySelectorAll(`.cell`);
-    Tone.Transport.scheduleRepeat((time) => {
-      animateCell(time, cells[step.current]);
-      scheduleCell(time, step);
-    }, '16n');
+    schedulePattern(step);
     Tone.Transport.start();
   });
 
@@ -65,17 +60,3 @@ const initialClick = async () => {
   document.removeEventListener('click', initialClick);
 };
 document.addEventListener('click', initialClick);
-
-const animateCell = (time, cell) => {
-  Tone.Draw.schedule(() => {
-    if (cell.classList.contains('on')) {
-      cell.classList.remove('pulse');
-      void cell.offsetWidth; // rm>offset>add to reset css animation
-      cell.classList.add('pulse');
-    } else {
-      cell.classList.remove('flash');
-      void cell.offsetWidth;
-      cell.classList.add('flash');
-    }
-  }, time);
-};
