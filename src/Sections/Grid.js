@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Pattern } from '../Providers/Pattern';
 import { Samples } from '../Providers/Samples';
-import { CellIcon } from '../icons';
+import { CellIcon, CircleIcon } from '../icons';
 
 const createGrid = (size) => {
   let grid = [];
@@ -16,53 +16,59 @@ const grid9 = createGrid(9);
 export const Grid = () => {
   const { pattern, setPattern } = useContext(Pattern);
   const { selectedSample, samples } = useContext(Samples);
+  const [cells, setCells] = useState();
 
-  const toggleCell = (i) => {
-    setPattern((prev) => ({
-      ...prev,
-      [i]: {
-        ...prev[i],
-        [selectedSample]:
-          prev[i][selectedSample] === 0
-            ? 1
-            : prev[i][selectedSample] === 1
-            ? 0.5
-            : 0,
-      },
-    }));
-  };
-
-  const cells = pattern.map((cell, i) => {
-    const id = `cell-${i}`;
-    let current = null;
-    if (selectedSample && pattern[i] && pattern[i][selectedSample])
-      current = pattern[i][selectedSample];
+  const Cell = ({ cell, i }) => {
     let classes = 'cell';
+    let current = cell[selectedSample] || null;
     if (current) classes += current === 1 ? ' full' : ' half';
     return (
-      <div
-        key={id}
-        id={id}
-        className={classes}
-        onMouseDown={() => toggleCell(i)}
-      >
+      <div className={classes} onMouseDown={() => toggleCell(i)}>
         <CellIcon />
-        <div id={id + '-overview'} className='overview'>
-          {Object.keys(samples).map((sample, index) => {
-            const sampleId = `${id}-${sample}`;
-            let sampleClass = 'overview-sample';
-            let currentSample = null;
-            if (sample && pattern[i] && pattern[i][sample])
-              currentSample = pattern[i][sample];
-            if (currentSample) sampleClass += ` o${index} full`;
-            return (
-              <div key={sampleId} id={sampleId} className={sampleClass}></div>
-            );
-          })}
+        <div className='overview'>
+          <Overview cell={cell} i={i} />
         </div>
       </div>
     );
-  });
+  };
+
+  const Overview = ({ cell, i }) =>
+    Object.keys(samples).map((sample, index) => {
+      let sampleClass = 'overview-sample';
+      let currentSample = cell[sample] || null;
+      if (currentSample) sampleClass += ` o${index} full`;
+      return (
+        <div key={i + index + sample} className={sampleClass}>
+          <CircleIcon />
+        </div>
+      );
+    });
+
+  const getCells = () => {
+    const newCells = pattern.map((cell, i) => {
+      const id = `cell-${i}`;
+      return <Cell key={id} cell={cell} i={i} />;
+    });
+    setCells(newCells);
+  };
+
+  const toggleCell = (i) => {
+    const newPattern = [...pattern];
+    newPattern[i] = {
+      ...pattern[i],
+      [selectedSample]:
+        pattern[i][selectedSample] === 0
+          ? 1
+          : pattern[i][selectedSample] === 1
+          ? 0.5
+          : 0,
+    };
+    setPattern(newPattern);
+  };
+
+  useEffect(() => {
+    getCells();
+  }, [pattern]);
 
   return <div id='grid'>{cells}</div>;
 };
