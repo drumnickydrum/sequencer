@@ -19,11 +19,17 @@ export const Grid = () => {
   const [cells, setCells] = useState();
 
   const Cell = ({ cell, i }) => {
+    const [vol, setVol] = useState(pattern[i][selectedSample]);
+
+    const toggleCell = () => {
+      setVol((prev) => (prev === 0 ? 1 : prev === 1 ? 0.5 : 0));
+    };
+
     let classes = 'cell';
     let current = cell[selectedSample] || null;
     if (current) classes += ` on color${samples[selectedSample].color}`;
-    const iconStyle = { opacity: current ? cell[selectedSample] : 1 };
-    console.log('rendering cell: ', i);
+    const iconStyle = { opacity: current ? vol : 1 };
+
     return (
       <div className={classes} onMouseDown={() => toggleCell(i)}>
         <CellIcon style={iconStyle} />
@@ -54,23 +60,9 @@ export const Grid = () => {
     setCells(newCells);
   };
 
-  const toggleCell = (i) => {
-    const newPattern = [...pattern];
-    newPattern[i] = {
-      ...pattern[i],
-      [selectedSample]:
-        pattern[i][selectedSample] === 0
-          ? 1
-          : pattern[i][selectedSample] === 1
-          ? 0.5
-          : 0,
-    };
-    setPattern(newPattern);
-  };
-
   useEffect(() => {
     getCells();
-  }, [pattern, selectedSample]);
+  }, [selectedSample]);
 
   return <div id='grid'>{cells}</div>;
 };

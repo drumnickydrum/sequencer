@@ -124,7 +124,7 @@ body {
 
 .instrument.selected {
   color: var(--white);
-  border-color: var(--purple);
+  /* border-color: var(--purple); */
 }
 
 /*************************************/
@@ -214,8 +214,26 @@ body {
   height: 200%;
 }
 
+.colorDefault {
+  color: var(--purple-half);
+}
+.bgDefault {
+  background-color: var(--purple-half);
+}
+.borderDefault {
+  border-color: var(--purple-half);
+}
+.colorDefault .icon {
+  fill: var(--purple-half);
+}
 .color1 {
   color: var(--blue);
+}
+.bg1 {
+  background-color: var(--blue);
+}
+.border1 {
+  border-color: var(--blue);
 }
 .color1 .icon {
   fill: var(--blue);
@@ -223,50 +241,98 @@ body {
 .color2 {
   color: var(--lime);
 }
+.bg2 {
+  background-color: var(--lime);
+}
+.border2 {
+  border-color: var(--lime);
+}
 .color2 .icon {
   fill: var(--lime);
 }
 .color3 {
-  color: var(--yellow);
+  color: var(--magenta);
+}
+.bg3 {
+  background-color: var(--magenta);
+}
+.border3 {
+  border-color: var(--magenta);
 }
 .color3 .icon {
-  fill: var(--yellow);
+  fill: var(--magenta);
 }
 .color4 {
-  color: var(--purple);
-}
-.color4 .icon {
-  fill: var(--purple);
-}
-.color5 {
-  color: var(--orange);
-}
-.color5 .icon {
-  fill: var(--orange);
-}
-.color6 {
-  color: var(--lime);
-}
-.color6 .icon {
-  fill: var(--lime);
-}
-.color7 {
-  color: var(--blue);
-}
-.color7 .icon {
-  fill: var(--blue);
-}
-.color8 {
   color: var(--yellow);
 }
-.color8 .icon {
+.bg4 {
+  background-color: var(--yellow);
+}
+.border4 {
+  border-color: var(--yellow);
+}
+.color4 .icon {
   fill: var(--yellow);
 }
+.color5 {
+  color: var(--red);
+}
+.bg5 {
+  background-color: var(--red);
+}
+.border5 {
+  border-color: var(--red);
+}
+.color5 .icon {
+  fill: var(--red);
+}
+.color6 {
+  color: var(--baby-blue);
+}
+.bg6 {
+  background-color: var(--baby-blue);
+}
+.border6 {
+  border-color: var(--baby-blue);
+}
+.color6 .icon {
+  fill: var(--baby-blue);
+}
+.color7 {
+  color: var(--orange);
+}
+.bg7 {
+  background-color: var(--orange);
+}
+.border7 {
+  border-color: var(--orange);
+}
+.color7 .icon {
+  fill: var(--orange);
+}
+.color8 {
+  color: var(--green);
+}
+.bg8 {
+  background-color: var(--green);
+}
+.border8 {
+  border-color: var(--green);
+}
+.color8 .icon {
+  fill: var(--green);
+}
 .color9 {
-  color: var(--purple);
+  color: var(--pink);
+}
+.bg9 {
+  background-color: var(--pink);
+}
+.border9 {
+  border-color: var(--pink);
 }
 .color9 .icon {
-  fill: var(--purple);
+  fill: var(--pink);
 }
 
 /*************************************/

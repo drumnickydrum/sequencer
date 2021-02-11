@@ -10,7 +10,9 @@ export const Instrument = () => {
           <div
             key={`inst-panel-${sample}`}
             className={
-              sample === selectedSample ? 'instrument selected' : 'instrument'
+              sample === selectedSample
+                ? `instrument selected border${samples[selectedSample].color}`
+                : 'instrument'
             }
             onClick={() => setSelectedSample(sample)}
           >
