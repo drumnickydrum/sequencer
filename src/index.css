@@ -5,23 +5,32 @@
   padding: 0;
   box-sizing: border-box;
   user-select: none;
-  /* border: 1px solid red; */
+  /* border: 1px solid magenta; */
 }
 
 :root {
-  --green: rgba(64, 244, 195, 1);
-  --green-half: rgba(64, 244, 195, 0.5);
+  --green: rgba(47, 222, 126, 1);
+  --green-half: rgba(47, 222, 126, 0.5);
+  --lime: rgba(64, 244, 195, 1);
+  --lime-half: rgba(64, 244, 195, 0.5);
   --purple: rgba(113, 18, 185, 1);
   --purple-half: rgba(113, 18, 185, 0.5);
   --purple-dark: rgba(113, 18, 185, 0.3);
   --blue: rgba(2, 123, 255, 1);
   --blue-half: rgba(133, 155, 214, 0.5);
-  --red: rgba(255, 0, 172, 1);
-  --red-half: rgba(255, 0, 172, 0.35);
+  --baby-blue: rgba(25, 247, 255, 1);
+  --baby-blue-half: rgba(25, 247, 255, 0.5);
+  --red: rgba(232, 12, 48, 1);
+  --red-half: rgba(232, 12, 48, 0.5);
+  --magenta: rgba(255, 0, 172, 1);
+  --magenta-half: rgba(255, 0, 172, 0.35);
+  --pink: rgba(250, 109, 203, 1);
+  --pink-half: rgba(250, 109, 203, 0.5);
   --orange: rgba(187, 123, 1, 1);
   --orange-half: rgba(187, 123, 1, 0.5);
   --yellow: rgba(210, 254, 147, 1);
   --yellow-half: rgba(210, 254, 147, 0.5);
+
   --bg: rgb(40, 30, 50, 0.45);
   --grey: rgb(150, 140, 170, 1);
   --grey-half: rgb(150, 140, 170, 0.5);
@@ -145,20 +154,12 @@ body {
 
 .cell .icon {
   fill: var(--bg);
-  stroke: var(--red);
+  stroke: var(--magenta);
   stroke-width: 5px;
 }
 .cell:hover {
   opacity: 1;
   transform: scale(1.1);
-}
-
-.full .icon {
-  fill: var(--red);
-}
-
-.half .icon {
-  fill: var(--red-half);
 }
 
 .on {
@@ -213,32 +214,59 @@ body {
   height: 200%;
 }
 
-.o1 {
+.color1 {
   color: var(--blue);
 }
-.o2 {
-  color: var(--green);
+.color1 .icon {
+  fill: var(--blue);
 }
-.o3 {
+.color2 {
+  color: var(--lime);
+}
+.color2 .icon {
+  fill: var(--lime);
+}
+.color3 {
   color: var(--yellow);
 }
-.o4 {
+.color3 .icon {
+  fill: var(--yellow);
+}
+.color4 {
   color: var(--purple);
 }
-.o5 {
+.color4 .icon {
+  fill: var(--purple);
+}
+.color5 {
   color: var(--orange);
 }
-.o6 {
-  color: var(--green);
+.color5 .icon {
+  fill: var(--orange);
 }
-.o7 {
+.color6 {
+  color: var(--lime);
+}
+.color6 .icon {
+  fill: var(--lime);
+}
+.color7 {
   color: var(--blue);
 }
-.o8 {
+.color7 .icon {
+  fill: var(--blue);
+}
+.color8 {
   color: var(--yellow);
 }
-.o9 {
+.color8 .icon {
+  fill: var(--yellow);
+}
+.color9 {
   color: var(--purple);
+}
+.color9 .icon {
+  fill: var(--purple);
 }
 
 /*************************************/
@@ -289,19 +317,19 @@ body {
 }
 
 #stop {
-  background: var(--red-half);
+  background: var(--magenta-half);
 }
 
 #stop:hover {
-  background: var(--red);
+  background: var(--magenta);
 }
 
 #start {
-  background: var(--green-half);
+  background: var(--lime-half);
 }
 
 #start:hover {
-  background: var(--green);
+  background: var(--lime);
 }
 
 select {

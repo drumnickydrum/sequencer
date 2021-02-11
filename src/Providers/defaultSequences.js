@@ -4,18 +4,22 @@ const INITIAL_SAMPLES = {
   kick: {
     sampler: new Tone.Sampler({ C2: './audio/kick.mp3' }).toDestination(),
     key: 'num1',
+    color: 1,
   },
   snr: {
     sampler: new Tone.Sampler({ C2: './audio/snr.mp3' }).toDestination(),
     key: 'num2',
+    color: 2,
   },
   ch: {
     sampler: new Tone.Sampler({ C2: './audio/ch.mp3' }).toDestination(),
     key: 'num3',
+    color: 3,
   },
   oh: {
     sampler: new Tone.Sampler({ C2: './audio/oh.mp3' }).toDestination(),
     key: 'num4',
+    color: 4,
   },
 };
 

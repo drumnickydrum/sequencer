@@ -21,7 +21,7 @@ export const Grid = () => {
   const Cell = ({ cell, i }) => {
     let classes = 'cell';
     let current = cell[selectedSample] || null;
-    if (current) classes += current === 1 ? ' full' : ' half';
+    if (current) classes += ` on color${samples[selectedSample].color}`;
     return (
       <div className={classes} onMouseDown={() => toggleCell(i)}>
         <CellIcon />
@@ -33,10 +33,10 @@ export const Grid = () => {
   };
 
   const Overview = ({ cell, i }) =>
-    Object.keys(samples).map((sample, index) => {
+    Object.entries(samples).map(([sample, { color }], index) => {
       let sampleClass = 'overview-sample';
       let currentSample = cell[sample] || null;
-      if (currentSample) sampleClass += ` o${index} full`;
+      if (currentSample) sampleClass += ` color${color} full`;
       return (
         <div key={i + index + sample} className={sampleClass}>
           <CircleIcon />

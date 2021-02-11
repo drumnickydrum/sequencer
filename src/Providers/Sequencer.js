@@ -68,7 +68,7 @@ document.addEventListener('click', initialClick);
 
 const animateCell = (time, cell) => {
   Tone.Draw.schedule(() => {
-    if (cell.classList.contains('full') || cell.classList.contains('half')) {
+    if (cell.classList.contains('on')) {
       cell.classList.remove('on');
       void cell.offsetWidth; // rm>offset>add to reset css animation
       cell.classList.add('on');
