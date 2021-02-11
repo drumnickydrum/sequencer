@@ -68,7 +68,7 @@ export const Grid = () => {
 
   useEffect(() => {
     getCells();
-  }, [pattern]);
+  }, [pattern, selectedSample]);
 
   return <div id='grid'>{cells}</div>;
 };

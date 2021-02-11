@@ -2,8 +2,9 @@ import React from 'react';
 import { SamplesProvider } from './Providers/Samples';
 import { PatternProvider } from './Providers/Pattern';
 import { SequencerProvider } from './Providers/Sequencer';
-import { Transport } from './Sections/Transport';
+import { Instrument } from './Sections/Instrument';
 import { Grid } from './Sections/Grid';
+import { Transport } from './Sections/Transport';
 
 export default function App() {
   return (
@@ -11,7 +12,9 @@ export default function App() {
       <PatternProvider>
         <SequencerProvider>
           <div id='app'>
-            <div id='top'></div>
+            <div id='top'>
+              <Instrument />
+            </div>
             <div id='middle'>
               <Grid />
             </div>

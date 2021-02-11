@@ -29,6 +29,7 @@
   --none: rgb(150, 140, 170, 0);
   --black: #000;
   --white: rgba(236, 237, 229, 1);
+  --white-less: rgba(236, 237, 229, 0.75);
   --white-half: rgba(236, 237, 229, 0.5);
 }
 
@@ -66,6 +67,7 @@ body {
   height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   border-radius: 0.5rem;
   background: var(--black);
 }
@@ -73,6 +75,7 @@ body {
 #top,
 #bottom {
   width: 100%;
+  height: 100%;
   min-height: 2rem;
   padding: 1rem;
   display: flex;
@@ -85,81 +88,34 @@ body {
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--purple-dark);
+  border: 1px solid var(--purple-half);
   border-radius: 0.5rem;
 }
 
 /*************************************/
-/************* Transport *************/
+/************ Instrument *************/
 /*************************************/
 
-#transport {
+#instrument {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.3rem;
+}
+
+.instrument {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-#transport button {
-  cursor: pointer;
-  height: 2rem;
-  width: 4rem;
-  margin: 0 0.5rem;
-  padding: 0.5rem;
-  border: none;
-  outline: none;
   border-radius: 0.3rem;
+  color: var(--white-less);
+  border: 1px solid var(--purple-half);
+}
+
+.instrument.selected {
   color: var(--white);
-  overflow: hidden;
-}
-
-#transport input {
-  max-width: 5rem;
-  height: 100%;
-  margin: 0 0.5rem;
-  padding: 0.25rem;
-  border: none;
-  outline: none;
-  border-radius: 0.3rem;
-  background: var(--black);
-  color: var(--white);
-  overflow: hidden;
-  text-align: center;
-  font-size: 1.25rem;
-}
-
-#bpm-label {
-  font-style: normal;
-}
-
-#stop:hover,
-#start:hover {
-  transform: scale(1.1);
-}
-
-#stop {
-  background: var(--red-half);
-}
-
-#stop:hover {
-  background: var(--red);
-}
-
-#start {
-  background: var(--green-half);
-}
-
-#start:hover {
-  background: var(--green);
-}
-
-select {
-  cursor: pointer;
-  padding: 0.5rem;
-  background: var(--black);
-  color: var(--white);
-  outline: none;
-  border: none;
-  border-radius: 0.3rem;
+  border-color: var(--purple);
 }
 
 /*************************************/
@@ -283,4 +239,77 @@ select {
 }
 .o9 {
   color: var(--purple);
+}
+
+/*************************************/
+/************* Transport *************/
+/*************************************/
+
+#transport {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#transport button {
+  cursor: pointer;
+  height: 2rem;
+  width: 4rem;
+  margin: 0 0.5rem;
+  padding: 0.5rem;
+  border: none;
+  outline: none;
+  border-radius: 0.3rem;
+  color: var(--white);
+  overflow: hidden;
+}
+
+#transport input {
+  max-width: 5rem;
+  height: 100%;
+  margin: 0 0.5rem;
+  padding: 0.25rem;
+  border: none;
+  outline: none;
+  border-radius: 0.3rem;
+  background: var(--black);
+  color: var(--white);
+  overflow: hidden;
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+#bpm-label {
+  font-style: normal;
+}
+
+#stop:hover,
+#start:hover {
+  transform: scale(1.1);
+}
+
+#stop {
+  background: var(--red-half);
+}
+
+#stop:hover {
+  background: var(--red);
+}
+
+#start {
+  background: var(--green-half);
+}
+
+#start:hover {
+  background: var(--green);
+}
+
+select {
+  cursor: pointer;
+  padding: 0.5rem;
+  background: var(--black);
+  color: var(--white);
+  outline: none;
+  border: none;
+  border-radius: 0.3rem;
 }
