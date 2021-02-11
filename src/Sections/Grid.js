@@ -22,9 +22,11 @@ export const Grid = () => {
     let classes = 'cell';
     let current = cell[selectedSample] || null;
     if (current) classes += ` on color${samples[selectedSample].color}`;
+    const iconStyle = { opacity: cell[selectedSample] };
+    console.log('rendering cell: ', i);
     return (
       <div className={classes} onMouseDown={() => toggleCell(i)}>
-        <CellIcon />
+        <CellIcon style={iconStyle} />
         <div className='overview'>
           <Overview cell={cell} i={i} />
         </div>

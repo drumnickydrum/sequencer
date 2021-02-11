@@ -69,9 +69,9 @@ document.addEventListener('click', initialClick);
 const animateCell = (time, cell) => {
   Tone.Draw.schedule(() => {
     if (cell.classList.contains('on')) {
-      cell.classList.remove('on');
+      cell.classList.remove('pulse');
       void cell.offsetWidth; // rm>offset>add to reset css animation
-      cell.classList.add('on');
+      cell.classList.add('pulse');
     } else {
       cell.classList.remove('flash');
       void cell.offsetWidth;

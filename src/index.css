@@ -163,6 +163,9 @@ body {
 }
 
 .on {
+}
+
+.pulse {
   animation: pulse 250ms ease-out;
 }
 
