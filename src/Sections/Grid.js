@@ -18,17 +18,28 @@ export const Grid = () => {
   const { selectedSample, samples } = useContext(Samples);
   const [cells, setCells] = useState();
 
-  const Cell = ({ cell, i }) => {
+  const handleToggle = (newVol, i) => {
+    setPattern((pattern) => {
+      pattern[i][selectedSample] = newVol;
+      return pattern;
+    });
+  };
+
+  const Cell = ({ cell, i, handleToggle }) => {
     const [vol, setVol] = useState(pattern[i][selectedSample]);
 
     const toggleCell = () => {
-      setVol((prev) => (prev === 0 ? 1 : prev === 1 ? 0.5 : 0));
+      const newVol = vol === 0 ? 1 : vol === 1 ? 0.5 : 0;
+      setVol(newVol);
+      handleToggle(newVol, i);
     };
 
     let classes = 'cell';
     let current = cell[selectedSample] || null;
     if (current) classes += ` on color${samples[selectedSample].color}`;
     const iconStyle = { opacity: current ? vol : 1 };
+
+    console.log('rendering cell: ', i);
 
     return (
       <div className={classes} onMouseDown={() => toggleCell(i)}>
@@ -45,6 +56,8 @@ export const Grid = () => {
       let sampleClass = 'overview-sample';
       let currentSample = cell[sample] || null;
       if (currentSample) sampleClass += ` color${color} full`;
+
+      console.log('rendering overview: ', index);
       return (
         <div key={i + index + sample} className={sampleClass}>
           <CircleIcon />
@@ -55,7 +68,7 @@ export const Grid = () => {
   const getCells = () => {
     const newCells = pattern.map((cell, i) => {
       const id = `cell-${i}`;
-      return <Cell key={id} cell={cell} i={i} />;
+      return <Cell key={id} cell={cell} i={i} handleToggle={handleToggle} />;
     });
     setCells(newCells);
   };
