@@ -154,15 +154,12 @@ body {
 
 .cell .icon {
   fill: var(--bg);
-  stroke: var(--magenta);
+  stroke: var(--purple);
   stroke-width: 5px;
 }
 .cell:hover {
   opacity: 1;
   transform: scale(1.1);
-}
-
-.on {
 }
 
 .pulse {
