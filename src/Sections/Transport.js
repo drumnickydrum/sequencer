@@ -8,7 +8,7 @@ export const Transport = () => {
 
   const handleChange = ({ target: { value } }) => {
     if (value && !value[value.length - 1].match(/\d/)) return;
-    setBpm(value > 300 ? 300 : value < 1 ? 1 : value);
+    setBpm(value > 300 ? 300 : value);
   };
 
   return (

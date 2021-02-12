@@ -1,81 +1,71 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { Pattern } from '../Providers/Pattern';
-import { Samples } from '../Providers/Samples';
+import React, { useContext, useMemo } from 'react';
 import { CellIcon, CircleIcon } from '../icons';
-
-const createGrid = (size) => {
-  let grid = [];
-  for (let i = 0; i < size; i++) {
-    grid.push(i);
-  }
-  return grid;
-};
-const grid64 = createGrid(64);
-const grid9 = createGrid(9);
+import { Editor } from '../Providers/Editor';
 
 export const Grid = () => {
-  const { pattern, setPattern } = useContext(Pattern);
-  const { selectedSample, samples } = useContext(Samples);
-  const [cells, setCells] = useState();
+  const cells = getCells();
+  return <div id='grid'>{cells}</div>;
+};
 
-  const handleToggle = (newVol, i) => {
+const getCells = (size = 64) => {
+  let cells = [];
+  for (let i = 0; i < size; i++) {
+    const id = `cell-${i}`;
+    cells.push(<Cell key={id} id={id} i={i} />);
+  }
+  return cells;
+};
+
+const Cell = ({ id, i }) => {
+  const { pattern, setPattern, selectedSound } = useContext(Editor);
+  const vol = pattern[i][selectedSound];
+
+  const handleClick = () => {
+    const newVol = vol === 1 ? 0.5 : vol === 0.5 ? 0 : 1;
     setPattern((pattern) => {
-      pattern[i][selectedSample] = newVol;
-      return pattern;
+      let newPattern = [...pattern];
+      newPattern[i][selectedSound] = newVol;
+      return newPattern;
     });
   };
 
-  const Cell = ({ cell, i, handleToggle }) => {
-    const [vol, setVol] = useState(pattern[i][selectedSample]);
-
-    const toggleCell = () => {
-      const newVol = vol === 0 ? 1 : vol === 1 ? 0.5 : 0;
-      setVol(newVol);
-      handleToggle(newVol, i);
-    };
-
-    let classes = 'cell';
-    let current = cell[selectedSample] || null;
-    if (current) classes += ` on color${samples[selectedSample].color}`;
-    const iconStyle = { opacity: current ? vol : 1 };
-
-    console.log('rendering cell: ', i);
-
+  const cellMemo = useMemo(() => {
+    // console.log('rendering cell: ', i);
+    let classes = `cell ${id}`;
+    classes += vol ? ` color${selectedSound} on` : ' borderDefault';
+    const soundCells = getSoundCells(id, pattern[i]);
     return (
-      <div className={classes} onMouseDown={() => toggleCell(i)}>
-        <CellIcon style={iconStyle} />
-        <div className='overview'>
-          <Overview cell={cell} i={i} />
-        </div>
+      <div className={classes} onClick={handleClick}>
+        <CellIcon style={{ opacity: vol ? vol : 1 }} />
+        <div id='sound-cells'>{soundCells}</div>
       </div>
     );
-  };
+  }, [pattern[i], selectedSound, vol]);
 
-  const Overview = ({ cell, i }) =>
-    Object.entries(samples).map(([sample, { color }], index) => {
-      let sampleClass = 'overview-sample';
-      let currentSample = cell[sample] || null;
-      if (currentSample) sampleClass += ` color${color} full`;
+  return cellMemo;
+};
 
-      console.log('rendering overview: ', index);
-      return (
-        <div key={i + index + sample} className={sampleClass}>
-          <CircleIcon />
-        </div>
-      );
-    });
+const getSoundCells = (cellId, patternI, size = 9) => {
+  let soundCells = [];
+  for (let i = 0; i < size; i++) {
+    const id = `${cellId}-${i}`;
+    const color = patternI[i] ? `color${i}` : '';
+    const vol = patternI[i];
+    soundCells.push(<SoundCell key={id} id={id} color={color} vol={vol} />);
+  }
+  return soundCells;
+};
 
-  const getCells = () => {
-    const newCells = pattern.map((cell, i) => {
-      const id = `cell-${i}`;
-      return <Cell key={id} cell={cell} i={i} handleToggle={handleToggle} />;
-    });
-    setCells(newCells);
-  };
+const SoundCell = ({ id, color, vol }) => {
+  const soundCellMemo = useMemo(() => {
+    // console.log('rendering soundCell: ', id);
+    const classes = `sound-cell ${color}`;
+    return (
+      <div id={id} className={classes}>
+        <CircleIcon style={{ opacity: vol }} />
+      </div>
+    );
+  }, [vol]);
 
-  useEffect(() => {
-    getCells();
-  }, [selectedSample]);
-
-  return <div id='grid'>{cells}</div>;
+  return soundCellMemo;
 };

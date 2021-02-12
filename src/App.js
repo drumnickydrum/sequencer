@@ -1,19 +1,19 @@
 import React from 'react';
-import { SamplesProvider } from './Providers/Samples';
-import { PatternProvider } from './Providers/Pattern';
+import { InstrumentProvider } from './Providers/Instrument';
+import { EditorProvider } from './Providers/Editor';
 import { SequencerProvider } from './Providers/Sequencer';
-import { Instrument } from './Sections/Instrument';
+import { SoundSelector } from './Sections/SoundSelector';
 import { Grid } from './Sections/Grid';
 import { Transport } from './Sections/Transport';
 
 export default function App() {
   return (
-    <SamplesProvider>
-      <PatternProvider>
+    <InstrumentProvider>
+      <EditorProvider>
         <SequencerProvider>
           <div id='app'>
             <div id='top'>
-              <Instrument />
+              <SoundSelector />
             </div>
             <div id='middle'>
               <Grid />
@@ -23,7 +23,7 @@ export default function App() {
             </div>
           </div>
         </SequencerProvider>
-      </PatternProvider>
-    </SamplesProvider>
+      </EditorProvider>
+    </InstrumentProvider>
   );
 }
