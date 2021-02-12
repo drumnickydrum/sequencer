@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { downtempo } from './defaultSequences';
 
 export const SelectedSound = React.createContext();
@@ -8,10 +8,6 @@ export const SetPattern = React.createContext();
 export const PatternProvider = ({ children }) => {
   const [pattern, setPattern] = useState(downtempo.pattern);
   const [selectedSound, setSelectedSound] = useState(0);
-
-  useEffect(() => {
-    console.log(selectedSound);
-  }, [selectedSound]);
 
   return (
     <SetPattern.Provider value={setPattern}>
