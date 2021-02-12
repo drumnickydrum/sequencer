@@ -6,9 +6,9 @@
 
 - Still playing around with data structure. Instrument and pattern are currently an array to work with ease of 0-based indexing.
 - Memoized Cell and SoundCell for as few re-paints as possible. It was repainting 576 divs every time the selected sound was changed (64 cells x 9 sound-cells). Now it only repaints the cells that are affected.
-  - result is 2-10% of previous re-paints:
+  - result is ~1-10% of previous re-paints:
     - 64 cells re-paint on selected sound change.
-    - 9 sound-cells repaint on cell click.
+    - 1 sound-cell re-paints on cell click.
   - cost of memo comparison not figured into this. Can't be certain this is a gain or a loss just yet.
 
 ## Structure

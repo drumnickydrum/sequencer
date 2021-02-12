@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from 'react';
 import { CellIcon, CircleIcon } from '../icons';
-import { Pattern, SelectedSound, SetPattern } from '../Providers/Pattern';
+import { Editor } from '../Providers/Editor';
 
 export const Grid = () => {
   const cells = getCells();
@@ -17,34 +17,30 @@ const getCells = (size = 64) => {
 };
 
 const Cell = ({ id, i }) => {
-  const pattern = useContext(Pattern);
-  const setPattern = useContext(SetPattern);
-  const selectedSound = useContext(SelectedSound);
+  const { pattern, setPattern, selectedSound } = useContext(Editor);
+  const vol = pattern[i][selectedSound];
 
   const handleClick = () => {
+    const newVol = vol === 1 ? 0.5 : vol === 0.5 ? 0 : 1;
     setPattern((pattern) => {
-      const newCell = [...pattern[i]];
-      const vol = newCell[selectedSound];
-      let newVol = vol === 1 ? 0.5 : vol === 0.5 ? 0 : 1;
-      newCell[selectedSound] = newVol;
-      const newPattern = [...pattern];
-      newPattern[i] = newCell;
+      let newPattern = [...pattern];
+      newPattern[i][selectedSound] = newVol;
       return newPattern;
     });
   };
 
   const cellMemo = useMemo(() => {
     // console.log('rendering cell: ', i);
-    const classes = `cell ${id} color${selectedSound}`;
-    const vol = pattern[i][selectedSound];
+    let classes = `cell ${id}`;
+    classes += vol ? ` color${selectedSound} on` : ' borderDefault';
     const soundCells = getSoundCells(id, pattern[i]);
     return (
       <div className={classes} onClick={handleClick}>
-        <CellIcon style={{ opacity: vol }} />
+        <CellIcon style={{ opacity: vol ? vol : 1 }} />
         <div id='sound-cells'>{soundCells}</div>
       </div>
     );
-  }, [pattern[i], selectedSound]);
+  }, [pattern[i], selectedSound, vol]);
 
   return cellMemo;
 };
@@ -55,14 +51,12 @@ const getSoundCells = (cellId, patternI, size = 9) => {
     const id = `${cellId}-${i}`;
     const color = patternI[i] ? `color${i}` : '';
     const vol = patternI[i];
-    soundCells.push(
-      <SoundCell key={id} id={id} color={color} vol={vol} patternI={patternI} />
-    );
+    soundCells.push(<SoundCell key={id} id={id} color={color} vol={vol} />);
   }
   return soundCells;
 };
 
-const SoundCell = ({ id, color, vol, patternI }) => {
+const SoundCell = ({ id, color, vol }) => {
   const soundCellMemo = useMemo(() => {
     // console.log('rendering soundCell: ', id);
     const classes = `sound-cell ${color}`;
@@ -71,7 +65,7 @@ const SoundCell = ({ id, color, vol, patternI }) => {
         <CircleIcon style={{ opacity: vol }} />
       </div>
     );
-  }, [patternI]);
+  }, [vol]);
 
   return soundCellMemo;
 };
