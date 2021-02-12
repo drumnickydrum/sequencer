@@ -214,6 +214,95 @@ body {
   height: 200%;
 }
 
+/*************************************/
+/************* Transport *************/
+/*************************************/
+
+#transport {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#transport button {
+  cursor: pointer;
+  height: 2rem;
+  width: 4rem;
+  margin: 0 0.5rem;
+  padding: 0.5rem;
+  border: none;
+  outline: none;
+  border-radius: 0.3rem;
+  color: var(--white);
+  overflow: hidden;
+}
+
+#transport input {
+  max-width: 5rem;
+  height: 100%;
+  margin: 0 0.5rem;
+  padding: 0.25rem;
+  border: none;
+  outline: none;
+  border-radius: 0.3rem;
+  background: var(--black);
+  color: var(--white);
+  overflow: hidden;
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+#bpm-label {
+  font-style: normal;
+}
+
+#stop:hover,
+#start:hover {
+  transform: scale(1.1);
+}
+
+#stop {
+  background: var(--magenta-half);
+}
+
+#stop:hover {
+  background: var(--magenta);
+}
+
+#start {
+  background: var(--lime-half);
+}
+
+#start:hover {
+  background: var(--lime);
+}
+
+select {
+  cursor: pointer;
+  padding: 0.5rem;
+  background: var(--black);
+  color: var(--white);
+  outline: none;
+  border: none;
+  border-radius: 0.3rem;
+}
+
+/*************************************/
+/************** Colors ***************/
+/*************************************/
+
+.colorNone {
+  color: var(--none);
+}
+.bgNone {
+  background-color: var(--none);
+}
+.borderNone {
+  border-color: var(--none);
+}
+.colorNone .icon {
+  fill: var(--none);
+}
 .colorDefault {
   color: var(--purple-half);
 }
@@ -333,77 +422,4 @@ body {
 }
 .color8 .icon {
   fill: var(--pink);
-}
-
-/*************************************/
-/************* Transport *************/
-/*************************************/
-
-#transport {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#transport button {
-  cursor: pointer;
-  height: 2rem;
-  width: 4rem;
-  margin: 0 0.5rem;
-  padding: 0.5rem;
-  border: none;
-  outline: none;
-  border-radius: 0.3rem;
-  color: var(--white);
-  overflow: hidden;
-}
-
-#transport input {
-  max-width: 5rem;
-  height: 100%;
-  margin: 0 0.5rem;
-  padding: 0.25rem;
-  border: none;
-  outline: none;
-  border-radius: 0.3rem;
-  background: var(--black);
-  color: var(--white);
-  overflow: hidden;
-  text-align: center;
-  font-size: 1.25rem;
-}
-
-#bpm-label {
-  font-style: normal;
-}
-
-#stop:hover,
-#start:hover {
-  transform: scale(1.1);
-}
-
-#stop {
-  background: var(--magenta-half);
-}
-
-#stop:hover {
-  background: var(--magenta);
-}
-
-#start {
-  background: var(--lime-half);
-}
-
-#start:hover {
-  background: var(--lime);
-}
-
-select {
-  cursor: pointer;
-  padding: 0.5rem;
-  background: var(--black);
-  color: var(--white);
-  outline: none;
-  border: none;
-  border-radius: 0.3rem;
 }

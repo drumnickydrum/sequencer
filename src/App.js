@@ -5,25 +5,28 @@ import { SequencerProvider } from './Providers/Sequencer';
 import { SoundSelector } from './Sections/SoundSelector';
 import { Grid } from './Sections/Grid';
 import { Transport } from './Sections/Transport';
+import { PatternProvider } from './Providers/Pattern';
 
 export default function App() {
   return (
-    <InstrumentProvider>
-      <EditorProvider>
-        <SequencerProvider>
-          <div id='app'>
-            <div id='top'>
-              <SoundSelector />
+    <PatternProvider>
+      <InstrumentProvider>
+        <EditorProvider>
+          <SequencerProvider>
+            <div id='app'>
+              <div id='top'>
+                <SoundSelector />
+              </div>
+              <div id='middle'>
+                <Grid />
+              </div>
+              <div id='bottom'>
+                <Transport />
+              </div>
             </div>
-            <div id='middle'>
-              <Grid />
-            </div>
-            <div id='bottom'>
-              <Transport />
-            </div>
-          </div>
-        </SequencerProvider>
-      </EditorProvider>
-    </InstrumentProvider>
+          </SequencerProvider>
+        </EditorProvider>
+      </InstrumentProvider>
+    </PatternProvider>
   );
 }
