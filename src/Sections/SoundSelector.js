@@ -8,11 +8,11 @@ export const SoundSelector = () => {
 
   return (
     <div id='sound-selector'>
-      {instrument.map((sound) => (
+      {instrument.map((sound, i) => (
         <div
           key={`sound-selector-${sound.name}`}
           className={`sound border${sound.color}`}
-          onClick={() => setSelectedSound(sound.name)}
+          onClick={() => setSelectedSound(i)}
         >
           {sound.name}
         </div>

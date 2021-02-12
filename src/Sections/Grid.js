@@ -34,15 +34,17 @@ const Cell = ({ id, i }) => {
   };
 
   const cellMemo = useMemo(() => {
-    console.log('rendering cell: ', i);
+    // console.log('rendering cell: ', i);
+    let classes = `cell ${id}`;
+    if (pattern[i][selectedSound]) classes += ` color${selectedSound}`;
     const soundCells = getSoundCells(id, pattern[i]);
     return (
-      <div className={`cell ${id}`} onClick={handleClick}>
+      <div className={classes} onClick={handleClick}>
         <CellIcon />
         <div id='sound-cells'>{soundCells}</div>
       </div>
     );
-  }, [pattern[i]]);
+  }, [pattern[i], pattern[i][selectedSound]]);
 
   return cellMemo;
 };
@@ -62,6 +64,7 @@ const getSoundCells = (cellId, patternI, size = 9) => {
 
 const SoundCell = ({ id, color, vol, patternI }) => {
   const soundCellMemo = useMemo(() => {
+    // console.log('rendering soundCell: ', id);
     const classes = `sound-cell ${color}`;
     return (
       <div id={id} className={classes}>
