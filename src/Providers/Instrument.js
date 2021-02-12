@@ -1,10 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import * as Tone from 'tone';
-import { downtempo } from './defaultSequences';
+import { init } from './defaultSequences';
 
 export const Instrument = React.createContext();
 export const InstrumentProvider = ({ children }) => {
-  const [instrument, setInstrument] = useState(downtempo.instrument);
+  const [instrument, setInstrument] = useState(init.instrument);
 
   // how to avoid name collisions?
   const newSample = useCallback((name, sample, key) => {

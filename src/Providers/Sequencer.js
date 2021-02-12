@@ -1,12 +1,6 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  useContext,
-} from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import * as Tone from 'tone';
-import { downtempo } from './defaultSequences';
+import { init, downtempo } from './defaultSequences';
 import { Editor } from './Editor';
 
 export const Sequencer = React.createContext();
@@ -25,17 +19,17 @@ export const SequencerProvider = ({ children }) => {
     Tone.Transport.bpm.value = bpm;
   }, [bpm]);
 
-  const start = useCallback(() => {
+  const start = () => {
     if (Tone.Transport.state === 'started') return;
     schedulePattern(step);
     Tone.Transport.start();
-  });
+  };
 
-  const stop = useCallback(() => {
+  const stop = () => {
     Tone.Transport.stop();
     Tone.Transport.cancel(0);
     step.current = 0;
-  });
+  };
 
   const keyPress = ({ code }) => {
     if (code === 'Space') {

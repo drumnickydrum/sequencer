@@ -1,13 +1,13 @@
 import React, { useState, useContext, useCallback } from 'react';
 import * as Tone from 'tone';
 import { Instrument } from './Instrument';
-import { downtempo } from './defaultSequences';
+import { init, downtempo } from './defaultSequences';
 
 export const Editor = React.createContext();
 export const EditorProvider = ({ children }) => {
   const { setInstrument } = useContext(Instrument);
   const [pattern, setPattern] = useState(downtempo.pattern);
-  const [selectedSound, setSelectedSound] = useState(0);
+  const [selectedSound, setSelectedSound] = useState(-1);
 
   const schedulePattern = useCallback((step) => {
     const cells = document.querySelectorAll(`.cell`);

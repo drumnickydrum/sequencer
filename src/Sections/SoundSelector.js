@@ -6,6 +6,10 @@ export const SoundSelector = () => {
   const { instrument } = useContext(Instrument);
   const { selectedSound, setSelectedSound } = useContext(Editor);
 
+  const handleClick = (i) => {
+    setSelectedSound(i === selectedSound ? -1 : i);
+  };
+
   return (
     <div id='sound-selector'>
       {instrument.map((sound, i) => (
@@ -14,19 +18,19 @@ export const SoundSelector = () => {
           i={i}
           sound={sound}
           selectedSound={selectedSound}
-          setSelectedSound={setSelectedSound}
+          handleClick={handleClick}
         />
       ))}
     </div>
   );
 };
 
-const SoundBtn = ({ i, sound, selectedSound, setSelectedSound }) => {
+const SoundBtn = ({ i, sound, selectedSound, handleClick }) => {
   const soundBtnMemo = useMemo(() => {
     let classes = 'sound';
     if (i === selectedSound) classes += ` border${sound.color}`;
     return (
-      <div className={classes} onClick={() => setSelectedSound(i)}>
+      <div className={classes} onClick={() => handleClick(i)}>
         {sound.name}
       </div>
     );
