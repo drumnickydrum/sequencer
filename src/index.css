@@ -140,7 +140,7 @@ body {
 }
 
 .cell,
-.overview-sample {
+.sound-cell {
   position: relative;
   cursor: pointer;
   height: 100%;
@@ -193,7 +193,7 @@ body {
   }
 }
 
-#overview {
+#sound-cells {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -203,12 +203,12 @@ body {
   gap: 0.15rem;
 }
 
-.overview-sample {
+.sound-cell {
   padding: 0;
   color: var(--none);
 }
 
-.overview-sample svg {
+.sound-cell svg {
   margin: 0;
   width: 100%;
   height: 200%;
