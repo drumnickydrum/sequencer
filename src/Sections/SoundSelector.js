@@ -1,10 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Instrument } from '../Providers/Instrument';
-import { Editor } from '../Providers/Editor';
+import { SetSelectedSound } from '../Providers/Pattern';
 
 export const SoundSelector = () => {
   const { instrument } = useContext(Instrument);
-  const { setSelectedSound } = useContext(Editor);
+  const setSelectedSound = useContext(SetSelectedSound);
+
   return (
     <div id='sound-selector'>
       {instrument.map((sound) => (

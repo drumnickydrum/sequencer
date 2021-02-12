@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { CellIcon, CircleIcon } from '../icons';
 import { Pattern, SelectedSound, SetPattern } from '../Providers/Pattern';
 
@@ -53,16 +53,22 @@ const getSoundCells = (cellId, patternI, size = 9) => {
     const id = `${cellId}-${i}`;
     const color = patternI[i] ? `color${i}` : '';
     const vol = patternI[i];
-    soundCells.push(<SoundCell key={id} id={id} color={color} vol={vol} />);
+    soundCells.push(
+      <SoundCell key={id} id={id} color={color} vol={vol} patternI={patternI} />
+    );
   }
   return soundCells;
 };
 
-const SoundCell = ({ id, color, vol }) => {
-  const classes = `sound-cell ${color}`;
-  return (
-    <div id={id} className={classes}>
-      <CircleIcon style={{ opacity: vol }} />
-    </div>
-  );
+const SoundCell = ({ id, color, vol, patternI }) => {
+  const soundCellMemo = useMemo(() => {
+    const classes = `sound-cell ${color}`;
+    return (
+      <div id={id} className={classes}>
+        <CircleIcon style={{ opacity: vol }} />
+      </div>
+    );
+  }, [patternI]);
+
+  return soundCellMemo;
 };
