@@ -52,16 +52,17 @@ const getSoundCells = (cellId, patternI, size = 9) => {
   for (let i = 0; i < size; i++) {
     const id = `${cellId}-${i}`;
     const color = patternI[i] ? `color${i}` : '';
-    soundCells.push(<SoundCell key={id} id={id} color={color} />);
+    const vol = patternI[i];
+    soundCells.push(<SoundCell key={id} id={id} color={color} vol={vol} />);
   }
   return soundCells;
 };
 
-const SoundCell = ({ id, color }) => {
+const SoundCell = ({ id, color, vol }) => {
   const classes = `sound-cell ${color}`;
   return (
     <div id={id} className={classes}>
-      <CircleIcon />
+      <CircleIcon style={{ opacity: vol }} />
     </div>
   );
 };

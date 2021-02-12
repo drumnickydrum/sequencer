@@ -9,4 +9,4 @@ export const CellIcon = ({ style }) => (
   <Square className='icon' style={style} />
 );
 export const SquareIcon = () => <Square className='icon' />;
-export const CircleIcon = () => <Circle />;
+export const CircleIcon = ({ style }) => <Circle style={style} />;
