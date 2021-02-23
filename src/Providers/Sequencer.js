@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import * as Tone from 'tone';
-import { init, downtempo } from './defaultSequences';
+import { init, analog } from './defaultSequences';
 import { Pattern } from './Pattern';
 
 export const Sequencer = React.createContext();
 export const SetSequencer = React.createContext();
 export const SequencerProvider = ({ children }) => {
   const { schedulePattern } = useContext(Pattern);
-  const [bpm, setBpm] = useState(downtempo.bpm);
+  const [bpm, setBpm] = useState(analog.bpm);
   const step = useRef(0);
 
   useEffect(() => {

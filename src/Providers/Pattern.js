@@ -1,12 +1,12 @@
 import React, { useState, useContext, useCallback } from 'react';
 import * as Tone from 'tone';
-import { Instrument } from './Instrument';
-import { init, downtempo } from './defaultSequences';
+import { Kit } from './Kit';
+import { init, analog } from './defaultSequences';
 
 export const Pattern = React.createContext();
 export const PatternProvider = ({ children }) => {
-  const { setInstrument } = useContext(Instrument);
-  const [pattern, setPattern] = useState(downtempo.pattern);
+  const { setKit } = useContext(Kit);
+  const [pattern, setPattern] = useState(analog.pattern);
   const [selectedSound, setSelectedSound] = useState(-1);
 
   const schedulePattern = useCallback((step) => {
@@ -34,9 +34,9 @@ export const PatternProvider = ({ children }) => {
   const scheduleCell = useCallback((time, step) => {
     for (const [sound, vol] of Object.entries(pattern[step.current])) {
       if (pattern[step.current][sound]) {
-        setInstrument((instrument) => {
-          instrument[sound].sampler.triggerAttack('C2', time, vol / 2);
-          return instrument;
+        setKit((kit) => {
+          kit[sound].sampler.triggerAttack('C2', time, vol / 2);
+          return kit;
         });
       }
     }

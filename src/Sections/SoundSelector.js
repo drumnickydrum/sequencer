@@ -1,9 +1,9 @@
 import React, { useContext, useMemo } from 'react';
-import { Instrument } from '../Providers/Instrument';
+import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
 
 export const SoundSelector = () => {
-  const { instrument } = useContext(Instrument);
+  const { kit } = useContext(Kit);
   const { selectedSound, setSelectedSound } = useContext(Pattern);
 
   const handleClick = (i) => {
@@ -12,7 +12,7 @@ export const SoundSelector = () => {
 
   return (
     <div id='sound-selector'>
-      {instrument.map((sound, i) => (
+      {kit.map((sound, i) => (
         <SoundBtn
           key={`sound-selector-${sound.name}`}
           i={i}
