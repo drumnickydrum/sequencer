@@ -21,6 +21,7 @@ const Cell = ({ id, i }) => {
   const vol = pattern[i][selectedSound];
 
   const handleClick = () => {
+    if (selectedSound === -1) return;
     const newVol = vol === 1 ? 0.5 : vol === 0.5 ? 0 : 1;
     setPattern((pattern) => {
       let newPattern = [...pattern];
