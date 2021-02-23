@@ -1,6 +1,6 @@
 import React from 'react';
 import { InstrumentProvider } from './Providers/Instrument';
-import { EditorProvider } from './Providers/Editor';
+import { PatternProvider } from './Providers/Pattern';
 import { SequencerProvider } from './Providers/Sequencer';
 import { SoundSelector } from './Sections/SoundSelector';
 import { Grid } from './Sections/Grid';
@@ -9,7 +9,7 @@ import { Transport } from './Sections/Transport';
 export default function App() {
   return (
     <InstrumentProvider>
-      <EditorProvider>
+      <PatternProvider>
         <SequencerProvider>
           <div id='app'>
             <div id='top'>
@@ -23,7 +23,7 @@ export default function App() {
             </div>
           </div>
         </SequencerProvider>
-      </EditorProvider>
+      </PatternProvider>
     </InstrumentProvider>
   );
 }

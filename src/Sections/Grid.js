@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from 'react';
 import { CellIcon, CircleIcon } from '../icons';
-import { Editor } from '../Providers/Editor';
+import { Pattern } from '../Providers/Pattern';
 
 export const Grid = () => {
   const cells = getCells();
@@ -17,7 +17,7 @@ const getCells = (size = 64) => {
 };
 
 const Cell = ({ id, i }) => {
-  const { pattern, setPattern, selectedSound } = useContext(Editor);
+  const { pattern, setPattern, selectedSound } = useContext(Pattern);
   const vol = pattern[i][selectedSound];
 
   const handleClick = () => {

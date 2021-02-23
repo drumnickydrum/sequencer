@@ -1,10 +1,10 @@
 import React, { useContext, useMemo } from 'react';
 import { Instrument } from '../Providers/Instrument';
-import { Editor } from '../Providers/Editor';
+import { Pattern } from '../Providers/Pattern';
 
 export const SoundSelector = () => {
   const { instrument } = useContext(Instrument);
-  const { selectedSound, setSelectedSound } = useContext(Editor);
+  const { selectedSound, setSelectedSound } = useContext(Pattern);
 
   const handleClick = (i) => {
     setSelectedSound(i === selectedSound ? -1 : i);

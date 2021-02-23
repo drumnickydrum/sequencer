@@ -3,8 +3,8 @@ import * as Tone from 'tone';
 import { Instrument } from './Instrument';
 import { init, downtempo } from './defaultSequences';
 
-export const Editor = React.createContext();
-export const EditorProvider = ({ children }) => {
+export const Pattern = React.createContext();
+export const PatternProvider = ({ children }) => {
   const { setInstrument } = useContext(Instrument);
   const [pattern, setPattern] = useState(downtempo.pattern);
   const [selectedSound, setSelectedSound] = useState(-1);
@@ -44,7 +44,7 @@ export const EditorProvider = ({ children }) => {
   });
 
   return (
-    <Editor.Provider
+    <Pattern.Provider
       value={{
         pattern,
         setPattern,
@@ -55,6 +55,6 @@ export const EditorProvider = ({ children }) => {
       }}
     >
       {children}
-    </Editor.Provider>
+    </Pattern.Provider>
   );
 };
