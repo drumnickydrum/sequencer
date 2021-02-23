@@ -1,10 +1,36 @@
-import React, { useContext, useMemo } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+  useMemo,
+  useRef,
+} from 'react';
 import { CellIcon, CircleIcon } from '../icons';
 import { Pattern } from '../Providers/Pattern';
 
 export const Grid = () => {
+  const { events } = useContext(Pattern);
+
+  let prevCellRef = useRef(null);
+  const handleDrag = (e) => {
+    const touch = e.touches[0];
+    const cell = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (cell) {
+      const id = cell.id;
+      if (!id.match(/cell/)) return;
+      if (prevCellRef.current !== id) {
+        document.dispatchEvent(events[id]);
+        prevCellRef.current = id;
+      }
+    }
+  };
   const cells = getCells();
-  return <div id='grid'>{cells}</div>;
+  return (
+    <div id='grid' onTouchMove={handleDrag}>
+      {cells}
+    </div>
+  );
 };
 
 const getCells = (size = 64) => {
@@ -17,18 +43,22 @@ const getCells = (size = 64) => {
 };
 
 const Cell = ({ id, i }) => {
-  const { pattern, setPattern, selectedSound } = useContext(Pattern);
+  const { pattern, toggleCell, setEvents, selectedSound } = useContext(Pattern);
   const vol = pattern[i][selectedSound];
+  const cellRef = useRef(null);
 
-  const handleClick = () => {
-    if (selectedSound === -1) return;
-    const newVol = vol === 1 ? 0.5 : vol === 0.5 ? 0 : 1;
-    setPattern((pattern) => {
-      let newPattern = [...pattern];
-      newPattern[i][selectedSound] = newVol;
-      return newPattern;
-    });
+  const handleToggle = () => {
+    toggleCell(i, vol);
   };
+
+  useEffect(() => {
+    if (cellRef.current) {
+      const event = new Event(id);
+      document.addEventListener(id, handleToggle);
+      setEvents((prev) => ({ ...prev, [id]: event }));
+    }
+    return () => document.removeEventListener(id, handleToggle);
+  }, [cellRef, selectedSound, vol]);
 
   const cellMemo = useMemo(() => {
     // console.log('rendering cell: ', i);
@@ -36,7 +66,7 @@ const Cell = ({ id, i }) => {
     classes += vol ? ` color${selectedSound} on` : ' borderDefault';
     const soundCells = getSoundCells(id, pattern[i]);
     return (
-      <div className={classes} onClick={handleClick}>
+      <div ref={cellRef} id={id} className={classes} onMouseDown={handleToggle}>
         <CellIcon style={{ opacity: vol ? vol : 1 }} />
         <div id='sound-cells'>{soundCells}</div>
       </div>

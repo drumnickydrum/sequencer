@@ -5,6 +5,7 @@
   padding: 0;
   box-sizing: border-box;
   user-select: none;
+  touch-action: none;
   /* border: 1px solid magenta; */
 }
 
@@ -135,7 +136,6 @@ body {
 #grid {
   width: 100%;
   height: 100%;
-  max-height: 50%;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
 }
@@ -154,6 +154,7 @@ body {
 }
 
 .cell .icon {
+  pointer-events: none;
   fill: var(--bg);
   stroke: var(--purple);
   stroke-width: 5px;
@@ -195,6 +196,7 @@ body {
 }
 
 #sound-cells {
+  pointer-events: none;
   position: absolute;
   width: 100%;
   height: 100%;

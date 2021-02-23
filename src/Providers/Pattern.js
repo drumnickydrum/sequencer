@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import * as Tone from 'tone';
 import { Kit } from './Kit';
 import { init, analog } from './defaultSequences';
@@ -8,6 +8,19 @@ export const PatternProvider = ({ children }) => {
   const { setKit } = useContext(Kit);
   const [pattern, setPattern] = useState(analog.pattern);
   const [selectedSound, setSelectedSound] = useState(-1);
+  const [events, setEvents] = useState({});
+
+  const toggleCell = (i, vol) => {
+    console.log('toggling: ', i, vol);
+    console.log(selectedSound);
+    if (selectedSound === -1) return;
+    const newVol = vol === 1 ? 0.5 : vol === 0.5 ? 0 : 1;
+    setPattern((pattern) => {
+      let newPattern = [...pattern];
+      newPattern[i][selectedSound] = newVol;
+      return newPattern;
+    });
+  };
 
   const schedulePattern = useCallback((step) => {
     const cells = document.querySelectorAll(`.cell`);
@@ -48,6 +61,9 @@ export const PatternProvider = ({ children }) => {
       value={{
         pattern,
         setPattern,
+        events,
+        setEvents,
+        toggleCell,
         schedulePattern,
         selectedSound,
         setSelectedSound,
