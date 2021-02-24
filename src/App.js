@@ -33,7 +33,12 @@ export default function App() {
   );
 }
 
-window.addEventListener('orientationchange', function () {
+window.addEventListener('orientationchange', resize);
+window.addEventListener('blur', () => {
+  window.addEventListener('focus', resize);
+});
+
+function resize() {
   var originalBodyStyle = getComputedStyle(document.body).getPropertyValue(
     'display'
   );
@@ -41,4 +46,5 @@ window.addEventListener('orientationchange', function () {
   setTimeout(function () {
     document.body.style.display = originalBodyStyle;
   }, 10);
-});
+  window.removeEventListener('focus', resize);
+}
