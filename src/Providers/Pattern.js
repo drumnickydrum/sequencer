@@ -11,8 +11,6 @@ export const PatternProvider = ({ children }) => {
   const [events, setEvents] = useState({});
 
   const toggleCell = (i, vol) => {
-    console.log('toggling: ', i, vol);
-    console.log(selectedSound);
     if (selectedSound === -1) return;
     const newVol = vol === 1 ? 0.5 : vol === 0.5 ? 0 : 1;
     setPattern((pattern) => {
@@ -33,13 +31,11 @@ export const PatternProvider = ({ children }) => {
   const animateCell = useCallback((time, cell) => {
     Tone.Draw.schedule(() => {
       if (cell.classList.contains('on')) {
-        cell.classList.remove('pulse');
-        void cell.offsetWidth; // rm>offset>add to reset css animation
         cell.classList.add('pulse');
+        setTimeout(() => cell.classList.remove('pulse'), 0);
       } else {
-        cell.classList.remove('flash');
-        void cell.offsetWidth;
         cell.classList.add('flash');
+        setTimeout(() => cell.classList.remove('flash'), 0);
       }
     }, time);
   });

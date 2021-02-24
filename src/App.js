@@ -12,6 +12,7 @@ export default function App() {
       <PatternProvider>
         <SequencerProvider>
           <div id='app'>
+            <div id='address-bar' />
             <div id='top'>
               <SoundSelector />
             </div>
@@ -21,6 +22,7 @@ export default function App() {
             <div id='bottom'>
               <Transport />
             </div>
+            <div id='toolbar' />
           </div>
         </SequencerProvider>
       </PatternProvider>
