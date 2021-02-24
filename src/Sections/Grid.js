@@ -62,12 +62,19 @@ const Cell = ({ id, i }) => {
 
   const cellMemo = useMemo(() => {
     // console.log('rendering cell: ', i);
-    let classes = `cell ${id}`;
+    let classes = `cell`;
     classes += vol ? ` bg${selectedSound} on` : '';
     const soundCells = getSoundCells(id, pattern[i]);
     return (
-      <div ref={cellRef} id={id} className={classes} onMouseDown={handleToggle}>
-        {/* <div id='sound-cells'>{soundCells}</div> */}
+      <div className='cell-wrapper'>
+        <div
+          ref={cellRef}
+          id={id}
+          className={classes}
+          onMouseDown={handleToggle}
+        >
+          <div className='sound-cells'>{soundCells}</div>
+        </div>
       </div>
     );
   }, [pattern[i], selectedSound, vol]);
@@ -79,7 +86,7 @@ const getSoundCells = (cellId, patternI, size = 9) => {
   let soundCells = [];
   for (let i = 0; i < size; i++) {
     const id = `${cellId}-${i}`;
-    const color = patternI[i] ? `color${i}` : '';
+    const color = patternI[i] ? `bg${i}` : '';
     const vol = patternI[i];
     soundCells.push(<SoundCell key={id} id={id} color={color} vol={vol} />);
   }
@@ -90,11 +97,7 @@ const SoundCell = ({ id, color, vol }) => {
   const soundCellMemo = useMemo(() => {
     // console.log('rendering soundCell: ', id);
     const classes = `sound-cell ${color}`;
-    return (
-      <div id={id} className={classes}>
-        <CircleIcon style={{ opacity: vol }} />
-      </div>
-    );
+    return <div id={id} className={classes} style={{ opacity: vol }} />;
   }, [vol]);
 
   return soundCellMemo;
