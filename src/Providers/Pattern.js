@@ -29,6 +29,7 @@ export const PatternProvider = ({ children }) => {
       return newPattern;
     });
     if (addHistory) {
+      redoRef.current.length = 0;
       addToUndo('toggleCell', newVol, vol, i);
     }
   };
