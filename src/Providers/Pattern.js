@@ -16,8 +16,8 @@ export const PatternProvider = ({ children }) => {
   const [selectedSound, setSelectedSound] = useState(-1);
   const [events, setEvents] = useState({});
   const prevCellRef = useRef(null);
-  const undoRef = useRef({ history: [], length: 0 });
-  const redoRef = useRef({ history: [], length: 0 });
+  const undoRef = useRef([]);
+  const redoRef = useRef([]);
 
   const toggleCell = (i, vol, addHistory = true) => {
     if (selectedSound === -1) return;
@@ -28,51 +28,59 @@ export const PatternProvider = ({ children }) => {
       newPattern[i][selectedSound] = newVol;
       return newPattern;
     });
-    if (addHistory) addToUndo('toggleCell', i, newVol, vol);
+    if (addHistory) {
+      addToUndo('toggleCell', newVol, vol, i);
+    }
   };
 
-  const addToUndo = (type, i, newVol, prevVol) => {
+  const addToUndo = (type, newVal, prevVal, i) => {
     if (type === 'toggleCell') {
-      undoRef.current.history.push([
-        () => toggleCell(i, newVol, false),
-        () => toggleCell(i, prevVol),
+      undoRef.current.push([
+        () => toggleCell(i, newVal, false),
+        () => toggleCell(i, prevVal, false),
       ]);
-      undoRef.current.length++;
+    }
+    if (type === 'clearPattern') {
+      undoRef.current.push([
+        () => setPattern([...prevVal], false),
+        () => setPattern([...newVal], false),
+      ]);
     }
   };
 
   const undo = () => {
     if (undoRef.current.length === 0) return;
-    const [undoFunc, redoFunc] = undoRef.current.history.pop();
-    undoRef.current.length--;
+    const [undoFunc, redoFunc] = undoRef.current.pop();
     undoFunc();
-    redoRef.current.history.push(redoFunc);
-    redoRef.current.length++;
+    redoRef.current.push([undoFunc, redoFunc]);
   };
 
   const redo = () => {
     if (redoRef.current.length === 0) return;
-    const func = redoRef.current.history.pop();
-    redoRef.current.length--;
-    func();
+    const [undoFunc, redoFunc] = redoRef.current.pop();
+    redoFunc();
+    undoRef.current.push([undoFunc, redoFunc]);
   };
 
   const printPattern = () => console.log(pattern);
 
-  const clearPattern = (sound) => {
+  const clearPattern = (sound, addHistory = true) => {
+    let prevPattern, newPattern;
     if (!sound) {
-      setPattern(INIT_PATTERN());
+      prevPattern = [...pattern];
+      newPattern = INIT_PATTERN();
+      setPattern(newPattern);
     } else {
       if (selectedSound === -1) return;
-      setPattern((pattern) => {
-        let newPattern = [...pattern];
-        newPattern.forEach((cell, i) => {
-          cell[selectedSound] = 0;
-          newPattern[i] = cell;
-        });
-        return newPattern;
+      prevPattern = [...pattern];
+      newPattern = [...pattern];
+      newPattern.forEach((cell, i) => {
+        cell[selectedSound] = 0;
+        newPattern[i] = cell;
       });
+      setPattern(newPattern);
     }
+    if (addHistory) addToUndo('clearPattern', newPattern, prevPattern);
   };
 
   const schedulePattern = useCallback((step) => {
