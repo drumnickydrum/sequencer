@@ -20,3 +20,19 @@ export const Clear = () => {
     </div>
   );
 };
+
+export const History = () => {
+  const { undo, redo } = useContext(Pattern);
+
+  return (
+    <div id='history'>
+      <p>History: </p>
+      <button id='undo' onClick={undo}>
+        Undo
+      </button>
+      <button id='redo' onClick={redo}>
+        Redo
+      </button>
+    </div>
+  );
+};

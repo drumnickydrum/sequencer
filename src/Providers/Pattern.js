@@ -16,14 +16,63 @@ export const PatternProvider = ({ children }) => {
   const [selectedSound, setSelectedSound] = useState(-1);
   const [events, setEvents] = useState({});
   const prevCellRef = useRef(null);
+  const undoRef = useRef({ history: [], length: 0 });
+  const redoRef = useRef({ history: [], length: 0 });
 
-  const toggleCell = (i, vol) => {
+  const toggleCell = (i, vol, addHistory = true) => {
     if (selectedSound === -1) return;
+    let newVol;
     setPattern((pattern) => {
       let newPattern = [...pattern];
-      newPattern[i][selectedSound] = vol === 0 ? 1 : 0;
+      newVol = vol === 0 ? 1 : 0;
+      newPattern[i][selectedSound] = newVol;
       return newPattern;
     });
+    if (addHistory) addToUndo('toggleCell', i, newVol, vol);
+  };
+
+  const addToUndo = (type, i, newVol, prevVol) => {
+    if (type === 'toggleCell') {
+      undoRef.current.history.push([
+        () => toggleCell(i, newVol, false),
+        () => toggleCell(i, prevVol),
+      ]);
+      undoRef.current.length++;
+    }
+  };
+
+  const undo = () => {
+    if (undoRef.current.length === 0) return;
+    const [undoFunc, redoFunc] = undoRef.current.history.pop();
+    undoRef.current.length--;
+    undoFunc();
+    redoRef.current.history.push(redoFunc);
+    redoRef.current.length++;
+  };
+
+  const redo = () => {
+    if (redoRef.current.length === 0) return;
+    const func = redoRef.current.history.pop();
+    redoRef.current.length--;
+    func();
+  };
+
+  const printPattern = () => console.log(pattern);
+
+  const clearPattern = (sound) => {
+    if (!sound) {
+      setPattern(INIT_PATTERN());
+    } else {
+      if (selectedSound === -1) return;
+      setPattern((pattern) => {
+        let newPattern = [...pattern];
+        newPattern.forEach((cell, i) => {
+          cell[selectedSound] = 0;
+          newPattern[i] = cell;
+        });
+        return newPattern;
+      });
+    }
   };
 
   const schedulePattern = useCallback((step) => {
@@ -58,29 +107,13 @@ export const PatternProvider = ({ children }) => {
     step.current = step.current === pattern.length - 1 ? 0 : step.current + 1;
   });
 
-  const printPattern = () => console.log(pattern);
-
-  const clearPattern = (sound) => {
-    if (!sound) {
-      setPattern(INIT_PATTERN());
-    } else {
-      if (selectedSound === -1) return;
-      setPattern((pattern) => {
-        let newPattern = [...pattern];
-        newPattern.forEach((cell, i) => {
-          cell[selectedSound] = 0;
-          newPattern[i] = cell;
-        });
-        return newPattern;
-      });
-    }
-  };
-
   return (
     <Pattern.Provider
       value={{
         pattern,
         setPattern,
+        undo,
+        redo,
         clearPattern,
         printPattern,
         events,
