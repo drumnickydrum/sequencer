@@ -2,6 +2,13 @@
 
 ## Dev notes
 
+### 2/24/2021
+
+- Touch and drag input was hard to figure out for touch-screen. Had to disable touch-action via css and attach custom event listeners to each cell. Then grab clientX/Y from `touchmove` on the grid and call out events as the finger passes through cells. It's a lot of checking. Might need to debounce touchmove. The `void element.offsetWidth` hack made the animations too slow on phone, so I switched it to a `setTimeout` class removal. This helped, but I think I'll need to revisit the toggling of classes to make it all faster. There is some weird flashing going on. This might have to do with svg stroke width on the border of cells.
+- The whole sizing of the layout is a little off. I think I might try to get rid of cell icons altogether. Maybe this will fix both the sizing and flashing issue. It might make it faster too if I make cells a fixed small pixel size and use `transform: scale()` to bring them up to the correct size.
+- Need to add undo/redo, clear, and auto-add cells features to make playing with it easier.
+- Need to add pattern/kit select.
+
 ### 2/12/2021
 
 - Still playing around with data structure. Instrument and pattern are currently an array to work with ease of 0-based indexing.

@@ -166,11 +166,11 @@ body {
   justify-content: center;
   align-items: center;
   opacity: 0.75;
-  transition: 250ms;
+  transition: 200ms;
 }
 
 .cell {
-  transform: scale(1);
+  transform: scale(1) rotate(0);
 }
 
 @media (hover: hover) {
@@ -188,7 +188,7 @@ body {
 
 .cell .icon {
   pointer-events: none;
-  fill: var(--bg);
+  fill: none;
   stroke: var(--purple);
   stroke-width: 5px;
   transition: 250ms;
