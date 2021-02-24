@@ -4,6 +4,13 @@
 
 ### 2/24/2021
 
+- The svg icons for cells were totally unneccessary. They are now simply divs with border, border-radius, and background. The tradeoff is a funny way of handling perfect squares and circles with the `padding-bottom` hack. So far so good tho.
+- Focusing on touch handling. Editing cells is smoother now.
+- Clear sound/all buttons work but don't update the `scheduleRepeat` until a stop/start. It's not clear to me why this doesn't work the way `toggleCell` does.
+- Undo/Redo works well. Undo pops the function off the stack and adds it to the redo stack. If you edit the grid it clears the redo stack. The wording of arguments can be a little confusing. Remember that when you call `toggleCell` with a value, it's going to calculate the new value. So if you pass it an argument like `newVal` it's going to become a new newVal! This will change when I switch over to 0-1 range of volumes instead of on/off.
+
+### 2/23/2021
+
 - Touch and drag input was hard to figure out for touch-screen. Had to disable touch-action via css and attach custom event listeners to each cell. Then grab clientX/Y from `touchmove` on the grid and call out events as the finger passes through cells. It's a lot of checking. Might need to debounce touchmove. The `void element.offsetWidth` hack made the animations too slow on phone, so I switched it to a `setTimeout` class removal. This helped, but I think I'll need to revisit the toggling of classes to make it all faster. There is some weird flashing going on. This might have to do with svg stroke width on the border of cells.
 - The whole sizing of the layout is a little off. I think I might try to get rid of cell icons altogether. Maybe this will fix both the sizing and flashing issue. It might make it faster too if I make cells a fixed small pixel size and use `transform: scale()` to bring them up to the correct size.
 - Need to add undo/redo, clear, and auto-add cells features to make playing with it easier.
