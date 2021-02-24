@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, { useState, useContext, useCallback, useRef } from 'react';
 import * as Tone from 'tone';
 import { Kit } from './Kit';
 import { init, analog } from './defaultSequences';
@@ -9,13 +9,13 @@ export const PatternProvider = ({ children }) => {
   const [pattern, setPattern] = useState(analog.pattern);
   const [selectedSound, setSelectedSound] = useState(-1);
   const [events, setEvents] = useState({});
+  const prevCellRef = useRef(null);
 
   const toggleCell = (i, vol) => {
     if (selectedSound === -1) return;
-    const newVol = vol === 1 ? 0.5 : vol === 0.5 ? 0 : 1;
     setPattern((pattern) => {
       let newPattern = [...pattern];
-      newPattern[i][selectedSound] = newVol;
+      newPattern[i][selectedSound] = vol === 0 ? 1 : 0;
       return newPattern;
     });
   };
@@ -59,6 +59,7 @@ export const PatternProvider = ({ children }) => {
         setPattern,
         events,
         setEvents,
+        prevCellRef,
         toggleCell,
         schedulePattern,
         selectedSound,

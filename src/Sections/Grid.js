@@ -1,18 +1,9 @@
-import React, {
-  useState,
-  useEffect,
-  useContext,
-  useCallback,
-  useMemo,
-  useRef,
-} from 'react';
-import { CellIcon, CircleIcon } from '../icons';
+import React, { useEffect, useContext, useMemo, useRef } from 'react';
 import { Pattern } from '../Providers/Pattern';
 
 export const Grid = () => {
-  const { events } = useContext(Pattern);
+  const { events, prevCellRef } = useContext(Pattern);
 
-  let prevCellRef = useRef(null);
   const handleDrag = (e) => {
     const touch = e.touches[0];
     const cell = document.elementFromPoint(touch.clientX, touch.clientY);
@@ -43,9 +34,25 @@ const getCells = (size = 64) => {
 };
 
 const Cell = ({ id, i }) => {
-  const { pattern, toggleCell, setEvents, selectedSound } = useContext(Pattern);
+  const {
+    pattern,
+    toggleCell,
+    setEvents,
+    prevCellRef,
+    selectedSound,
+  } = useContext(Pattern);
   const vol = pattern[i][selectedSound];
   const cellRef = useRef(null);
+
+  const handleTouchStart = (e) => {
+    e.stopPropagation();
+    prevCellRef.current = id;
+    toggleCell(i, vol);
+  };
+
+  const handleTouchEnd = () => {
+    prevCellRef.current = null;
+  };
 
   const handleToggle = () => {
     toggleCell(i, vol);
@@ -71,7 +78,9 @@ const Cell = ({ id, i }) => {
           ref={cellRef}
           id={id}
           className={classes}
-          onMouseDown={handleToggle}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          // onMouseDown={handleToggle}
         >
           <div className='sound-cells'>{soundCells}</div>
         </div>
