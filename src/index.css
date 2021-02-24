@@ -103,6 +103,7 @@ body {
   height: 100%;
   padding: 0.5rem;
   display: flex;
+  flex-direction: column;
   justify-content: space-evenly;
 }
 
@@ -162,6 +163,7 @@ body {
   background: var(--none);
   transform: scale(1) rotate(0);
   transition: 200ms;
+  transition-property: opacity, transform;
 }
 
 @media (hover: hover) {
@@ -208,6 +210,36 @@ body {
 .cell.pulse .sound-cell {
   transition: none;
   transform: scale(2);
+}
+
+/*************************************/
+/*************** Clear ***************/
+/*************************************/
+
+#clear {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#clear p {
+  width: 5rem;
+  padding: 0.5rem;
+}
+
+#clear button {
+  width: 5rem;
+  height: 100%;
+  margin: 0 0.5rem;
+  padding: 0.5rem;
+  border: none;
+  outline: none;
+  border-radius: 0.3rem;
+  background: var(--grey-half);
+  color: var(--white);
+  font-family: inherit;
+  font-size: 16px;
+  font-style: italic;
 }
 
 /*************************************/

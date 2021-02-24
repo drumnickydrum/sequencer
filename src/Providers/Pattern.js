@@ -1,7 +1,13 @@
-import React, { useState, useContext, useCallback, useRef } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+  useRef,
+} from 'react';
 import * as Tone from 'tone';
 import { Kit } from './Kit';
-import { init, analog } from './defaultSequences';
+import { INIT_PATTERN, analog } from './defaultSequences';
 
 export const Pattern = React.createContext();
 export const PatternProvider = ({ children }) => {
@@ -52,11 +58,31 @@ export const PatternProvider = ({ children }) => {
     step.current = step.current === pattern.length - 1 ? 0 : step.current + 1;
   });
 
+  const printPattern = () => console.log(pattern);
+
+  const clearPattern = (sound) => {
+    if (!sound) {
+      setPattern(INIT_PATTERN());
+    } else {
+      if (selectedSound === -1) return;
+      setPattern((pattern) => {
+        let newPattern = [...pattern];
+        newPattern.forEach((cell, i) => {
+          cell[selectedSound] = 0;
+          newPattern[i] = cell;
+        });
+        return newPattern;
+      });
+    }
+  };
+
   return (
     <Pattern.Provider
       value={{
         pattern,
         setPattern,
+        clearPattern,
+        printPattern,
         events,
         setEvents,
         prevCellRef,

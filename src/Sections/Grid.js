@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useContext, useMemo, useRef } from 'react';
 import { Pattern } from '../Providers/Pattern';
 
 export const Grid = () => {
@@ -41,8 +41,12 @@ const Cell = ({ id, i }) => {
     prevCellRef,
     selectedSound,
   } = useContext(Pattern);
-  const vol = pattern[i][selectedSound];
   const cellRef = useRef(null);
+  const [vol, setVol] = useState(0);
+
+  useEffect(() => {
+    setVol(pattern[i][selectedSound]);
+  }, [pattern[i][selectedSound], selectedSound]);
 
   const handleTouchStart = (e) => {
     e.stopPropagation();
@@ -80,13 +84,12 @@ const Cell = ({ id, i }) => {
           className={classes}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
-          // onMouseDown={handleToggle}
         >
           <div className='sound-cells'>{soundCells}</div>
         </div>
       </div>
     );
-  }, [pattern[i], selectedSound, vol]);
+  }, [selectedSound, vol, pattern[i]]);
 
   return cellMemo;
 };

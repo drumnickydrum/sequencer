@@ -1,12 +1,15 @@
-const initPattern = [];
-for (let i = 0; i < 64; i++) {
-  initPattern.push([0, 0, 0, 0, 0, 0, 0, 0, 0]);
-}
+export const INIT_PATTERN = () => {
+  const initPattern = [];
+  for (let i = 0; i < 64; i++) {
+    initPattern.push([0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  }
+  return initPattern;
+};
 
 export const init = {
   bpm: 128,
   instrument: null,
-  pattern: initPattern,
+  pattern: INIT_PATTERN(),
 };
 
 export const analog = {
