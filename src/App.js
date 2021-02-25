@@ -4,7 +4,7 @@ import { PatternProvider } from './Providers/Pattern';
 import { SequencerProvider } from './Providers/Sequencer';
 import { SoundSelector } from './Sections/SoundSelector';
 import { Grid } from './Sections/Grid';
-import { Clear, History } from './Sections/Edit';
+import { Edit } from './Sections/Edit';
 import { Transport } from './Sections/Transport';
 
 export default function App() {
@@ -21,8 +21,7 @@ export default function App() {
               <Grid />
             </div>
             <div id='bottom'>
-              <Clear />
-              <History />
+              <Edit />
               <Transport />
             </div>
             <div id='toolbar' />

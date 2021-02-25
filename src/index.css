@@ -213,21 +213,16 @@ body {
 }
 
 /*************************************/
-/*************** Clear ***************/
+/**************** Edit ***************/
 /*************************************/
 
-#clear {
+#edit {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-#clear p {
-  width: 5rem;
-  padding: 0.5rem;
-}
-
-#clear button {
+#edit button {
   width: 5rem;
   height: 100%;
   margin: 0 0.5rem;
@@ -235,37 +230,8 @@ body {
   border: none;
   outline: none;
   border-radius: 0.3rem;
-  background: var(--grey-half);
-  color: var(--white);
-  font-family: inherit;
-  font-size: 16px;
-  font-style: italic;
-}
-
-/*************************************/
-/************** History **************/
-/*************************************/
-
-#history {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#history p {
-  width: 5rem;
-  padding: 0.5rem;
-}
-
-#history button {
-  width: 5rem;
-  height: 100%;
-  margin: 0 0.5rem;
-  padding: 0.5rem;
-  border: none;
-  outline: none;
-  border-radius: 0.3rem;
-  background: var(--grey-half);
+  background: transparent;
+  fill: var(--white);
   color: var(--white);
   font-family: inherit;
   font-size: 16px;

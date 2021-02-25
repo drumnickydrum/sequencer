@@ -63,8 +63,6 @@ export const PatternProvider = ({ children }) => {
     undoRef.current.push([undoFunc, redoFunc]);
   };
 
-  const printPattern = () => console.log(pattern);
-
   const clearPattern = (sound, addHistory = true) => {
     let prevPattern, newPattern;
     if (!sound) {
@@ -124,7 +122,6 @@ export const PatternProvider = ({ children }) => {
         undo,
         redo,
         clearPattern,
-        printPattern,
         events,
         setEvents,
         prevCellRef,
