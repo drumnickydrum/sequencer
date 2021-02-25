@@ -23,14 +23,35 @@ export const PatternProvider = ({ children }) => {
     if (selectedSound === -1) return;
     let newVol;
     setPattern((pattern) => {
-      let newPattern = [...pattern];
       newVol = vol === 0 ? 1 : 0;
+      let newPattern = pattern.map((cell) => [...cell]);
       newPattern[i][selectedSound] = newVol;
       return newPattern;
     });
     if (addHistory) {
       redoRef.current.length = 0;
       addToUndo('toggleCell', newVol, vol, i);
+    }
+  };
+
+  const clearPattern = (one, addHistory = true) => {
+    let prevPattern = pattern,
+      newPattern;
+    if (!one) {
+      newPattern = INIT_PATTERN();
+      setPattern(newPattern);
+    } else {
+      if (selectedSound === -1) return;
+      newPattern = pattern.map((cell) => {
+        let newCell = [...cell];
+        newCell[selectedSound] = 0;
+        return newCell;
+      });
+      setPattern(newPattern);
+    }
+    if (addHistory) {
+      redoRef.current.length = 0;
+      addToUndo('clearPattern', newPattern, prevPattern);
     }
   };
 
@@ -61,25 +82,6 @@ export const PatternProvider = ({ children }) => {
     const [undoFunc, redoFunc] = redoRef.current.pop();
     redoFunc();
     undoRef.current.push([undoFunc, redoFunc]);
-  };
-
-  const clearPattern = (sound, addHistory = true) => {
-    let prevPattern, newPattern;
-    if (!sound) {
-      prevPattern = [...pattern];
-      newPattern = INIT_PATTERN();
-      setPattern(newPattern);
-    } else {
-      if (selectedSound === -1) return;
-      prevPattern = [...pattern];
-      newPattern = [...pattern];
-      newPattern.forEach((cell, i) => {
-        cell[selectedSound] = 0;
-        newPattern[i] = cell;
-      });
-      setPattern(newPattern);
-    }
-    if (addHistory) addToUndo('clearPattern', newPattern, prevPattern);
   };
 
   const schedulePattern = useCallback((step) => {
@@ -113,6 +115,15 @@ export const PatternProvider = ({ children }) => {
     }
     step.current = step.current === pattern.length - 1 ? 0 : step.current + 1;
   });
+
+  useEffect(() => {
+    const printPattern = (e) => {
+      console.log(e.code);
+      if (e.code === 'KeyP') console.log(pattern);
+    };
+    document.addEventListener('keydown', printPattern);
+    return () => document.removeEventListener('keydown', printPattern);
+  }, [pattern]);
 
   return (
     <Pattern.Provider
