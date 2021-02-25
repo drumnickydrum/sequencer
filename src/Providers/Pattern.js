@@ -12,12 +12,20 @@ import { INIT_PATTERN, analog } from './defaultSequences';
 export const Pattern = React.createContext();
 export const PatternProvider = ({ children }) => {
   const { setKit } = useContext(Kit);
-  const [pattern, setPattern] = useState(analog.pattern);
+  const [pattern, setPattern] = useState(
+    analog.pattern.map((cell) => [...cell])
+  );
   const [selectedSound, setSelectedSound] = useState(-1);
   const [events, setEvents] = useState({});
+
+  const patternRef = useRef(pattern.map((cell) => [...cell]));
   const prevCellRef = useRef(null);
   const undoRef = useRef([]);
   const redoRef = useRef([]);
+
+  useEffect(() => {
+    patternRef.current = pattern.map((cell) => [...cell]);
+  }, [pattern]);
 
   const toggleCell = (i, vol, addHistory = true) => {
     if (selectedSound === -1) return;
@@ -84,15 +92,15 @@ export const PatternProvider = ({ children }) => {
     undoRef.current.push([undoFunc, redoFunc]);
   };
 
-  const schedulePattern = useCallback((step) => {
+  const schedulePattern = (stepRef) => {
     const cells = document.querySelectorAll(`.cell`);
     Tone.Transport.scheduleRepeat((time) => {
-      animateCell(time, cells[step.current]);
-      scheduleCell(time, step);
+      animateCell(time, cells[stepRef.current]);
+      scheduleCell(time, stepRef);
     }, '16n');
-  });
+  };
 
-  const animateCell = useCallback((time, cell) => {
+  const animateCell = (time, cell) => {
     Tone.Draw.schedule(() => {
       if (cell.classList.contains('on')) {
         cell.classList.add('pulse');
@@ -102,24 +110,29 @@ export const PatternProvider = ({ children }) => {
         setTimeout(() => cell.classList.remove('flash'), 0);
       }
     }, time);
-  });
+  };
 
-  const scheduleCell = useCallback((time, step) => {
-    for (const [sound, vol] of Object.entries(pattern[step.current])) {
-      if (pattern[step.current][sound]) {
+  const scheduleCell = (time, stepRef) => {
+    for (const [sound, vol] of Object.entries(
+      patternRef.current[stepRef.current]
+    )) {
+      if (patternRef.current[stepRef.current][sound]) {
         setKit((kit) => {
           kit[sound].sampler.triggerAttack('C2', time, vol / 2);
           return kit;
         });
       }
     }
-    step.current = step.current === pattern.length - 1 ? 0 : step.current + 1;
-  });
+    stepRef.current =
+      stepRef.current === pattern.length - 1 ? 0 : stepRef.current + 1;
+  };
 
   useEffect(() => {
     const printPattern = (e) => {
-      console.log(e.code);
+      // console.log(e.code);
       if (e.code === 'KeyP') console.log(pattern);
+      if (e.code === 'KeyR') console.log(patternRef.current);
+      if (e.code === 'Digit0') console.log(pattern[0][0]);
     };
     document.addEventListener('keydown', printPattern);
     return () => document.removeEventListener('keydown', printPattern);

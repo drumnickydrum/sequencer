@@ -8,7 +8,7 @@ export const SetSequencer = React.createContext();
 export const SequencerProvider = ({ children }) => {
   const { schedulePattern } = useContext(Pattern);
   const [bpm, setBpm] = useState(analog.bpm);
-  const step = useRef(0);
+  const stepRef = useRef(0);
 
   useEffect(() => {
     document.addEventListener('keypress', keyPress);
@@ -21,14 +21,14 @@ export const SequencerProvider = ({ children }) => {
 
   const start = () => {
     if (Tone.Transport.state === 'started') return;
-    schedulePattern(step);
+    schedulePattern(stepRef);
     Tone.Transport.start();
   };
 
   const stop = () => {
     Tone.Transport.stop();
     Tone.Transport.cancel(0);
-    step.current = 0;
+    stepRef.current = 0;
   };
 
   const keyPress = ({ code }) => {
