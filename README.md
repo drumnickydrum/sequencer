@@ -4,7 +4,8 @@
 
 ### 2/25/2021
 
-- I forgot to deep copy the pattern array... I have been mutating the inner arrays and that is why I have some weird behavior. Oh but guess what? Now when I do it the right way I can no longer edit on the fly while the transport is started! The cells toggle visually, but the Tone schedule is not updated. So I think I need to figure out how to follow proper React practices while also updating the pattern that Tone is reading from. Or sacrifice either of those for the right functionality. Update @ 1:30PM => solved! Use a ref to store the pattern, updated everytime pattern state is updated with a useEffect. Tone reads from the ref instead of state and for some reason this stays the most current while transport is already started.
+- I forgot to deep copy the pattern array... I have been mutating the inner arrays and that is why I have some weird behavior. Oh but guess what? Now when I do it the right way I can no longer edit on the fly while the transport is started! The cells toggle visually, but the Tone schedule is not updated. So I think I need to figure out how to follow proper React practices while also updating the pattern that Tone is reading from. Or sacrifice either of those for the right functionality.
+  - Update @ 1:30PM => solved! Use a ref to store the pattern, updated everytime pattern state is updated with a useEffect. Tone reads from the ref instead of state and for some reason this stays the most current while transport is already started.
 
 ### 2/24/2021
 

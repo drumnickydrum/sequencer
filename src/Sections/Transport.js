@@ -19,10 +19,12 @@ export const Transport = () => {
       <button id='start' onClick={start}>
         <StartIcon />
       </button>
-      <input id='bpm' value={bpm} onChange={handleChange} />
-      <label htmlFor='bpm' id='bpm-label'>
-        bpm
-      </label>
+      <div className='input'>
+        <input id='bpm' value={bpm} onChange={handleChange} />
+        <label htmlFor='bpm' id='bpm-label'>
+          bpm
+        </label>
+      </div>
     </div>
   );
 };

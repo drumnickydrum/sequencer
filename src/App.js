@@ -12,19 +12,17 @@ export default function App() {
     <KitProvider>
       <PatternProvider>
         <SequencerProvider>
-          <div id='app'>
-            <div id='address-bar' />
-            <div id='top'>
-              <SoundSelector />
-            </div>
-            <div id='middle'>
-              <Grid />
-            </div>
-            <div id='bottom'>
-              <Edit />
+          <div id='top'>
+            <SoundSelector />
+          </div>
+          <div id='middle'>
+            <Grid />
+          </div>
+          <div id='bottom'>
+            <div id='bottom-container'>
               <Transport />
+              <Edit />
             </div>
-            <div id='toolbar' />
           </div>
         </SequencerProvider>
       </PatternProvider>

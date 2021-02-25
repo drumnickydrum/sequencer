@@ -8,16 +8,20 @@ export const Edit = () => {
 
   return (
     <div id='edit'>
-      <button id='clear-one' onClick={() => clearPattern(true)}>
+      <button
+        id='clear-one'
+        className='bottom'
+        onClick={() => clearPattern(true)}
+      >
         <ClearOneIcon />
       </button>
-      <button id='clear-all' onClick={() => clearPattern()}>
+      <button id='clear-all' className='bottom' onClick={() => clearPattern()}>
         <ClearAllIcon />
       </button>
-      <button id='undo' onClick={undo}>
+      <button id='undo' className='bottom' onClick={undo}>
         <UndoIcon />
       </button>
-      <button id='redo' onClick={redo}>
+      <button id='redo' className='bottom' onClick={redo}>
         <RedoIcon />
       </button>
     </div>
