@@ -12,6 +12,7 @@ export default function App() {
     <KitProvider>
       <PatternProvider>
         <SequencerProvider>
+          <div id='address-bar'></div>
           <div id='top'>
             <Grid />
           </div>
@@ -25,6 +26,7 @@ export default function App() {
               <Edit />
             </div>
           </div>
+          <div id='toolbar'></div>
         </SequencerProvider>
       </PatternProvider>
     </KitProvider>

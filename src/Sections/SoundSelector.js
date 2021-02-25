@@ -27,8 +27,8 @@ export const SoundSelector = () => {
 
 const SoundBtn = ({ i, sound, selectedSound, handleClick }) => {
   const soundBtnMemo = useMemo(() => {
-    let classes = 'sound';
-    if (i === selectedSound) classes += ` border${sound.color}`;
+    let classes = `sound borderDefault`;
+    if (i === selectedSound) classes += ` border${sound.color} `;
     return (
       <div className={classes} onClick={() => handleClick(i)}>
         {sound.name}

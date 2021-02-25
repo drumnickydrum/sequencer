@@ -14,15 +14,19 @@ export const Edit = () => {
         onClick={() => clearPattern(true)}
       >
         <ClearOneIcon />
+        <label htmlFor='clear-one'>clear one</label>
       </button>
       <button id='clear-all' className='bottom' onClick={() => clearPattern()}>
         <ClearAllIcon />
+        <label htmlFor='clear-all'>clear all</label>
       </button>
       <button id='undo' className='bottom' onClick={undo}>
         <UndoIcon />
+        <label htmlFor='undo'>undo</label>
       </button>
       <button id='redo' className='bottom' onClick={redo}>
         <RedoIcon />
+        <label htmlFor='redo'>redo</label>
       </button>
     </div>
   );

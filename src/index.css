@@ -12,26 +12,37 @@
 :root {
   --green: rgba(47, 222, 126, 1);
   --green-half: rgba(47, 222, 126, 0.5);
+  --green-quarter: rgba(47, 222, 126, 0.25);
   --lime: rgba(64, 244, 195, 1);
+  --lime-3q: rgba(64, 244, 195, 0.75);
   --lime-half: rgba(64, 244, 195, 0.5);
+  --lime-quarter: rgba(64, 244, 195, 0.25);
   --purple: rgba(113, 18, 185, 1);
   --purple-3q: rgba(113, 18, 185, 0.75);
   --purple-half: rgba(113, 18, 185, 0.5);
-  --purple-dark: rgba(113, 18, 185, 0.3);
+  --purple-quarter: rgba(113, 18, 185, 0.25);
   --blue: rgba(2, 123, 255, 1);
   --blue-half: rgba(133, 155, 214, 0.5);
+  --blue-quarter: rgba(133, 155, 214, 0.25);
   --baby-blue: rgba(25, 247, 255, 1);
   --baby-blue-half: rgba(25, 247, 255, 0.5);
+  --baby-blue-quarter: rgba(25, 247, 255, 0.25);
   --red: rgba(232, 12, 48, 1);
   --red-half: rgba(232, 12, 48, 0.5);
+  --red-quarter: rgba(232, 12, 48, 0.25);
   --magenta: rgba(255, 0, 172, 1);
-  --magenta-half: rgba(255, 0, 172, 0.35);
+  --magenta-3q: rgba(255, 0, 172, 0.75);
+  --magenta-half: rgba(255, 0, 172, 0.5);
+  --magenta-quarter: rgba(255, 0, 172, 0.25);
   --pink: rgba(250, 109, 203, 1);
   --pink-half: rgba(250, 109, 203, 0.5);
+  --pink-quarter: rgba(250, 109, 203, 0.25);
   --orange: rgba(187, 123, 1, 1);
   --orange-half: rgba(187, 123, 1, 0.5);
+  --orange-quarter: rgba(187, 123, 1, 0.25);
   --yellow: rgba(210, 254, 147, 1);
   --yellow-half: rgba(210, 254, 147, 0.5);
+  --yellow-quarter: rgba(210, 254, 147, 0.25);
 
   --bg: rgb(40, 30, 50, 0.45);
   --grey: rgb(150, 140, 170, 1);
@@ -64,6 +75,8 @@ body {
 }
 
 #root {
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 800px;
   height: 100%;
@@ -76,13 +89,20 @@ body {
 #address-bar,
 #toolbar {
   display: none;
+  z-index: 2;
+  width: 100%;
+  left: 0;
 }
 #address-bar {
-  background: red;
+  position: fixed;
+  top: 0;
+  background: var(--grey-half);
   height: 95px;
 }
 #toolbar {
-  background: red;
+  position: fixed;
+  bottom: 0;
+  background: var(--grey-half);
   height: 70px;
 }
 
@@ -103,9 +123,10 @@ body {
 #sound-selector {
   min-width: 100%;
   min-height: 100%;
+  padding: 0.25rem;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.1rem;
+  gap: 0.2rem;
 }
 
 #top {
@@ -133,7 +154,7 @@ body {
   width: 100%;
   height: 100%;
   max-height: 15vh;
-  padding: 0.5rem 0;
+  padding: 0;
   scroll-snap-type: x mandatory;
   overflow-x: scroll;
   white-space: nowrap;
@@ -164,9 +185,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 0.3rem;
-  color: var(--white-less);
-  border: 1px solid var(--purple-3q);
+  border-radius: 0.5rem;
+  color: var(--white);
+  border: 1px solid var(--purple);
 }
 
 .sound.selected {
@@ -183,8 +204,8 @@ body {
   height: 0;
   padding-bottom: 100%;
   padding-right: 100%;
-  opacity: 0.75;
-  border: 1px solid var(--purple-3q);
+  opacity: 1;
+  border: 1px solid var(--purple);
   border-radius: 0.5rem;
   background: var(--none);
   transform: scale(1) rotate(0);
@@ -207,7 +228,7 @@ body {
 
 .cell.flash {
   transition: none;
-  background: var(--white-quarter);
+  background: var(--white-half);
 }
 
 .sound-cells {
@@ -252,6 +273,12 @@ body {
   background: transparent;
   fill: var(--white);
   display: flex;
+  flex-direction: column;
+  color: var(--white);
+}
+
+#edit label {
+  width: 100%;
 }
 
 #edit svg {
@@ -286,11 +313,11 @@ body {
 }
 
 #stop {
-  background: var(--magenta-half);
+  background: var(--magenta-3q);
 }
 
 #start {
-  background: var(--lime-half);
+  background: var(--lime-3q);
 }
 
 @media (hover: hover) {
@@ -310,6 +337,7 @@ body {
 
 #transport .input {
   margin: 0 0.5rem;
+  user-select: auto;
 }
 
 #transport input {
@@ -347,7 +375,9 @@ select {
 /*************************************/
 /************** Colors ***************/
 /*************************************/
-
+.colorBlack {
+  color: var(--black);
+}
 .colorNone {
   color: var(--none);
 }
@@ -364,7 +394,7 @@ select {
   color: var(--purple-3q);
 }
 .bgDefault {
-  background-color: var(--purple-3q);
+  background-color: var(--purple-quarter);
 }
 .borderDefault {
   border-color: var(--purple-3q);
@@ -378,6 +408,9 @@ select {
 .bg0 {
   background-color: var(--blue);
 }
+.bg0Q {
+  background-color: var(--blue-quarter);
+}
 .border0 {
   border-color: var(--blue);
 }
@@ -389,6 +422,9 @@ select {
 }
 .bg1 {
   background-color: var(--lime);
+}
+.bg1Q {
+  background-color: var(--lime-quarter);
 }
 .border1 {
   border-color: var(--lime);
@@ -402,6 +438,9 @@ select {
 .bg2 {
   background-color: var(--magenta);
 }
+.bg2Q {
+  background-color: var(--magenta-quarter);
+}
 .border2 {
   border-color: var(--magenta);
 }
@@ -413,6 +452,9 @@ select {
 }
 .bg3 {
   background-color: var(--yellow);
+}
+.bg3Q {
+  background-color: var(--yellow-quarter);
 }
 .border3 {
   border-color: var(--yellow);
@@ -426,6 +468,9 @@ select {
 .bg4 {
   background-color: var(--red);
 }
+.bg4Q {
+  background-color: var(--red-quarter);
+}
 .border4 {
   border-color: var(--red);
 }
@@ -437,6 +482,9 @@ select {
 }
 .bg5 {
   background-color: var(--baby-blue);
+}
+.bg5Q {
+  background-color: var(--baby-blue-quarter);
 }
 .border5 {
   border-color: var(--baby-blue);
@@ -450,6 +498,9 @@ select {
 .bg6 {
   background-color: var(--orange);
 }
+.bg6Q {
+  background-color: var(--orange-quarter);
+}
 .border6 {
   border-color: var(--orange);
 }
@@ -462,6 +513,9 @@ select {
 .bg7 {
   background-color: var(--green);
 }
+.bg7Q {
+  background-color: var(--green-quarter);
+}
 .border7 {
   border-color: var(--green);
 }
@@ -473,6 +527,9 @@ select {
 }
 .bg8 {
   background-color: var(--pink);
+}
+.bg8Q {
+  background-color: var(--pink-quarter);
 }
 .border8 {
   border-color: var(--pink);
