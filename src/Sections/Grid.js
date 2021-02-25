@@ -43,9 +43,11 @@ const Cell = ({ id, i }) => {
   } = useContext(Pattern);
   const cellRef = useRef(null);
   const [vol, setVol] = useState(0);
+  const [color, setColor] = useState(-1);
 
   useEffect(() => {
     setVol(pattern[i][selectedSound]);
+    setColor(selectedSound);
   }, [pattern[i][selectedSound], selectedSound]);
 
   const handleTouchStart = (e) => {
@@ -74,7 +76,7 @@ const Cell = ({ id, i }) => {
   const cellMemo = useMemo(() => {
     // console.log('rendering cell: ', i);
     let classes = `cell`;
-    classes += vol ? ` bg${selectedSound} on` : '';
+    classes += vol ? ` bg${color} on` : '';
     const soundCells = getSoundCells(id, pattern[i]);
     return (
       <div className='cell-wrapper'>
@@ -89,7 +91,7 @@ const Cell = ({ id, i }) => {
         </div>
       </div>
     );
-  }, [selectedSound, vol, pattern[i]]);
+  }, [color, vol, pattern[i]]);
 
   return cellMemo;
 };

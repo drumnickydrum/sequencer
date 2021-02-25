@@ -13,11 +13,12 @@ export default function App() {
       <PatternProvider>
         <SequencerProvider>
           <div id='top'>
-            <SoundSelector />
-          </div>
-          <div id='middle'>
             <Grid />
           </div>
+          <div id='middle'>
+            <SoundSelector />
+          </div>
+
           <div id='bottom'>
             <div id='bottom-container'>
               <Transport />
@@ -30,18 +31,18 @@ export default function App() {
   );
 }
 
-// window.addEventListener('orientationchange', resize);
-// window.addEventListener('blur', () => {
-//   window.addEventListener('focus', resize);
-// });
+window.addEventListener('orientationchange', resize);
+window.addEventListener('blur', () => {
+  window.addEventListener('focus', resize);
+});
 
-// function resize() {
-//   var originalBodyStyle = getComputedStyle(document.body).getPropertyValue(
-//     'display'
-//   );
-//   document.body.style.display = 'none';
-//   setTimeout(function () {
-//     document.body.style.display = originalBodyStyle;
-//   }, 10);
-//   window.removeEventListener('focus', resize);
-// }
+function resize() {
+  var originalBodyStyle = getComputedStyle(document.body).getPropertyValue(
+    'display'
+  );
+  document.body.style.display = 'none';
+  setTimeout(function () {
+    document.body.style.display = originalBodyStyle;
+  }, 10);
+  window.removeEventListener('focus', resize);
+}
