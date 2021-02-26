@@ -4,10 +4,11 @@
 
 ### 2/26/2021
 
-- Going to work on kit panel today... for each sound:
+- Added a panel to edit each sound:
   - volume knob
   - pitch knob
   - length knob
+- Added an info overlay to assist with instructions.
 - I'd also like to figure out the 'slicer' option... I remember there was something in tone.js where if you schedule an array it will fit the notes within the current subdivision, effectively 'slicing' it up.
 - I'd also like to implement a feature to copy the current sound's pattern to another sound.
 

@@ -101,40 +101,48 @@ const SoundEdit = ({ setEdit, selectedSound }) => {
   return (
     <div className='sound-edit'>
       <div className={`sample-edit color${selectedSound}`}>
-        <div
-          className='knob'
-          id='vol-knob'
-          onTouchStart={handleTouchStart}
-          onTouchMove={(e) => handleTouchMove(e, 'vol')}
-          onTouchEnd={handleTouchEnd}
-        >
-          <label htmlFor='vol-knob'>vol</label>
-          <Knob value={volVal} />
+        <div className='knob-wrapper'>
+          <div
+            className='knob'
+            id='vol-knob'
+            onTouchStart={handleTouchStart}
+            onTouchMove={(e) => handleTouchMove(e, 'vol')}
+            onTouchEnd={handleTouchEnd}
+          >
+            <label htmlFor='vol-knob'>vol</label>
+            <Knob value={volVal} />
+          </div>
+          <p onClick={() => setVolVal(100)}>reset</p>
         </div>
-        <div
-          className='knob'
-          id='tune-knob'
-          onTouchStart={handleTouchStart}
-          onTouchMove={(e) => handleTouchMove(e, 'tune')}
-          onTouchEnd={handleTouchEnd}
-        >
-          <label htmlFor='tune-knob'>tune</label>
+        <div className='knob-wrapper'>
+          <div
+            className='knob'
+            id='tune-knob'
+            onTouchStart={handleTouchStart}
+            onTouchMove={(e) => handleTouchMove(e, 'tune')}
+            onTouchEnd={handleTouchEnd}
+          >
+            <label htmlFor='tune-knob'>tune</label>
 
-          <Knob value={tuneVal} />
+            <Knob value={tuneVal} />
+          </div>
+          <p onClick={() => setTuneVal(50)}>reset</p>
         </div>
-        <div
-          className='knob'
-          id='length-knob'
-          onTouchStart={handleTouchStart}
-          onTouchMove={(e) => handleTouchMove(e, 'length')}
-          onTouchEnd={handleTouchEnd}
-        >
-          <label htmlFor='length-knob'>length</label>
-          <Knob value={lengthVal} />
+        <div className='knob-wrapper'>
+          <div
+            className='knob'
+            id='length-knob'
+            onTouchStart={handleTouchStart}
+            onTouchMove={(e) => handleTouchMove(e, 'length')}
+            onTouchEnd={handleTouchEnd}
+          >
+            <label htmlFor='length-knob'>length</label>
+            <Knob value={lengthVal} />
+          </div>
+          <p onClick={() => setLengthVal(100)}>reset</p>
         </div>
       </div>
       {/* <div className='pattern-edit'>
-        <ClearOneIcon />
         <h1>Copy</h1>
         <h1>Slice</h1>
       </div> */}

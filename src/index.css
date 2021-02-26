@@ -245,10 +245,15 @@ body {
   align-items: center;
 }
 
+.knob-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .knob {
   position: relative;
-  margin: 0.5rem;
-  display: flex;
 }
 
 .knob label {
