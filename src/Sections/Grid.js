@@ -74,7 +74,7 @@ const Cell = ({ id, i }) => {
   }, [cellRef, selectedSound, vol]);
 
   const cellMemo = useMemo(() => {
-    console.log('rendering cell: ', i);
+    // console.log('rendering cell: ', i);
     let classes = `cell`;
     classes += vol ? ` bg${color} on` : '';
     const soundCells = getSoundCells(id, pattern[i]);
@@ -109,7 +109,7 @@ const getSoundCells = (cellId, patternI, size = 9) => {
 
 const SoundCell = ({ id, color, vol }) => {
   const soundCellMemo = useMemo(() => {
-    console.log('rendering soundCell: ', id);
+    // console.log('rendering soundCell: ', id);
     const classes = `sound-cell ${color}`;
     return <div id={id} className={classes} style={{ opacity: vol }} />;
   }, [vol]);
