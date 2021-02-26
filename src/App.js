@@ -1,5 +1,5 @@
 import React from 'react';
-import { KitProvider } from './Providers/Kit';
+// import { KitProvider } from './Providers/Kit';
 import { PatternProvider } from './Providers/Pattern';
 import { SequencerProvider } from './Providers/Sequencer';
 import { InfoProvider } from './Providers/Info';
@@ -12,28 +12,31 @@ import { Information } from './Sections/Information';
 export default function App() {
   return (
     <InfoProvider>
-      <KitProvider>
-        <PatternProvider>
-          <SequencerProvider>
-            <div id='address-bar'></div>
-            <div id='top'>
-              <Grid />
-              <Information />
-            </div>
-            <div id='middle'>
-              <SoundSelector />
-            </div>
+      {/* <KitProvider> */}
+      <PatternProvider>
+        <SequencerProvider>
+          <div id='address-bar'></div>
 
-            <div id='bottom'>
-              <div id='bottom-container'>
-                <Transport />
-                <Edit />
-              </div>
+          <div id='two'>
+            <Grid />
+            <Information />
+          </div>
+
+          <div id='three'>
+            <SoundSelector />
+          </div>
+
+          <div id='one'>
+            <div className='scroll-container'>
+              <Transport />
+              <Edit />
             </div>
-            <div id='toolbar'></div>
-          </SequencerProvider>
-        </PatternProvider>
-      </KitProvider>
+          </div>
+
+          <div id='toolbar'></div>
+        </SequencerProvider>
+      </PatternProvider>
+      {/* </KitProvider> */}
     </InfoProvider>
   );
 }

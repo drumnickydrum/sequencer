@@ -1,17 +1,10 @@
-import React, {
-  useState,
-  useEffect,
-  useContext,
-  useCallback,
-  useRef,
-} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import * as Tone from 'tone';
-import { Kit } from './Kit';
+import { kit } from '../Kit';
 import { INIT_PATTERN, analog } from './defaultSequences';
 
 export const Pattern = React.createContext();
 export const PatternProvider = ({ children }) => {
-  const { setKit } = useContext(Kit);
   const [pattern, setPattern] = useState(
     analog.pattern.map((cell) => [...cell])
   );
@@ -117,10 +110,7 @@ export const PatternProvider = ({ children }) => {
       patternRef.current[stepRef.current]
     )) {
       if (patternRef.current[stepRef.current][sound]) {
-        setKit((kit) => {
-          kit[sound].sampler.triggerAttack('C2', time, vol / 2);
-          return kit;
-        });
+        kit[sound].sampler.triggerAttack('C2', time, vol);
       }
     }
     stepRef.current =

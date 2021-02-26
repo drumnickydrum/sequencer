@@ -1,28 +1,27 @@
-import React, { useState, useCallback } from 'react';
-import * as Tone from 'tone';
-import { analog } from '../Kits/index';
+import React, { useRef } from 'react';
+// import * as Tone from 'tone';
+import { analog } from '../Kit/index';
 
 export const Kit = React.createContext();
 export const KitProvider = ({ children }) => {
-  const [kit, setKit] = useState(analog);
+  const kitRef = useRef(analog);
 
-  // how to avoid name collisions?
-  const newSample = useCallback((name, sample, key) => {
-    setKit((prev) => ({
-      ...prev,
-      [name]: {
-        sampler: new Tone.Sampler({ C2: sample }).toDestination(),
-        key,
-      },
-    }));
-  });
+  // // how to avoid name collisions?
+  // const newSample = useCallback((name, sample, key) => {
+  //   setKit((prev) => ({
+  //     ...prev,
+  //     [name]: {
+  //       pitchShift = new Tone.PitchShift().t
+  //       sampler: new Tone.Sampler({ C2: sample }).toDestination(),
+  //       key,
+  //     },
+  //   }));
+  // });
 
   return (
     <Kit.Provider
       value={{
-        kit,
-        setKit,
-        newSample,
+        kit: kitRef.current,
       }}
     >
       {children}

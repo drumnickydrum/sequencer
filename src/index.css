@@ -109,13 +109,13 @@ body {
   height: 70px;
 }
 
-#top,
-#middle,
-#bottom {
+#one,
+#two,
+#three {
   padding: 0.25rem;
 }
 
-#middle {
+#three {
   width: 100%;
   height: 100%;
   min-height: 20%;
@@ -132,7 +132,7 @@ body {
   gap: 0.2rem;
 }
 
-#top {
+#two {
   position: relative;
   flex-shrink: 0;
   width: 100%;
@@ -154,7 +154,7 @@ body {
   border-radius: 0.5rem;
 }
 
-#bottom {
+#one {
   width: 100%;
   height: 100%;
   max-height: 15vh;
@@ -165,7 +165,7 @@ body {
   overflow-y: hidden;
 }
 
-#bottom-container {
+.scroll-container {
   display: flex;
   width: 200vw;
   height: 100%;
@@ -185,6 +185,7 @@ body {
 /*************************************/
 
 #information {
+  pointer-events: none;
   position: absolute;
   height: 100%;
   width: 100%;
@@ -222,6 +223,20 @@ body {
 /*********** SoundSelector ***********/
 /*************************************/
 
+.sound-edit button {
+  cursor: pointer;
+  padding: 0.5rem;
+  border: none;
+  outline: none;
+  border-radius: 0.3rem;
+  color: var(--white);
+  background: var(--black);
+  border: 1px solid var(--purple);
+  font-family: inherit;
+  font-style: inherit;
+  letter-spacing: 2px;
+}
+
 .sound {
   cursor: pointer;
   display: flex;
@@ -233,6 +248,7 @@ body {
 }
 
 .sound-edit {
+  min-height: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;

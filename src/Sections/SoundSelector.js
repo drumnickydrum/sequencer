@@ -1,14 +1,17 @@
-import React, { useState, useEffect, useContext, useMemo } from 'react';
+import React, { useState, useEffect, useContext, useMemo, useRef } from 'react';
 import { ClearOneIcon, SwipeVerticalIcon } from '../icons';
 import { Knob } from '../icons/Knob';
-import { Kit } from '../Providers/Kit';
+import { kit } from '../Kit';
 import { Pattern } from '../Providers/Pattern';
 import { Info } from '../Providers/Info';
 
 export const SoundSelector = () => {
-  const { kit } = useContext(Kit);
   const { selectedSound, setSelectedSound } = useContext(Pattern);
   const [edit, setEdit] = useState(false);
+
+  useEffect(() => {
+    if (!edit) setSelectedSound(-1);
+  }, [edit]);
 
   const handleClick = (i) => {
     setSelectedSound(i === selectedSound ? -1 : i);
@@ -35,20 +38,27 @@ export const SoundSelector = () => {
 const SoundEdit = ({ setEdit, selectedSound }) => {
   const { setInfo } = useContext(Info);
 
-  const [vol, setVol] = useState(0);
-  const [tune, setTune] = useState('C2');
-  const [length, setLength] = useState(1);
-
   const [volVal, setVolVal] = useState(100);
   const [tuneVal, setTuneVal] = useState(50);
   const [lengthVal, setLengthVal] = useState(100);
 
-  const [y, setY] = useState(null);
-
+  let timerRef = useRef(null);
   useEffect(() => {
-    console.log(volVal);
+    timerRef.current = setTimeout(() => {
+      const db = volVal === 0 ? -100 : (-100 + volVal) * 0.2;
+      kit[selectedSound].sampler.volume.value = db > 0 ? 0 : db;
+      console.log(db);
+    }, 50);
+
+    return () => clearTimeout(timerRef.current);
   }, [volVal]);
 
+  useEffect(() => {
+    const old = kit[selectedSound].sampler._buffers._buffers.get('36');
+    kit[selectedSound].sampler._buffers._buffers.set('30', old);
+  }, [tuneVal]);
+
+  const [y, setY] = useState(null);
   const handleTouchStart = (e) => {
     setInfo({
       h: '',
@@ -142,10 +152,7 @@ const SoundEdit = ({ setEdit, selectedSound }) => {
           <p onClick={() => setLengthVal(100)}>reset</p>
         </div>
       </div>
-      {/* <div className='pattern-edit'>
-        <h1>Copy</h1>
-        <h1>Slice</h1>
-      </div> */}
+      <button onClick={() => setEdit(false)}>Close</button>
     </div>
   );
 };

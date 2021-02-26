@@ -1,59 +1,81 @@
 import * as Tone from 'tone';
 
+export const channels = [];
+for (let i = 0; i < 9; i++)
+  channels.push(
+    new Tone.Channel({ volume: 0, pan: 0, channelCount: 2 }).toDestination()
+  );
+
 export const analog = [
   {
     name: 'kick',
     sampler: new Tone.Sampler({
       C2: './audio/analog/kick.mp3',
-    }).toDestination(),
+    }).connect(channels[0]),
     key: 'num1',
     color: 0,
   },
   {
     name: 'snr',
-    sampler: new Tone.Sampler({ C2: './audio/analog/snr.mp3' }).toDestination(),
+    sampler: new Tone.Sampler({ C2: './audio/analog/snr.mp3' }).connect(
+      channels[1]
+    ),
     key: 'num2',
     color: 1,
   },
   {
     name: 'clp',
-    sampler: new Tone.Sampler({ C2: './audio/analog/clp.mp3' }).toDestination(),
+    sampler: new Tone.Sampler({ C2: './audio/analog/clp.mp3' }).connect(
+      channels[2]
+    ),
     key: 'num3',
     color: 2,
   },
   {
     name: 'ch',
-    sampler: new Tone.Sampler({ C2: './audio/analog/ch.mp3' }).toDestination(),
+    sampler: new Tone.Sampler({ C2: './audio/analog/ch.mp3' }).connect(
+      channels[3]
+    ),
     key: 'num4',
     color: 3,
   },
   {
     name: 'oh',
-    sampler: new Tone.Sampler({ C2: './audio/analog/oh.mp3' }).toDestination(),
+    sampler: new Tone.Sampler({ C2: './audio/analog/oh.mp3' }).connect(
+      channels[4]
+    ),
     key: 'num5',
     color: 4,
   },
   {
     name: 'cym',
-    sampler: new Tone.Sampler({ C2: './audio/analog/cym.mp3' }).toDestination(),
+    sampler: new Tone.Sampler({ C2: './audio/analog/cym.mp3' }).connect(
+      channels[5]
+    ),
     key: 'num6',
     color: 5,
   },
   {
     name: 'ht',
-    sampler: new Tone.Sampler({ C2: './audio/analog/ht.mp3' }).toDestination(),
+    sampler: new Tone.Sampler({ C2: './audio/analog/ht.mp3' }).connect(
+      channels[6]
+    ),
     key: 'num7',
     color: 6,
   },
   {
     name: 'mt',
-    sampler: new Tone.Sampler({ C2: './audio/analog/mt.mp3' }).toDestination(),
+    sampler: new Tone.Sampler({ C2: './audio/analog/mt.mp3' }).connect(
+      channels[7]
+    ),
     key: 'num8',
     color: 7,
   },
   {
     name: 'lt',
-    sampler: new Tone.Sampler({ C2: './audio/analog/lt.mp3' }).toDestination(),
+    sampler: new Tone.Sampler({ C2: './audio/analog/lt.mp3' }).connect(
+      channels[8]
+    ),
     key: 'num9',
     color: 8,
   },

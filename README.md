@@ -11,6 +11,7 @@
 - Added an info overlay to assist with instructions.
 - I'd also like to figure out the 'slicer' option... I remember there was something in tone.js where if you schedule an array it will fit the notes within the current subdivision, effectively 'slicing' it up.
 - I'd also like to implement a feature to copy the current sound's pattern to another sound.
+- setKit isn't right... I'm really just mutating the sampler directly. This is unrelated to React state.
 
 ### 2/25/2021
 
