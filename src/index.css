@@ -50,8 +50,11 @@
   --grey-quarter: rgb(150, 140, 170, 0.25);
   --none: rgb(150, 140, 170, 0);
   --black: #000;
+  --black-3q: rgba(0, 0, 0, 0.75);
+  --black-half: rgba(0, 0, 0, 0.5);
+  --black-quarter: rgba(0, 0, 0, 0.25);
   --white: rgba(236, 237, 229, 1);
-  --white-less: rgba(236, 237, 229, 0.75);
+  --white-3q: rgba(236, 237, 229, 0.75);
   --white-half: rgba(236, 237, 229, 0.5);
   --white-quarter: rgba(236, 237, 229, 0.25);
   font-size: 16px;
@@ -130,6 +133,7 @@ body {
 }
 
 #top {
+  position: relative;
   flex-shrink: 0;
   width: 100%;
   height: 100vw;
@@ -177,6 +181,44 @@ body {
 }
 
 /*************************************/
+/*************** Info ****************/
+/*************************************/
+
+#information {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: var(--black-3q);
+  opacity: 0;
+  transition: 150ms;
+}
+
+#information.show {
+  opacity: 1;
+}
+
+#info {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1.5rem 0 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#info svg {
+  fill: white;
+  height: 4rem;
+}
+
+#info p {
+  font-size: 1.5rem;
+}
+
+/*************************************/
 /*********** SoundSelector ***********/
 /*************************************/
 
@@ -191,25 +233,21 @@ body {
 }
 
 .sound-edit {
-  border: 1px solid red;
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  /* border: 1px solid red; */
 }
 
 .sample-edit {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  border: 1px solid blue;
 }
 
 .knob {
   position: relative;
   margin: 0.5rem;
-  border: 1px solid red;
   display: flex;
 }
 
@@ -221,19 +259,9 @@ body {
   color: var(--white);
 }
 
-.knob input {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  height: 100%;
-  transform: translate(-50%, -50%) rotate(-90deg);
-  opacity: 0;
-}
-
 .sound-edit svg {
   width: 100%;
   height: 100%;
-  border: 1px solid blue;
 }
 
 .arc {

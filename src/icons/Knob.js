@@ -16,7 +16,6 @@ export const Knob = ({ value = 50 }) => (
       d='M5 2 A20 20, 0, 0 0, 95 2'
       stroke='currentColor'
       strokeWidth='1'
-      opacity={1 * 0.01 * value + 0.4}
       fill='none'
     />
   </svg>

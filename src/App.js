@@ -2,34 +2,39 @@ import React from 'react';
 import { KitProvider } from './Providers/Kit';
 import { PatternProvider } from './Providers/Pattern';
 import { SequencerProvider } from './Providers/Sequencer';
+import { InfoProvider } from './Providers/Info';
 import { SoundSelector } from './Sections/SoundSelector';
 import { Grid } from './Sections/Grid';
 import { Edit } from './Sections/Edit';
 import { Transport } from './Sections/Transport';
+import { Information } from './Sections/Information';
 
 export default function App() {
   return (
-    <KitProvider>
-      <PatternProvider>
-        <SequencerProvider>
-          <div id='address-bar'></div>
-          <div id='top'>
-            <Grid />
-          </div>
-          <div id='middle'>
-            <SoundSelector />
-          </div>
-
-          <div id='bottom'>
-            <div id='bottom-container'>
-              <Transport />
-              <Edit />
+    <InfoProvider>
+      <KitProvider>
+        <PatternProvider>
+          <SequencerProvider>
+            <div id='address-bar'></div>
+            <div id='top'>
+              <Grid />
+              <Information />
             </div>
-          </div>
-          <div id='toolbar'></div>
-        </SequencerProvider>
-      </PatternProvider>
-    </KitProvider>
+            <div id='middle'>
+              <SoundSelector />
+            </div>
+
+            <div id='bottom'>
+              <div id='bottom-container'>
+                <Transport />
+                <Edit />
+              </div>
+            </div>
+            <div id='toolbar'></div>
+          </SequencerProvider>
+        </PatternProvider>
+      </KitProvider>
+    </InfoProvider>
   );
 }
 

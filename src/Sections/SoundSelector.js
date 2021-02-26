@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react';
-import { ClearOneIcon } from '../icons';
+import { ClearOneIcon, SwipeVerticalIcon } from '../icons';
 import { Knob } from '../icons/Knob';
 import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
+import { Info } from '../Providers/Info';
 
 export const SoundSelector = () => {
   const { kit } = useContext(Kit);
@@ -32,56 +33,103 @@ export const SoundSelector = () => {
 };
 
 const SoundEdit = ({ setEdit, selectedSound }) => {
+  const { setInfo } = useContext(Info);
+
   const [vol, setVol] = useState(0);
   const [tune, setTune] = useState('C2');
   const [length, setLength] = useState(1);
 
   const [volVal, setVolVal] = useState(100);
   const [tuneVal, setTuneVal] = useState(50);
-  const [lengthVal, setLengthVal] = useState(50);
+  const [lengthVal, setLengthVal] = useState(100);
+
+  const [y, setY] = useState(null);
 
   useEffect(() => {
     console.log(volVal);
   }, [volVal]);
+
+  const handleTouchStart = (e) => {
+    setInfo({
+      h: '',
+      i: <SwipeVerticalIcon />,
+      p: 'Swipe vertically to adjust',
+      show: true,
+    });
+    setY(e.changedTouches[0].clientY);
+  };
+
+  const handleTouchMove = (e, type) => {
+    const newY = e.changedTouches[0].clientY;
+    if (newY - y > 1) {
+      switch (type) {
+        case 'vol':
+          setVolVal((val) => (val - 6 < 0 ? 0 : val - 6));
+          break;
+        case 'tune':
+          setTuneVal((val) => (val - 6 < 0 ? 0 : val - 6));
+          break;
+        case 'length':
+          setLengthVal((val) => (val - 6 < 0 ? 0 : val - 6));
+          break;
+        default:
+          return;
+      }
+    } else if (newY - y < -1) {
+      switch (type) {
+        case 'vol':
+          setVolVal((val) => (val + 6 > 100 ? 100 : val + 6));
+          break;
+        case 'tune':
+          setTuneVal((val) => (val + 6 > 100 ? 100 : val + 6));
+          break;
+        case 'length':
+          setLengthVal((val) => (val + 6 > 100 ? 100 : val + 6));
+          break;
+        default:
+          return;
+      }
+    }
+    setY(newY);
+  };
+
+  const handleTouchEnd = () => {
+    setInfo({ h: '', i: null, p: '', show: false });
+    setY(null);
+  };
 
   return (
     <div className='sound-edit'>
       <div className={`sample-edit color${selectedSound}`}>
         <div
           className='knob'
-          onClick={() =>
-            console.log(
-              document.getElementsByClassName('arc')[0].getTotalLength()
-            )
-          }
+          id='vol-knob'
+          onTouchStart={handleTouchStart}
+          onTouchMove={(e) => handleTouchMove(e, 'vol')}
+          onTouchEnd={handleTouchEnd}
         >
           <label htmlFor='vol-knob'>vol</label>
-          <input
-            id='vol-knob'
-            type='range'
-            value={volVal}
-            onChange={(e) => setVolVal(e.target.value)}
-          />
           <Knob value={volVal} />
         </div>
-        <div className='knob'>
+        <div
+          className='knob'
+          id='tune-knob'
+          onTouchStart={handleTouchStart}
+          onTouchMove={(e) => handleTouchMove(e, 'tune')}
+          onTouchEnd={handleTouchEnd}
+        >
           <label htmlFor='tune-knob'>tune</label>
-          <input
-            id='tune-knob'
-            type='range'
-            value={tuneVal}
-            onChange={(e) => setTuneVal(e.target.value)}
-          />
+
           <Knob value={tuneVal} />
         </div>
-        <div className='knob'>
+        <div
+          className='knob'
+          id='length-knob'
+          onTouchStart={handleTouchStart}
+          onTouchMove={(e) => handleTouchMove(e, 'length')}
+          onTouchEnd={handleTouchEnd}
+        >
           <label htmlFor='length-knob'>length</label>
-          <input
-            id='length-knob'
-            type='range'
-            value={lengthVal}
-            onChange={(e) => setLengthVal(e.target.value)}
-          />
           <Knob value={lengthVal} />
         </div>
       </div>
