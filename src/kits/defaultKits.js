@@ -1,81 +1,156 @@
 import * as Tone from 'tone';
 
-export const channels = [];
-for (let i = 0; i < 9; i++)
-  channels.push(
-    new Tone.Channel({ volume: 0, pan: 0, channelCount: 2 }).toDestination()
-  );
+export const MIDI_NOTES = [
+  'C0',
+  'C#0',
+  'D0',
+  'D#0',
+  'E0',
+  'F0',
+  'F#0',
+  'G0',
+  'G#0',
+  'A0',
+  'A#0',
+  'B0',
+  'C1',
+  'C#1',
+  'D1',
+  'D#1',
+  'E1',
+  'F1',
+  'F#1',
+  'G1',
+  'G#1',
+  'A1',
+  'A#1',
+  'B1',
+  'C2',
+  'C#2',
+  'D2',
+  'D#2',
+  'E2',
+  'F2',
+  'F#2',
+  'G2',
+  'G#2',
+  'A2',
+  'A#2',
+  'B2',
+  'C3',
+  'C#3',
+  'D3',
+  'D#3',
+  'E3',
+  'F3',
+  'F#3',
+  'G3',
+  'G#3',
+  'A3',
+  'A#3',
+  'B3',
+  'C4',
+  'C#4',
+  'D4',
+  'D#4',
+  'E4',
+  'F4',
+  'F#4',
+  'G4',
+  'G#4',
+  'A4',
+  'A#4',
+  'B4',
+];
 
 export const analog = [
   {
     name: 'kick',
-    sampler: new Tone.Sampler({
-      C2: './audio/analog/kick.mp3',
-    }).connect(channels[0]),
+    sample: './audio/analog/kick.mp3',
+    pitch: MIDI_NOTES,
+    pitchMod: 0,
+    durationMod: 1,
+    volumeMod: 1,
     key: 'num1',
     color: 0,
   },
   {
     name: 'snr',
-    sampler: new Tone.Sampler({ C2: './audio/analog/snr.mp3' }).connect(
-      channels[1]
-    ),
+    sample: './audio/analog/snr.mp3',
+    pitch: MIDI_NOTES,
+    pitchMod: 0,
+    durationMod: 1,
+    volumeMod: 1,
     key: 'num2',
     color: 1,
   },
   {
     name: 'clp',
-    sampler: new Tone.Sampler({ C2: './audio/analog/clp.mp3' }).connect(
-      channels[2]
-    ),
+    sample: './audio/analog/clp.mp3',
+    pitch: MIDI_NOTES,
+    pitchMod: 0,
+    durationMod: 1,
+    volumeMod: 1,
     key: 'num3',
     color: 2,
   },
   {
     name: 'ch',
-    sampler: new Tone.Sampler({ C2: './audio/analog/ch.mp3' }).connect(
-      channels[3]
-    ),
+    sample: './audio/analog/ch.mp3',
+    pitch: MIDI_NOTES,
+    pitchMod: 0,
+    durationMod: 1,
+    volumeMod: 1,
     key: 'num4',
     color: 3,
   },
   {
     name: 'oh',
-    sampler: new Tone.Sampler({ C2: './audio/analog/oh.mp3' }).connect(
-      channels[4]
-    ),
+    sample: './audio/analog/oh.mp3',
+    pitch: MIDI_NOTES,
+    pitchMod: 0,
+    durationMod: 1,
+    volumeMod: 1,
     key: 'num5',
     color: 4,
   },
   {
     name: 'cym',
-    sampler: new Tone.Sampler({ C2: './audio/analog/cym.mp3' }).connect(
-      channels[5]
-    ),
+    sample: './audio/analog/cym.mp3',
+    pitch: MIDI_NOTES,
+    pitchMod: 0,
+    durationMod: 1,
+    volumeMod: 1,
     key: 'num6',
     color: 5,
   },
   {
     name: 'ht',
-    sampler: new Tone.Sampler({ C2: './audio/analog/ht.mp3' }).connect(
-      channels[6]
-    ),
+    sample: './audio/analog/ht.mp3',
+    pitch: MIDI_NOTES,
+    pitchMod: 0,
+    durationMod: 1,
+    volumeMod: 1,
     key: 'num7',
     color: 6,
   },
   {
     name: 'mt',
-    sampler: new Tone.Sampler({ C2: './audio/analog/mt.mp3' }).connect(
-      channels[7]
-    ),
+    sample: './audio/analog/mt.mp3',
+    pitch: MIDI_NOTES,
+    pitchMod: 0,
+    durationMod: 1,
+    volumeMod: 1,
     key: 'num8',
     color: 7,
   },
   {
     name: 'lt',
-    sampler: new Tone.Sampler({ C2: './audio/analog/lt.mp3' }).connect(
-      channels[8]
-    ),
+    sample: './audio/analog/lt.mp3',
+    pitch: MIDI_NOTES,
+    pitchMod: 0,
+    durationMod: 1,
+    volumeMod: 1,
     key: 'num9',
     color: 8,
   },

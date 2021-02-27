@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useContext, useMemo, useRef } from 'react';
 import { ClearOneIcon, SwipeVerticalIcon } from '../icons';
 import { Knob } from '../icons/Knob';
-import { kit } from '../Kit';
+import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
 import { Info } from '../Providers/Info';
 
 export const SoundSelector = () => {
   const { selectedSound, setSelectedSound } = useContext(Pattern);
+  const { kit } = useContext(Kit);
   const [edit, setEdit] = useState(false);
 
   useEffect(() => {
@@ -37,26 +38,30 @@ export const SoundSelector = () => {
 
 const SoundEdit = ({ setEdit, selectedSound }) => {
   const { setInfo } = useContext(Info);
+  const { kit } = useContext(Kit);
 
-  const [volVal, setVolVal] = useState(100);
-  const [tuneVal, setTuneVal] = useState(50);
-  const [lengthVal, setLengthVal] = useState(100);
+  const [volVal, setVolVal] = useState(kit[selectedSound].volumeMod * 100);
+  const [tuneVal, setTuneVal] = useState(
+    Math.round(kit[selectedSound].pitchMod / 0.1) + 50
+  );
+  const [lengthVal, setLengthVal] = useState(
+    kit[selectedSound].durationMod * 100 + 0.1
+  );
 
-  let timerRef = useRef(null);
   useEffect(() => {
-    timerRef.current = setTimeout(() => {
-      const db = volVal === 0 ? -100 : (-100 + volVal) * 0.2;
-      kit[selectedSound].sampler.volume.value = db > 0 ? 0 : db;
-      console.log(db);
-    }, 50);
-
-    return () => clearTimeout(timerRef.current);
+    kit[selectedSound].volumeMod = volVal * 0.01;
+    console.log(kit[selectedSound].volumeMod);
   }, [volVal]);
 
   useEffect(() => {
-    const old = kit[selectedSound].sampler._buffers._buffers.get('36');
-    kit[selectedSound].sampler._buffers._buffers.set('30', old);
+    kit[selectedSound].pitchMod = Math.round((tuneVal - 50) * 0.1);
+    console.log(kit[selectedSound].pitchMod);
   }, [tuneVal]);
+
+  useEffect(() => {
+    kit[selectedSound].durationMod = lengthVal * 0.01 + 0.01;
+    console.log(kit[selectedSound].durationMod);
+  }, [lengthVal]);
 
   const [y, setY] = useState(null);
   const handleTouchStart = (e) => {

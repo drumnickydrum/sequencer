@@ -8,10 +8,14 @@
   - volume knob
   - pitch knob
   - length knob
+  - The knob values are 0-100 and I did calculations to scale that to required adjustment values. Not sure if I should do it the other way around.
 - Added an info overlay to assist with instructions.
-- I'd also like to figure out the 'slicer' option... I remember there was something in tone.js where if you schedule an array it will fit the notes within the current subdivision, effectively 'slicing' it up.
+- Kit now stored in a ref. It gets the duration of each buffer after the audio is ready. It uses `volumeMod`, `pitchMod`, and `durationMod` to adjust the knobs mentioned above. (The calculation happens during `scheduleCell () => triggerAttackRelease()` ).
+
+#### Next
+
+- I'd like to figure out the 'slicer' option... I remember there was something in tone.js where if you schedule an array it will fit the notes within the current subdivision, effectively 'slicing' it up.
 - I'd also like to implement a feature to copy the current sound's pattern to another sound.
-- setKit isn't right... I'm really just mutating the sampler directly. This is unrelated to React state.
 
 ### 2/25/2021
 
