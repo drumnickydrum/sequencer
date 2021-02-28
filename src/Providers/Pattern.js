@@ -22,8 +22,19 @@ export const PatternProvider = ({ children }) => {
     patternRef.current = pattern.map((cell) => [...cell]);
   }, [pattern]);
 
+  const [slicing, setSlicing] = useState(false);
+  const slicingRef = useRef(null);
+  useEffect(() => {
+    slicingRef.current = slicing;
+  }, [slicing]);
+
+  const [copying, setCopying] = useState(false);
+  const copyingRef = useRef(null);
+  useEffect(() => {
+    copyingRef.current = copying;
+  });
+
   const toggleCell = (i, vol, addHistory = true) => {
-    if (selectedSound === -1) return;
     let newVol;
     setPattern((pattern) => {
       newVol = vol === 0 ? 1 : 0;
@@ -35,6 +46,14 @@ export const PatternProvider = ({ children }) => {
       redoRef.current.length = 0;
       addToUndo('toggleCell', newVol, vol, i);
     }
+  };
+
+  const sliceCell = () => {
+    console.log('slicing cell');
+  };
+
+  const copySoundPattern = () => {
+    console.log('copying sound pattern');
   };
 
   const clearPattern = (one, addHistory = true) => {
@@ -145,6 +164,13 @@ export const PatternProvider = ({ children }) => {
         undo,
         redo,
         clearPattern,
+        slicing,
+        setSlicing,
+        slicingRef,
+        sliceCell,
+        copying,
+        setCopying,
+        copyingRef,
         events,
         setEvents,
         prevCellRef,
@@ -159,3 +185,11 @@ export const PatternProvider = ({ children }) => {
     </Pattern.Provider>
   );
 };
+
+// const seq = new Tone.Sequence(
+//   (time, note) => {
+//     synth.triggerAttackRelease(note, 0.1, time);
+//     // subdivisions are given as subarrays
+//   },
+//   ['C4', ['E4', 'D4', 'E4'], 'G4', ['A4', 'G4']]
+// ).start(0);

@@ -3,7 +3,7 @@ import { KitProvider } from './Providers/Kit';
 import { PatternProvider } from './Providers/Pattern';
 import { SequencerProvider } from './Providers/Sequencer';
 import { InfoProvider } from './Providers/Info';
-import { SoundSelector } from './Sections/SoundSelector';
+import { SoundPanel } from './Sections/SoundPanel';
 import { Grid } from './Sections/Grid';
 import { Edit } from './Sections/Edit';
 import { Transport } from './Sections/Transport';
@@ -23,7 +23,7 @@ export default function App() {
             </div>
 
             <div id='three'>
-              <SoundSelector />
+              <SoundPanel />
             </div>
 
             <div id='one'>

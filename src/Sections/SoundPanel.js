@@ -5,7 +5,7 @@ import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
 import { Info } from '../Providers/Info';
 
-export const SoundSelector = () => {
+export const SoundPanel = () => {
   const { selectedSound, setSelectedSound } = useContext(Pattern);
   const { kit } = useContext(Kit);
   const [edit, setEdit] = useState(false);
@@ -20,7 +20,8 @@ export const SoundSelector = () => {
   };
 
   return edit ? (
-    <SoundEdit setEdit={setEdit} selectedSound={selectedSound} />
+    // <SoundEdit setEdit={setEdit} selectedSound={selectedSound} />
+    <SliceAndCopy setEdit={setEdit} selectedSound={selectedSound} />
   ) : (
     <div id='sound-selector'>
       {kit.map((sound, i) => (
@@ -32,6 +33,28 @@ export const SoundSelector = () => {
           handleClick={handleClick}
         />
       ))}
+    </div>
+  );
+};
+
+const SliceAndCopy = ({ setEdit }) => {
+  const { slicing, setSlicing, copying, setCopying } = useContext(Pattern);
+
+  const handleSlice = () => {
+    setSlicing((slicing) => !slicing);
+  };
+
+  const handleCopy = () => {
+    console.log('copy');
+  };
+
+  return (
+    <div className='sound-edit'>
+      <div className='sound-pattern-edit'>
+        <button onClick={handleSlice}>{slicing ? 'Slicing!' : 'Slice'}</button>
+        <button onClick={handleCopy}>Copy</button>
+      </div>
+      <button onClick={() => setEdit(false)}>Close</button>
     </div>
   );
 };
@@ -50,17 +73,14 @@ const SoundEdit = ({ setEdit, selectedSound }) => {
 
   useEffect(() => {
     kit[selectedSound].volumeMod = volVal * 0.01;
-    console.log(kit[selectedSound].volumeMod);
   }, [volVal]);
 
   useEffect(() => {
     kit[selectedSound].pitchMod = Math.round((tuneVal - 50) * 0.1);
-    console.log(kit[selectedSound].pitchMod);
   }, [tuneVal]);
 
   useEffect(() => {
     kit[selectedSound].durationMod = lengthVal * 0.01 + 0.01;
-    console.log(kit[selectedSound].durationMod);
   }, [lengthVal]);
 
   const [y, setY] = useState(null);

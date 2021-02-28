@@ -248,11 +248,17 @@ body {
 }
 
 .sound-edit {
+  width: 100%;
   min-height: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  /* border: 1px solid red; */
+}
+
+.sound-pattern-edit {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .sample-edit {

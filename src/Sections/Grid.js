@@ -40,6 +40,9 @@ const Cell = ({ id, i }) => {
     setEvents,
     prevCellRef,
     selectedSound,
+    slicingRef,
+    sliceCell,
+    copyingRef,
   } = useContext(Pattern);
   const cellRef = useRef(null);
   const [vol, setVol] = useState(0);
@@ -53,7 +56,7 @@ const Cell = ({ id, i }) => {
   const handleTouchStart = (e) => {
     e.stopPropagation();
     prevCellRef.current = id;
-    toggleCell(i, vol);
+    handleToggle();
   };
 
   const handleTouchEnd = () => {
@@ -61,7 +64,12 @@ const Cell = ({ id, i }) => {
   };
 
   const handleToggle = () => {
-    toggleCell(i, vol);
+    if (selectedSound === -1) return;
+    if (slicingRef.current) {
+      if (vol) sliceCell(i);
+    } else {
+      toggleCell(i, vol);
+    }
   };
 
   useEffect(() => {
