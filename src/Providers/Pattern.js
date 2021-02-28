@@ -7,17 +7,17 @@ export const Pattern = React.createContext();
 export const PatternProvider = ({ children }) => {
   const { kit } = useContext(Kit);
 
-  const [pattern, setPattern] = useState(
-    analog.pattern.map((cell) => [...cell])
-  );
   const [selectedSound, setSelectedSound] = useState(-1);
   const [events, setEvents] = useState({});
 
-  const patternRef = useRef(pattern.map((cell) => [...cell]));
   const prevCellRef = useRef(null);
   const undoRef = useRef([]);
   const redoRef = useRef([]);
 
+  const [pattern, setPattern] = useState(
+    analog.pattern.map((cell) => [...cell])
+  );
+  const patternRef = useRef(pattern.map((cell) => [...cell]));
   useEffect(() => {
     patternRef.current = pattern.map((cell) => [...cell]);
   }, [pattern]);
@@ -48,8 +48,19 @@ export const PatternProvider = ({ children }) => {
     }
   };
 
-  const sliceCell = () => {
-    console.log('slicing cell');
+  const sliceCell = (i) => {
+    setPattern((pattern) => {
+      let newPattern = pattern.map((cell) => [...cell]);
+      let note = newPattern[i][selectedSound];
+      if (!isNaN(note)) {
+        newPattern[i][selectedSound] = [note, note];
+      } else if (note.length === 2) {
+        newPattern[i][selectedSound] = [...note, note[0]];
+      } else if (note.length === 3) {
+        newPattern[i][selectedSound] = note[0];
+      }
+      return newPattern;
+    });
   };
 
   const copySoundPattern = () => {
@@ -130,19 +141,43 @@ export const PatternProvider = ({ children }) => {
     for (const [sound, vol] of Object.entries(
       patternRef.current[stepRef.current]
     )) {
-      if (patternRef.current[stepRef.current][sound]) {
+      const cell = patternRef.current[stepRef.current][sound];
+      if (cell) {
+        let event;
         let pitch = 24 + kit[sound].pitchMod;
         pitch = pitch > 59 ? 59 : pitch < 0 ? 0 : pitch;
-        kit[sound].sampler.triggerAttackRelease(
-          kit[sound].pitch[pitch],
-          kit[sound].duration * kit[sound].durationMod,
-          time,
-          vol * kit[sound].volumeMod
-        );
+        if (!isNaN(cell)) event = scheduleNote(sound, pitch, vol, time);
+        if (Array.isArray(cell)) event = scheduleArray(sound, pitch, vol, time);
+        event.start();
       }
     }
     stepRef.current =
       stepRef.current === pattern.length - 1 ? 0 : stepRef.current + 1;
+  };
+
+  const scheduleNote = (sound, pitch, vol, time) => {
+    return new Tone.ToneEvent(() => {
+      kit[sound].sampler.triggerAttackRelease(
+        kit[sound].pitch[pitch],
+        kit[sound].duration * kit[sound].durationMod,
+        time,
+        vol * kit[sound].volumeMod
+      );
+    });
+  };
+
+  const scheduleArray = (sound, pitch, array, time) => {
+    const notes = array.map((vol) => kit[sound].pitch[pitch]);
+    let seq = new Tone.Sequence(
+      (_, note) => {
+        console.log(note);
+        kit[sound].sampler.triggerAttackRelease(note, 0.1, time, 1);
+      },
+      [notes],
+      '16n'
+    );
+    seq.loop = false;
+    return seq;
   };
 
   useEffect(() => {
@@ -185,11 +220,3 @@ export const PatternProvider = ({ children }) => {
     </Pattern.Provider>
   );
 };
-
-// const seq = new Tone.Sequence(
-//   (time, note) => {
-//     synth.triggerAttackRelease(note, 0.1, time);
-//     // subdivisions are given as subarrays
-//   },
-//   ['C4', ['E4', 'D4', 'E4'], 'G4', ['A4', 'G4']]
-// ).start(0);

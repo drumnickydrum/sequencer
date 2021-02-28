@@ -2,6 +2,10 @@
 
 ## Dev notes
 
+### 2/28/2021
+
+- Ran into same issue with stale value from state inside a function. Need to remember this pattern: `state update => useEffect => ref.current = state` then pass the ref to the function definition. Should make a custom hook for this?
+
 ### 2/26/2021
 
 - Added a panel to edit each sound:
