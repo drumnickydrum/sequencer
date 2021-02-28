@@ -5,6 +5,8 @@
 ### 2/28/2021
 
 - Ran into same issue with stale value from state inside a function. Need to remember this pattern: `state update => useEffect => ref.current = state` then pass the ref to the function definition. Should make a custom hook for this?
+- Basic slice works but need to adjust the duration and timing.
+- Need to adjust vol/pitch/duration mod in the kit object instead of calculating during `scheduleCell()`. 'Per cell' mods will need to go there instead of 'per sound' mods.
 
 ### 2/26/2021
 
