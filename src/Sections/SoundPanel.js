@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useMemo, useRef } from 'react';
-import { ClearOneIcon, SwipeVerticalIcon } from '../icons';
+import { ClearOneIcon, CopyIcon, SawIcon, SwipeVerticalIcon } from '../icons';
 import { Knob } from '../icons/Knob';
 import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
@@ -57,8 +57,22 @@ const SliceAndCopy = ({ setEdit }) => {
   return (
     <div className='sound-edit'>
       <div className='sound-pattern-edit'>
-        <button onClick={handleSlice}>{slicing ? 'Slicing!' : 'Slice'}</button>
-        <button onClick={handleCopy}>{copying ? 'Copying!' : 'Copy'}</button>
+        {copying ? (
+          <p className='instruction'>Click sound to paste copied pattern</p>
+        ) : (
+          <div className='sound-pattern-edit-btn' onClick={handleSlice}>
+            <SawIcon addClass={slicing ? 'slicing' : ''} />
+            <p>{slicing ? 'Finish' : 'Slice'}</p>
+          </div>
+        )}
+        {slicing ? (
+          <p className='instruction'>Click cell to slice in half or thirds</p>
+        ) : (
+          <div className='sound-pattern-edit-btn' onClick={handleCopy}>
+            <CopyIcon addClass={copying ? 'copying' : ''} />
+            <p>{copying ? 'Finish' : 'Copy'}</p>
+          </div>
+        )}
       </div>
       <button onClick={handleClose}>Close</button>
     </div>

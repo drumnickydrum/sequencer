@@ -6,6 +6,7 @@ import { ReactComponent as ClearOne } from './clear-one.svg';
 import { ReactComponent as ClearAll } from './clear-all.svg';
 import { ReactComponent as Swipe } from './swipe.svg';
 import { ReactComponent as Saw } from './saw.svg';
+import { ReactComponent as Copy } from './copy.svg';
 
 export const StopIcon = () => <Stop />;
 export const StartIcon = () => <Start />;
@@ -20,4 +21,5 @@ export const SwipeVerticalIcon = () => (
   <Swipe style={{ transform: 'rotate(-90deg)' }} />
 );
 
-export const SawIcon = () => <Saw />;
+export const SawIcon = ({ addClass = '' }) => <Saw className={addClass} />;
+export const CopyIcon = ({ addClass = '' }) => <Copy className={addClass} />;

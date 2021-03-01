@@ -186,6 +186,7 @@ body {
 /*************************************/
 
 #paste-pattern {
+  pointer-events: none;
   position: absolute;
   height: 100%;
   width: 100%;
@@ -195,6 +196,7 @@ body {
 }
 
 #paste-pattern.show {
+  pointer-events: initial;
   opacity: 1;
 }
 
@@ -240,19 +242,6 @@ body {
 
 #paste-pattern-sounds .cell {
   border: none;
-}
-
-.flashing {
-  animation: flashing 500ms alternate infinite;
-}
-
-@keyframes flashing {
-  0% {
-    color: var(--white-half);
-  }
-  100% {
-    color: var(--white);
-  }
 }
 
 /*************************************/
@@ -332,8 +321,45 @@ body {
 
 .sound-pattern-edit {
   width: 100%;
+  padding: 1rem;
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
+}
+
+.sound-pattern-edit .instruction {
+  width: 50%;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.sound-pattern-edit-btn {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sound-pattern-edit-btn svg {
+  width: 5rem;
+  stroke: var(--white);
+}
+
+svg.slicing {
+  animation: slicing 2000ms infinite linear;
+}
+
+@keyframes slicing {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.sound-pattern-edit-btn p {
+  padding: 0.5rem;
 }
 
 .sample-edit {
@@ -361,7 +387,7 @@ body {
   color: var(--white);
 }
 
-.sound-edit svg {
+.sample-edit svg {
   width: 100%;
   height: 100%;
 }
@@ -457,7 +483,7 @@ body {
 
 .slice svg {
   stroke-width: 2px;
-  stroke: var(--purple);
+  stroke: var(--black);
   fill: transparent;
   width: 75%;
   height: 75%;
@@ -591,6 +617,7 @@ select {
 /*************************************/
 /************** Colors ***************/
 /*************************************/
+
 .colorBlack {
   color: var(--black);
 }
@@ -752,4 +779,23 @@ select {
 }
 .color8 .icon {
   fill: var(--pink);
+}
+
+/*************************************/
+/************* Animations ************/
+/*************************************/
+
+.flashing {
+  animation: flashing 500ms alternate infinite;
+}
+
+@keyframes flashing {
+  0% {
+    border-color: var(--white-half);
+    color: var(--white-half);
+  }
+  100% {
+    border-color: var(--white);
+    color: var(--white);
+  }
 }

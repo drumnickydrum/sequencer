@@ -4,6 +4,10 @@
 
 ### 2/29/2021
 
+> 4:00pm:
+
+- Copy pattern is implemented. Need to figure out the look of the UI.
+
 > 12:00pm:
 
 - Slick'd up the slicing and scheduling a bit. Instead of a `slice` property I now use an array of notes, similar to how Tone does the `Schedule` subdivision. It works and reads pretty clean.
