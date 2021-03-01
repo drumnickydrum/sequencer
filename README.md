@@ -2,6 +2,11 @@
 
 ## Dev notes
 
+### 2/29/2021
+
+- Trying to adjust `scheduleCell` to decide between `Tone.ToneEvent` and `Tone.Sequence` was not working... causing missing notes and hiccups. I decided to leave it as a simple `scheduleAttackRelease` and use the `slice` property to manually insert more triggers.
+- Each note of the pattern is now: `{pitch, velocity, release, slice}` and in general I think this will leave me way more options as I expand the features of playback/editing. It's already cleaned up some of the code.
+
 ### 2/28/2021
 
 - Ran into same issue with stale value from state inside a function. Need to remember this pattern: `state update => useEffect => ref.current = state` then pass the ref to the function definition. Should make a custom hook for this?
