@@ -45,7 +45,7 @@ const SliceAndCopy = ({ setEdit }) => {
   };
 
   const handleCopy = () => {
-    console.log('copy');
+    setCopying((copying) => !copying);
   };
 
   const handleClose = () => {
@@ -58,7 +58,7 @@ const SliceAndCopy = ({ setEdit }) => {
     <div className='sound-edit'>
       <div className='sound-pattern-edit'>
         <button onClick={handleSlice}>{slicing ? 'Slicing!' : 'Slice'}</button>
-        <button onClick={handleCopy}>Copy</button>
+        <button onClick={handleCopy}>{copying ? 'Copying!' : 'Copy'}</button>
       </div>
       <button onClick={handleClose}>Close</button>
     </div>

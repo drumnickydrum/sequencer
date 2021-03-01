@@ -50,6 +50,7 @@
   --grey-quarter: rgb(150, 140, 170, 0.25);
   --none: rgb(150, 140, 170, 0);
   --black: #000;
+  --black-90: rgba(0, 0, 0, 0.9);
   --black-3q: rgba(0, 0, 0, 0.75);
   --black-half: rgba(0, 0, 0, 0.5);
   --black-quarter: rgba(0, 0, 0, 0.25);
@@ -178,6 +179,80 @@ body {
   display: inline-flex;
   justify-content: space-evenly;
   align-items: center;
+}
+
+/*************************************/
+/*********** Paste Pattern ***********/
+/*************************************/
+
+#paste-pattern {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: var(--black-90);
+  opacity: 0;
+  transition: 150ms;
+}
+
+#paste-pattern.show {
+  opacity: 1;
+}
+
+#paste-pattern-sounds {
+  min-width: 100%;
+  min-height: 100%;
+  padding: 0.25rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.2rem;
+}
+
+#paste-pattern-sounds .sound {
+  position: relative;
+}
+
+#paste-pattern-sounds p {
+  /* width: 100%; */
+  padding: 0.5rem;
+  text-align: center;
+  background: var(--black-3q);
+  border-radius: 0.5rem;
+  z-index: 3;
+}
+
+#paste-pattern-sounds .cells {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 0.25rem;
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-rows: repeat(8, minmax(0, 1fr));
+  gap: 5px;
+  border-radius: 0.5rem;
+  opacity: 0.35;
+}
+
+#paste-pattern-sounds .cells.selected {
+  opacity: 1;
+}
+
+#paste-pattern-sounds .cell {
+  border: none;
+}
+
+.flashing {
+  animation: flashing 500ms alternate infinite;
+}
+
+@keyframes flashing {
+  0% {
+    color: var(--white-half);
+  }
+  100% {
+    color: var(--white);
+  }
 }
 
 /*************************************/

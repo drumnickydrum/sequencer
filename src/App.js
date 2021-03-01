@@ -5,6 +5,7 @@ import { SequencerProvider } from './Providers/Sequencer';
 import { InfoProvider } from './Providers/Info';
 import { SoundPanel } from './Sections/SoundPanel';
 import { Grid } from './Sections/Grid';
+import { PastePattern } from './Sections/PastePattern';
 import { Edit } from './Sections/Edit';
 import { Transport } from './Sections/Transport';
 import { Information } from './Sections/Information';
@@ -19,6 +20,7 @@ export default function App() {
 
             <div id='two'>
               <Grid />
+              <PastePattern />
               <Information />
             </div>
 

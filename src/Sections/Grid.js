@@ -43,7 +43,6 @@ const Cell = ({ id, i }) => {
     selectedSound,
     slicingRef,
     sliceCell,
-    copyingRef,
   } = useContext(Pattern);
   const cellRef = useRef(null);
   const [on, setOn] = useState(false);

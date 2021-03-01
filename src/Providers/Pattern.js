@@ -28,10 +28,6 @@ export const PatternProvider = ({ children }) => {
   }, [slicing]);
 
   const [copying, setCopying] = useState(false);
-  const copyingRef = useRef(null);
-  useEffect(() => {
-    copyingRef.current = copying;
-  });
 
   const toggleCell = (i, addHistory = true) => {
     setPattern((pattern) => {
@@ -61,13 +57,22 @@ export const PatternProvider = ({ children }) => {
     }
   };
 
-  const copySoundPattern = () => {
-    console.log('copying sound pattern');
+  const pastePattern = (sound, addHistory = true) => {
+    let newPattern = deepCopyPattern(pattern);
+    newPattern.forEach((cell) => {
+      const copiedSound = { ...cell[selectedSound] };
+      const notes = [...copiedSound.notes];
+      notes.forEach((note) => ({ ...note }));
+      cell[sound] = { on: copiedSound.on, notes };
+    });
+    setPattern(newPattern);
+    if (addHistory) {
+      addToUndo('pastePattern', null, newPattern, pattern);
+    }
   };
 
   const clearPattern = (one, addHistory = true) => {
-    let prevPattern = pattern,
-      newPattern;
+    let newPattern;
     if (!one) {
       newPattern = INIT_PATTERN();
       setPattern(newPattern);
@@ -80,7 +85,7 @@ export const PatternProvider = ({ children }) => {
       setPattern(newPattern);
     }
     if (addHistory) {
-      addToUndo('clearPattern', null, newPattern, prevPattern);
+      addToUndo('clearPattern', null, newPattern, pattern);
     }
   };
 
@@ -101,7 +106,7 @@ export const PatternProvider = ({ children }) => {
         () => sliceCell(i, false),
       ]);
     }
-    if (type === 'clearPattern') {
+    if (type === 'clearPattern' || type === 'pastePattern') {
       undoRef.current.push([
         () => setPattern([...prevVal], false),
         () => setPattern([...newVal], false),
@@ -216,7 +221,7 @@ export const PatternProvider = ({ children }) => {
         sliceCell,
         copying,
         setCopying,
-        copyingRef,
+        pastePattern,
         events,
         setEvents,
         prevCellRef,
