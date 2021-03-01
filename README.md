@@ -7,7 +7,6 @@
 > 12:00pm:
 
 - Slick'd up the slicing and scheduling a bit. Instead of a `slice` property I now use an array of notes, similar to how Tone does the `Schedule` subdivision. It works and reads pretty clean.
-- Since I've made each note of each cell an object, I have to make sure I deep copy everything wherever they're being edited.
 - Deep copy of a pattern now look like this:
 
 ```
@@ -20,6 +19,8 @@ return pattern.map((cell) => { // array of cells
     });
   });
 ```
+
+- Added saw icon and animation for sliced cells.
 
 < 12:00pm:
 

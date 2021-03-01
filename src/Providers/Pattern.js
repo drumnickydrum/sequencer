@@ -40,12 +40,11 @@ export const PatternProvider = ({ children }) => {
       return newPattern;
     });
     if (addHistory) {
-      redoRef.current.length = 0;
       addToUndo('toggleCell', i);
     }
   };
 
-  const sliceCell = (i) => {
+  const sliceCell = (i, addHistory = true) => {
     setPattern((pattern) => {
       let newPattern = deepCopyPattern(pattern);
       let notes = newPattern[i][selectedSound].notes;
@@ -57,6 +56,9 @@ export const PatternProvider = ({ children }) => {
       }
       return newPattern;
     });
+    if (addHistory) {
+      addToUndo('sliceCell', i);
+    }
   };
 
   const copySoundPattern = () => {
@@ -78,16 +80,25 @@ export const PatternProvider = ({ children }) => {
       setPattern(newPattern);
     }
     if (addHistory) {
-      redoRef.current.length = 0;
       addToUndo('clearPattern', null, newPattern, prevPattern);
     }
   };
 
   const addToUndo = (type, i, newVal, prevVal) => {
+    redoRef.current.length = 0;
     if (type === 'toggleCell') {
       undoRef.current.push([
         () => toggleCell(i, false),
         () => toggleCell(i, false),
+      ]);
+    }
+    if (type === 'sliceCell') {
+      undoRef.current.push([
+        () => {
+          sliceCell(i, false);
+          sliceCell(i, false);
+        },
+        () => sliceCell(i, false),
       ]);
     }
     if (type === 'clearPattern') {
