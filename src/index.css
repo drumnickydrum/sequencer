@@ -369,6 +369,37 @@ body {
   transform: scale(2);
 }
 
+.slice {
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 0.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slice svg {
+  stroke-width: 2px;
+  stroke: var(--purple);
+  fill: transparent;
+  width: 75%;
+  height: 75%;
+  transform: rotate(0);
+  transition: 300ms ease-out;
+}
+
+.slice-3 svg {
+  width: 100%;
+  height: 100%;
+}
+
+.cell.pulse .slice svg {
+  transition: none;
+  transform: rotate(360deg);
+}
+
 /*************************************/
 /**************** Edit ***************/
 /*************************************/

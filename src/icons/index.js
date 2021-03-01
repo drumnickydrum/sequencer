@@ -1,12 +1,11 @@
 import { ReactComponent as Stop } from './stop.svg';
 import { ReactComponent as Start } from './start.svg';
-
 import { ReactComponent as Undo } from './undo.svg';
 import { ReactComponent as Redo } from './redo.svg';
 import { ReactComponent as ClearOne } from './clear-one.svg';
 import { ReactComponent as ClearAll } from './clear-all.svg';
-
 import { ReactComponent as Swipe } from './swipe.svg';
+import { ReactComponent as Saw } from './saw.svg';
 
 export const StopIcon = () => <Stop />;
 export const StartIcon = () => <Start />;
@@ -20,3 +19,5 @@ export const SwipeHorizontalIcon = () => <Swipe />;
 export const SwipeVerticalIcon = () => (
   <Swipe style={{ transform: 'rotate(-90deg)' }} />
 );
+
+export const SawIcon = () => <Saw />;

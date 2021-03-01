@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import * as Tone from 'tone';
 import { Kit } from '../Providers/Kit';
-import { INIT_PATTERN, analog } from './defaultSequences';
+import { INIT_PATTERN, INIT_ONE_PATTERN, analog } from './defaultSequences';
 import { MIDI_NOTES } from '../kits/defaultKits';
 
 export const Pattern = React.createContext();
@@ -15,12 +15,10 @@ export const PatternProvider = ({ children }) => {
   const undoRef = useRef([]);
   const redoRef = useRef([]);
 
-  const [pattern, setPattern] = useState(
-    analog.pattern.map((cell) => [...cell])
-  );
-  const patternRef = useRef(pattern.map((cell) => [...cell]));
+  const [pattern, setPattern] = useState(deepCopyPattern(analog.pattern));
+  const patternRef = useRef(null);
   useEffect(() => {
-    patternRef.current = pattern.map((cell) => [...cell]);
+    patternRef.current = deepCopyPattern(pattern);
   }, [pattern]);
 
   const [slicing, setSlicing] = useState(false);
@@ -35,30 +33,27 @@ export const PatternProvider = ({ children }) => {
     copyingRef.current = copying;
   });
 
-  const toggleCell = (i, vol, addHistory = true) => {
-    let newVol;
+  const toggleCell = (i, addHistory = true) => {
     setPattern((pattern) => {
-      newVol = vol === 0 ? 1 : 0;
-      let newPattern = pattern.map((cell) => [...cell]);
-      newPattern[i][selectedSound] = newVol;
+      let newPattern = deepCopyPattern(pattern);
+      newPattern[i][selectedSound].on = !newPattern[i][selectedSound].on;
       return newPattern;
     });
     if (addHistory) {
       redoRef.current.length = 0;
-      addToUndo('toggleCell', newVol, vol, i);
+      addToUndo('toggleCell', i);
     }
   };
 
   const sliceCell = (i) => {
     setPattern((pattern) => {
-      let newPattern = pattern.map((cell) => [...cell]);
-      let note = newPattern[i][selectedSound];
-      if (!isNaN(note)) {
-        newPattern[i][selectedSound] = [note, note];
-      } else if (note.length === 2) {
-        newPattern[i][selectedSound] = [...note, note[0]];
-      } else if (note.length === 3) {
-        newPattern[i][selectedSound] = note[0];
+      let newPattern = deepCopyPattern(pattern);
+      let notes = newPattern[i][selectedSound].notes;
+      let len = notes.length;
+      if (len === 3) {
+        newPattern[i][selectedSound].notes = [notes[0]];
+      } else {
+        notes.push(notes[0]);
       }
       return newPattern;
     });
@@ -76,24 +71,23 @@ export const PatternProvider = ({ children }) => {
       setPattern(newPattern);
     } else {
       if (selectedSound === -1) return;
-      newPattern = pattern.map((cell) => {
-        let newCell = [...cell];
-        newCell[selectedSound] = 0;
-        return newCell;
+      newPattern = deepCopyPattern(pattern);
+      newPattern.forEach((cell) => {
+        cell[selectedSound] = INIT_ONE_PATTERN();
       });
       setPattern(newPattern);
     }
     if (addHistory) {
       redoRef.current.length = 0;
-      addToUndo('clearPattern', newPattern, prevPattern);
+      addToUndo('clearPattern', null, newPattern, prevPattern);
     }
   };
 
-  const addToUndo = (type, newVal, prevVal, i) => {
+  const addToUndo = (type, i, newVal, prevVal) => {
     if (type === 'toggleCell') {
       undoRef.current.push([
-        () => toggleCell(i, newVal, false),
-        () => toggleCell(i, prevVal, false),
+        () => toggleCell(i, false),
+        () => toggleCell(i, false),
       ]);
     }
     if (type === 'clearPattern') {
@@ -139,41 +133,51 @@ export const PatternProvider = ({ children }) => {
   };
 
   const scheduleCell = (time, stepRef) => {
-    for (const [sound, note] of Object.entries(
+    for (const [sound, { on, notes }] of Object.entries(
       patternRef.current[stepRef.current]
     )) {
-      let { pitch, velocity, release, slice } = note;
-      pitch += kit[sound].pitchMod;
-      pitch = MIDI_NOTES[pitch];
-      velocity *= kit[sound].velocityMod;
-      release *= kit[sound].releaseMod * kit[sound].duration;
-      if (velocity) {
+      if (on) {
+        // console.time('schedule note');
+        let slice = notes.length;
+        let [pitch, velocity, release] = getModdedValues(sound, notes[0]);
         kit[sound].sampler.triggerAttackRelease(pitch, release, time, velocity);
         if (slice === 2) {
+          let [pitch2, velocity2, release2] = getModdedValues(sound, notes[1]);
           kit[sound].sampler.triggerAttackRelease(
-            pitch,
-            release,
+            pitch2,
+            release2,
             time + Tone.Time('32n'),
-            velocity
+            velocity2
           );
         } else if (slice === 3) {
+          let [pitch2, velocity2, release2] = getModdedValues(sound, notes[1]);
+          let [pitch3, velocity3, release3] = getModdedValues(sound, notes[2]);
           kit[sound].sampler.triggerAttackRelease(
-            pitch,
-            release,
+            pitch2,
+            release2,
             time + Tone.Time('32t'),
-            velocity
+            velocity2
           );
           kit[sound].sampler.triggerAttackRelease(
-            pitch,
-            release,
+            pitch3,
+            release3,
             time + Tone.Time('32t') + Tone.Time('32t'),
-            velocity
+            velocity3
           );
         }
+        // console.timeEnd('schedule note');
       }
     }
     stepRef.current =
       stepRef.current === pattern.length - 1 ? 0 : stepRef.current + 1;
+  };
+
+  const getModdedValues = (sound, { pitch, velocity, release }) => {
+    pitch += kit[sound].pitchMod;
+    pitch = MIDI_NOTES[pitch];
+    velocity *= kit[sound].velocityMod;
+    release *= kit[sound].releaseMod * kit[sound].duration;
+    return [pitch, velocity, release];
   };
 
   useEffect(() => {
@@ -215,4 +219,15 @@ export const PatternProvider = ({ children }) => {
       {children}
     </Pattern.Provider>
   );
+};
+
+const deepCopyPattern = (pattern) => {
+  return pattern.map((cell) => {
+    return cell.map((sound) => {
+      let newNotes = sound.notes.map((note) => {
+        return { ...note };
+      });
+      return { on: sound.on, notes: newNotes };
+    });
+  });
 };

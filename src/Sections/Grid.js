@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, useMemo, useRef } from 'react';
 import { Pattern } from '../Providers/Pattern';
+import { SawIcon } from '../icons';
 
 export const Grid = () => {
   const { events, prevCellRef } = useContext(Pattern);
@@ -45,11 +46,21 @@ const Cell = ({ id, i }) => {
     copyingRef,
   } = useContext(Pattern);
   const cellRef = useRef(null);
+  const [on, setOn] = useState(false);
   const [vol, setVol] = useState(0);
   const [color, setColor] = useState(-1);
 
   useEffect(() => {
-    setVol(pattern[i][selectedSound]);
+    let newOn, newVol;
+    if (selectedSound === -1) {
+      newOn = false;
+      newVol = 0;
+    } else {
+      newOn = pattern[i][selectedSound].on;
+      if (newOn) newVol = pattern[i][selectedSound].notes[0].velocity;
+    }
+    setOn(newOn);
+    setVol(newVol);
     setColor(selectedSound);
   }, [pattern[i][selectedSound], selectedSound]);
 
@@ -66,9 +77,9 @@ const Cell = ({ id, i }) => {
   const handleToggle = () => {
     if (selectedSound === -1) return;
     if (slicingRef.current) {
-      if (vol) sliceCell(i);
+      if (on) sliceCell(i);
     } else {
-      toggleCell(i, vol);
+      toggleCell(i);
     }
   };
 
@@ -84,8 +95,10 @@ const Cell = ({ id, i }) => {
   const cellMemo = useMemo(() => {
     // console.log('rendering cell: ', i);
     let classes = `cell`;
-    classes += vol ? ` bg${color} on` : '';
+    classes += on ? ` bg${color} on` : '';
     const soundCells = getSoundCells(id, pattern[i]);
+    const len = pattern[i][selectedSound]?.notes.length;
+    const sliceClasses = len === 2 ? 'slice' : len === 3 ? 'slice slice-3' : '';
     return (
       <div className='cell-wrapper'>
         <div
@@ -94,8 +107,14 @@ const Cell = ({ id, i }) => {
           className={classes}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
+          style={on ? { opacity: vol } : { opacity: 1 }}
         >
           <div className='sound-cells'>{soundCells}</div>
+          {on && sliceClasses && (
+            <div className={sliceClasses}>
+              <SawIcon />
+            </div>
+          )}
         </div>
       </div>
     );
@@ -108,8 +127,8 @@ const getSoundCells = (cellId, patternI, size = 9) => {
   let soundCells = [];
   for (let i = 0; i < size; i++) {
     const id = `${cellId}-${i}`;
-    const color = patternI[i] ? `bg${i}` : '';
-    const vol = patternI[i];
+    const color = patternI[i].on ? `bg${i}` : '';
+    const vol = patternI[i].notes[0];
     soundCells.push(<SoundCell key={id} id={id} color={color} vol={vol} />);
   }
   return soundCells;

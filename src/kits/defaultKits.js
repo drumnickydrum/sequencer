@@ -67,7 +67,6 @@ export const analog = [
   {
     name: 'kick',
     sample: './audio/analog/kick.mp3',
-    // pitch: MIDI_NOTES,
     pitchMod: 0,
     releaseMod: 1,
     velocityMod: 1,
@@ -77,7 +76,6 @@ export const analog = [
   {
     name: 'snr',
     sample: './audio/analog/snr.mp3',
-    // pitch: MIDI_NOTES,
     pitchMod: 0,
     releaseMod: 1,
     velocityMod: 1,
@@ -87,7 +85,6 @@ export const analog = [
   {
     name: 'clp',
     sample: './audio/analog/clp.mp3',
-    // pitch: MIDI_NOTES,
     pitchMod: 0,
     releaseMod: 1,
     velocityMod: 1,
@@ -97,7 +94,6 @@ export const analog = [
   {
     name: 'ch',
     sample: './audio/analog/ch.mp3',
-    // pitch: MIDI_NOTES,
     pitchMod: 0,
     releaseMod: 1,
     velocityMod: 1,
@@ -107,7 +103,6 @@ export const analog = [
   {
     name: 'oh',
     sample: './audio/analog/oh.mp3',
-    // pitch: MIDI_NOTES,
     pitchMod: 0,
     releaseMod: 1,
     velocityMod: 1,
@@ -117,7 +112,6 @@ export const analog = [
   {
     name: 'cym',
     sample: './audio/analog/cym.mp3',
-    // pitch: MIDI_NOTES,
     pitchMod: 0,
     releaseMod: 1,
     velocityMod: 1,
@@ -127,7 +121,6 @@ export const analog = [
   {
     name: 'ht',
     sample: './audio/analog/ht.mp3',
-    // pitch: MIDI_NOTES,
     pitchMod: 0,
     releaseMod: 1,
     velocityMod: 1,
@@ -137,7 +130,6 @@ export const analog = [
   {
     name: 'mt',
     sample: './audio/analog/mt.mp3',
-    // pitch: MIDI_NOTES,
     pitchMod: 0,
     releaseMod: 1,
     velocityMod: 1,
@@ -147,7 +139,6 @@ export const analog = [
   {
     name: 'lt',
     sample: './audio/analog/lt.mp3',
-    // pitch: MIDI_NOTES,
     pitchMod: 0,
     releaseMod: 1,
     velocityMod: 1,

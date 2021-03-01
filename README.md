@@ -4,6 +4,25 @@
 
 ### 2/29/2021
 
+> 12:00pm:
+
+- Slick'd up the slicing and scheduling a bit. Instead of a `slice` property I now use an array of notes, similar to how Tone does the `Schedule` subdivision. It works and reads pretty clean.
+- Since I've made each note of each cell an object, I have to make sure I deep copy everything wherever they're being edited.
+- Deep copy of a pattern now look like this:
+
+```
+return pattern.map((cell) => { // array of cells
+    return cell.map((sound) => { // array of sounds
+      let newNotes = sound.notes.map((note) => { // each sound's notes object
+        return { ...note };
+      });
+      return { on: sound.on, notes: newNotes }; // each sound
+    });
+  });
+```
+
+< 12:00pm:
+
 - Trying to adjust `scheduleCell` to decide between `Tone.ToneEvent` and `Tone.Sequence` was not working... causing missing notes and hiccups. I decided to leave it as a simple `scheduleAttackRelease` and use the `slice` property to manually insert more triggers.
 - Each note of the pattern is now: `{pitch, velocity, release, slice}` and in general I think this will leave me way more options as I expand the features of playback/editing. It's already cleaned up some of the code.
 
