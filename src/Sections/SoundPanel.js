@@ -76,7 +76,9 @@ const SoundEdit = ({ setEdit, selectedSound }) => {
   }, [volVal]);
 
   useEffect(() => {
-    kit[selectedSound].pitchMod = Math.round((tuneVal - 50) * 0.1);
+    let pitchMod = Math.round((tuneVal - 50) * 0.1);
+    kit[selectedSound].pitchMod =
+      pitchMod < -5 ? -5 : pitchMod > 5 ? 5 : pitchMod;
   }, [tuneVal]);
 
   useEffect(() => {

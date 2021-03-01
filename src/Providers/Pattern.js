@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import * as Tone from 'tone';
 import { Kit } from '../Providers/Kit';
 import { INIT_PATTERN, analog } from './defaultSequences';
+import { MIDI_NOTES } from '../kits/defaultKits';
 
 export const Pattern = React.createContext();
 export const PatternProvider = ({ children }) => {
@@ -138,46 +139,41 @@ export const PatternProvider = ({ children }) => {
   };
 
   const scheduleCell = (time, stepRef) => {
-    for (const [sound, vol] of Object.entries(
+    for (const [sound, note] of Object.entries(
       patternRef.current[stepRef.current]
     )) {
-      const cell = patternRef.current[stepRef.current][sound];
-      if (cell) {
-        let event;
-        let pitch = 24 + kit[sound].pitchMod;
-        pitch = pitch > 59 ? 59 : pitch < 0 ? 0 : pitch;
-        if (!isNaN(cell)) event = scheduleNote(sound, pitch, vol, time);
-        if (Array.isArray(cell)) event = scheduleArray(sound, pitch, vol, time);
-        event.start();
+      let { pitch, velocity, release, slice } = note;
+      pitch += kit[sound].pitchMod;
+      pitch = MIDI_NOTES[pitch];
+      velocity *= kit[sound].velocityMod;
+      release *= kit[sound].releaseMod * kit[sound].duration;
+      if (velocity) {
+        kit[sound].sampler.triggerAttackRelease(pitch, release, time, velocity);
+        if (slice === 2) {
+          kit[sound].sampler.triggerAttackRelease(
+            pitch,
+            release,
+            time + Tone.Time('32n'),
+            velocity
+          );
+        } else if (slice === 3) {
+          kit[sound].sampler.triggerAttackRelease(
+            pitch,
+            release,
+            time + Tone.Time('32t'),
+            velocity
+          );
+          kit[sound].sampler.triggerAttackRelease(
+            pitch,
+            release,
+            time + Tone.Time('32t') + Tone.Time('32t'),
+            velocity
+          );
+        }
       }
     }
     stepRef.current =
       stepRef.current === pattern.length - 1 ? 0 : stepRef.current + 1;
-  };
-
-  const scheduleNote = (sound, pitch, vol, time) => {
-    return new Tone.ToneEvent(() => {
-      kit[sound].sampler.triggerAttackRelease(
-        kit[sound].pitch[pitch],
-        kit[sound].duration * kit[sound].durationMod,
-        time,
-        vol * kit[sound].volumeMod
-      );
-    });
-  };
-
-  const scheduleArray = (sound, pitch, array, time) => {
-    const notes = array.map((vol) => kit[sound].pitch[pitch]);
-    let seq = new Tone.Sequence(
-      (_, note) => {
-        console.log(note);
-        kit[sound].sampler.triggerAttackRelease(note, 0.1, time, 1);
-      },
-      [notes],
-      '16n'
-    );
-    seq.loop = false;
-    return seq;
   };
 
   useEffect(() => {
