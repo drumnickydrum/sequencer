@@ -790,6 +790,14 @@ select {
 /************* Animations ************/
 /*************************************/
 
+.dim {
+  background-color: var(--white-quarter);
+}
+
+.off {
+  opacity: 0;
+}
+
 .flashing {
   animation: flashing 500ms alternate infinite;
 }

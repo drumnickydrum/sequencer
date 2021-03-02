@@ -21,7 +21,8 @@ export const SoundPanel = () => {
 
   return edit ? (
     // <SoundEdit setEdit={setEdit} selectedSound={selectedSound} />
-    <SliceAndCopy setEdit={setEdit} selectedSound={selectedSound} />
+    // <SliceAndCopy setEdit={setEdit} />
+    <SoloAndMute setEdit={setEdit} selectedSound={selectedSound} />
   ) : (
     <div id='sound-selector'>
       {kit.map((sound, i) => (
@@ -33,6 +34,60 @@ export const SoundPanel = () => {
           handleClick={handleClick}
         />
       ))}
+    </div>
+  );
+};
+
+const SoloAndMute = ({ setEdit, selectedSound }) => {
+  const { kit } = useContext(Kit);
+  const [solo, setSolo] = useState(false);
+  const [mute, setMute] = useState(false);
+
+  const handleSolo = () => {
+    const soundCells = document.querySelectorAll('.sound-cells');
+    if (solo) {
+      soundCells.forEach((soundCell) => soundCell.classList.remove('off'));
+      kit[selectedSound].channel.solo = false;
+      setSolo(false);
+    } else {
+      if (mute) handleMute();
+      soundCells.forEach((soundCell) => soundCell.classList.add('off'));
+      kit[selectedSound].channel.solo = true;
+      setSolo(true);
+    }
+  };
+
+  const handleMute = () => {
+    const cells = document.querySelectorAll('.on');
+    if (mute) {
+      cells.forEach((cell) => cell.classList.remove('dim'));
+      kit[selectedSound].channel.mute = false;
+      setMute(false);
+    } else {
+      if (solo) handleSolo();
+      cells.forEach((cell) => cell.classList.add('dim'));
+      kit[selectedSound].channel.mute = true;
+      setMute(true);
+    }
+  };
+
+  const handleClose = () => {
+    if (solo) handleSolo();
+    if (mute) handleMute();
+    setEdit(false);
+  };
+
+  return (
+    <div className='sound-edit'>
+      <div className='sound-channel-edit'>
+        <div className='sound-channel-edit-btn' onClick={handleSolo}>
+          Solo
+        </div>
+        <div className='sound-channel-edit-btn' onClick={handleMute}>
+          Mute
+        </div>
+      </div>
+      <button onClick={handleClose}>Close</button>
     </div>
   );
 };
@@ -76,7 +131,7 @@ const SliceAndCopy = ({ setEdit }) => {
           <p className='instruction'>Click cell to slice in half or thirds</p>
         ) : (
           <div className='sound-pattern-edit-btn' onClick={handleCopy}>
-            <CopyIcon addClass={copying ? 'flashing' : ''} />
+            <CopyIcon addClass={copying ? 'copying' : ''} />
             <p>{copying ? 'Finish' : 'Copy'}</p>
           </div>
         )}
