@@ -97,7 +97,6 @@ const Cell = ({ id, i }) => {
     classes += on ? ` bg${color} on` : '';
     const soundCells = getSoundCells(id, pattern[i]);
     const len = pattern[i][selectedSound]?.notes.length;
-    const sliceClasses = len === 2 ? 'slice' : len === 3 ? 'slice slice-3' : '';
     return (
       <div className='cell-wrapper'>
         <div
@@ -109,8 +108,13 @@ const Cell = ({ id, i }) => {
           style={on ? { opacity: vol } : { opacity: 1 }}
         >
           <div className='sound-cells'>{soundCells}</div>
-          {on && sliceClasses && (
-            <div className={sliceClasses}>
+          {on && len > 1 && (
+            <div className={len === 2 ? 'slice' : 'slice slice-3'}>
+              <SawIcon />
+            </div>
+          )}
+          {on && len > 2 && (
+            <div className='slice slice-2'>
               <SawIcon />
             </div>
           )}

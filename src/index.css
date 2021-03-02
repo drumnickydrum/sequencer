@@ -491,6 +491,11 @@ svg.slicing {
   transition: 300ms ease-out;
 }
 
+.slice-2 svg {
+  width: 60%;
+  height: 60%;
+}
+
 .slice-3 svg {
   width: 100%;
   height: 100%;
@@ -793,9 +798,11 @@ select {
   0% {
     border-color: var(--white-half);
     color: var(--white-half);
+    stroke: var(--white-half);
   }
   100% {
     border-color: var(--white);
     color: var(--white);
+    stroke: var(--white);
   }
 }

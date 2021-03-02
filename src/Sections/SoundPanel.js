@@ -41,7 +41,14 @@ const SliceAndCopy = ({ setEdit }) => {
   const { slicing, setSlicing, copying, setCopying } = useContext(Pattern);
 
   const handleSlice = () => {
-    setSlicing((slicing) => !slicing);
+    const cells = document.querySelectorAll('.on');
+    if (slicing) {
+      cells.forEach((cell) => cell.classList.remove('flashing'));
+      setSlicing(false);
+    } else {
+      cells.forEach((cell) => cell.classList.add('flashing'));
+      setSlicing(true);
+    }
   };
 
   const handleCopy = () => {
@@ -69,7 +76,7 @@ const SliceAndCopy = ({ setEdit }) => {
           <p className='instruction'>Click cell to slice in half or thirds</p>
         ) : (
           <div className='sound-pattern-edit-btn' onClick={handleCopy}>
-            <CopyIcon addClass={copying ? 'copying' : ''} />
+            <CopyIcon addClass={copying ? 'flashing' : ''} />
             <p>{copying ? 'Finish' : 'Copy'}</p>
           </div>
         )}
