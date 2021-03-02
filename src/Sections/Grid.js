@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useMemo, useRef } from 'react';
 import { Pattern } from '../Providers/Pattern';
 import { Kit } from '../Providers/Kit';
-import { SawIcon } from '../icons';
+import { PitchDownIcon, PitchUpIcon, SawIcon } from '../icons';
 
 export const Grid = () => {
   const { events, prevCellRef, cellModRef } = useContext(Pattern);
@@ -229,6 +229,12 @@ const Cell = ({ id, i }) => {
           onTouchEnd={handleTouchEnd}
         >
           <div className={on ? `cell-mods bg${color}` : ''} style={modStyle}>
+            {on && pitch > 24 && (
+              <PitchUpIcon style={{ width: `${pitch * 1.75}%` }} />
+            )}
+            {on && pitch < 24 && (
+              <PitchDownIcon style={{ width: `${(pitch - 24) * -7}%` }} />
+            )}
             {on && len > 1 && (
               <div className={len === 2 ? 'slice' : 'slice slice-3'}>
                 <SawIcon />

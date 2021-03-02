@@ -9,6 +9,8 @@ import { ReactComponent as Saw } from './saw.svg';
 import { ReactComponent as Copy } from './copy.svg';
 import { ReactComponent as Solo } from './solo.svg';
 import { ReactComponent as Mute } from './mute.svg';
+import { ReactComponent as PitchUp } from './pitch-up.svg';
+import { ReactComponent as PitchDown } from './pitch-down.svg';
 
 export const StopIcon = () => <Stop />;
 export const StartIcon = () => <Start />;
@@ -28,3 +30,10 @@ export const CopyIcon = ({ addClass = '' }) => <Copy className={addClass} />;
 
 export const SoloIcon = ({ addClass = '' }) => <Solo className={addClass} />;
 export const MuteIcon = ({ addClass = '' }) => <Mute className={addClass} />;
+
+export const PitchUpIcon = ({ style }) => (
+  <PitchUp className='pitch-up' style={style} />
+);
+export const PitchDownIcon = ({ style }) => (
+  <PitchDown className='pitch-down' style={style} />
+);

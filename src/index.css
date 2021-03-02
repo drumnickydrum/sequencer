@@ -496,6 +496,25 @@ svg.slicing {
   border-radius: 0.5rem;
 }
 
+.pitch-up,
+.pitch-down {
+  z-index: 4;
+  stroke: none;
+  fill: var(--white);
+}
+
+.pitch-up {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.pitch-down {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
 @media (hover: hover) {
   .cell:hover {
     transition: none;

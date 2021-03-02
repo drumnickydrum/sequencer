@@ -4,6 +4,13 @@
 
 ### 3/2/2021
 
+> 5:00 PM:
+
+- Cells now have editable pitch. The attack time shift is very noticeable atleast within chrome on desktop.
+- The `flashing` animation was killing the performance. I added a `pause` class when the start button is pressed so that playback won't be affected.
+
+< 5:00 PM:
+
 - Implemented Solo and Mute per sound, but it is buggy. I cleared up what I know are my own logic bugs, I think what is left is something to do with Tone or my kit setup. I've raised an issue with Tone.js on github.
 - Fixed bugs and changed names of sound edit knobs for accuracy:
   - Velocity
