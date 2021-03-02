@@ -16,6 +16,7 @@ export const SoundPanel = () => {
   const { selectedSound, setSelectedSound } = useContext(Pattern);
   const { kit } = useContext(Kit);
   const [edit, setEdit] = useState(false);
+  const closeCbRef = useRef([]);
 
   useEffect(() => {
     if (!edit) setSelectedSound(-1);
@@ -26,11 +27,28 @@ export const SoundPanel = () => {
     setEdit(true);
   };
 
+  const handleClose = () => {
+    while (closeCbRef.current.length > 0) {
+      const cb = closeCbRef.current.pop();
+      cb();
+    }
+    setEdit(false);
+  };
+
   return edit ? (
-    <SoundEdit setEdit={setEdit} selectedSound={selectedSound} />
+    <div id='sound-panel-edit'>
+      <div id='sound-scroll-container-container'>
+        <div className='sound-scroll-container'>
+          <SoloAndMute closeCbRef={closeCbRef} selectedSound={selectedSound} />
+          <SliceAndCopy closeCbRef={closeCbRef} />
+          <SoundEdit closeCbRef={closeCbRef} selectedSound={selectedSound} />
+        </div>
+      </div>
+      <button className='sound-close-btn' onClick={handleClose}>
+        Close
+      </button>
+    </div>
   ) : (
-    // <SliceAndCopy setEdit={setEdit} />
-    // <SoloAndMute setEdit={setEdit} selectedSound={selectedSound} />
     <div id='sound-selector'>
       {kit.map((sound, i) => (
         <SoundBtn
@@ -45,10 +63,18 @@ export const SoundPanel = () => {
   );
 };
 
-const SoloAndMute = ({ setEdit, selectedSound }) => {
+const SoloAndMute = ({ closeCbRef, selectedSound }) => {
   const { kit } = useContext(Kit);
   const [solo, setSolo] = useState(false);
   const [mute, setMute] = useState(false);
+  closeCbRef.current.push(
+    () => {
+      if (solo) handleSolo();
+    },
+    () => {
+      if (mute) handleMute();
+    }
+  );
 
   const handleSolo = () => {
     const soundCells = document.querySelectorAll('.sound-cells');
@@ -78,12 +104,6 @@ const SoloAndMute = ({ setEdit, selectedSound }) => {
     }
   };
 
-  const handleClose = () => {
-    if (solo) handleSolo();
-    if (mute) handleMute();
-    setEdit(false);
-  };
-
   return (
     <div className='sound-edit'>
       <div className='sound-channel-edit'>
@@ -96,13 +116,20 @@ const SoloAndMute = ({ setEdit, selectedSound }) => {
           <p className={solo ? 'dim' : ''}>Mute</p>
         </div>
       </div>
-      <button onClick={handleClose}>Close</button>
     </div>
   );
 };
 
-const SliceAndCopy = ({ setEdit }) => {
+const SliceAndCopy = ({ closeCbRef }) => {
   const { slicing, setSlicing, copying, setCopying } = useContext(Pattern);
+  closeCbRef.current.push(
+    () => {
+      setSlicing(false);
+    },
+    () => {
+      setCopying(false);
+    }
+  );
 
   const handleSlice = () => {
     const cells = document.querySelectorAll('.on');
@@ -117,12 +144,6 @@ const SliceAndCopy = ({ setEdit }) => {
 
   const handleCopy = () => {
     setCopying((copying) => !copying);
-  };
-
-  const handleClose = () => {
-    setSlicing(false);
-    setCopying(false);
-    setEdit(false);
   };
 
   return (
@@ -145,12 +166,11 @@ const SliceAndCopy = ({ setEdit }) => {
           </div>
         )}
       </div>
-      <button onClick={handleClose}>Close</button>
     </div>
   );
 };
 
-const SoundEdit = ({ setEdit, selectedSound }) => {
+const SoundEdit = ({ selectedSound }) => {
   const { setInfo } = useContext(Info);
   const { kit } = useContext(Kit);
 
@@ -273,7 +293,6 @@ const SoundEdit = ({ setEdit, selectedSound }) => {
           <p onClick={() => setLengthVal(100)}>reset</p>
         </div>
       </div>
-      <button onClick={() => setEdit(false)}>Close</button>
     </div>
   );
 };

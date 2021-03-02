@@ -5,6 +5,10 @@
 ### 3/2/2021
 
 - Implemented Solo and Mute per sound, but it is buggy. I cleared up what I know are my own logic bugs, I think what is left is something to do with Tone or my kit setup. I've raised an issue with Tone.js on github.
+- Fixed bugs and changed names of sound edit knobs for accuracy:
+  - Velocity
+  - Pitch
+  - Length
 
 ### 2/29/2021
 
