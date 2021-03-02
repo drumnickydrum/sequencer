@@ -7,6 +7,8 @@ import { ReactComponent as ClearAll } from './clear-all.svg';
 import { ReactComponent as Swipe } from './swipe.svg';
 import { ReactComponent as Saw } from './saw.svg';
 import { ReactComponent as Copy } from './copy.svg';
+import { ReactComponent as Solo } from './solo.svg';
+import { ReactComponent as Mute } from './mute.svg';
 
 export const StopIcon = () => <Stop />;
 export const StartIcon = () => <Start />;
@@ -23,3 +25,6 @@ export const SwipeVerticalIcon = () => (
 
 export const SawIcon = ({ addClass = '' }) => <Saw className={addClass} />;
 export const CopyIcon = ({ addClass = '' }) => <Copy className={addClass} />;
+
+export const SoloIcon = ({ addClass = '' }) => <Solo className={addClass} />;
+export const MuteIcon = ({ addClass = '' }) => <Mute className={addClass} />;

@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useContext, useMemo, useRef } from 'react';
-import { ClearOneIcon, CopyIcon, SawIcon, SwipeVerticalIcon } from '../icons';
+import {
+  ClearOneIcon,
+  CopyIcon,
+  MuteIcon,
+  SawIcon,
+  SoloIcon,
+  SwipeVerticalIcon,
+} from '../icons';
 import { Knob } from '../icons/Knob';
 import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
@@ -81,10 +88,12 @@ const SoloAndMute = ({ setEdit, selectedSound }) => {
     <div className='sound-edit'>
       <div className='sound-channel-edit'>
         <div className='sound-channel-edit-btn' onClick={handleSolo}>
-          Solo
+          <SoloIcon addClass={mute ? 'dim' : ''} />
+          <p className={mute ? 'dim' : ''}>Solo</p>
         </div>
         <div className='sound-channel-edit-btn' onClick={handleMute}>
-          Mute
+          <MuteIcon addClass={solo ? 'dim' : ''} />
+          <p className={solo ? 'dim' : ''}>Mute</p>
         </div>
       </div>
       <button onClick={handleClose}>Close</button>
