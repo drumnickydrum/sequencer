@@ -155,28 +155,28 @@ export const PatternProvider = ({ children }) => {
       if (on) {
         // console.time('schedule note');
         let slice = notes.length;
-        let [pitch, velocity, release] = getModdedValues(sound, notes[0]);
-        kit[sound].sampler.triggerAttackRelease(pitch, release, time, velocity);
+        let [pitch, velocity, length] = getModdedValues(sound, notes[0]);
+        kit[sound].sampler.triggerAttackRelease(pitch, length, time, velocity);
         if (slice === 2) {
-          let [pitch2, velocity2, release2] = getModdedValues(sound, notes[1]);
+          let [pitch2, velocity2, length2] = getModdedValues(sound, notes[1]);
           kit[sound].sampler.triggerAttackRelease(
             pitch2,
-            release2,
+            length2,
             time + Tone.Time('32n'),
             velocity2
           );
         } else if (slice === 3) {
-          let [pitch2, velocity2, release2] = getModdedValues(sound, notes[1]);
-          let [pitch3, velocity3, release3] = getModdedValues(sound, notes[2]);
+          let [pitch2, velocity2, length2] = getModdedValues(sound, notes[1]);
+          let [pitch3, velocity3, length3] = getModdedValues(sound, notes[2]);
           kit[sound].sampler.triggerAttackRelease(
             pitch2,
-            release2,
+            length2,
             time + Tone.Time('32t'),
             velocity2
           );
           kit[sound].sampler.triggerAttackRelease(
             pitch3,
-            release3,
+            length3,
             time + Tone.Time('32t') + Tone.Time('32t'),
             velocity3
           );
@@ -188,12 +188,12 @@ export const PatternProvider = ({ children }) => {
       stepRef.current === pattern.length - 1 ? 0 : stepRef.current + 1;
   };
 
-  const getModdedValues = (sound, { pitch, velocity, release }) => {
+  const getModdedValues = (sound, { pitch, velocity, length }) => {
     pitch += kit[sound].pitchMod;
     pitch = MIDI_NOTES[pitch];
     velocity *= kit[sound].velocityMod;
-    release *= kit[sound].releaseMod * kit[sound].duration;
-    return [pitch, velocity, release];
+    length *= kit[sound].lengthMod * kit[sound].duration;
+    return [pitch, velocity, length];
   };
 
   useEffect(() => {

@@ -27,10 +27,10 @@ export const SoundPanel = () => {
   };
 
   return edit ? (
-    // <SoundEdit setEdit={setEdit} selectedSound={selectedSound} />
-    // <SliceAndCopy setEdit={setEdit} />
-    <SoloAndMute setEdit={setEdit} selectedSound={selectedSound} />
+    <SoundEdit setEdit={setEdit} selectedSound={selectedSound} />
   ) : (
+    // <SliceAndCopy setEdit={setEdit} />
+    // <SoloAndMute setEdit={setEdit} selectedSound={selectedSound} />
     <div id='sound-selector'>
       {kit.map((sound, i) => (
         <SoundBtn
@@ -154,26 +154,28 @@ const SoundEdit = ({ setEdit, selectedSound }) => {
   const { setInfo } = useContext(Info);
   const { kit } = useContext(Kit);
 
-  const [volVal, setVolVal] = useState(kit[selectedSound].volumeMod * 100);
-  const [tuneVal, setTuneVal] = useState(
+  const [velocityVal, setVelocityVal] = useState(
+    kit[selectedSound].velocityMod * 100
+  );
+  const [pitchVal, setPitchVal] = useState(
     Math.round(kit[selectedSound].pitchMod / 0.1) + 50
   );
   const [lengthVal, setLengthVal] = useState(
-    kit[selectedSound].durationMod * 100 + 0.1
+    kit[selectedSound].lengthMod * 100 + 0.1
   );
 
   useEffect(() => {
-    kit[selectedSound].volumeMod = volVal * 0.01;
-  }, [volVal]);
+    kit[selectedSound].velocityMod = velocityVal * 0.01;
+  }, [velocityVal]);
 
   useEffect(() => {
-    let pitchMod = Math.round((tuneVal - 50) * 0.1);
+    let pitchMod = Math.round((pitchVal - 50) * 0.1);
     kit[selectedSound].pitchMod =
       pitchMod < -5 ? -5 : pitchMod > 5 ? 5 : pitchMod;
-  }, [tuneVal]);
+  }, [pitchVal]);
 
   useEffect(() => {
-    kit[selectedSound].durationMod = lengthVal * 0.01 + 0.01;
+    kit[selectedSound].lengthMod = lengthVal * 0.01 + 0.01;
   }, [lengthVal]);
 
   const [y, setY] = useState(null);
@@ -185,17 +187,18 @@ const SoundEdit = ({ setEdit, selectedSound }) => {
       show: true,
     });
     setY(e.changedTouches[0].clientY);
+    console.log(velocityVal, pitchVal, lengthVal);
   };
 
   const handleTouchMove = (e, type) => {
     const newY = e.changedTouches[0].clientY;
     if (newY - y > 1) {
       switch (type) {
-        case 'vol':
-          setVolVal((val) => (val - 6 < 0 ? 0 : val - 6));
+        case 'velocity':
+          setVelocityVal((val) => (val - 6 < 0 ? 0 : val - 6));
           break;
-        case 'tune':
-          setTuneVal((val) => (val - 6 < 0 ? 0 : val - 6));
+        case 'pitch':
+          setPitchVal((val) => (val - 6 < 0 ? 0 : val - 6));
           break;
         case 'length':
           setLengthVal((val) => (val - 6 < 0 ? 0 : val - 6));
@@ -205,11 +208,11 @@ const SoundEdit = ({ setEdit, selectedSound }) => {
       }
     } else if (newY - y < -1) {
       switch (type) {
-        case 'vol':
-          setVolVal((val) => (val + 6 > 100 ? 100 : val + 6));
+        case 'velocity':
+          setVelocityVal((val) => (val + 6 > 100 ? 100 : val + 6));
           break;
-        case 'tune':
-          setTuneVal((val) => (val + 6 > 100 ? 100 : val + 6));
+        case 'pitch':
+          setPitchVal((val) => (val + 6 > 100 ? 100 : val + 6));
           break;
         case 'length':
           setLengthVal((val) => (val + 6 > 100 ? 100 : val + 6));
@@ -232,29 +235,29 @@ const SoundEdit = ({ setEdit, selectedSound }) => {
         <div className='knob-wrapper'>
           <div
             className='knob'
-            id='vol-knob'
+            id='velocity-knob'
             onTouchStart={handleTouchStart}
-            onTouchMove={(e) => handleTouchMove(e, 'vol')}
+            onTouchMove={(e) => handleTouchMove(e, 'velocity')}
             onTouchEnd={handleTouchEnd}
           >
-            <label htmlFor='vol-knob'>vol</label>
-            <Knob value={volVal} />
+            <label htmlFor='velocity-knob'>velocity</label>
+            <Knob value={velocityVal} />
           </div>
-          <p onClick={() => setVolVal(100)}>reset</p>
+          <p onClick={() => setVelocityVal(100)}>reset</p>
         </div>
         <div className='knob-wrapper'>
           <div
             className='knob'
-            id='tune-knob'
+            id='pitch-knob'
             onTouchStart={handleTouchStart}
-            onTouchMove={(e) => handleTouchMove(e, 'tune')}
+            onTouchMove={(e) => handleTouchMove(e, 'pitch')}
             onTouchEnd={handleTouchEnd}
           >
-            <label htmlFor='tune-knob'>tune</label>
+            <label htmlFor='pitch-knob'>pitch</label>
 
-            <Knob value={tuneVal} />
+            <Knob value={pitchVal} />
           </div>
-          <p onClick={() => setTuneVal(50)}>reset</p>
+          <p onClick={() => setPitchVal(50)}>reset</p>
         </div>
         <div className='knob-wrapper'>
           <div
