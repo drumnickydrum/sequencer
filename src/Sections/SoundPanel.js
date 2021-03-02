@@ -39,9 +39,10 @@ export const SoundPanel = () => {
     <div id='sound-panel-edit'>
       <div id='sound-scroll-container-container'>
         <div className='sound-scroll-container'>
+          <CellEdit closeCbRef={closeCbRef} selectedSound={selectedSound} />
           <SoloAndMute closeCbRef={closeCbRef} selectedSound={selectedSound} />
           <SliceAndCopy closeCbRef={closeCbRef} />
-          <SoundEdit closeCbRef={closeCbRef} selectedSound={selectedSound} />
+          <SoundEdit selectedSound={selectedSound} />
         </div>
       </div>
       <button className='sound-close-btn' onClick={handleClose}>
@@ -304,6 +305,29 @@ const SoundEdit = ({ selectedSound }) => {
             <Knob value={lengthVal} />
           </div>
           <p onClick={() => setLengthVal(100)}>reset</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const CellEdit = ({ closeCbRef, selectedSound }) => {
+  const { cellMod, setCellMod } = useContext(Pattern);
+  closeCbRef.current.push(() => {
+    setCellMod('');
+  });
+
+  return (
+    <div className='sound-edit'>
+      <div className={`sample-edit color${selectedSound}`}>
+        <div onClick={() => setCellMod('')}>cancel</div>
+        <div onClick={() => setCellMod('velocity')}>
+          <p>velocity</p>
+          {cellMod === 'velocity' && 'editing'}
+        </div>
+        <div onClick={() => setCellMod('length')}>
+          <p>length</p>
+          {cellMod === 'length' && 'editing'}
         </div>
       </div>
     </div>

@@ -4,9 +4,10 @@ import { Kit } from '../Providers/Kit';
 import { SawIcon } from '../icons';
 
 export const Grid = () => {
-  const { events, prevCellRef } = useContext(Pattern);
+  const { events, prevCellRef, cellModRef } = useContext(Pattern);
 
   const handleDrag = (e) => {
+    if (cellModRef.current) return;
     const touch = e.touches[0];
     const cell = document.elementFromPoint(touch.clientX, touch.clientY);
     if (cell) {
@@ -44,13 +45,19 @@ const Cell = ({ id, i }) => {
     selectedSound,
     slicingRef,
     sliceCell,
+    cellModRef,
+    modCell,
   } = useContext(Pattern);
   const { kit, refreshMods, setRefreshMods } = useContext(Kit);
 
   const cellRef = useRef(null);
   const [on, setOn] = useState(false);
-  const [velocity, setVelocity] = useState(0);
-  const [length, setLength] = useState(1);
+  const [velocity, setVelocity] = useState(
+    pattern[i][selectedSound]?.notes[0].velocity
+  );
+  const [length, setLength] = useState(
+    pattern[i][selectedSound]?.notes[0].length
+  );
   const [color, setColor] = useState(-1);
 
   useEffect(() => {
@@ -63,12 +70,11 @@ const Cell = ({ id, i }) => {
       newOn = pattern[i][selectedSound].on;
       if (newOn) {
         newVelocity =
-          pattern[i][selectedSound].notes[0].velocity *
+          pattern[i][selectedSound]?.notes[0].velocity *
           kit[selectedSound].velocityMod;
         newLength =
-          pattern[i][selectedSound].notes[0].length *
+          pattern[i][selectedSound]?.notes[0].length *
           kit[selectedSound].lengthMod;
-        console.log(newLength);
       }
     }
     setOn(newOn);
@@ -80,12 +86,76 @@ const Cell = ({ id, i }) => {
 
   const handleTouchStart = (e) => {
     e.stopPropagation();
-    prevCellRef.current = id;
-    handleToggle();
+    if (cellModRef.current) {
+      if (on) modStart(e);
+    } else {
+      prevCellRef.current = id;
+      handleToggle();
+    }
   };
 
   const handleTouchEnd = () => {
-    prevCellRef.current = null;
+    if (cellModRef.current) {
+      if (on) modEnd();
+    } else {
+      prevCellRef.current = null;
+    }
+  };
+
+  const yRef = useRef(null);
+  const xRef = useRef(null);
+  const prevRef = useRef(null);
+  const modStart = (e) => {
+    yRef.current = e.changedTouches[0].clientY;
+    xRef.current = e.changedTouches[0].clientX;
+    prevRef.current = cellModRef.current === 'velocity' ? velocity : length;
+  };
+
+  const handleTouchMove = (e) => {
+    if (cellModRef.current === 'velocity') {
+      const newY = e.changedTouches[0].clientY;
+      if (newY - yRef.current > 1) {
+        setVelocity((velocity) => velocity - 0.02);
+      } else if (newY - yRef.current < -1) {
+        setVelocity((velocity) => velocity + 0.02);
+      }
+      yRef.current = newY;
+    } else {
+      const newX = e.changedTouches[0].clientX;
+      if (newX - xRef.current > 1) {
+        setLength((length) => length + 0.02);
+      } else if (newX - xRef.current < -1) {
+        setLength((length) => length - 0.02);
+      }
+      xRef.current = newX;
+    }
+  };
+
+  const modEnd = () => {
+    let newVal;
+    if (cellModRef.current === 'velocity') {
+      yRef.current = null;
+      newVal = velocity;
+      if (newVal < 0) {
+        newVal = 0.1;
+        setVelocity(newVal);
+      } else if (newVal > 1) {
+        newVal = 1;
+        setVelocity(newVal);
+      }
+      modCell(i, 'velocity', newVal);
+    } else {
+      xRef.current = null;
+      newVal = length;
+      if (newVal < 0) {
+        newVal = 0.01;
+        setLength(newVal);
+      } else if (newVal > 1) {
+        newVal = 1;
+        setLength(newVal);
+      }
+      modCell(i, 'length', newVal);
+    }
   };
 
   const handleToggle = () => {
@@ -121,6 +191,7 @@ const Cell = ({ id, i }) => {
           id={id}
           className={on ? 'cell on' : 'cell'}
           onTouchStart={handleTouchStart}
+          onTouchMove={cellModRef.current && on ? handleTouchMove : null}
           onTouchEnd={handleTouchEnd}
         >
           <div className={on ? `cell-mods bg${color}` : ''} style={modStyle}>

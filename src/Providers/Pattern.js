@@ -11,6 +11,12 @@ export const PatternProvider = ({ children }) => {
   const [selectedSound, setSelectedSound] = useState(-1);
   const [events, setEvents] = useState({});
 
+  const [cellMod, setCellMod] = useState('');
+  const cellModRef = useRef(cellMod);
+  useEffect(() => {
+    cellModRef.current = cellMod;
+  }, [cellMod]);
+
   const prevCellRef = useRef(null);
   const undoRef = useRef([]);
   const redoRef = useRef([]);
@@ -38,6 +44,15 @@ export const PatternProvider = ({ children }) => {
     if (addHistory) {
       addToUndo('toggleCell', i);
     }
+  };
+
+  const modCell = (i, type, newVal) => {
+    let newPattern = deepCopyPattern(pattern);
+    newPattern[i][selectedSound].notes.forEach((note) => {
+      if (type === 'velocity') note.velocity = newVal;
+      if (type === 'length') note.length = newVal;
+    });
+    setPattern(newPattern);
   };
 
   const sliceCell = (i, addHistory = true) => {
@@ -230,6 +245,10 @@ export const PatternProvider = ({ children }) => {
         selectedSound,
         setSelectedSound,
         scheduleCell,
+        cellMod,
+        setCellMod,
+        cellModRef,
+        modCell,
       }}
     >
       {children}
