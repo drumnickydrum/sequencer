@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import * as Tone from 'tone';
 import { analog as kit } from '../kits/defaultKits';
 
@@ -25,10 +25,14 @@ export const KitProvider = ({ children }) => {
     }
   }, []);
 
+  const [refreshMods, setRefreshMods] = useState(false);
+
   return (
     <Kit.Provider
       value={{
         kit: kitRef.current,
+        refreshMods,
+        setRefreshMods,
       }}
     >
       {children}

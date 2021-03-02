@@ -9,6 +9,8 @@
   - Velocity
   - Pitch
   - Length
+- I have the close button for the sound-edit panel outside the scrolling components. A ref is passed to each component so they can add their callback functions to be executed on close.
+- Right now you are actually 'closing' the sound-edit panel, so it starts at the same component each time you open it. Maybe it should just be hidden instead so it will stay where you left it and not have to scroll to the same component every time you open it.
 
 ### 2/29/2021
 

@@ -172,7 +172,7 @@ const SliceAndCopy = ({ closeCbRef }) => {
 
 const SoundEdit = ({ selectedSound }) => {
   const { setInfo } = useContext(Info);
-  const { kit } = useContext(Kit);
+  const { kit, setRefreshMods } = useContext(Kit);
 
   const [velocityVal, setVelocityVal] = useState(
     kit[selectedSound].velocityMod * 100
@@ -199,7 +199,8 @@ const SoundEdit = ({ selectedSound }) => {
   }, [lengthVal]);
 
   const [y, setY] = useState(null);
-  const handleTouchStart = (e) => {
+  const prevRef = useRef(null);
+  const handleTouchStart = (e, type) => {
     setInfo({
       h: '',
       i: <SwipeVerticalIcon />,
@@ -207,7 +208,12 @@ const SoundEdit = ({ selectedSound }) => {
       show: true,
     });
     setY(e.changedTouches[0].clientY);
-    console.log(velocityVal, pitchVal, lengthVal);
+    prevRef.current =
+      type === 'velocity'
+        ? velocityVal
+        : type === 'pitch'
+        ? pitchVal
+        : lengthVal;
   };
 
   const handleTouchMove = (e, type) => {
@@ -244,9 +250,16 @@ const SoundEdit = ({ selectedSound }) => {
     setY(newY);
   };
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = (type) => {
     setInfo({ h: '', i: null, p: '', show: false });
     setY(null);
+    const newVal =
+      type === 'velocity'
+        ? velocityVal
+        : type === 'pitch'
+        ? pitchVal
+        : lengthVal;
+    setRefreshMods(true);
   };
 
   return (
@@ -256,9 +269,9 @@ const SoundEdit = ({ selectedSound }) => {
           <div
             className='knob'
             id='velocity-knob'
-            onTouchStart={handleTouchStart}
+            onTouchStart={(e) => handleTouchStart(e, 'velocity')}
             onTouchMove={(e) => handleTouchMove(e, 'velocity')}
-            onTouchEnd={handleTouchEnd}
+            onTouchEnd={() => handleTouchEnd('velocity')}
           >
             <label htmlFor='velocity-knob'>velocity</label>
             <Knob value={velocityVal} />
@@ -269,9 +282,9 @@ const SoundEdit = ({ selectedSound }) => {
           <div
             className='knob'
             id='pitch-knob'
-            onTouchStart={handleTouchStart}
+            onTouchStart={(e) => handleTouchStart(e, 'pitch')}
             onTouchMove={(e) => handleTouchMove(e, 'pitch')}
-            onTouchEnd={handleTouchEnd}
+            onTouchEnd={() => handleTouchEnd('pitch')}
           >
             <label htmlFor='pitch-knob'>pitch</label>
 
@@ -283,9 +296,9 @@ const SoundEdit = ({ selectedSound }) => {
           <div
             className='knob'
             id='length-knob'
-            onTouchStart={handleTouchStart}
+            onTouchStart={(e) => handleTouchStart(e, 'length')}
             onTouchMove={(e) => handleTouchMove(e, 'length')}
-            onTouchEnd={handleTouchEnd}
+            onTouchEnd={() => handleTouchEnd('length')}
           >
             <label htmlFor='length-knob'>length</label>
             <Knob value={lengthVal} />
