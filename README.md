@@ -7,7 +7,9 @@
 > 5:00 PM:
 
 - Cells now have editable pitch. The attack time shift is very noticeable atleast within chrome on desktop.
-- The `flashing` animation was killing the performance. I added a `pause` class when the start button is pressed so that playback won't be affected.
+- The `flashing` animation was killing the performance. I added a `pause` class when the start button is pressed so that playback won't be affected. Need to do some resesarch.
+- Responsive pitch icons don't work tooooo great. But they're close.
+- NEXT: Need to refactor some before moving on? Code is getting pretty gnarly.
 
 < 5:00 PM:
 
