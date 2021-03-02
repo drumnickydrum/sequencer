@@ -49,8 +49,21 @@ export const PatternProvider = ({ children }) => {
   const modCell = (i, type, newVal) => {
     let newPattern = deepCopyPattern(pattern);
     newPattern[i][selectedSound].notes.forEach((note) => {
+      if (type === 'pitch') note.pitch = newVal;
       if (type === 'velocity') note.velocity = newVal;
       if (type === 'length') note.length = newVal;
+    });
+    setPattern(newPattern);
+  };
+
+  const resetCellMods = (type) => {
+    let newPattern = deepCopyPattern(pattern);
+    newPattern.forEach((cell) => {
+      cell[selectedSound].notes.forEach((note) => {
+        if (type === 'pitch') note.pitch = 24;
+        if (type === 'velocity') note.velocity = 1;
+        if (type === 'length') note.length = 1;
+      });
     });
     setPattern(newPattern);
   };
@@ -249,6 +262,7 @@ export const PatternProvider = ({ children }) => {
         setCellMod,
         cellModRef,
         modCell,
+        resetCellMods,
       }}
     >
       {children}

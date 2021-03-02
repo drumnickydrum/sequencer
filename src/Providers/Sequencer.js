@@ -21,6 +21,8 @@ export const SequencerProvider = ({ children }) => {
 
   const start = () => {
     if (Tone.Transport.state === 'started') return;
+    const flashingCells = document.querySelectorAll('.flashing');
+    flashingCells.forEach((cell) => cell.classList.add('pause'));
     schedulePattern(stepRef);
     Tone.Transport.start();
   };
@@ -29,6 +31,8 @@ export const SequencerProvider = ({ children }) => {
     Tone.Transport.stop();
     Tone.Transport.cancel(0);
     stepRef.current = 0;
+    const flashingCells = document.querySelectorAll('.flashing');
+    flashingCells.forEach((cell) => cell.classList.remove('pause'));
   };
 
   const keyPress = ({ code }) => {

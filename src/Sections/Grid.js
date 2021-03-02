@@ -52,6 +52,7 @@ const Cell = ({ id, i }) => {
 
   const cellRef = useRef(null);
   const [on, setOn] = useState(false);
+  const [pitch, setPitch] = useState(pattern[i][selectedSound]?.notes[0].pitch);
   const [velocity, setVelocity] = useState(
     pattern[i][selectedSound]?.notes[0].velocity
   );
@@ -61,14 +62,22 @@ const Cell = ({ id, i }) => {
   const [color, setColor] = useState(-1);
 
   useEffect(() => {
-    let newOn, newVelocity, newLength;
+    console.log(pitch);
+  }, [pitch]);
+
+  useEffect(() => {
+    let newOn, newPitch, newVelocity, newLength;
     if (selectedSound === -1) {
       newOn = false;
+      newPitch = 0;
       newVelocity = 0;
       newLength = 1;
     } else {
       newOn = pattern[i][selectedSound].on;
       if (newOn) {
+        newPitch =
+          pattern[i][selectedSound]?.notes[0].pitch +
+          kit[selectedSound].pitchMod;
         newVelocity =
           pattern[i][selectedSound]?.notes[0].velocity *
           kit[selectedSound].velocityMod;
@@ -78,6 +87,7 @@ const Cell = ({ id, i }) => {
       }
     }
     setOn(newOn);
+    setPitch(newPitch);
     setVelocity(newVelocity);
     setLength(newLength);
     setColor(selectedSound);
@@ -108,11 +118,24 @@ const Cell = ({ id, i }) => {
   const modStart = (e) => {
     yRef.current = e.changedTouches[0].clientY;
     xRef.current = e.changedTouches[0].clientX;
-    prevRef.current = cellModRef.current === 'velocity' ? velocity : length;
+    prevRef.current =
+      cellModRef.current === 'pitch'
+        ? pitch
+        : cellModRef.current === 'velocity'
+        ? velocity
+        : length;
   };
 
   const handleTouchMove = (e) => {
-    if (cellModRef.current === 'velocity') {
+    if (cellModRef.current === 'pitch') {
+      const newY = e.changedTouches[0].clientY;
+      if (newY - yRef.current > 1) {
+        setPitch((pitch) => pitch - 1);
+      } else if (newY - yRef.current < -1) {
+        setPitch((pitch) => pitch + 1);
+      }
+      yRef.current = newY;
+    } else if (cellModRef.current === 'velocity') {
       const newY = e.changedTouches[0].clientY;
       if (newY - yRef.current > 1) {
         setVelocity((velocity) => velocity - 0.02);
@@ -133,7 +156,18 @@ const Cell = ({ id, i }) => {
 
   const modEnd = () => {
     let newVal;
-    if (cellModRef.current === 'velocity') {
+    if (cellModRef.current === 'pitch') {
+      yRef.current = null;
+      newVal = pitch;
+      if (newVal < 10) {
+        newVal = 10;
+        setPitch(newVal);
+      } else if (newVal > 40) {
+        newVal = 40;
+        setPitch(newVal);
+      }
+      modCell(i, 'pitch', newVal);
+    } else if (cellModRef.current === 'velocity') {
       yRef.current = null;
       newVal = velocity;
       if (newVal < 0) {
@@ -174,7 +208,7 @@ const Cell = ({ id, i }) => {
       setEvents((prev) => ({ ...prev, [id]: event }));
     }
     return () => document.removeEventListener(id, handleToggle);
-  }, [cellRef, selectedSound, velocity]);
+  }, [cellRef, selectedSound, on]);
 
   const cellMemo = useMemo(() => {
     // console.log('rendering cell: ', i);
@@ -210,7 +244,7 @@ const Cell = ({ id, i }) => {
         </div>
       </div>
     );
-  }, [color, velocity, length, pattern[i]]);
+  }, [color, pitch, velocity, length, pattern[i]]);
 
   return cellMemo;
 };

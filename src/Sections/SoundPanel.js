@@ -222,13 +222,13 @@ const SoundEdit = ({ selectedSound }) => {
     if (newY - y > 1) {
       switch (type) {
         case 'velocity':
-          setVelocityVal((val) => (val - 6 < 0 ? 0 : val - 6));
+          setVelocityVal((val) => (val - 6 < 10 ? 10 : val - 6));
           break;
         case 'pitch':
           setPitchVal((val) => (val - 6 < 0 ? 0 : val - 6));
           break;
         case 'length':
-          setLengthVal((val) => (val - 6 < 0 ? 0 : val - 6));
+          setLengthVal((val) => (val - 6 < 10 ? 10 : val - 6));
           break;
         default:
           return;
@@ -260,6 +260,13 @@ const SoundEdit = ({ selectedSound }) => {
         : type === 'pitch'
         ? pitchVal
         : lengthVal;
+    if (newVal !== prevRef.current) setRefreshMods(true);
+  };
+
+  const handleReset = (type) => {
+    if (type === 'velocity') setVelocityVal(100);
+    if (type === 'pitch') setPitchVal(50);
+    if (type === 'length') setLengthVal(100);
     setRefreshMods(true);
   };
 
@@ -277,7 +284,7 @@ const SoundEdit = ({ selectedSound }) => {
             <label htmlFor='velocity-knob'>velocity</label>
             <Knob value={velocityVal} />
           </div>
-          <p onClick={() => setVelocityVal(100)}>reset</p>
+          <p onClick={() => handleReset('velocity')}>reset</p>
         </div>
         <div className='knob-wrapper'>
           <div
@@ -291,7 +298,7 @@ const SoundEdit = ({ selectedSound }) => {
 
             <Knob value={pitchVal} />
           </div>
-          <p onClick={() => setPitchVal(50)}>reset</p>
+          <p onClick={() => handleReset('pitch')}>reset</p>
         </div>
         <div className='knob-wrapper'>
           <div
@@ -304,7 +311,7 @@ const SoundEdit = ({ selectedSound }) => {
             <label htmlFor='length-knob'>length</label>
             <Knob value={lengthVal} />
           </div>
-          <p onClick={() => setLengthVal(100)}>reset</p>
+          <p onClick={() => handleReset('length')}>reset</p>
         </div>
       </div>
     </div>
@@ -312,22 +319,46 @@ const SoundEdit = ({ selectedSound }) => {
 };
 
 const CellEdit = ({ closeCbRef, selectedSound }) => {
-  const { cellMod, setCellMod } = useContext(Pattern);
+  const { cellMod, setCellMod, resetCellMods } = useContext(Pattern);
   closeCbRef.current.push(() => {
     setCellMod('');
   });
 
+  const handleCellMod = (type) => {
+    const cells = document.querySelectorAll('.on');
+    if (type === 'cancel') {
+      cells.forEach((cell) => cell.classList.remove('flashing'));
+      setCellMod('');
+    } else {
+      cells.forEach((cell) => cell.classList.add('flashing'));
+      setCellMod(type);
+    }
+  };
+
   return (
     <div className='sound-edit'>
       <div className={`sample-edit color${selectedSound}`}>
-        <div onClick={() => setCellMod('')}>cancel</div>
-        <div onClick={() => setCellMod('velocity')}>
-          <p>velocity</p>
-          {cellMod === 'velocity' && 'editing'}
+        <div onClick={() => handleCellMod('cancel')}>cancel</div>
+        <div className='cell-mod-wrapper'>
+          <div onClick={() => handleCellMod('pitch')}>
+            <p>pitch</p>
+            {cellMod === 'pitch' && 'editing'}
+          </div>
+          <p onClick={() => resetCellMods('pitch')}>reset</p>
         </div>
-        <div onClick={() => setCellMod('length')}>
-          <p>length</p>
-          {cellMod === 'length' && 'editing'}
+        <div className='cell-mod-wrapper'>
+          <div onClick={() => handleCellMod('velocity')}>
+            <p>velocity</p>
+            {cellMod === 'velocity' && 'editing'}
+          </div>
+          <p onClick={() => resetCellMods('velocity')}>reset</p>
+        </div>
+        <div className='cell-mod-wrapper'>
+          <div onClick={() => handleCellMod('length')}>
+            <p>length</p>
+            {cellMod === 'length' && 'editing'}
+          </div>
+          <p onClick={() => resetCellMods('length')}>reset</p>
         </div>
       </div>
     </div>

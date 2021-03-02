@@ -882,6 +882,10 @@ p.dim {
   animation: flashing 500ms alternate infinite;
 }
 
+.flashing.pause {
+  animation: none;
+}
+
 @keyframes flashing {
   0% {
     border-color: var(--white-half);
