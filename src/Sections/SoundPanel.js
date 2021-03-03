@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext, useMemo, useRef } from 'react';
 import {
-  ClearOneIcon,
   CopyIcon,
   MuteIcon,
   SawIcon,

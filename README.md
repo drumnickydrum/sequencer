@@ -4,6 +4,10 @@
 
 ### 3/3/2021
 
+> 5:00 PM:
+
+- each sound's mods are now functioning in undo/redo.
+
 < 5:00 PM:
 
 - Extracted undo/redo out of PatternProvider. It was a nightmare. Reference errors, repeat pushes to undo list, etc... It's now all handled in one place, a useEffect each time pattern is updated. Will need to do the same for kit updates.

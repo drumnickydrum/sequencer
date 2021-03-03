@@ -77,15 +77,17 @@ export const PatternProvider = ({ children }) => {
   };
 
   const sliceCell = (i) => {
-    let newPattern = deepCopyPattern(pattern);
-    let notes = newPattern[i][selectedSound].notes;
-    let len = notes.length;
-    if (len === 3) {
-      newPattern[i][selectedSound].notes = [notes[0]];
-    } else {
-      notes.push(notes[0]);
-    }
-    setPattern(newPattern);
+    setPattern((pattern) => {
+      let newPattern = deepCopyPattern(pattern);
+      let notes = newPattern[i][selectedSound].notes;
+      let len = notes.length;
+      if (len === 3) {
+        newPattern[i][selectedSound].notes = [notes[0]];
+      } else {
+        notes.push(notes[0]);
+      }
+      return newPattern;
+    });
   };
 
   const pastePattern = (sound) => {
