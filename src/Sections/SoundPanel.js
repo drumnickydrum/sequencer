@@ -11,6 +11,7 @@ import { Knob } from '../icons/Knob';
 import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
 import { Info } from '../Providers/Info';
+import { Undo } from '../Providers/UndoProvider';
 
 export const SoundPanel = () => {
   const { selectedSound, setSelectedSound } = useContext(Pattern);
@@ -174,6 +175,7 @@ const SliceAndCopy = ({ closeCbRef }) => {
 const SoundEdit = ({ selectedSound }) => {
   const { setInfo } = useContext(Info);
   const { kit, setRefreshMods } = useContext(Kit);
+  const { addToKitUndo } = useContext(Undo);
 
   const [velocityVal, setVelocityVal] = useState(
     kit[selectedSound].velocityMod * 100
@@ -200,8 +202,13 @@ const SoundEdit = ({ selectedSound }) => {
   }, [lengthVal]);
 
   const [y, setY] = useState(null);
-  const prevRef = useRef(null);
+  const prevModsRef = useRef({});
   const handleTouchStart = (e, type) => {
+    prevModsRef.current = {
+      pitchMod: kit[selectedSound].pitchMod,
+      velocityMod: kit[selectedSound].velocityMod,
+      lengthMod: kit[selectedSound].lengthMod,
+    };
     setInfo({
       h: '',
       i: <SwipeVerticalIcon />,
@@ -209,12 +216,6 @@ const SoundEdit = ({ selectedSound }) => {
       show: true,
     });
     setY(e.changedTouches[0].clientY);
-    prevRef.current =
-      type === 'velocity'
-        ? velocityVal
-        : type === 'pitch'
-        ? pitchVal
-        : lengthVal;
   };
 
   const handleTouchMove = (e, type) => {
@@ -254,13 +255,30 @@ const SoundEdit = ({ selectedSound }) => {
   const handleTouchEnd = (type) => {
     setInfo({ h: '', i: null, p: '', show: false });
     setY(null);
-    const newVal =
-      type === 'velocity'
-        ? velocityVal
-        : type === 'pitch'
-        ? pitchVal
-        : lengthVal;
-    if (newVal !== prevRef.current) setRefreshMods(true);
+    let { pitchMod, velocityMod, lengthMod } = prevModsRef.current;
+    let updated = false;
+    if (type === 'velocity') {
+      velocityMod = kit[selectedSound].velocityMod;
+      if (velocityMod !== prevModsRef.current.velocityMod) updated = true;
+    } else if (type === 'pitch') {
+      pitchMod = kit[selectedSound].pitchMod;
+      if (pitchMod !== prevModsRef.current.pitchMod) updated = true;
+    } else {
+      lengthMod = kit[selectedSound].lengthMod;
+      if (lengthMod !== prevModsRef.current.lengthMod) updated = true;
+    }
+    const newMods = { pitchMod, velocityMod, lengthMod };
+    if (updated) {
+      setRefreshMods(true);
+      addToKitUndo(
+        prevModsRef.current,
+        newMods,
+        kit,
+        selectedSound,
+        setRefreshMods
+      );
+      prevModsRef.current = { ...newMods };
+    }
   };
 
   const handleReset = (type) => {
@@ -268,6 +286,13 @@ const SoundEdit = ({ selectedSound }) => {
     if (type === 'pitch') setPitchVal(50);
     if (type === 'length') setLengthVal(100);
     setRefreshMods(true);
+    addToKitUndo(
+      prevModsRef.current,
+      { pitchMod: 0, velocityMod: 1, lengthMod: 1 },
+      kit,
+      selectedSound,
+      setRefreshMods
+    );
   };
 
   return (
