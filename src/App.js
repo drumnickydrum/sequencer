@@ -9,36 +9,39 @@ import { PastePattern } from './Sections/PastePattern';
 import { Edit } from './Sections/Edit';
 import { Transport } from './Sections/Transport';
 import { Information } from './Sections/Information';
+import { UndoProvider } from './Providers/UndoProvider';
 
 export default function App() {
   return (
     <InfoProvider>
-      <KitProvider>
-        <PatternProvider>
-          <SequencerProvider>
-            <div id='address-bar'></div>
+      <UndoProvider>
+        <KitProvider>
+          <PatternProvider>
+            <SequencerProvider>
+              <div id='address-bar'></div>
 
-            <div id='two'>
-              <Grid />
-              <PastePattern />
-              <Information />
-            </div>
-
-            <div id='three'>
-              <SoundPanel />
-            </div>
-
-            <div id='one'>
-              <div className='scroll-container'>
-                <Transport />
-                <Edit />
+              <div id='two'>
+                <Grid />
+                <PastePattern />
+                <Information />
               </div>
-            </div>
 
-            <div id='toolbar'></div>
-          </SequencerProvider>
-        </PatternProvider>
-      </KitProvider>
+              <div id='three'>
+                <SoundPanel />
+              </div>
+
+              <div id='one'>
+                <div className='scroll-container'>
+                  <Transport />
+                  <Edit />
+                </div>
+              </div>
+
+              <div id='toolbar'></div>
+            </SequencerProvider>
+          </PatternProvider>
+        </KitProvider>
+      </UndoProvider>
     </InfoProvider>
   );
 }

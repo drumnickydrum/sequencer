@@ -55,7 +55,6 @@ export const SequencerProvider = ({ children }) => {
 const initialClick = async () => {
   await Tone.start();
   console.log('audio ready');
-  document.dispatchEvent(new Event('getBufferDuration'));
   document.removeEventListener('click', initialClick);
 };
 document.addEventListener('click', initialClick);

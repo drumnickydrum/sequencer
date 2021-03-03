@@ -8,20 +8,22 @@ export const KitProvider = ({ children }) => {
 
   useEffect(() => {
     for (let i = 0; i < 9; i++) {
-      kitRef.current[i].sampler = new Tone.Sampler({
-        C2: kitRef.current[i].sample,
-      });
+      kitRef.current[i].sampler = new Tone.Sampler(
+        {
+          C2: kitRef.current[i].sample,
+        },
+        () => {
+          kitRef.current[i].duration = kitRef.current[
+            i
+          ].sampler._buffers._buffers.get('36')._buffer.duration;
+        }
+      );
       kitRef.current[i].channel = new Tone.Channel({
         volume: 0,
         pan: 0,
         channelCount: 2,
       }).toDestination();
       kitRef.current[i].sampler.connect(kitRef.current[i].channel);
-      document.addEventListener('getBufferDuration', () => {
-        kitRef.current[i].duration = kitRef.current[
-          i
-        ].sampler._buffers._buffers.get('36')._buffer.duration;
-      });
     }
   }, []);
 

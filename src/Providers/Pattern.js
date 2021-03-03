@@ -3,10 +3,12 @@ import * as Tone from 'tone';
 import { Kit } from '../Providers/Kit';
 import { INIT_PATTERN, INIT_ONE_PATTERN, analog } from './defaultSequences';
 import { MIDI_NOTES } from '../kits/defaultKits';
+import { Undo } from './UndoProvider';
 
 export const Pattern = React.createContext();
 export const PatternProvider = ({ children }) => {
   const { kit } = useContext(Kit);
+  const { setUndos, setRedos, addToPatternUndo, undoingRef } = useContext(Undo);
 
   const [selectedSound, setSelectedSound] = useState(-1);
   const [events, setEvents] = useState({});
@@ -18,14 +20,23 @@ export const PatternProvider = ({ children }) => {
   }, [cellMod]);
 
   const prevCellRef = useRef(null);
-  const undoRef = useRef([]);
-  const redoRef = useRef([]);
 
   const [pattern, setPattern] = useState(deepCopyPattern(analog.pattern));
-  const patternRef = useRef(null);
+  const patternRef = useRef(deepCopyPattern(analog.pattern));
+
+  // add to undo
+  useEffect(() => {
+    if (!undoingRef.current) {
+      addToPatternUndo(patternRef.current, pattern, setPattern);
+    } else {
+      undoingRef.current = false;
+    }
+  }, [pattern, undoingRef]);
+
+  // keep patternRef up to date with state
   useEffect(() => {
     patternRef.current = deepCopyPattern(pattern);
-  }, [pattern]);
+  });
 
   const [slicing, setSlicing] = useState(false);
   const slicingRef = useRef(null);
@@ -35,15 +46,12 @@ export const PatternProvider = ({ children }) => {
 
   const [copying, setCopying] = useState(false);
 
-  const toggleCell = (i, addHistory = true) => {
+  const toggleCell = (i) => {
     setPattern((pattern) => {
       let newPattern = deepCopyPattern(pattern);
       newPattern[i][selectedSound].on = !newPattern[i][selectedSound].on;
       return newPattern;
     });
-    if (addHistory) {
-      addToUndo('toggleCell', i);
-    }
   };
 
   const modCell = (i, type, newVal) => {
@@ -68,24 +76,19 @@ export const PatternProvider = ({ children }) => {
     setPattern(newPattern);
   };
 
-  const sliceCell = (i, addHistory = true) => {
-    setPattern((pattern) => {
-      let newPattern = deepCopyPattern(pattern);
-      let notes = newPattern[i][selectedSound].notes;
-      let len = notes.length;
-      if (len === 3) {
-        newPattern[i][selectedSound].notes = [notes[0]];
-      } else {
-        notes.push(notes[0]);
-      }
-      return newPattern;
-    });
-    if (addHistory) {
-      addToUndo('sliceCell', i);
+  const sliceCell = (i) => {
+    let newPattern = deepCopyPattern(pattern);
+    let notes = newPattern[i][selectedSound].notes;
+    let len = notes.length;
+    if (len === 3) {
+      newPattern[i][selectedSound].notes = [notes[0]];
+    } else {
+      notes.push(notes[0]);
     }
+    setPattern(newPattern);
   };
 
-  const pastePattern = (sound, addHistory = true) => {
+  const pastePattern = (sound) => {
     let newPattern = deepCopyPattern(pattern);
     newPattern.forEach((cell) => {
       const copiedSound = { ...cell[selectedSound] };
@@ -94,12 +97,9 @@ export const PatternProvider = ({ children }) => {
       cell[sound] = { on: copiedSound.on, notes };
     });
     setPattern(newPattern);
-    if (addHistory) {
-      addToUndo('pastePattern', null, newPattern, pattern);
-    }
   };
 
-  const clearPattern = (one, addHistory = true) => {
+  const clearPattern = (one) => {
     let newPattern;
     if (!one) {
       newPattern = INIT_PATTERN();
@@ -112,48 +112,6 @@ export const PatternProvider = ({ children }) => {
       });
       setPattern(newPattern);
     }
-    if (addHistory) {
-      addToUndo('clearPattern', null, newPattern, pattern);
-    }
-  };
-
-  const addToUndo = (type, i, newVal, prevVal) => {
-    redoRef.current.length = 0;
-    if (type === 'toggleCell') {
-      undoRef.current.push([
-        () => toggleCell(i, false),
-        () => toggleCell(i, false),
-      ]);
-    }
-    if (type === 'sliceCell') {
-      undoRef.current.push([
-        () => {
-          sliceCell(i, false);
-          sliceCell(i, false);
-        },
-        () => sliceCell(i, false),
-      ]);
-    }
-    if (type === 'clearPattern' || type === 'pastePattern') {
-      undoRef.current.push([
-        () => setPattern([...prevVal], false),
-        () => setPattern([...newVal], false),
-      ]);
-    }
-  };
-
-  const undo = () => {
-    if (undoRef.current.length === 0) return;
-    const [undoFunc, redoFunc] = undoRef.current.pop();
-    undoFunc();
-    redoRef.current.push([undoFunc, redoFunc]);
-  };
-
-  const redo = () => {
-    if (redoRef.current.length === 0) return;
-    const [undoFunc, redoFunc] = redoRef.current.pop();
-    redoFunc();
-    undoRef.current.push([undoFunc, redoFunc]);
   };
 
   const schedulePattern = (stepRef) => {
@@ -240,8 +198,6 @@ export const PatternProvider = ({ children }) => {
       value={{
         pattern,
         setPattern,
-        undo,
-        redo,
         clearPattern,
         slicing,
         setSlicing,

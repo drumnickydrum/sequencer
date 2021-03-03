@@ -62,10 +62,6 @@ const Cell = ({ id, i }) => {
   const [color, setColor] = useState(-1);
 
   useEffect(() => {
-    console.log(pitch);
-  }, [pitch]);
-
-  useEffect(() => {
     let newOn, newPitch, newVelocity, newLength;
     if (selectedSound === -1) {
       newOn = false;

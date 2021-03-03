@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
 import { ClearAllIcon, ClearOneIcon, RedoIcon, UndoIcon } from '../icons';
 import { Pattern } from '../Providers/Pattern';
+import { Undo } from '../Providers/UndoProvider';
 
 export const Edit = () => {
   const { clearPattern } = useContext(Pattern);
-  const { undo, redo } = useContext(Pattern);
+  const { undo, redo } = useContext(Undo);
 
   return (
     <div id='edit'>

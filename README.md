@@ -2,6 +2,18 @@
 
 ## Dev notes
 
+### 3/3/2021
+
+< 5:00 PM:
+
+- Extracted undo/redo out of PatternProvider. It was a nightmare. Reference errors, repeat pushes to undo list, etc... It's now all handled in one place, a useEffect each time pattern is updated. Will need to do the same for kit updates.
+- Learned about the weirdness of React.StrictMode adding additional renders and driving me nuts trying to figure out why certain functions are being called twice.
+
+< 12:00PM:
+
+- It would be wise to go through and clean things up now that I have a good idea of how everything communicates.
+- I've also realized there is a serious performance hit when transitioning color/bg and instead should be using opacity layers to do this sort of thing. Also transform is slick compared to width/height transitions which cause re-painting.
+
 ### 3/2/2021
 
 > 5:00 PM:
