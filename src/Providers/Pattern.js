@@ -4,48 +4,31 @@ import { Kit } from '../Providers/Kit';
 import { INIT_PATTERN, INIT_ONE_PATTERN, analog } from './defaultSequences';
 import { MIDI_NOTES } from '../kits/defaultKits';
 import { Undo } from './UndoProvider';
+import { useStateAndRef } from '../utils/useStateAndRef';
 
 export const Pattern = React.createContext();
 export const PatternProvider = ({ children }) => {
   const { kit } = useContext(Kit);
-  const { setUndos, setRedos, addToPatternUndo, undoingRef } = useContext(Undo);
-
+  const { addToPatternUndo, undoingRef } = useContext(Undo);
   const [selectedSound, setSelectedSound] = useState(-1);
-  const [events, setEvents] = useState({});
+  const [pattern, setPattern, patternRef] = useStateAndRef(
+    analog.pattern,
+    deepCopyPattern
+  );
+  const prevPatternRef = useRef(deepCopyPattern(pattern));
 
-  const [cellMod, setCellMod] = useState('');
-  const cellModRef = useRef(cellMod);
-  useEffect(() => {
-    cellModRef.current = cellMod;
-  }, [cellMod]);
-
-  const prevCellRef = useRef(null);
-
-  const [pattern, setPattern] = useState(deepCopyPattern(analog.pattern));
-  const patternRef = useRef(deepCopyPattern(analog.pattern));
-
-  // add to undo
+  // add all pattern edits to undo
   useEffect(() => {
     if (!undoingRef.current) {
-      addToPatternUndo(patternRef.current, pattern, setPattern);
+      addToPatternUndo(prevPatternRef.current, pattern, setPattern);
     } else {
       undoingRef.current = false;
     }
+    prevPatternRef.current = deepCopyPattern(pattern);
   }, [pattern, undoingRef]);
 
-  // keep patternRef up to date with state
-  useEffect(() => {
-    patternRef.current = deepCopyPattern(pattern);
-  });
-
-  const [slicing, setSlicing] = useState(false);
-  const slicingRef = useRef(null);
-  useEffect(() => {
-    slicingRef.current = slicing;
-  }, [slicing]);
-
-  const [copying, setCopying] = useState(false);
-
+  const [toggleEvents, setToggleEvents] = useState({});
+  const prevCellRef = useRef(null);
   const toggleCell = (i) => {
     setPattern((pattern) => {
       let newPattern = deepCopyPattern(pattern);
@@ -54,6 +37,7 @@ export const PatternProvider = ({ children }) => {
     });
   };
 
+  const [cellMod, setCellMod, cellModRef] = useStateAndRef('');
   const modCell = (i, type, newVal) => {
     let newPattern = deepCopyPattern(pattern);
     newPattern[i][selectedSound].notes.forEach((note) => {
@@ -63,11 +47,10 @@ export const PatternProvider = ({ children }) => {
     });
     setPattern(newPattern);
   };
-
   const resetCellMods = (type) => {
     let newPattern = deepCopyPattern(pattern);
-    newPattern.forEach((cell) => {
-      cell[selectedSound].notes.forEach((note) => {
+    newPattern.forEach((step) => {
+      step[selectedSound].notes.forEach((note) => {
         if (type === 'pitch') note.pitch = 24;
         if (type === 'velocity') note.velocity = 1;
         if (type === 'length') note.length = 1;
@@ -76,6 +59,7 @@ export const PatternProvider = ({ children }) => {
     setPattern(newPattern);
   };
 
+  const [slicing, setSlicing, slicingRef] = useStateAndRef(false);
   const sliceCell = (i) => {
     setPattern((pattern) => {
       let newPattern = deepCopyPattern(pattern);
@@ -90,13 +74,14 @@ export const PatternProvider = ({ children }) => {
     });
   };
 
+  const [copying, setCopying] = useState(false);
   const pastePattern = (sound) => {
     let newPattern = deepCopyPattern(pattern);
-    newPattern.forEach((cell) => {
-      const copiedSound = { ...cell[selectedSound] };
+    newPattern.forEach((step) => {
+      const copiedSound = { ...step[selectedSound] };
       const notes = [...copiedSound.notes];
       notes.forEach((note) => ({ ...note }));
-      cell[sound] = { on: copiedSound.on, notes };
+      step[sound] = { on: copiedSound.on, notes };
     });
     setPattern(newPattern);
   };
@@ -109,8 +94,8 @@ export const PatternProvider = ({ children }) => {
     } else {
       if (selectedSound === -1) return;
       newPattern = deepCopyPattern(pattern);
-      newPattern.forEach((cell) => {
-        cell[selectedSound] = INIT_ONE_PATTERN();
+      newPattern.forEach((step) => {
+        step[selectedSound] = INIT_ONE_PATTERN();
       });
       setPattern(newPattern);
     }
@@ -208,8 +193,8 @@ export const PatternProvider = ({ children }) => {
         copying,
         setCopying,
         pastePattern,
-        events,
-        setEvents,
+        toggleEvents,
+        setToggleEvents,
         prevCellRef,
         toggleCell,
         schedulePattern,
@@ -229,8 +214,8 @@ export const PatternProvider = ({ children }) => {
 };
 
 const deepCopyPattern = (pattern) => {
-  return pattern.map((cell) => {
-    return cell.map((sound) => {
+  return pattern.map((step) => {
+    return step.map((sound) => {
       let newNotes = sound.notes.map((note) => {
         return { ...note };
       });

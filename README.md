@@ -2,6 +2,16 @@
 
 ## Dev notes
 
+### 3/4/2021
+
+< 12:00 PM
+
+- Began an implementation of the often used useStateAndRef flow.
+- Reorganizing PatternProvider so related values are all together.
+- Change in terms:
+  - `step` is related to the sequencer timing
+  - `cell` is the visual grid representation of a step
+
 ### 3/3/2021
 
 > 5:00 PM:

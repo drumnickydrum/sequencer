@@ -499,20 +499,19 @@ svg.slicing {
 .pitch-up,
 .pitch-down {
   z-index: 4;
-  stroke: none;
-  fill: var(--white);
+  font-size: 0.75rem;
 }
 
 .pitch-up {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 0.25rem;
+  right: 0.25rem;
 }
 
 .pitch-down {
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: 0.25rem;
+  right: 0.25rem;
 }
 
 @media (hover: hover) {

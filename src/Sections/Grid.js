@@ -4,7 +4,7 @@ import { Kit } from '../Providers/Kit';
 import { PitchDownIcon, PitchUpIcon, SawIcon } from '../icons';
 
 export const Grid = () => {
-  const { events, prevCellRef, cellModRef } = useContext(Pattern);
+  const { toggleEvents, prevCellRef, cellModRef } = useContext(Pattern);
 
   const handleDrag = (e) => {
     if (cellModRef.current) return;
@@ -14,7 +14,7 @@ export const Grid = () => {
       const id = cell.id;
       if (!id.match(/cell/)) return;
       if (prevCellRef.current !== id) {
-        document.dispatchEvent(events[id]);
+        document.dispatchEvent(toggleEvents[id]);
         prevCellRef.current = id;
       }
     }
@@ -40,7 +40,7 @@ const Cell = ({ id, i }) => {
   const {
     pattern,
     toggleCell,
-    setEvents,
+    setToggleEvents,
     prevCellRef,
     selectedSound,
     slicingRef,
@@ -201,7 +201,7 @@ const Cell = ({ id, i }) => {
     if (cellRef.current) {
       const event = new Event(id);
       document.addEventListener(id, handleToggle);
-      setEvents((prev) => ({ ...prev, [id]: event }));
+      setToggleEvents((prev) => ({ ...prev, [id]: event }));
     }
     return () => document.removeEventListener(id, handleToggle);
   }, [cellRef, selectedSound, on]);
@@ -225,12 +225,8 @@ const Cell = ({ id, i }) => {
           onTouchEnd={handleTouchEnd}
         >
           <div className={on ? `cell-mods bg${color}` : ''} style={modStyle}>
-            {on && pitch > 24 && (
-              <PitchUpIcon style={{ width: `${pitch * 1.75}%` }} />
-            )}
-            {on && pitch < 24 && (
-              <PitchDownIcon style={{ width: `${(pitch - 24) * -7}%` }} />
-            )}
+            {on && pitch > 24 && <p className='pitch-up'>+{pitch - 24}</p>}
+            {on && pitch < 24 && <p className='pitch-down'>{pitch - 24}</p>}
             {on && len > 1 && (
               <div className={len === 2 ? 'slice' : 'slice slice-3'}>
                 <SawIcon />
