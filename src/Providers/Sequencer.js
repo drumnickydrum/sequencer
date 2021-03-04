@@ -2,18 +2,16 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import * as Tone from 'tone';
 import { init, analog } from './defaultSequences';
 import { Pattern } from './Pattern';
+import { MIDI_NOTES } from '../kits/defaultKits';
+import { Kit } from './Kit';
 
 export const Sequencer = React.createContext();
 export const SetSequencer = React.createContext();
 export const SequencerProvider = ({ children }) => {
-  const { schedulePattern } = useContext(Pattern);
+  const { patternRef } = useContext(Pattern);
+  const { kit } = useContext(Kit);
   const [bpm, setBpm] = useState(analog.bpm);
   const stepRef = useRef(0);
-
-  useEffect(() => {
-    document.addEventListener('keypress', keyPress);
-    return () => document.removeEventListener('keypress', keyPress);
-  });
 
   useEffect(() => {
     Tone.Transport.bpm.value = bpm;
@@ -35,14 +33,75 @@ export const SequencerProvider = ({ children }) => {
     flashingCells.forEach((cell) => cell.classList.remove('pause'));
   };
 
-  const keyPress = ({ code }) => {
-    if (code === 'Space') {
-      if (Tone.Transport.state === 'stopped') {
-        start();
+  const schedulePattern = (stepRef) => {
+    const cells = document.querySelectorAll(`.cell`);
+    Tone.Transport.scheduleRepeat((time) => {
+      animateCell(time, cells[stepRef.current]);
+      scheduleCell(time, stepRef);
+    }, '16n');
+  };
+
+  const animateCell = (time, cell) => {
+    Tone.Draw.schedule(() => {
+      if (cell.classList.contains('on')) {
+        cell.classList.add('pulse');
+        setTimeout(() => cell.classList.remove('pulse'), 0);
       } else {
-        stop();
+        cell.classList.add('flash');
+        setTimeout(() => cell.classList.remove('flash'), 0);
+      }
+    }, time);
+  };
+
+  const scheduleCell = (time, stepRef) => {
+    for (const [sound, { on, notes }] of Object.entries(
+      patternRef.current[stepRef.current]
+    )) {
+      if (on) {
+        // console.time('schedule note');
+        let slice = notes.length;
+        let [pitch, velocity, length] = getModdedValues(kit[sound], notes[0]);
+        kit[sound].sampler.triggerAttackRelease(pitch, length, time, velocity);
+        if (slice === 2) {
+          let [pitch2, velocity2, length2] = getModdedValues(
+            kit[sound],
+            notes[1]
+          );
+          kit[sound].sampler.triggerAttackRelease(
+            pitch2,
+            length2,
+            time + Tone.Time('32n'),
+            velocity2
+          );
+        } else if (slice === 3) {
+          let [pitch2, velocity2, length2] = getModdedValues(
+            kit[sound],
+            notes[1]
+          );
+          let [pitch3, velocity3, length3] = getModdedValues(
+            kit[sound],
+            notes[2]
+          );
+          kit[sound].sampler.triggerAttackRelease(
+            pitch2,
+            length2,
+            time + Tone.Time('32t'),
+            velocity2
+          );
+          kit[sound].sampler.triggerAttackRelease(
+            pitch3,
+            length3,
+            time + Tone.Time('32t') + Tone.Time('32t'),
+            velocity3
+          );
+        }
+        // console.timeEnd('schedule note');
       }
     }
+    stepRef.current =
+      stepRef.current === patternRef.current.length - 1
+        ? 0
+        : stepRef.current + 1;
   };
 
   return (
@@ -50,6 +109,14 @@ export const SequencerProvider = ({ children }) => {
       <Sequencer.Provider value={{ bpm }}>{children}</Sequencer.Provider>
     </SetSequencer.Provider>
   );
+};
+
+const getModdedValues = (sound, { pitch, velocity, length }) => {
+  pitch += sound.pitchMod;
+  pitch = MIDI_NOTES[pitch];
+  velocity *= sound.velocityMod;
+  length *= sound.lengthMod * sound.duration;
+  return [pitch, velocity, length];
 };
 
 const initialClick = async () => {

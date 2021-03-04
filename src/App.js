@@ -14,8 +14,8 @@ import { UndoProvider } from './Providers/UndoProvider';
 export default function App() {
   return (
     <InfoProvider>
-      <UndoProvider>
-        <KitProvider>
+      <KitProvider>
+        <UndoProvider>
           <PatternProvider>
             <SequencerProvider>
               <div id='address-bar'></div>
@@ -40,8 +40,8 @@ export default function App() {
               <div id='toolbar'></div>
             </SequencerProvider>
           </PatternProvider>
-        </KitProvider>
-      </UndoProvider>
+        </UndoProvider>
+      </KitProvider>
     </InfoProvider>
   );
 }

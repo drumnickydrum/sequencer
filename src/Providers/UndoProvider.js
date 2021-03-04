@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useRef } from 'react';
+import { Kit } from './Kit';
 
 export const Undo = React.createContext();
 export const UndoProvider = ({ children }) => {
@@ -31,22 +32,22 @@ export const UndoProvider = ({ children }) => {
     ]);
   };
 
-  const addToKitUndo = (prevMods, newMods, kit, sound, setRefreshMods) => {
-    console.log(prevMods.velocityMod);
+  const { setRefreshMods } = useContext(Kit);
+  const addToKitUndo = (prevMods, newMods, sound) => {
     redoRef.current.length = 0;
     undoRef.current.push([
       () => {
         const { pitchMod, velocityMod, lengthMod } = prevMods;
-        kit[sound].pitchMod = pitchMod;
-        kit[sound].velocityMod = velocityMod;
-        kit[sound].lengthMod = lengthMod;
+        sound.pitchMod = pitchMod;
+        sound.velocityMod = velocityMod;
+        sound.lengthMod = lengthMod;
         setRefreshMods(true);
       },
       () => {
         const { pitchMod, velocityMod, lengthMod } = newMods;
-        kit[sound].pitchMod = pitchMod;
-        kit[sound].velocityMod = velocityMod;
-        kit[sound].lengthMod = lengthMod;
+        sound.pitchMod = pitchMod;
+        sound.velocityMod = velocityMod;
+        sound.lengthMod = lengthMod;
         setRefreshMods(true);
       },
     ]);

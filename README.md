@@ -11,6 +11,8 @@
 - Change in terms:
   - `step` is related to the sequencer timing
   - `cell` is the visual grid representation of a step
+- Schedule functions are now in Sequencer Provider. PatternProvider is less hell to look at now.
+- Extracted components out of SoundPanel.
 
 ### 3/3/2021
 

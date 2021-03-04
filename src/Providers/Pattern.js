@@ -1,14 +1,10 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import * as Tone from 'tone';
-import { Kit } from '../Providers/Kit';
 import { INIT_PATTERN, INIT_ONE_PATTERN, analog } from './defaultSequences';
-import { MIDI_NOTES } from '../kits/defaultKits';
 import { Undo } from './UndoProvider';
 import { useStateAndRef } from '../utils/useStateAndRef';
 
 export const Pattern = React.createContext();
 export const PatternProvider = ({ children }) => {
-  const { kit } = useContext(Kit);
   const { addToPatternUndo, undoingRef } = useContext(Undo);
   const [selectedSound, setSelectedSound] = useState(-1);
   const [pattern, setPattern, patternRef] = useStateAndRef(
@@ -101,74 +97,7 @@ export const PatternProvider = ({ children }) => {
     }
   };
 
-  const schedulePattern = (stepRef) => {
-    const cells = document.querySelectorAll(`.cell`);
-    Tone.Transport.scheduleRepeat((time) => {
-      animateCell(time, cells[stepRef.current]);
-      scheduleCell(time, stepRef);
-    }, '16n');
-  };
-
-  const animateCell = (time, cell) => {
-    Tone.Draw.schedule(() => {
-      if (cell.classList.contains('on')) {
-        cell.classList.add('pulse');
-        setTimeout(() => cell.classList.remove('pulse'), 0);
-      } else {
-        cell.classList.add('flash');
-        setTimeout(() => cell.classList.remove('flash'), 0);
-      }
-    }, time);
-  };
-
-  const scheduleCell = (time, stepRef) => {
-    for (const [sound, { on, notes }] of Object.entries(
-      patternRef.current[stepRef.current]
-    )) {
-      if (on) {
-        // console.time('schedule note');
-        let slice = notes.length;
-        let [pitch, velocity, length] = getModdedValues(sound, notes[0]);
-        kit[sound].sampler.triggerAttackRelease(pitch, length, time, velocity);
-        if (slice === 2) {
-          let [pitch2, velocity2, length2] = getModdedValues(sound, notes[1]);
-          kit[sound].sampler.triggerAttackRelease(
-            pitch2,
-            length2,
-            time + Tone.Time('32n'),
-            velocity2
-          );
-        } else if (slice === 3) {
-          let [pitch2, velocity2, length2] = getModdedValues(sound, notes[1]);
-          let [pitch3, velocity3, length3] = getModdedValues(sound, notes[2]);
-          kit[sound].sampler.triggerAttackRelease(
-            pitch2,
-            length2,
-            time + Tone.Time('32t'),
-            velocity2
-          );
-          kit[sound].sampler.triggerAttackRelease(
-            pitch3,
-            length3,
-            time + Tone.Time('32t') + Tone.Time('32t'),
-            velocity3
-          );
-        }
-        // console.timeEnd('schedule note');
-      }
-    }
-    stepRef.current =
-      stepRef.current === pattern.length - 1 ? 0 : stepRef.current + 1;
-  };
-
-  const getModdedValues = (sound, { pitch, velocity, length }) => {
-    pitch += kit[sound].pitchMod;
-    pitch = MIDI_NOTES[pitch];
-    velocity *= kit[sound].velocityMod;
-    length *= kit[sound].lengthMod * kit[sound].duration;
-    return [pitch, velocity, length];
-  };
-
+  // debugging
   useEffect(() => {
     const printPattern = (e) => {
       // console.log(e.code);
@@ -185,6 +114,7 @@ export const PatternProvider = ({ children }) => {
       value={{
         pattern,
         setPattern,
+        patternRef,
         clearPattern,
         slicing,
         setSlicing,
@@ -197,10 +127,8 @@ export const PatternProvider = ({ children }) => {
         setToggleEvents,
         prevCellRef,
         toggleCell,
-        schedulePattern,
         selectedSound,
         setSelectedSound,
-        scheduleCell,
         cellMod,
         setCellMod,
         cellModRef,
