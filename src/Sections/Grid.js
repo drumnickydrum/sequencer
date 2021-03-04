@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useMemo, useRef } from 'react';
 import { Pattern } from '../Providers/Pattern';
 import { Kit } from '../Providers/Kit';
-import { PitchDownIcon, PitchUpIcon, SawIcon } from '../icons';
+import { SawIcon } from '../icons';
 
 export const Grid = () => {
   const { toggleEvents, prevCellRef, cellModRef } = useContext(Pattern);
@@ -50,45 +50,34 @@ const Cell = ({ id, i }) => {
   } = useContext(Pattern);
   const { kit, refreshMods, setRefreshMods } = useContext(Kit);
 
-  const cellRef = useRef(null);
-  const [on, setOn] = useState(false);
-  const [pitch, setPitch] = useState(pattern[i][selectedSound]?.notes[0].pitch);
-  const [velocity, setVelocity] = useState(
-    pattern[i][selectedSound]?.notes[0].velocity
-  );
-  const [length, setLength] = useState(
-    pattern[i][selectedSound]?.notes[0].length
-  );
   const [color, setColor] = useState(-1);
+  const [on, setOn] = useState(false);
+  const [pitch, setPitch] = useState(24);
+  const [velocity, setVelocity] = useState(1);
+  const [length, setLength] = useState(1);
 
   useEffect(() => {
-    let newOn, newPitch, newVelocity, newLength;
-    if (selectedSound === -1) {
-      newOn = false;
-      newPitch = 0;
-      newVelocity = 0;
-      newLength = 1;
-    } else {
-      newOn = pattern[i][selectedSound].on;
-      if (newOn) {
-        newPitch =
-          pattern[i][selectedSound]?.notes[0].pitch +
-          kit[selectedSound].pitchMod;
-        newVelocity =
-          pattern[i][selectedSound]?.notes[0].velocity *
-          kit[selectedSound].velocityMod;
-        newLength =
-          pattern[i][selectedSound]?.notes[0].length *
-          kit[selectedSound].lengthMod;
-      }
-    }
-    setOn(newOn);
-    setPitch(newPitch);
-    setVelocity(newVelocity);
-    setLength(newLength);
     setColor(selectedSound);
+  }, [selectedSound]);
+
+  useEffect(() => {
+    if (selectedSound === -1) {
+      if (on === true) setOn(false);
+    } else setOn(pattern[i].sounds[selectedSound].on);
+  }, [selectedSound]);
+
+  useEffect(() => {
+    if (selectedSound !== -1) {
+      const { pitch, velocity, length } = pattern[i].sounds[
+        selectedSound
+      ].notes[0];
+      setPitch(pitch + kit[selectedSound].pitchMod);
+      setVelocity(velocity * kit[selectedSound].velocityMod);
+      setLength(length * kit[selectedSound].lengthMod);
+      setOn(pattern[i].sounds[selectedSound].on);
+    }
     setRefreshMods(false);
-  }, [pattern[i][selectedSound], selectedSound, refreshMods]);
+  }, [pattern[i].updated, refreshMods]);
 
   const handleTouchStart = (e) => {
     e.stopPropagation();
@@ -194,9 +183,12 @@ const Cell = ({ id, i }) => {
       if (on) sliceCell(i);
     } else {
       toggleCell(i);
+      setOn((on) => !on);
     }
   };
 
+  // for handleDrag in <Grid />
+  const cellRef = useRef(null);
   useEffect(() => {
     if (cellRef.current) {
       const event = new Event(id);
@@ -208,8 +200,8 @@ const Cell = ({ id, i }) => {
 
   const cellMemo = useMemo(() => {
     // console.log('rendering cell: ', i);
-    const soundCells = getSoundCells(id, pattern[i]);
-    const len = pattern[i][selectedSound]?.notes.length;
+    const soundCells = getSoundCells(id, pattern[i].sounds);
+    const len = pattern[i].sounds[selectedSound]?.notes.length;
     const modStyle = {
       opacity: on ? velocity : 1,
       width: `${100 * length}%`,
@@ -242,17 +234,17 @@ const Cell = ({ id, i }) => {
         </div>
       </div>
     );
-  }, [color, pitch, velocity, length, pattern[i]]);
+  }, [color, on, pitch, velocity, length, pattern[i].updated]);
 
   return cellMemo;
 };
 
-const getSoundCells = (cellId, patternI, size = 9) => {
+const getSoundCells = (cellId, sounds, size = 9) => {
   let soundCells = [];
   for (let i = 0; i < size; i++) {
     const id = `${cellId}-${i}`;
-    const color = patternI[i].on ? `bg${i}` : '';
-    const velocity = patternI[i].notes[0];
+    const color = sounds[i].on ? `bg${i}` : '';
+    const velocity = sounds[i].notes[0];
     soundCells.push(
       <SoundCell key={id} id={id} color={color} velocity={velocity} />
     );
@@ -261,11 +253,11 @@ const getSoundCells = (cellId, patternI, size = 9) => {
 };
 
 const SoundCell = ({ id, color, velocity }) => {
-  const soundCellMemo = useMemo(() => {
-    // console.log('rendering soundCell: ', id);
-    const classes = `sound-cell ${color}`;
-    return <div id={id} className={classes} style={{ opacity: velocity }} />;
-  }, [velocity]);
+  // const soundCellMemo = useMemo(() => {
+  // console.log('rendering soundCell: ', id);
+  const classes = `sound-cell ${color}`;
+  return <div id={id} className={classes} style={{ opacity: velocity }} />;
+  // }, [velocity]);
 
-  return soundCellMemo;
+  // return soundCellMemo;
 };

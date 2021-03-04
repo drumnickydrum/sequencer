@@ -24,11 +24,17 @@ export const UndoProvider = ({ children }) => {
     undoRef.current.push([undoFunc, redoFunc]);
   };
 
-  const addToPatternUndo = (prevPattern, newPattern, setPattern) => {
+  const addToPatternUndo = (prevPattern, newPattern, setPattern, i) => {
     redoRef.current.length = 0;
     undoRef.current.push([
-      () => setPattern(prevPattern), // undo
-      () => setPattern(newPattern), // redo
+      () => {
+        if (i) prevPattern[i].updated = newPattern[i].updated + 1;
+        setPattern(prevPattern);
+      },
+      () => {
+        if (i) newPattern[i].updated = prevPattern[i].updated + 1;
+        setPattern(newPattern);
+      },
     ]);
   };
 

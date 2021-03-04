@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import * as Tone from 'tone';
-import { analog as kit } from '../kits/defaultKits';
+import { analog as kit } from '../defaults/defaultKits';
 
 export const Kit = React.createContext();
 export const KitProvider = ({ children }) => {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import * as Tone from 'tone';
-import { init, analog } from './defaultSequences';
+import { init, analog } from '../defaults/defaultSequences';
 import { Pattern } from './Pattern';
-import { MIDI_NOTES } from '../kits/defaultKits';
+import { MIDI_NOTES } from '../defaults/defaultKits';
 import { Kit } from './Kit';
 
 export const Sequencer = React.createContext();
@@ -55,7 +55,7 @@ export const SequencerProvider = ({ children }) => {
 
   const scheduleCell = (time, stepRef) => {
     for (const [sound, { on, notes }] of Object.entries(
-      patternRef.current[stepRef.current]
+      patternRef.current[stepRef.current].sounds
     )) {
       if (on) {
         // console.time('schedule note');

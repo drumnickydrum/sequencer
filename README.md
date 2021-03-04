@@ -4,7 +4,13 @@
 
 ### 3/4/2021
 
-< 12:00 PM
+< 6:00 PM: It's a spaghetti mess right now trying to make as few unnecessary copies / updates / repaints as possible. Need to rethink this whole efficiency thing. Getting foggy, will stop for today.
+
+> 3:00 PM:
+
+- I need to simplify these pattern updates vs step updates. These deep copies are making pattern editing janky.
+
+< 12:00 PM:
 
 - Began an implementation of the often used useStateAndRef flow.
 - Reorganizing PatternProvider so related values are all together.

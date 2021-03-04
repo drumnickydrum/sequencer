@@ -17,7 +17,7 @@ export const SoundEdit = ({ selectedSound }) => {
     Math.round(kit[selectedSound].pitchMod / 0.1) + 50
   );
   const [lengthVal, setLengthVal] = useState(
-    kit[selectedSound].lengthMod * 100 + 0.1
+    kit[selectedSound].lengthMod * 100
   );
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export const SoundEdit = ({ selectedSound }) => {
   }, [pitchVal]);
 
   useEffect(() => {
-    kit[selectedSound].lengthMod = lengthVal * 0.01 + 0.01;
+    kit[selectedSound].lengthMod = lengthVal * 0.01;
   }, [lengthVal]);
 
   const [y, setY] = useState(null);

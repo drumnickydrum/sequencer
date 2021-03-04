@@ -30,7 +30,7 @@ const SoundBtn = ({ i, sound, selected, handleClick }) => {
   const { pattern } = useContext(Pattern);
   let cells = [];
   for (let c = 0; c < 64; c++) {
-    const classes = pattern[c][i].on ? `cell bg${i} on` : 'cell';
+    const classes = pattern[c].sounds[i].on ? `cell bg${i} on` : 'cell';
     cells.push(<div key={`paste-pattern-${i}-${c}`} className={classes} />);
   }
   let classes = `sound borderDefault`;
