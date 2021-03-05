@@ -2,6 +2,16 @@
 
 ## Dev notes
 
+### 3/5/2021
+
+< 12:00PM:
+
+- I'm becoming more clear on how I should use certain hooks:
+  - Should the change in value cause a UI change? -> useState
+  - Should every change in value not cause a UI change? -> useRef
+  - Is the value coming from outside this function scope, and I know we're not updating this component's state? -> useRef
+- I also fixed an error where I was putting a ref value as a condition to a touch handler. this doesn't make sense because it's only going to use the condition as it was on mount. You need to check the ref in the function definition and then return if neccessary.
+
 ### 3/4/2021
 
 < 6:00 PM: It's a spaghetti mess right now trying to make as few unnecessary copies / updates / repaints as possible. Need to rethink this whole efficiency thing. Getting foggy, will stop for today.

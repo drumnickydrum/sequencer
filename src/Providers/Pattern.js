@@ -10,151 +10,124 @@ import { useStateAndRef } from '../utils/useStateAndRef';
 export const Pattern = React.createContext();
 export const PatternProvider = ({ children }) => {
   const { addToPatternUndo, undoingRef } = useContext(Undo);
+
   const [selectedSound, setSelectedSound] = useState(-1);
-  const [pattern, setPattern, patternRef] = useStateAndRef(
-    analog.pattern,
-    deepCopyPattern
-  );
-  const prevPatternRef = useRef(deepCopyPattern(pattern));
 
-  const iRef = useRef(null);
-  useEffect(() => {
-    if (!undoingRef.current) {
-      addToPatternUndo(
-        prevPatternRef.current,
-        pattern,
-        setPattern,
-        iRef.current
-      );
-    } else {
-      undoingRef.current = false;
-    }
-    prevPatternRef.current = deepCopyPattern(pattern);
-    iRef.current = null;
-  }, [pattern, undoingRef]);
+  const patternRef = useRef(deepCopyPattern(analog.pattern));
+  const prevPatternRef = useRef(deepCopyPattern(patternRef.current));
 
-  const [toggleEvents, setToggleEvents] = useState({});
   const prevCellRef = useRef(null);
-  const toggleCell = (i) => {
-    iRef.current = i;
-    setPattern((pattern) => {
-      let newPattern = deepCopyPattern(pattern);
-      newPattern[i].sounds[selectedSound].on = !newPattern[i].sounds[
-        selectedSound
-      ].on;
-      newPattern[i].updated++;
-      return newPattern;
+  const toggleEventsRef = useRef({});
+  const toggleCell = (step) => {
+    patternRef.current[step][selectedSound].on = !patternRef.current[step][
+      selectedSound
+    ].on;
+  };
+
+  const [cellMod, setCellMod, cellModRef] = useStateAndRef(null);
+  const modStep = (newVal, step) => {
+    patternRef.current[step][selectedSound].notes.forEach((note) => {
+      if (cellModRef.current === 'pitch') note.pitch = newVal;
+      if (cellModRef.current === 'velocity') note.velocity = newVal;
+      if (cellModRef.current === 'length') note.length = newVal;
     });
   };
 
-  const [cellMod, setCellMod, cellModRef] = useStateAndRef('');
-  const modCell = (i, type, newVal) => {
-    iRef.current = i;
-    setPattern((pattern) => {
-      let newPattern = deepCopyPattern(pattern);
-      newPattern[i].sounds[selectedSound].notes.forEach((note) => {
-        if (type === 'pitch') note.pitch = newVal;
-        if (type === 'velocity') note.velocity = newVal;
-        if (type === 'length') note.length = newVal;
-      });
-      newPattern[i].updated++;
-      return newPattern;
-    });
-  };
-  const resetCellMods = (type) => {
-    setPattern((pattern) => {
-      let newPattern = deepCopyPattern(pattern);
-      newPattern.forEach((step) => {
-        step.sounds[selectedSound].notes.forEach((note) => {
-          if (type === 'pitch') note.pitch = 24;
-          if (type === 'velocity') note.velocity = 1;
-          if (type === 'length') note.length = 1;
-        });
-      });
-    });
-  };
+  // const resetCellMods = (type) => {
+  //   setPattern((pattern) => {
+  //     let newPattern = deepCopyPattern(pattern);
+  //     newPattern.forEach((step) => {
+  //       step[selectedSound].notes.forEach((note) => {
+  //         if (type === 'pitch') note.pitch = 24;
+  //         if (type === 'velocity') note.velocity = 1;
+  //         if (type === 'length') note.length = 1;
+  //       });
+  //     });
+  //   });
+  // };
 
   const [slicing, setSlicing, slicingRef] = useStateAndRef(false);
-  const sliceCell = (i) => {
-    iRef.current = i;
-    setPattern((pattern) => {
-      let newPattern = deepCopyPattern(pattern);
-      let notes = newPattern[i].sounds[selectedSound].notes;
-      let len = notes.length;
-      if (len === 3) {
-        newPattern[i].sounds[selectedSound].notes = [notes[0]];
-      } else {
-        notes.push(notes[0]);
-      }
-      newPattern[i].updated++;
-      return newPattern;
-    });
-  };
-
-  const [copying, setCopying] = useState(false);
-  const pastePattern = (sound) => {
-    let newPattern = deepCopyPattern(pattern);
-    newPattern.forEach((step) => {
-      const copiedSound = { ...step.sounds[selectedSound] };
-      const notes = [...copiedSound.notes];
-      notes.forEach((note) => ({ ...note }));
-      step.sounds[sound] = { on: copiedSound.on, notes };
-    });
-    setPattern(newPattern);
-  };
-
-  const clearPattern = (one) => {
-    let newPattern;
-    if (!one) {
-      newPattern = INIT_PATTERN();
-      setPattern(newPattern);
+  const sliceStep = (step) => {
+    let notes = patternRef.current[step][selectedSound].notes;
+    const len = notes.length;
+    if (len === 3) {
+      notes = [notes[0]];
     } else {
-      if (selectedSound === -1) return;
-      newPattern = deepCopyPattern(pattern);
-      newPattern.forEach((step) => {
-        step.sounds[selectedSound] = INIT_ONE_PATTERN();
-      });
-      setPattern(newPattern);
+      notes.push(notes[0]);
     }
   };
+  // const [slicing, setSlicing, slicingRef] = useStateAndRef(false);
+  // const sliceCell = (i) => {
+  //   iRef.current = i;
+  //   setPattern((pattern) => {
+  //     let newPattern = deepCopyPattern(pattern);
+  //     let notes = newPattern[i][selectedSound].notes;
+  //     let len = notes.length;
+  //     if (len === 3) {
+  //       newPattern[i][selectedSound].notes = [notes[0]];
+  //     } else {
+  //       notes.push(notes[0]);
+  //     }
+  //     newPattern[i].updated++;
+  //     return newPattern;
+  //   });
+  // };
+
+  // const [copying, setCopying] = useState(false);
+  // const pastePattern = (sound) => {
+  //   let newPattern = deepCopyPattern(pattern);
+  //   newPattern.forEach((step) => {
+  //     const copiedSound = { ...step[selectedSound] };
+  //     const notes = [...copiedSound.notes];
+  //     notes.forEach((note) => ({ ...note }));
+  //     step[sound] = { on: copiedSound.on, notes };
+  //   });
+  //   setPattern(newPattern);
+  // };
+
+  // const clearPattern = (one) => {
+  //   let newPattern;
+  //   if (!one) {
+  //     newPattern = INIT_PATTERN();
+  //     setPattern(newPattern);
+  //   } else {
+  //     if (selectedSound === -1) return;
+  //     newPattern = deepCopyPattern(pattern);
+  //     newPattern.forEach((step) => {
+  //       step[selectedSound] = INIT_ONE_PATTERN();
+  //     });
+  //     setPattern(newPattern);
+  //   }
+  // };
 
   // debugging
   useEffect(() => {
     const printPattern = (e) => {
       // console.log(e.code);
-      if (e.code === 'KeyP') console.log(pattern);
-      if (e.code === 'KeyR') console.log(patternRef.current);
-      if (e.code === 'Digit0') console.log(pattern[0].sounds[0]);
+      if (e.code === 'KeyP') console.log(patternRef.current);
+      if (e.code === 'Digit0') console.log(patternRef.current[0][0]);
     };
     document.addEventListener('keydown', printPattern);
     return () => document.removeEventListener('keydown', printPattern);
-  }, [pattern]);
+  }, [patternRef.current]);
 
   return (
     <Pattern.Provider
       value={{
-        pattern,
-        setPattern,
         patternRef,
-        clearPattern,
-        slicing,
-        setSlicing,
-        slicingRef,
-        sliceCell,
-        copying,
-        setCopying,
-        pastePattern,
-        toggleEvents,
-        setToggleEvents,
         prevCellRef,
+        toggleEventsRef,
         toggleCell,
         selectedSound,
         setSelectedSound,
         cellMod,
         setCellMod,
         cellModRef,
-        modCell,
-        resetCellMods,
+        modStep,
+        slicing,
+        setSlicing,
+        slicingRef,
+        sliceStep,
       }}
     >
       {children}
@@ -162,14 +135,17 @@ export const PatternProvider = ({ children }) => {
   );
 };
 
-export const deepCopyPattern = (pattern) => {
-  return pattern.map((step) => {
-    let newSounds = step.sounds.map((sound) => {
-      let newNotes = sound.notes.map((note) => {
-        return { ...note };
-      });
-      return { on: sound.on, notes: newNotes };
+const deepCopyStep = (step) => {
+  return step.map((sound) => {
+    let newNotes = sound.notes.map((note) => {
+      return { ...note };
     });
-    return { sounds: newSounds, updated: step.updated };
+    return { on: sound.on, notes: newNotes };
+  });
+};
+
+const deepCopyPattern = (pattern) => {
+  return pattern.map((step) => {
+    return deepCopyStep(step);
   });
 };

@@ -7,7 +7,7 @@ import { Kit } from '../Providers/Kit';
 
 export const SoundEdit = ({ selectedSound }) => {
   const { setInfo } = useContext(Info);
-  const { kit, setRefreshMods } = useContext(Kit);
+  const { kit, setRefreshAll } = useContext(Kit);
   const { addToKitUndo } = useContext(Undo);
 
   const [velocityVal, setVelocityVal] = useState(
@@ -102,7 +102,7 @@ export const SoundEdit = ({ selectedSound }) => {
     }
     const newMods = { pitchMod, velocityMod, lengthMod };
     if (updated) {
-      setRefreshMods(true);
+      setRefreshAll(true);
       addToKitUndo(prevModsRef.current, newMods, kit[selectedSound]);
       prevModsRef.current = { ...newMods };
     }
@@ -112,7 +112,7 @@ export const SoundEdit = ({ selectedSound }) => {
     if (type === 'velocity') setVelocityVal(100);
     if (type === 'pitch') setPitchVal(50);
     if (type === 'length') setLengthVal(100);
-    setRefreshMods(true);
+    setRefreshAll(true);
     addToKitUndo(
       prevModsRef.current,
       { pitchMod: 0, velocityMod: 1, lengthMod: 1 },

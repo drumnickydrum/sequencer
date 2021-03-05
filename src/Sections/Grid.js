@@ -4,7 +4,9 @@ import { Kit } from '../Providers/Kit';
 import { SawIcon } from '../icons';
 
 export const Grid = () => {
-  const { toggleEvents, prevCellRef, cellModRef } = useContext(Pattern);
+  const { patternRef, prevCellRef, toggleEventsRef, cellModRef } = useContext(
+    Pattern
+  );
 
   const handleDrag = (e) => {
     if (cellModRef.current) return;
@@ -14,70 +16,60 @@ export const Grid = () => {
       const id = cell.id;
       if (!id.match(/cell/)) return;
       if (prevCellRef.current !== id) {
-        document.dispatchEvent(toggleEvents[id]);
+        document.dispatchEvent(toggleEventsRef.current[id]);
         prevCellRef.current = id;
       }
     }
   };
-  const cells = getCells();
+
   return (
     <div id='grid' onTouchMove={handleDrag}>
-      {cells}
+      {patternRef.current.map((_, step) => {
+        const id = `cell-${step}`;
+        return <Cell key={id} id={id} step={step} />;
+      })}
     </div>
   );
 };
 
-const getCells = (size = 64) => {
-  let cells = [];
-  for (let i = 0; i < size; i++) {
-    const id = `cell-${i}`;
-    cells.push(<Cell key={id} id={id} i={i} />);
-  }
-  return cells;
-};
-
-const Cell = ({ id, i }) => {
+const Cell = ({ id, step }) => {
   const {
-    pattern,
-    toggleCell,
-    setToggleEvents,
+    patternRef,
     prevCellRef,
+    toggleEventsRef,
+    toggleCell,
     selectedSound,
-    slicingRef,
-    sliceCell,
     cellModRef,
-    modCell,
+    modStep,
+    slicingRef,
+    sliceStep,
   } = useContext(Pattern);
-  const { kit, refreshMods, setRefreshMods } = useContext(Kit);
+  const { kit, refreshAll, setRefreshAll } = useContext(Kit);
 
   const [color, setColor] = useState(-1);
   const [on, setOn] = useState(false);
   const [pitch, setPitch] = useState(24);
   const [velocity, setVelocity] = useState(1);
   const [length, setLength] = useState(1);
-
-  useEffect(() => {
-    setColor(selectedSound);
-  }, [selectedSound]);
+  const [slice, setSlice] = useState(1);
 
   useEffect(() => {
     if (selectedSound === -1) {
       if (on === true) setOn(false);
-    } else setOn(pattern[i].sounds[selectedSound].on);
-  }, [selectedSound]);
-
-  useEffect(() => {
-    if (selectedSound !== -1) {
-      const { pitch, velocity, length } = pattern[i].sounds[
-        selectedSound
-      ].notes[0];
-      setPitch(pitch + kit[selectedSound].pitchMod);
-      setVelocity(velocity * kit[selectedSound].velocityMod);
-      setLength(length * kit[selectedSound].lengthMod);
-      setOn(pattern[i].sounds[selectedSound].on);
+    } else {
+      setColor(selectedSound);
+      setOn(patternRef.current[step][selectedSound].on);
+      if (refreshAll) {
+        const { pitch, velocity, length } = patternRef.current[step][
+          selectedSound
+        ].notes[0];
+        setPitch(pitch + kit[selectedSound].pitchMod);
+        setVelocity(velocity * kit[selectedSound].velocityMod);
+        setLength(length * kit[selectedSound].lengthMod);
+        setRefreshAll(false);
+      }
     }
-    setRefreshMods(false);
-  }, [pattern[i].updated, refreshMods]);
+  }, [selectedSound, refreshAll]);
 
   const handleTouchStart = (e) => {
     e.stopPropagation();
@@ -91,52 +83,44 @@ const Cell = ({ id, i }) => {
 
   const handleTouchEnd = () => {
     if (cellModRef.current) {
-      if (on) modEnd();
+      modEnd();
     } else {
       prevCellRef.current = null;
     }
   };
 
-  const yRef = useRef(null);
   const xRef = useRef(null);
-  const prevRef = useRef(null);
+  const yRef = useRef(null);
   const modStart = (e) => {
-    yRef.current = e.changedTouches[0].clientY;
     xRef.current = e.changedTouches[0].clientX;
-    prevRef.current =
-      cellModRef.current === 'pitch'
-        ? pitch
-        : cellModRef.current === 'velocity'
-        ? velocity
-        : length;
+    yRef.current = e.changedTouches[0].clientY;
   };
 
   const handleTouchMove = (e) => {
+    if (!cellModRef.current) return;
+    const newX = e.changedTouches[0].clientX;
+    const newY = e.changedTouches[0].clientY;
     if (cellModRef.current === 'pitch') {
-      const newY = e.changedTouches[0].clientY;
       if (newY - yRef.current > 1) {
         setPitch((pitch) => pitch - 1);
       } else if (newY - yRef.current < -1) {
         setPitch((pitch) => pitch + 1);
       }
-      yRef.current = newY;
     } else if (cellModRef.current === 'velocity') {
-      const newY = e.changedTouches[0].clientY;
       if (newY - yRef.current > 1) {
         setVelocity((velocity) => velocity - 0.02);
       } else if (newY - yRef.current < -1) {
         setVelocity((velocity) => velocity + 0.02);
       }
-      yRef.current = newY;
     } else {
-      const newX = e.changedTouches[0].clientX;
       if (newX - xRef.current > 1) {
         setLength((length) => length + 0.02);
       } else if (newX - xRef.current < -1) {
         setLength((length) => length - 0.02);
       }
-      xRef.current = newX;
     }
+    xRef.current = newX;
+    yRef.current = newY;
   };
 
   const modEnd = () => {
@@ -151,7 +135,7 @@ const Cell = ({ id, i }) => {
         newVal = 40;
         setPitch(newVal);
       }
-      modCell(i, 'pitch', newVal);
+      modStep(newVal, step);
     } else if (cellModRef.current === 'velocity') {
       yRef.current = null;
       newVal = velocity;
@@ -162,7 +146,7 @@ const Cell = ({ id, i }) => {
         newVal = 1;
         setVelocity(newVal);
       }
-      modCell(i, 'velocity', newVal);
+      modStep(newVal, step);
     } else {
       xRef.current = null;
       newVal = length;
@@ -173,16 +157,19 @@ const Cell = ({ id, i }) => {
         newVal = 1;
         setLength(newVal);
       }
-      modCell(i, 'length', newVal);
+      modStep(newVal, step);
     }
   };
 
   const handleToggle = () => {
     if (selectedSound === -1) return;
     if (slicingRef.current) {
-      if (on) sliceCell(i);
+      if (on) {
+        sliceStep(step);
+        setSlice((slice) => (slice === 3 ? 1 : slice + 1));
+      }
     } else {
-      toggleCell(i);
+      toggleCell(step);
       setOn((on) => !on);
     }
   };
@@ -191,65 +178,66 @@ const Cell = ({ id, i }) => {
   const cellRef = useRef(null);
   useEffect(() => {
     if (cellRef.current) {
-      const event = new Event(id);
-      document.addEventListener(id, handleToggle);
-      setToggleEvents((prev) => ({ ...prev, [id]: event }));
+      const event = new Event(`toggle-${id}`);
+      document.addEventListener(`toggle-${id}`, handleToggle);
+      toggleEventsRef.current[id] = event;
     }
-    return () => document.removeEventListener(id, handleToggle);
-  }, [cellRef, selectedSound, on]);
+    return () => document.removeEventListener(`toggle-${id}`, handleToggle);
+  });
 
-  const cellMemo = useMemo(() => {
-    // console.log('rendering cell: ', i);
-    const soundCells = getSoundCells(id, pattern[i].sounds);
-    const len = pattern[i].sounds[selectedSound]?.notes.length;
-    const modStyle = {
-      opacity: on ? velocity : 1,
-      width: `${100 * length}%`,
-    };
-    return (
-      <div className='cell-wrapper'>
-        <div
-          ref={cellRef}
-          id={id}
-          className={on ? 'cell on' : 'cell'}
-          onTouchStart={handleTouchStart}
-          onTouchMove={cellModRef.current && on ? handleTouchMove : null}
-          onTouchEnd={handleTouchEnd}
-        >
-          <div className={on ? `cell-mods bg${color}` : ''} style={modStyle}>
-            {on && pitch > 24 && <p className='pitch-up'>+{pitch - 24}</p>}
-            {on && pitch < 24 && <p className='pitch-down'>{pitch - 24}</p>}
-            {on && len > 1 && (
-              <div className={len === 2 ? 'slice' : 'slice slice-3'}>
-                <SawIcon />
-              </div>
-            )}
-            {on && len > 2 && (
-              <div className='slice slice-2'>
-                <SawIcon />
-              </div>
-            )}
-          </div>
-          <div className='sound-cells'>{soundCells}</div>
+  // const cellMemo = useMemo(() => {
+  // console.log('rendering cell: ', i);
+  const modStyle = {
+    opacity: on ? velocity : 1,
+    width: `${100 * length}%`,
+  };
+  return (
+    <div className='cell-wrapper'>
+      <div
+        ref={cellRef}
+        id={id}
+        className={on ? 'cell on' : 'cell'}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div className={on ? `cell-mods bg${color}` : ''} style={modStyle}>
+          {on && pitch > 24 && <p className='pitch-up'>+{pitch - 24}</p>}
+          {on && pitch < 24 && <p className='pitch-down'>{pitch - 24}</p>}
+          {on && slice > 1 && (
+            <div className={slice === 2 ? 'slice' : 'slice slice-3'}>
+              <SawIcon />
+            </div>
+          )}
+          {on && slice > 2 && (
+            <div className='slice slice-2'>
+              <SawIcon />
+            </div>
+          )}
+        </div>
+        <div className='sound-cells'>
+          {kit.map((_, sound) => {
+            const scId = `${id}-${sound}`;
+            const color = patternRef.current[step][sound].on
+              ? `bg${sound}`
+              : '';
+            const velocity = patternRef.current[step][sound].notes[0];
+            return (
+              <SoundCell
+                key={scId}
+                id={scId}
+                color={color}
+                velocity={velocity}
+              />
+            );
+          })}
         </div>
       </div>
-    );
-  }, [color, on, pitch, velocity, length, pattern[i].updated]);
+    </div>
+  );
+  // }, [color, on, pitch, velocity, length, pattern[step].updated]);
 
-  return cellMemo;
-};
-
-const getSoundCells = (cellId, sounds, size = 9) => {
-  let soundCells = [];
-  for (let i = 0; i < size; i++) {
-    const id = `${cellId}-${i}`;
-    const color = sounds[i].on ? `bg${i}` : '';
-    const velocity = sounds[i].notes[0];
-    soundCells.push(
-      <SoundCell key={id} id={id} color={color} velocity={velocity} />
-    );
-  }
-  return soundCells;
+  // return cellMemo;
 };
 
 const SoundCell = ({ id, color, velocity }) => {

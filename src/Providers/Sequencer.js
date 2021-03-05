@@ -55,7 +55,7 @@ export const SequencerProvider = ({ children }) => {
 
   const scheduleCell = (time, stepRef) => {
     for (const [sound, { on, notes }] of Object.entries(
-      patternRef.current[stepRef.current].sounds
+      patternRef.current[stepRef.current]
     )) {
       if (on) {
         // console.time('schedule note');
