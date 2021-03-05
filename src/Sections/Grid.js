@@ -81,14 +81,6 @@ const Cell = ({ id, step }) => {
     }
   };
 
-  const handleTouchEnd = () => {
-    if (cellModRef.current) {
-      modEnd();
-    } else {
-      prevCellRef.current = null;
-    }
-  };
-
   const xRef = useRef(null);
   const yRef = useRef(null);
   const modStart = (e) => {
@@ -97,7 +89,7 @@ const Cell = ({ id, step }) => {
   };
 
   const handleTouchMove = (e) => {
-    if (!cellModRef.current) return;
+    if (!cellModRef.current || !on) return;
     const newX = e.changedTouches[0].clientX;
     const newY = e.changedTouches[0].clientY;
     if (cellModRef.current === 'pitch') {
@@ -121,6 +113,14 @@ const Cell = ({ id, step }) => {
     }
     xRef.current = newX;
     yRef.current = newY;
+  };
+
+  const handleTouchEnd = () => {
+    if (cellModRef.current) {
+      if (on) modEnd();
+    } else {
+      prevCellRef.current = null;
+    }
   };
 
   const modEnd = () => {

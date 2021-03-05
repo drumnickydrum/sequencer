@@ -6,10 +6,12 @@ import {
 } from '../defaults/defaultSequences';
 import { Undo } from './UndoProvider';
 import { useStateAndRef } from '../utils/useStateAndRef';
+import { Kit } from './Kit';
 
 export const Pattern = React.createContext();
 export const PatternProvider = ({ children }) => {
   const { addToPatternUndo, undoingRef } = useContext(Undo);
+  const { setRefreshAll } = useContext(Kit);
 
   const [selectedSound, setSelectedSound] = useState(-1);
 
@@ -33,18 +35,16 @@ export const PatternProvider = ({ children }) => {
     });
   };
 
-  // const resetCellMods = (type) => {
-  //   setPattern((pattern) => {
-  //     let newPattern = deepCopyPattern(pattern);
-  //     newPattern.forEach((step) => {
-  //       step[selectedSound].notes.forEach((note) => {
-  //         if (type === 'pitch') note.pitch = 24;
-  //         if (type === 'velocity') note.velocity = 1;
-  //         if (type === 'length') note.length = 1;
-  //       });
-  //     });
-  //   });
-  // };
+  const resetCellMods = (type) => {
+    patternRef.current.forEach((step) => {
+      step[selectedSound].notes.forEach((note) => {
+        if (type === 'pitch') note.pitch = 24;
+        if (type === 'velocity') note.velocity = 1;
+        if (type === 'length') note.length = 1;
+      });
+    });
+    setRefreshAll(true);
+  };
 
   const [slicing, setSlicing, slicingRef] = useStateAndRef(false);
   const sliceStep = (step) => {
@@ -56,49 +56,28 @@ export const PatternProvider = ({ children }) => {
       notes.push(notes[0]);
     }
   };
-  // const [slicing, setSlicing, slicingRef] = useStateAndRef(false);
-  // const sliceCell = (i) => {
-  //   iRef.current = i;
-  //   setPattern((pattern) => {
-  //     let newPattern = deepCopyPattern(pattern);
-  //     let notes = newPattern[i][selectedSound].notes;
-  //     let len = notes.length;
-  //     if (len === 3) {
-  //       newPattern[i][selectedSound].notes = [notes[0]];
-  //     } else {
-  //       notes.push(notes[0]);
-  //     }
-  //     newPattern[i].updated++;
-  //     return newPattern;
-  //   });
-  // };
 
-  // const [copying, setCopying] = useState(false);
-  // const pastePattern = (sound) => {
-  //   let newPattern = deepCopyPattern(pattern);
-  //   newPattern.forEach((step) => {
-  //     const copiedSound = { ...step[selectedSound] };
-  //     const notes = [...copiedSound.notes];
-  //     notes.forEach((note) => ({ ...note }));
-  //     step[sound] = { on: copiedSound.on, notes };
-  //   });
-  //   setPattern(newPattern);
-  // };
+  const [copying, setCopying] = useState(false);
+  const pastePattern = (sound) => {
+    patternRef.current.forEach((step) => {
+      step[sound].on = step[selectedSound].on;
+      step[sound].notes = step[selectedSound].notes.map((note) => ({
+        ...note,
+      }));
+    });
+  };
 
-  // const clearPattern = (one) => {
-  //   let newPattern;
-  //   if (!one) {
-  //     newPattern = INIT_PATTERN();
-  //     setPattern(newPattern);
-  //   } else {
-  //     if (selectedSound === -1) return;
-  //     newPattern = deepCopyPattern(pattern);
-  //     newPattern.forEach((step) => {
-  //       step[selectedSound] = INIT_ONE_PATTERN();
-  //     });
-  //     setPattern(newPattern);
-  //   }
-  // };
+  const clearPattern = (one) => {
+    if (one) {
+      if (selectedSound === -1) return;
+      patternRef.current.forEach((step) => {
+        step[selectedSound] = INIT_ONE_PATTERN();
+      });
+    } else {
+      patternRef.current = INIT_PATTERN();
+    }
+    setRefreshAll(true);
+  };
 
   // debugging
   useEffect(() => {
@@ -124,10 +103,15 @@ export const PatternProvider = ({ children }) => {
         setCellMod,
         cellModRef,
         modStep,
+        resetCellMods,
         slicing,
         setSlicing,
         slicingRef,
         sliceStep,
+        copying,
+        setCopying,
+        pastePattern,
+        clearPattern,
       }}
     >
       {children}

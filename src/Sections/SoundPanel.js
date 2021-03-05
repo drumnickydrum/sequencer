@@ -36,7 +36,7 @@ export const SoundPanel = () => {
           <CellEdit closeCbRef={closeCbRef} selectedSound={selectedSound} />
           <SoloAndMute closeCbRef={closeCbRef} selectedSound={selectedSound} />
           <SliceAndCopy closeCbRef={closeCbRef} />
-          {/* <SoundEdit selectedSound={selectedSound} /> */}
+          <SoundEdit selectedSound={selectedSound} />
         </div>
       </div>
       <button className='sound-close-btn' onClick={handleClose}>

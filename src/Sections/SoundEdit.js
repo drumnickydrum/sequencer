@@ -112,7 +112,7 @@ export const SoundEdit = ({ selectedSound }) => {
     if (type === 'velocity') setVelocityVal(100);
     if (type === 'pitch') setPitchVal(50);
     if (type === 'length') setLengthVal(100);
-    setRefreshAll(true);
+    setTimeout(() => setRefreshAll(true), 0);
     addToKitUndo(
       prevModsRef.current,
       { pitchMod: 0, velocityMod: 1, lengthMod: 1 },
