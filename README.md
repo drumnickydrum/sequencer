@@ -4,7 +4,9 @@
 
 ### 3/5/2021
 
-< 12:00PM:
+NEXT:
+
+- Consolidate mods into step/all
 
 - I'm becoming more clear on how I should use certain hooks:
   - Should the change in value cause a UI change? -> useState
