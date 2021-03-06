@@ -6,13 +6,12 @@ export const UndoProvider = ({ children }) => {
   const undoRef = useRef([]);
   const redoRef = useRef([]);
 
-  const undoingRef = useRef(true);
-
   const undo = () => {
     if (undoRef.current.length === 0) return;
     const [undoFunc, redoFunc] = undoRef.current.pop();
     undoingRef.current = true;
     undoFunc();
+    undoingRef.current = false;
     redoRef.current.push([undoFunc, redoFunc]);
   };
 
@@ -21,19 +20,23 @@ export const UndoProvider = ({ children }) => {
     const [undoFunc, redoFunc] = redoRef.current.pop();
     undoingRef.current = true;
     redoFunc();
+    undoingRef.current = false;
     undoRef.current.push([undoFunc, redoFunc]);
   };
 
-  const addToPatternUndo = (prevPattern, newPattern, setPattern, i) => {
+  const refreshRef = useRef({});
+
+  const undoingRef = useRef(false);
+  const addToStepUndo = (func, prevVal, newVal, step) => {
     redoRef.current.length = 0;
     undoRef.current.push([
       () => {
-        if (i) prevPattern[i].updated = newPattern[i].updated + 1;
-        setPattern(prevPattern);
+        func(prevVal);
+        refreshRef.current[`cell-${step}`](true);
       },
       () => {
-        if (i) newPattern[i].updated = prevPattern[i].updated + 1;
-        setPattern(newPattern);
+        func(newVal);
+        refreshRef.current[`cell-${step}`](true);
       },
     ]);
   };
@@ -66,8 +69,9 @@ export const UndoProvider = ({ children }) => {
         redo,
         undoRef,
         redoRef,
-        addToPatternUndo,
+        refreshRef,
         undoingRef,
+        addToStepUndo,
         addToKitUndo,
       }}
     >

@@ -1,15 +1,20 @@
-import React, { useState, useEffect, useContext, useMemo, useRef } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  useMemo,
+  useRef,
+  useCallback,
+} from 'react';
 import { Pattern } from '../Providers/Pattern';
 import { Kit } from '../Providers/Kit';
 import { SawIcon } from '../icons';
+import { Undo } from '../Providers/UndoProvider';
 
 export const Grid = () => {
-  const { patternRef, prevCellRef, toggleEventsRef, cellModRef } = useContext(
-    Pattern
-  );
+  const { patternRef, prevCellRef, toggleEventsRef } = useContext(Pattern);
 
   const handleDrag = (e) => {
-    if (cellModRef.current) return;
     const touch = e.touches[0];
     const cell = document.elementFromPoint(touch.clientX, touch.clientY);
     if (cell) {
@@ -45,6 +50,9 @@ const Cell = ({ id, step }) => {
     sliceStep,
   } = useContext(Pattern);
   const { kit, refreshAll, setRefreshAll } = useContext(Kit);
+  const { refreshRef } = useContext(Undo);
+
+  const [refresh, setRefresh] = useState(true);
 
   const [color, setColor] = useState(-1);
   const [on, setOn] = useState(false);
@@ -59,17 +67,50 @@ const Cell = ({ id, step }) => {
     } else {
       setColor(selectedSound);
       setOn(patternRef.current[step][selectedSound].on);
-      if (refreshAll) {
-        const { pitch, velocity, length } = patternRef.current[step][
-          selectedSound
-        ].notes[0];
-        setPitch(pitch + kit[selectedSound].pitchMod);
-        setVelocity(velocity * kit[selectedSound].velocityMod);
-        setLength(length * kit[selectedSound].lengthMod);
-        setRefreshAll(false);
-      }
+      const { pitch, velocity, length } = patternRef.current[step][
+        selectedSound
+      ].notes[0];
+      setPitch(pitch + kit[selectedSound].pitchMod);
+      setVelocity(velocity * kit[selectedSound].velocityMod);
+      setLength(length * kit[selectedSound].lengthMod);
+      setSlice(patternRef.current[step][selectedSound].notes.length);
     }
-  }, [selectedSound, refreshAll]);
+    setRefresh(false);
+    setRefreshAll(false);
+  }, [
+    selectedSound,
+    refresh,
+    refreshAll,
+    step,
+    kit,
+    on,
+    patternRef,
+    setRefreshAll,
+  ]);
+
+  const handleToggle = useCallback(() => {
+    if (selectedSound === -1) return;
+    if (slicingRef.current) {
+      if (on) {
+        sliceStep(step);
+        setSlice((slice) => (slice === 3 ? 1 : slice + 1));
+      }
+    } else {
+      toggleCell(step);
+    }
+    setRefresh(true);
+  }, [selectedSound, on, step, slicingRef, toggleCell, sliceStep]);
+
+  const cellRef = useRef(null);
+  useEffect(() => {
+    if (cellRef.current) {
+      const event = new Event(`toggle-${id}`);
+      document.addEventListener(`toggle-${id}`, handleToggle);
+      toggleEventsRef.current[id] = event;
+      refreshRef.current[id] = setRefresh;
+    }
+    return () => document.removeEventListener(`toggle-${id}`, handleToggle);
+  }, [id, toggleEventsRef, handleToggle, refreshRef]);
 
   const handleTouchStart = (e) => {
     e.stopPropagation();
@@ -81,15 +122,23 @@ const Cell = ({ id, step }) => {
     }
   };
 
+  const prevVal = useRef(null);
   const xRef = useRef(null);
   const yRef = useRef(null);
   const modStart = (e) => {
+    prevVal.current =
+      cellModRef.current === 'pitch'
+        ? pitch
+        : cellModRef.current === 'velocity'
+        ? velocity
+        : length;
     xRef.current = e.changedTouches[0].clientX;
     yRef.current = e.changedTouches[0].clientY;
   };
 
   const handleTouchMove = (e) => {
     if (!cellModRef.current || !on) return;
+    e.stopPropagation();
     const newX = e.changedTouches[0].clientX;
     const newY = e.changedTouches[0].clientY;
     if (cellModRef.current === 'pitch') {
@@ -135,7 +184,6 @@ const Cell = ({ id, step }) => {
         newVal = 40;
         setPitch(newVal);
       }
-      modStep(newVal, step);
     } else if (cellModRef.current === 'velocity') {
       yRef.current = null;
       newVal = velocity;
@@ -146,7 +194,6 @@ const Cell = ({ id, step }) => {
         newVal = 1;
         setVelocity(newVal);
       }
-      modStep(newVal, step);
     } else {
       xRef.current = null;
       newVal = length;
@@ -157,33 +204,9 @@ const Cell = ({ id, step }) => {
         newVal = 1;
         setLength(newVal);
       }
-      modStep(newVal, step);
     }
+    modStep(prevVal.current, newVal, step);
   };
-
-  const handleToggle = () => {
-    if (selectedSound === -1) return;
-    if (slicingRef.current) {
-      if (on) {
-        sliceStep(step);
-        setSlice((slice) => (slice === 3 ? 1 : slice + 1));
-      }
-    } else {
-      toggleCell(step);
-      setOn((on) => !on);
-    }
-  };
-
-  // for handleDrag in <Grid />
-  const cellRef = useRef(null);
-  useEffect(() => {
-    if (cellRef.current) {
-      const event = new Event(`toggle-${id}`);
-      document.addEventListener(`toggle-${id}`, handleToggle);
-      toggleEventsRef.current[id] = event;
-    }
-    return () => document.removeEventListener(`toggle-${id}`, handleToggle);
-  });
 
   // const cellMemo = useMemo(() => {
   // console.log('rendering cell: ', i);

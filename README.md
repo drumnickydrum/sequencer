@@ -2,6 +2,12 @@
 
 ## Dev notes
 
+### 3/6/2021
+
+- Working on a performant (but verbose) implementation of adding to undo per function.
+  - Update: the flow is now to define a function then run it, then add that function with prev/new values to the undo ref.
+- Don't forget to e.stopPropagation(). This removed the need for lots of unneccessary events in parent div. (Grid `handleDrag()` not neeeding to be called when Cell `handleTouchMove()` called)
+
 ### 3/5/2021
 
 NEXT:

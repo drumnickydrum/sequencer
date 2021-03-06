@@ -10,29 +10,45 @@ import { Kit } from './Kit';
 
 export const Pattern = React.createContext();
 export const PatternProvider = ({ children }) => {
-  const { addToPatternUndo, undoingRef } = useContext(Undo);
+  const {
+    undoRef,
+    redoRef,
+    refreshRef,
+    undoingRef,
+    addToStepUndo,
+  } = useContext(Undo);
   const { setRefreshAll } = useContext(Kit);
 
   const [selectedSound, setSelectedSound] = useState(-1);
 
   const patternRef = useRef(deepCopyPattern(analog.pattern));
-  const prevPatternRef = useRef(deepCopyPattern(patternRef.current));
 
   const prevCellRef = useRef(null);
   const toggleEventsRef = useRef({});
   const toggleCell = (step) => {
-    patternRef.current[step][selectedSound].on = !patternRef.current[step][
-      selectedSound
-    ].on;
+    const cell = patternRef.current[step][selectedSound];
+    function toggle(val) {
+      cell.on = val;
+    }
+    const prevOn = cell.on;
+    const newOn = !prevOn;
+    toggle(newOn);
+    if (!undoingRef.current) addToStepUndo(toggle, prevOn, newOn, step);
   };
 
   const [cellMod, setCellMod, cellModRef] = useStateAndRef(null);
-  const modStep = (newVal, step) => {
-    patternRef.current[step][selectedSound].notes.forEach((note) => {
-      if (cellModRef.current === 'pitch') note.pitch = newVal;
-      if (cellModRef.current === 'velocity') note.velocity = newVal;
-      if (cellModRef.current === 'length') note.length = newVal;
-    });
+  const modStep = (prevVal, newVal, step) => {
+    const notes = patternRef.current[step][selectedSound].notes;
+    const type = cellModRef.current;
+    function modify(val) {
+      notes.forEach((note) => {
+        if (type === 'pitch') note.pitch = val;
+        if (type === 'velocity') note.velocity = val;
+        if (type === 'length') note.length = val;
+      });
+    }
+    modify(newVal);
+    if (!undoingRef.current) addToStepUndo(modify, prevVal, newVal, step);
   };
 
   const resetCellMods = (type) => {
@@ -49,12 +65,15 @@ export const PatternProvider = ({ children }) => {
   const [slicing, setSlicing, slicingRef] = useStateAndRef(false);
   const sliceStep = (step) => {
     let notes = patternRef.current[step][selectedSound].notes;
-    const len = notes.length;
-    if (len === 3) {
-      notes = [notes[0]];
-    } else {
-      notes.push(notes[0]);
+    function slice(count) {
+      const len = notes.length;
+      const note = notes[0];
+      if (len === 3) notes.length = 0;
+      notes.push(note);
+      if (count === 2) slice(1);
     }
+    slice(1);
+    if (!undoingRef.current) addToStepUndo(slice, 2, 1, step);
   };
 
   const [copying, setCopying] = useState(false);
@@ -88,7 +107,7 @@ export const PatternProvider = ({ children }) => {
     };
     document.addEventListener('keydown', printPattern);
     return () => document.removeEventListener('keydown', printPattern);
-  }, [patternRef.current]);
+  });
 
   return (
     <Pattern.Provider
