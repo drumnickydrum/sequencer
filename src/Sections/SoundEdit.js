@@ -6,10 +6,10 @@ import { Undo } from '../Providers/UndoProvider';
 import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
 
-export const SoundEdit = ({ selectedSound }) => {
+export const SoundEdit = ({ cellMod, finish }) => {
   const { setInfo } = useContext(Info);
   const { kit } = useContext(Kit);
-  const { setRefreshAll } = useContext(Pattern);
+  const { selectedSound, setRefreshAll } = useContext(Pattern);
   const { addToModsUndo } = useContext(Undo);
 
   const [velocityVal, setVelocityVal] = useState(

@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 import { Pattern } from '../Providers/Pattern';
+import { SoundEdit } from './SoundEdit';
+import { PitchIcon, VelocityIcon, LengthIcon } from '../icons';
 
 export const CellEdit = ({ closeCbRef, selectedSound }) => {
   const { cellMod, setCellMod, resetCellMods } = useContext(Pattern);
@@ -9,7 +11,7 @@ export const CellEdit = ({ closeCbRef, selectedSound }) => {
 
   const handleCellMod = (type) => {
     const cells = document.querySelectorAll('.on');
-    if (type === 'cancel') {
+    if (type === 'finish') {
       cells.forEach((cell) => cell.classList.remove('flashing'));
       setCellMod('');
     } else {
@@ -18,32 +20,38 @@ export const CellEdit = ({ closeCbRef, selectedSound }) => {
     }
   };
 
-  return (
+  const finish = () => handleCellMod('finish');
+
+  return !cellMod ? (
     <div className='sound-edit'>
       <div className={`sample-edit color${selectedSound}`}>
-        <div onClick={() => handleCellMod('cancel')}>cancel</div>
-        <div className='cell-mod-wrapper'>
+        <div className='mod-wrapper'>
           <div onClick={() => handleCellMod('pitch')}>
-            <p>pitch</p>
+            <PitchIcon />
+            <p>Pitch</p>
             {cellMod === 'pitch' && 'editing'}
           </div>
-          <p onClick={() => resetCellMods('pitch')}>reset</p>
+          {/* <p onClick={() => resetCellMods('pitch')}>reset</p> */}
         </div>
-        <div className='cell-mod-wrapper'>
+        <div className='mod-wrapper'>
           <div onClick={() => handleCellMod('velocity')}>
-            <p>velocity</p>
+            <VelocityIcon />
+            <p>Velocity</p>
             {cellMod === 'velocity' && 'editing'}
           </div>
-          <p onClick={() => resetCellMods('velocity')}>reset</p>
+          {/* <p onClick={() => resetCellMods('velocity')}>reset</p> */}
         </div>
-        <div className='cell-mod-wrapper'>
+        <div className='mod-wrapper'>
           <div onClick={() => handleCellMod('length')}>
-            <p>length</p>
+            <LengthIcon />
+            <p>Length</p>
             {cellMod === 'length' && 'editing'}
           </div>
-          <p onClick={() => resetCellMods('length')}>reset</p>
+          {/* <p onClick={() => resetCellMods('length')}>reset</p> */}
         </div>
       </div>
     </div>
+  ) : (
+    <SoundEdit cellMod={cellMod} finish={finish} />
   );
 };

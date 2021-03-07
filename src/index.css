@@ -451,9 +451,27 @@ svg.slicing {
   color: var(--white);
 }
 
-.sample-edit svg {
-  width: 100%;
-  height: 100%;
+.mod-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* .mod-wrapper * {
+  border: dotted var(--magenta-quarter);
+} */
+
+.mod-wrapper svg {
+  padding: 0.75rem;
+  width: 5rem;
+  fill: var(--white);
+}
+
+.mod-wrapper p {
+  padding: 0.5rem;
+  color: var(--white);
+  text-align: center;
 }
 
 .arc {
@@ -898,7 +916,7 @@ p.dim {
 }
 
 .flashing {
-  /* animation: flashing 500ms alternate infinite; */
+  animation: flashing 500ms alternate infinite;
 }
 
 .flashing.pause {

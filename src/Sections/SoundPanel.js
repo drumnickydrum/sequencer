@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext, useMemo, useRef } from 'react';
 import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
 import { CellEdit } from './CellEdit';
-import { SoundEdit } from './SoundEdit';
 import { SliceAndCopy } from './SliceAndCopy';
 import { SoloAndMute } from './SoloAndMute';
 
@@ -36,7 +35,6 @@ export const SoundPanel = () => {
           <CellEdit closeCbRef={closeCbRef} selectedSound={selectedSound} />
           <SoloAndMute closeCbRef={closeCbRef} selectedSound={selectedSound} />
           <SliceAndCopy closeCbRef={closeCbRef} />
-          <SoundEdit selectedSound={selectedSound} />
         </div>
       </div>
       <button className='sound-close-btn' onClick={handleClose}>
