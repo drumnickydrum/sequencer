@@ -1,6 +1,12 @@
-export const INIT_ONE_PATTERN = () => ({
+export const INIT_ONE_NOTE = () => ({
+  pitch: 24,
+  velocity: 1,
+  length: 1,
+});
+
+export const INIT_SOUND_STEP = () => ({
   on: false,
-  notes: [{ pitch: 24, velocity: 1, length: 1 }],
+  notes: [INIT_ONE_NOTE()],
 });
 
 export const INIT_PATTERN = () => {
@@ -8,7 +14,7 @@ export const INIT_PATTERN = () => {
   for (let i = 0; i < 64; i++) {
     const initCell = [];
     for (let i = 0; i < 9; i++) {
-      initCell.push(INIT_ONE_PATTERN());
+      initCell.push(INIT_SOUND_STEP());
     }
     initPattern.push(initCell);
   }

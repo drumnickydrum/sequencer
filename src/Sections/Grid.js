@@ -9,7 +9,6 @@ import React, {
 import { Pattern } from '../Providers/Pattern';
 import { Kit } from '../Providers/Kit';
 import { SawIcon } from '../icons';
-import { Undo } from '../Providers/UndoProvider';
 
 export const Grid = () => {
   const { patternRef, prevCellRef, toggleEventsRef } = useContext(Pattern);
@@ -40,6 +39,9 @@ export const Grid = () => {
 const Cell = ({ id, step }) => {
   const {
     patternRef,
+    refreshAll,
+    setRefreshAll,
+    refreshEventsRef,
     prevCellRef,
     toggleEventsRef,
     toggleCell,
@@ -49,8 +51,7 @@ const Cell = ({ id, step }) => {
     slicingRef,
     sliceStep,
   } = useContext(Pattern);
-  const { kit, refreshAll, setRefreshAll } = useContext(Kit);
-  const { refreshRef } = useContext(Undo);
+  const { kit } = useContext(Kit);
 
   const [refresh, setRefresh] = useState(true);
 
@@ -104,13 +105,15 @@ const Cell = ({ id, step }) => {
   const cellRef = useRef(null);
   useEffect(() => {
     if (cellRef.current) {
-      const event = new Event(`toggle-${id}`);
+      const toggleEvent = new Event(`toggle-${id}`);
       document.addEventListener(`toggle-${id}`, handleToggle);
-      toggleEventsRef.current[id] = event;
-      refreshRef.current[id] = setRefresh;
+      toggleEventsRef.current[id] = toggleEvent;
+      const refreshEvent = new Event(`refresh-${id}`);
+      document.addEventListener(`refresh-${id}`, () => setRefresh(true));
+      refreshEventsRef.current[id] = refreshEvent;
     }
     return () => document.removeEventListener(`toggle-${id}`, handleToggle);
-  }, [id, toggleEventsRef, handleToggle, refreshRef]);
+  }, [id, toggleEventsRef, handleToggle, refreshEventsRef]);
 
   const handleTouchStart = (e) => {
     e.stopPropagation();

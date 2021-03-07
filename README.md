@@ -2,11 +2,17 @@
 
 ## Dev notes
 
+### 3/7/2021
+
+- `resetCellMods` currently looks ugly to me because of undo stuff, but as of right now it's the only way I can preserve the previous state without screwing up object references elsewhere. There are two deep copies happening, but only when you hit reset. When you're undoing/redoing it only costs one deep copy.
+- I've introduced a bug from yesterday with the whole propagation/drag handler thing. When a cell mod is active you can click and drag to toggle on cells, or toggle on a cell and adjust the cell mod, or not... it's buggy.
+- Right now I am deep copy the pattern when I need something to edit temporarily or save for later. That way I'm only ever altering the current pattern, never assigning a new reference.
+
 ### 3/6/2021
 
 - Working on a performant (but verbose) implementation of adding to undo per function.
   - Update: the flow is now to define a function then run it, then add that function with prev/new values to the undo ref.
-- Don't forget to e.stopPropagation(). This removed the need for lots of unneccessary events in parent div. (Grid `handleDrag()` not neeeding to be called when Cell `handleTouchMove()` called)
+- Don't forget to `e.stopPropagation()`. This removed the need for lots of unneccessary events in parent div. (Grid `handleDrag()` not neeeding to be called when Cell `handleTouchMove()` called)
 
 ### 3/5/2021
 

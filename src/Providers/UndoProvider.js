@@ -24,21 +24,12 @@ export const UndoProvider = ({ children }) => {
     undoRef.current.push([undoFunc, redoFunc]);
   };
 
-  const refreshRef = useRef({});
-
   const undoingRef = useRef(false);
-  const addToStepUndo = (func, prevVal, newVal, step) => {
+
+  const addToPatternUndo = (func, prevVal, newVal) => {
+    if (undoingRef.current) return;
     redoRef.current.length = 0;
-    undoRef.current.push([
-      () => {
-        func(prevVal);
-        refreshRef.current[`cell-${step}`](true);
-      },
-      () => {
-        func(newVal);
-        refreshRef.current[`cell-${step}`](true);
-      },
-    ]);
+    undoRef.current.push([() => func(prevVal), () => func(newVal)]);
   };
 
   const { setRefreshMods } = useContext(Kit);
@@ -69,9 +60,7 @@ export const UndoProvider = ({ children }) => {
         redo,
         undoRef,
         redoRef,
-        refreshRef,
-        undoingRef,
-        addToStepUndo,
+        addToPatternUndo,
         addToKitUndo,
       }}
     >

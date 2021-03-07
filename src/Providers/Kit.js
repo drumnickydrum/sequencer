@@ -27,14 +27,10 @@ export const KitProvider = ({ children }) => {
     }
   }, []);
 
-  const [refreshAll, setRefreshAll] = useState(false);
-
   return (
     <Kit.Provider
       value={{
         kit: kitRef.current,
-        refreshAll,
-        setRefreshAll,
       }}
     >
       {children}
