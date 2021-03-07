@@ -917,3 +917,7 @@ p.dim {
     stroke: var(--white);
   }
 }
+
+.deg90 {
+  transform: rotate(90deg);
+}
