@@ -32,8 +32,7 @@ export const UndoProvider = ({ children }) => {
     undoRef.current.push([() => func(prevVal), () => func(newVal)]);
   };
 
-  const { setRefreshMods } = useContext(Kit);
-  const addToKitUndo = (prevMods, newMods, sound) => {
+  const addToModsUndo = (prevMods, newMods, sound, setRefreshAll) => {
     redoRef.current.length = 0;
     undoRef.current.push([
       () => {
@@ -41,14 +40,14 @@ export const UndoProvider = ({ children }) => {
         sound.pitchMod = pitchMod;
         sound.velocityMod = velocityMod;
         sound.lengthMod = lengthMod;
-        setRefreshMods(true);
+        setRefreshAll(true);
       },
       () => {
         const { pitchMod, velocityMod, lengthMod } = newMods;
         sound.pitchMod = pitchMod;
         sound.velocityMod = velocityMod;
         sound.lengthMod = lengthMod;
-        setRefreshMods(true);
+        setRefreshAll(true);
       },
     ]);
   };
@@ -61,7 +60,7 @@ export const UndoProvider = ({ children }) => {
         undoRef,
         redoRef,
         addToPatternUndo,
-        addToKitUndo,
+        addToModsUndo,
       }}
     >
       {children}

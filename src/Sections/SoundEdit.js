@@ -4,11 +4,13 @@ import { SwipeVerticalIcon } from '../icons';
 import { Info } from '../Providers/Info';
 import { Undo } from '../Providers/UndoProvider';
 import { Kit } from '../Providers/Kit';
+import { Pattern } from '../Providers/Pattern';
 
 export const SoundEdit = ({ selectedSound }) => {
   const { setInfo } = useContext(Info);
-  const { kit, setRefreshAll } = useContext(Kit);
-  const { addToKitUndo } = useContext(Undo);
+  const { kit } = useContext(Kit);
+  const { setRefreshAll } = useContext(Pattern);
+  const { addToModsUndo } = useContext(Undo);
 
   const [velocityVal, setVelocityVal] = useState(
     kit[selectedSound].velocityMod * 100
@@ -22,17 +24,17 @@ export const SoundEdit = ({ selectedSound }) => {
 
   useEffect(() => {
     kit[selectedSound].velocityMod = velocityVal * 0.01;
-  }, [velocityVal]);
+  }, [kit, selectedSound, velocityVal]);
 
   useEffect(() => {
     let pitchMod = Math.round((pitchVal - 50) * 0.1);
     kit[selectedSound].pitchMod =
       pitchMod < -5 ? -5 : pitchMod > 5 ? 5 : pitchMod;
-  }, [pitchVal]);
+  }, [kit, selectedSound, pitchVal]);
 
   useEffect(() => {
     kit[selectedSound].lengthMod = lengthVal * 0.01;
-  }, [lengthVal]);
+  }, [kit, selectedSound, lengthVal]);
 
   const [y, setY] = useState(null);
   const prevModsRef = useRef({});
@@ -103,7 +105,12 @@ export const SoundEdit = ({ selectedSound }) => {
     const newMods = { pitchMod, velocityMod, lengthMod };
     if (updated) {
       setRefreshAll(true);
-      addToKitUndo(prevModsRef.current, newMods, kit[selectedSound]);
+      addToModsUndo(
+        prevModsRef.current,
+        newMods,
+        kit[selectedSound],
+        setRefreshAll
+      );
       prevModsRef.current = { ...newMods };
     }
   };
@@ -113,10 +120,11 @@ export const SoundEdit = ({ selectedSound }) => {
     if (type === 'pitch') setPitchVal(50);
     if (type === 'length') setLengthVal(100);
     setTimeout(() => setRefreshAll(true), 0);
-    addToKitUndo(
+    addToModsUndo(
       prevModsRef.current,
       { pitchMod: 0, velocityMod: 1, lengthMod: 1 },
-      kit[selectedSound]
+      kit[selectedSound],
+      setRefreshAll
     );
   };
 
