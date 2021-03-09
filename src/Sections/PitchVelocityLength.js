@@ -16,10 +16,10 @@ export const PitchVelocityLength = ({ type, selectedSound, handleReturn }) => {
 
   const [value, setValue] = useState(
     type === 'velocity'
-      ? kit[selectedSound].velocityMod
+      ? kit.sounds[selectedSound].velocityMod
       : type === 'length'
-      ? kit[selectedSound].lengthMod
-      : kit[selectedSound].pitchMod
+      ? kit.sounds[selectedSound].lengthMod
+      : kit.sounds[selectedSound].pitchMod
   );
 
   const handleChange = ({ target: { value } }) => {
@@ -42,7 +42,7 @@ export const PitchVelocityLength = ({ type, selectedSound, handleReturn }) => {
   };
 
   const sliderEnd = () => {
-    const prevVal = kit[selectedSound][`${type}Mod`];
+    const prevVal = kit.sounds[selectedSound][`${type}Mod`];
     if (value !== prevVal) modify(prevVal, value);
   };
 

@@ -17,12 +17,17 @@ import { ReactComponent as PointRight } from './point-right.svg';
 import { ReactComponent as PointUp } from './point-up.svg';
 import { ReactComponent as Paint } from './paint.svg';
 import { ReactComponent as Close } from './close.svg';
+import { ReactComponent as ChevronDown } from './chevron-down.svg';
 import { ReactComponent as ChevronRight } from './chevron-right.svg';
 import { ReactComponent as ChevronLeft } from './chevron-left.svg';
 import { ReactComponent as ChevronDoubleLeft } from './chevron-double-left.svg';
 import { ReactComponent as ChevronDoubleRight } from './chevron-double-right.svg';
 import { ReactComponent as ChevronTripleLeft } from './chevron-triple-left.svg';
 import { ReactComponent as ChevronTripleRight } from './chevron-triple-right.svg';
+
+export const ChevronDownIcon = ({ addClass = '' }) => (
+  <ChevronDown className={addClass + ' chevron down'} />
+);
 
 export const ChevronLeftIcon = ({ addClass = '' }) => (
   <ChevronLeft className={addClass + ' chevron left'} />
@@ -60,24 +65,36 @@ export const ClearAllIcon = ({ addClass = '' }) => (
 export const SwipeHorizontalIcon = () => <Swipe />;
 export const SwipeVerticalIcon = () => <Swipe className='deg90' />;
 
-export const SawIcon = ({ addClass = '' }) => <Saw className={addClass} />;
-export const CopyIcon = ({ addClass = '' }) => <Copy className={addClass} />;
+export const SawIcon = ({ addClass = '' }) => (
+  <Saw className={addClass + ' icon'} />
+);
+export const CopyIcon = ({ addClass = '' }) => (
+  <Copy className={addClass + ' icon'} />
+);
 
-export const SoloIcon = ({ addClass = '' }) => <Solo className={addClass} />;
-export const MuteIcon = ({ addClass = '' }) => <Mute className={addClass} />;
+export const SoloIcon = ({ addClass = '' }) => (
+  <Solo className={addClass + ' icon'} />
+);
+export const MuteIcon = ({ addClass = '' }) => (
+  <Mute className={addClass + ' icon'} />
+);
 
-export const PitchIcon = ({ addClass = '' }) => <Pitch className={addClass} />;
+export const PitchIcon = ({ addClass = '' }) => (
+  <Pitch className={addClass + ' icon'} />
+);
 export const VelocityIcon = ({ addClass = '' }) => (
-  <Velocity className={addClass} />
+  <Velocity className={addClass + ' icon'} />
 );
 export const LengthIcon = ({ addClass = '' }) => (
-  <Length className={addClass} />
+  <Length className={addClass + ' icon'} />
 );
 
 export const PaintIcon = ({ addClass = '' }) => (
   <Paint className={addClass + ' icon'} />
 );
-export const CloseIcon = ({ addClass = '' }) => <Close className={addClass} />;
+export const CloseIcon = ({ addClass = '' }) => (
+  <Close className={addClass + ' icon'} />
+);
 
 export const PitchSwipe = () => {
   return (

@@ -4,28 +4,30 @@ import { analog as kit } from '../defaults/defaultKits';
 
 export const Kit = React.createContext();
 export const KitProvider = ({ children }) => {
-  const kitRef = useRef(kit.map((sound) => ({ ...sound })));
+  const kitRef = useRef(kit);
 
   useEffect(() => {
     for (let i = 0; i < 9; i++) {
-      kitRef.current[i].sampler = new Tone.Sampler(
+      kitRef.current.sounds[i].sampler = new Tone.Sampler(
         {
-          C2: kitRef.current[i].sample,
+          C2: kitRef.current.sounds[i].sample,
         },
         () => {
-          kitRef.current[i].duration = kitRef.current[
+          kitRef.current.sounds[i].duration = kitRef.current.sounds[
             i
           ].sampler._buffers._buffers.get('36')._buffer.duration;
         }
       );
-      kitRef.current[i].channel = new Tone.Channel({
+      kitRef.current.sounds[i].channel = new Tone.Channel({
         volume: 0,
         pan: 0,
         channelCount: 2,
       }).toDestination();
-      kitRef.current[i].sampler.connect(kitRef.current[i].channel);
+      kitRef.current.sounds[i].sampler.connect(
+        kitRef.current.sounds[i].channel
+      );
     }
-  }, []);
+  }, [kitRef]);
 
   return (
     <Kit.Provider

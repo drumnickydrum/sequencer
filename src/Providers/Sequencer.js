@@ -60,14 +60,22 @@ export const SequencerProvider = ({ children }) => {
       if (on) {
         // console.time('schedule note');
         let slice = notes.length;
-        let [pitch, velocity, length] = getModdedValues(kit[sound], notes[0]);
-        kit[sound].sampler.triggerAttackRelease(pitch, length, time, velocity);
+        let [pitch, velocity, length] = getModdedValues(
+          kit.sounds[sound],
+          notes[0]
+        );
+        kit.sounds[sound].sampler.triggerAttackRelease(
+          pitch,
+          length,
+          time,
+          velocity
+        );
         if (slice === 2) {
           let [pitch2, velocity2, length2] = getModdedValues(
-            kit[sound],
+            kit.sounds[sound],
             notes[1]
           );
-          kit[sound].sampler.triggerAttackRelease(
+          kit.sounds[sound].sampler.triggerAttackRelease(
             pitch2,
             length2,
             time + Tone.Time('32n'),
@@ -75,20 +83,20 @@ export const SequencerProvider = ({ children }) => {
           );
         } else if (slice === 3) {
           let [pitch2, velocity2, length2] = getModdedValues(
-            kit[sound],
+            kit.sounds[sound],
             notes[1]
           );
           let [pitch3, velocity3, length3] = getModdedValues(
-            kit[sound],
+            kit.sounds[sound],
             notes[2]
           );
-          kit[sound].sampler.triggerAttackRelease(
+          kit.sounds[sound].sampler.triggerAttackRelease(
             pitch2,
             length2,
             time + Tone.Time('32t'),
             velocity2
           );
-          kit[sound].sampler.triggerAttackRelease(
+          kit.sounds[sound].sampler.triggerAttackRelease(
             pitch3,
             length3,
             time + Tone.Time('32t') + Tone.Time('32t'),

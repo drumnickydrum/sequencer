@@ -17,27 +17,27 @@ export const SoundEdit = ({ mod, finish }) => {
   const { addToModsUndo } = useContext(Undo);
 
   const [velocityVal, setVelocityVal] = useState(
-    kit[selectedSound].velocityMod * 100
+    kit.sounds[selectedSound].velocityMod * 100
   );
   const [pitchVal, setPitchVal] = useState(
-    Math.round(kit[selectedSound].pitchMod / 0.1) + 50
+    Math.round(kit.sounds[selectedSound].pitchMod / 0.1) + 50
   );
   const [lengthVal, setLengthVal] = useState(
-    kit[selectedSound].lengthMod * 100
+    kit.sounds[selectedSound].lengthMod * 100
   );
 
   useEffect(() => {
-    kit[selectedSound].velocityMod = velocityVal * 0.01;
+    kit.sounds[selectedSound].velocityMod = velocityVal * 0.01;
   }, [kit, selectedSound, velocityVal]);
 
   useEffect(() => {
     let pitchMod = Math.round((pitchVal - 50) * 0.1);
-    kit[selectedSound].pitchMod =
+    kit.sounds[selectedSound].pitchMod =
       pitchMod < -5 ? -5 : pitchMod > 5 ? 5 : pitchMod;
   }, [kit, selectedSound, pitchVal]);
 
   useEffect(() => {
-    kit[selectedSound].lengthMod = lengthVal * 0.01;
+    kit.sounds[selectedSound].lengthMod = lengthVal * 0.01;
   }, [kit, selectedSound, lengthVal]);
 
   const handleChange = ({ target: { value } }) => {

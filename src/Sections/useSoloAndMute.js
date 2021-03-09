@@ -12,12 +12,12 @@ export const useSoloAndMute = () => {
     const soundCells = document.querySelectorAll('.sound-cells');
     if (solo) {
       soundCells.forEach((soundCell) => soundCell.classList.remove('off'));
-      kit[selectedSound].channel.solo = false;
+      kit.sounds[selectedSound].channel.solo = false;
       setSolo(false);
     } else {
       if (mute) handleMute();
       soundCells.forEach((soundCell) => soundCell.classList.add('off'));
-      kit[selectedSound].channel.solo = true;
+      kit.sounds[selectedSound].channel.solo = true;
       setSolo(true);
     }
   };
@@ -26,12 +26,12 @@ export const useSoloAndMute = () => {
     const cells = document.querySelectorAll('.on');
     if (mute) {
       cells.forEach((cell) => cell.classList.remove('dim'));
-      kit[selectedSound].channel.mute = false;
+      kit.sounds[selectedSound].channel.mute = false;
       setMute(false);
     } else {
       if (solo) handleSolo();
       cells.forEach((cell) => cell.classList.add('dim'));
-      kit[selectedSound].channel.mute = true;
+      kit.sounds[selectedSound].channel.mute = true;
       setMute(true);
     }
   };

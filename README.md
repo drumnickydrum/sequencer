@@ -4,10 +4,16 @@
 
 ### 3/9/2021
 
+#### NEXT:
+
+- implement `ChangeKit`
+- implement `ChangePattern`
+
 - Added 'paint' mode.
 - Cell/All mods are handled in PatternProvider. If no step provided it's an all update. This also handles undo/redo. And reset handles both.
 - The scrolling menus work so much better on mobile because the screen doesn't move all over the place.
 - Added scroll indicators... dunno how I feel about them.
+- `kit` is now an object with `name` and `sound` properties.
 
 ### 3/8/2021
 

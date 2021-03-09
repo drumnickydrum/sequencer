@@ -74,9 +74,9 @@ const Cell = ({ id, step }) => {
       const { pitch, velocity, length } = patternRef.current[step][
         selectedSound
       ].notes[0];
-      setPitch(pitch + kit[selectedSound].pitchMod);
-      setVelocity(velocity * kit[selectedSound].velocityMod);
-      setLength(length * kit[selectedSound].lengthMod);
+      setPitch(pitch + kit.sounds[selectedSound].pitchMod);
+      setVelocity(velocity * kit.sounds[selectedSound].velocityMod);
+      setLength(length * kit.sounds[selectedSound].lengthMod);
       setSlice(patternRef.current[step][selectedSound].notes.length);
     }
     setRefresh(false);
@@ -245,7 +245,7 @@ const Cell = ({ id, step }) => {
           )}
         </div>
         <div className='sound-cells'>
-          {kit.map((_, sound) => {
+          {kit.sounds.map((_, sound) => {
             const scId = `${id}-${sound}`;
             const color = patternRef.current[step][sound].on
               ? `bg${sound}`

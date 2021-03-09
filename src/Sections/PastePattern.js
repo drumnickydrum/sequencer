@@ -9,7 +9,7 @@ export const PastePattern = () => {
   return (
     <div id='paste-pattern' className={copying ? 'show' : ''}>
       <div id='paste-pattern-sounds'>
-        {kit.map((sound, i) => {
+        {kit.sounds.map((sound, i) => {
           const selected = i === selectedSound;
           return (
             <SoundBtn

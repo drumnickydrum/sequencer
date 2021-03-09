@@ -30,7 +30,7 @@ export const Transport = () => {
           bpm
         </label>
       </div>
-      <ChevronTripleRightIcon />
+      {/* <ChevronTripleRightIcon /> */}
     </div>
   );
 };

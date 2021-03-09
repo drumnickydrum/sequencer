@@ -20,16 +20,16 @@ export default function App() {
             <SequencerProvider>
               <div id='address-bar'></div>
 
-              <div id='two'>
+              <div id='top'>
                 <Grid />
                 <PastePattern />
                 <Information />
               </div>
 
-              <div id='three'>
+              <div id='middle'>
                 <SoundPanel />
               </div>
-              <div id='one'>
+              <div id='bottom'>
                 <div className='scroll-container'>
                   <Transport />
                   <UndoRedo />

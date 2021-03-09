@@ -45,7 +45,7 @@ export const PatternProvider = ({ children }) => {
         });
         document.dispatchEvent(refreshEventsRef.current[`cell-${step}`]);
       } else {
-        kit[selectedSound][`${type}Mod`] = val;
+        kit.sounds[selectedSound][`${type}Mod`] = val;
         setRefreshAll(true);
       }
     }
@@ -71,12 +71,12 @@ export const PatternProvider = ({ children }) => {
           note.length = val.pattern[s][selectedSound].notes[n].length;
         });
       });
-      kit[selectedSound][`${type}Mod`] = val.kit;
+      kit.sounds[selectedSound][`${type}Mod`] = val.kit;
       setRefreshAll(true);
     }
     const prevVal = {
       pattern: prevPattern,
-      kit: kit[selectedSound][`${type}Mod`],
+      kit: kit.sounds[selectedSound][`${type}Mod`],
     };
     const newVal = { pattern: newPattern, kit: type === 'pitch' ? 0 : 1 };
     reset(newVal);

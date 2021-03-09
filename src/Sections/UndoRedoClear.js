@@ -15,7 +15,6 @@ export const UndoRedo = () => {
 
   return (
     <div className='undo-redo-clear'>
-      <ChevronTripleLeftIcon />
       <button id='undo' className='bottom' onClick={undo}>
         <UndoIcon />
         <label htmlFor='undo'>undo</label>
@@ -24,7 +23,7 @@ export const UndoRedo = () => {
         <RedoIcon />
         <label htmlFor='redo'>redo</label>
       </button>
-      <ChevronTripleRightIcon />
+      {/* <ChevronTripleRightIcon /> */}
     </div>
   );
 };
@@ -33,7 +32,7 @@ export const Clear = () => {
   const { clearPattern } = useContext(Pattern);
   return (
     <div className='undo-redo-clear'>
-      <ChevronTripleLeftIcon />
+      {/* <ChevronTripleLeftIcon /> */}
       <button
         id='clear-one'
         className='bottom'
