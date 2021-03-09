@@ -48,6 +48,8 @@ const Cell = ({ id, step }) => {
     selectedSound,
     cellModRef,
     modStep,
+    modKit,
+    modAll,
     slicingRef,
     sliceStep,
   } = useContext(Pattern);

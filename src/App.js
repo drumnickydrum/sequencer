@@ -19,6 +19,12 @@ export default function App() {
           <PatternProvider>
             <SequencerProvider>
               <div id='address-bar'></div>
+              <div id='one'>
+                <div className='scroll-container'>
+                  <Transport />
+                  <Edit />
+                </div>
+              </div>
 
               <div id='two'>
                 <Grid />
@@ -28,13 +34,6 @@ export default function App() {
 
               <div id='three'>
                 <SoundPanel />
-              </div>
-
-              <div id='one'>
-                <div className='scroll-container'>
-                  <Transport />
-                  <Edit />
-                </div>
               </div>
 
               <div id='toolbar'></div>

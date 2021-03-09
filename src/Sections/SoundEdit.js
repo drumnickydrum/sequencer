@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { Knob } from '../icons/Knob';
-import { SwipeVerticalIcon } from '../icons';
+import {
+  LengthIcon,
+  PitchIcon,
+  SwipeVerticalIcon,
+  VelocityIcon,
+} from '../icons';
 import { Info } from '../Providers/Info';
 import { Undo } from '../Providers/UndoProvider';
 import { Kit } from '../Providers/Kit';
@@ -36,140 +40,31 @@ export const SoundEdit = ({ cellMod, finish }) => {
     kit[selectedSound].lengthMod = lengthVal * 0.01;
   }, [kit, selectedSound, lengthVal]);
 
-  const [y, setY] = useState(null);
-  const prevModsRef = useRef({});
-  const handleTouchStart = (e, type) => {
-    prevModsRef.current = {
-      pitchMod: kit[selectedSound].pitchMod,
-      velocityMod: kit[selectedSound].velocityMod,
-      lengthMod: kit[selectedSound].lengthMod,
-    };
-    setInfo({
-      h: '',
-      i: <SwipeVerticalIcon />,
-      p: 'Swipe vertically to adjust',
-      show: true,
-    });
-    setY(e.changedTouches[0].clientY);
-  };
-
-  const handleTouchMove = (e, type) => {
-    const newY = e.changedTouches[0].clientY;
-    if (newY - y > 1) {
-      switch (type) {
-        case 'velocity':
-          setVelocityVal((val) => (val - 6 < 10 ? 10 : val - 6));
-          break;
-        case 'pitch':
-          setPitchVal((val) => (val - 6 < 0 ? 0 : val - 6));
-          break;
-        case 'length':
-          setLengthVal((val) => (val - 6 < 10 ? 10 : val - 6));
-          break;
-        default:
-          return;
-      }
-    } else if (newY - y < -1) {
-      switch (type) {
-        case 'velocity':
-          setVelocityVal((val) => (val + 6 > 100 ? 100 : val + 6));
-          break;
-        case 'pitch':
-          setPitchVal((val) => (val + 6 > 100 ? 100 : val + 6));
-          break;
-        case 'length':
-          setLengthVal((val) => (val + 6 > 100 ? 100 : val + 6));
-          break;
-        default:
-          return;
-      }
-    }
-    setY(newY);
-  };
-
-  const handleTouchEnd = (type) => {
-    setInfo({ h: '', i: null, p: '', show: false });
-    setY(null);
-    let { pitchMod, velocityMod, lengthMod } = prevModsRef.current;
-    let updated = false;
-    if (type === 'velocity') {
-      velocityMod = kit[selectedSound].velocityMod;
-      if (velocityMod !== prevModsRef.current.velocityMod) updated = true;
-    } else if (type === 'pitch') {
-      pitchMod = kit[selectedSound].pitchMod;
-      if (pitchMod !== prevModsRef.current.pitchMod) updated = true;
-    } else {
-      lengthMod = kit[selectedSound].lengthMod;
-      if (lengthMod !== prevModsRef.current.lengthMod) updated = true;
-    }
-    const newMods = { pitchMod, velocityMod, lengthMod };
-    if (updated) {
-      setRefreshAll(true);
-      addToModsUndo(
-        prevModsRef.current,
-        newMods,
-        kit[selectedSound],
-        setRefreshAll
-      );
-      prevModsRef.current = { ...newMods };
-    }
-  };
-
-  const handleReset = (type) => {
-    if (type === 'velocity') setVelocityVal(100);
-    if (type === 'pitch') setPitchVal(50);
-    if (type === 'length') setLengthVal(100);
-    setTimeout(() => setRefreshAll(true), 0);
-    addToModsUndo(
-      prevModsRef.current,
-      { pitchMod: 0, velocityMod: 1, lengthMod: 1 },
-      kit[selectedSound],
-      setRefreshAll
-    );
+  const handleChange = ({ target: { value } }) => {
+    console.log(value);
   };
 
   return (
     <div className='sound-edit'>
       <div className={`sample-edit color${selectedSound}`}>
-        <div className='knob-wrapper'>
-          <div
-            className='knob'
-            id='velocity-knob'
-            onTouchStart={(e) => handleTouchStart(e, 'velocity')}
-            onTouchMove={(e) => handleTouchMove(e, 'velocity')}
-            onTouchEnd={() => handleTouchEnd('velocity')}
-          >
-            <label htmlFor='velocity-knob'>velocity</label>
-            <Knob value={velocityVal} />
-          </div>
-          <p onClick={() => handleReset('velocity')}>reset</p>
-        </div>
-        <div className='knob-wrapper'>
-          <div
-            className='knob'
-            id='pitch-knob'
-            onTouchStart={(e) => handleTouchStart(e, 'pitch')}
-            onTouchMove={(e) => handleTouchMove(e, 'pitch')}
-            onTouchEnd={() => handleTouchEnd('pitch')}
-          >
-            <label htmlFor='pitch-knob'>pitch</label>
-
-            <Knob value={pitchVal} />
-          </div>
-          <p onClick={() => handleReset('pitch')}>reset</p>
-        </div>
-        <div className='knob-wrapper'>
-          <div
-            className='knob'
-            id='length-knob'
-            onTouchStart={(e) => handleTouchStart(e, 'length')}
-            onTouchMove={(e) => handleTouchMove(e, 'length')}
-            onTouchEnd={() => handleTouchEnd('length')}
-          >
-            <label htmlFor='length-knob'>length</label>
-            <Knob value={lengthVal} />
-          </div>
-          <p onClick={() => handleReset('length')}>reset</p>
+        {cellMod === 'pitch' ? (
+          <PitchIcon />
+        ) : cellMod === 'velocity' ? (
+          <VelocityIcon />
+        ) : (
+          <LengthIcon />
+        )}
+        <div className='mod-slider-div'>
+          <p>Use slider to adjust all cells</p>
+          <input
+            className={cellMod === 'length' ? '' : 'deg270'}
+            type='range'
+            onChange={handleChange}
+          />
+          <p>
+            or {cellMod === 'length' ? ' horizontally ' : ' vertically '}drag
+            individual cell
+          </p>
         </div>
       </div>
     </div>

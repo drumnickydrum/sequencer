@@ -2,6 +2,14 @@
 
 ## Dev notes
 
+### 3/8/2021
+
+- Going to continue with the page extending vertically. It's too crowded trying to keet it all on a small phone screen.
+- Need to re-implement mod-all.
+- Need to add an edit for 'paint' mode. That way you can click and drag the screen around without toggling by mistake.
+- Need to indicate that the transport bar is x-scrollable.
+- Need to refine those little instructions animations in mods once I get the sizing right.
+
 ### 3/7/2021
 
 - `resetCellMods` currently looks ugly to me because of undo stuff, but as of right now it's the only way I can preserve the previous state without screwing up object references elsewhere. There are two deep copies happening, but only when you hit reset. When you're undoing/redoing it only costs one deep copy.

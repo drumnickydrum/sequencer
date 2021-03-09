@@ -1,19 +1,12 @@
-import React, { useState, useContext } from 'react';
-import { MuteIcon, SoloIcon } from '../icons';
+import { useState, useContext } from 'react';
 import { Kit } from '../Providers/Kit';
+import { Pattern } from '../Providers/Pattern';
 
-export const SoloAndMute = ({ closeCbRef, selectedSound }) => {
+export const useSoloAndMute = () => {
   const { kit } = useContext(Kit);
+  const { selectedSound } = useContext(Pattern);
   const [solo, setSolo] = useState(false);
   const [mute, setMute] = useState(false);
-  closeCbRef.current.push(
-    () => {
-      if (solo) handleSolo();
-    },
-    () => {
-      if (mute) handleMute();
-    }
-  );
 
   const handleSolo = () => {
     const soundCells = document.querySelectorAll('.sound-cells');
@@ -43,18 +36,5 @@ export const SoloAndMute = ({ closeCbRef, selectedSound }) => {
     }
   };
 
-  return (
-    <div className='sound-edit'>
-      <div className='sound-channel-edit'>
-        <div className='sound-channel-edit-btn' onClick={handleSolo}>
-          <SoloIcon addClass={mute ? 'dim' : ''} />
-          <p className={mute ? 'dim' : ''}>Solo</p>
-        </div>
-        <div className='sound-channel-edit-btn' onClick={handleMute}>
-          <MuteIcon addClass={solo ? 'dim' : ''} />
-          <p className={solo ? 'dim' : ''}>Mute</p>
-        </div>
-      </div>
-    </div>
-  );
+  return { solo, mute, handleSolo, handleMute };
 };

@@ -12,6 +12,9 @@ import { ReactComponent as Mute } from './mute.svg';
 import { ReactComponent as Pitch } from './pitch.svg';
 import { ReactComponent as Velocity } from './velocity.svg';
 import { ReactComponent as Length } from './length.svg';
+import { ReactComponent as Square } from './square.svg';
+import { ReactComponent as PointRight } from './point-right.svg';
+import { ReactComponent as PointUp } from './point-up.svg';
 
 export const StopIcon = () => <Stop />;
 export const StartIcon = () => <Start />;
@@ -37,3 +40,32 @@ export const VelocityIcon = ({ addClass = '' }) => (
 export const LengthIcon = ({ addClass = '' }) => (
   <Length className={addClass} />
 );
+
+export const PitchSwipe = () => {
+  return (
+    <div className='swipe-icon'>
+      <PointRight className='pvl-swipe' />
+      <Square className='square icon' />
+      <p className='swipe-pitch-up'>+5</p>
+      <p className='swipe-pitch-down'>-5</p>
+    </div>
+  );
+};
+
+export const VelocitySwipe = () => {
+  return (
+    <div className='swipe-icon'>
+      <PointRight className='pvl-swipe' />
+      <Square className='square icon velocity-swipe' />
+    </div>
+  );
+};
+
+export const LengthSwipe = () => {
+  return (
+    <div className='swipe-icon'>
+      <PointUp className='pvl-swipe-h' />
+      <Square className='square icon length-swipe' />
+    </div>
+  );
+};
