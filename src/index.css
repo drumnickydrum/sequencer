@@ -75,7 +75,7 @@ body {
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
   font-style: italic;
-  /* overflow: hidden; */
+  overflow: hidden;
 }
 
 #root {
@@ -83,7 +83,7 @@ body {
   z-index: 1;
   width: 100%;
   max-width: 800px;
-  min-height: 100%;
+  height: 100%;
   padding: 0.25rem;
   display: flex;
   flex-direction: column;
@@ -119,10 +119,9 @@ body {
 
 #three {
   width: 100%;
-  /* height: 100%; */
-  min-height: 20%;
-  /* max-height: 30vh; */
+  height: 100%;
   display: flex;
+  border: 1px dotted orange;
 }
 
 #two {
@@ -137,18 +136,18 @@ body {
 
 #one {
   width: 100%;
-  height: 100%;
-  max-height: 15vh;
-  padding: 0;
+  flex-shrink: 0;
   scroll-snap-type: x mandatory;
   overflow-x: scroll;
   white-space: nowrap;
   overflow-y: hidden;
+  border: 1px solid blue;
 }
 
 .scroll-container {
   display: flex;
-  width: 200vw;
+  /* width: 200vw; */
+  width: 100%;
   height: 100%;
 }
 
@@ -270,7 +269,7 @@ body {
 #sound-menu {
   width: 100%;
   height: 100%;
-  min-height: 30vh;
+  /* min-height: 30vh; */
   padding: 0.25rem;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -311,14 +310,15 @@ body {
 .sound-edit {
   position: relative;
   width: 100%;
-  height: 100%;
-  min-height: 30vh;
   display: flex;
   flex-direction: column;
   border: 1px solid red;
 }
 
 .sound-edit-menu {
+  white-space: nowrap;
+  overflow-x: scroll;
+  overflow-y: hidden;
 }
 
 .sound-edit svg {
@@ -329,28 +329,58 @@ body {
 .sound-edit-detail {
   width: 100%;
   height: 100%;
-  flex-grow: 1;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.5rem;
   border: 1px solid blue;
+  overflow-y: hidden;
 }
 
 .sound-edit-title {
   max-width: 50%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+  color: var(--white);
   border: 1px solid red;
 }
 
 .sound-edit-instructions {
-  max-width: 50%;
   color: var(--white);
-  border: 1px solid red;
+  text-align: center;
+}
+
+.pitch-input {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  font-size: 1.5rem;
+  color: var(--white);
+}
+
+.pitch-dec,
+.pitch-inc {
+  width: 2rem;
+  background: var(--black);
+  color: var(--white);
+  border: 1px solid var(--white);
+  border-radius: 0.5rem;
+  outline: none;
+  font-size: 1.5rem;
+}
+
+.mod-animation {
+  height: 100%;
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid gold;
 }
 
 .sound-edit-slider {
@@ -360,7 +390,9 @@ body {
 }
 
 .sound-edit-all {
+  width: 100%;
   height: 100%;
+  padding: 0 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -370,6 +402,7 @@ body {
 
 .sound-edit-all label {
   color: var(--white);
+  text-transform: capitalize;
 }
 
 .sound-edit-detail input {
@@ -873,7 +906,7 @@ p.dim {
 
 .swipe-icon {
   position: relative;
-  max-width: 50%;
+  /* max-width: 50%; */
   height: 100%;
 }
 
@@ -883,29 +916,31 @@ p.dim {
   left: 0;
   width: 100%;
   height: 100%;
+  border: 1px solid blue;
 }
 
 .sound-edit svg.pvl-swipe {
   position: relative;
   z-index: 2;
   top: 45%;
-  left: 5%;
+  left: 50%;
   height: 3rem;
   stroke: var(--black);
   fill: var(--white);
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 0%);
   animation: swipe 3s ease-in-out infinite;
+  border: 1px solid red;
 }
 
 @keyframes swipe {
   0% {
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0%);
   }
   50% {
-    transform: translate(-50%, 30%);
+    transform: translate(-50%, 40%);
   }
   75% {
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0%);
   }
 }
 
@@ -968,8 +1003,9 @@ p.dim {
 .swipe-pitch-up {
   color: var(--purple);
   position: absolute;
-  top: 35%;
+  top: 50%;
   right: 25%;
+  transform: translateY(-50%);
   animation: swipe-pitch-up 3s ease-in-out infinite;
 }
 
@@ -991,10 +1027,11 @@ p.dim {
 .swipe-pitch-down {
   color: var(--purple);
   position: absolute;
-  top: 55%;
+  top: 50%;
   right: 25%;
   animation: swipe-pitch-down 3s ease-in-out infinite;
   opacity: 0;
+  transform: translateY(-50%);
 }
 
 @keyframes swipe-pitch-down {

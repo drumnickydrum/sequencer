@@ -11,9 +11,12 @@ import { Kit } from '../Providers/Kit';
 import { SawIcon } from '../icons';
 
 export const Grid = () => {
-  const { patternRef, prevCellRef, toggleEventsRef } = useContext(Pattern);
+  const { patternRef, painting, prevCellRef, toggleEventsRef } = useContext(
+    Pattern
+  );
 
   const handleDrag = (e) => {
+    if (!painting) return;
     const touch = e.touches[0];
     const cell = document.elementFromPoint(touch.clientX, touch.clientY);
     if (cell) {
@@ -46,10 +49,8 @@ const Cell = ({ id, step }) => {
     toggleEventsRef,
     toggleCell,
     selectedSound,
-    cellModRef,
-    modStep,
-    modKit,
-    modAll,
+    modRef,
+    modify,
     slicingRef,
     sliceStep,
   } = useContext(Pattern);
@@ -119,7 +120,7 @@ const Cell = ({ id, step }) => {
 
   const handleTouchStart = (e) => {
     e.stopPropagation();
-    if (cellModRef.current) {
+    if (modRef.current) {
       if (on) modStart(e);
     } else {
       prevCellRef.current = id;
@@ -132,9 +133,9 @@ const Cell = ({ id, step }) => {
   const yRef = useRef(null);
   const modStart = (e) => {
     prevVal.current =
-      cellModRef.current === 'pitch'
+      modRef.current === 'pitch'
         ? pitch
-        : cellModRef.current === 'velocity'
+        : modRef.current === 'velocity'
         ? velocity
         : length;
     xRef.current = e.changedTouches[0].clientX;
@@ -142,27 +143,27 @@ const Cell = ({ id, step }) => {
   };
 
   const handleTouchMove = (e) => {
-    if (!cellModRef.current || !on) return;
+    if (!modRef.current || !on) return;
     e.stopPropagation();
     const newX = e.changedTouches[0].clientX;
     const newY = e.changedTouches[0].clientY;
-    if (cellModRef.current === 'pitch') {
+    if (modRef.current === 'pitch') {
       if (newY - yRef.current > 1) {
         setPitch((pitch) => pitch - 1);
       } else if (newY - yRef.current < -1) {
         setPitch((pitch) => pitch + 1);
       }
-    } else if (cellModRef.current === 'velocity') {
+    } else if (modRef.current === 'velocity') {
       if (newY - yRef.current > 1) {
-        setVelocity((velocity) => velocity - 0.02);
+        setVelocity((velocity) => velocity - 0.1);
       } else if (newY - yRef.current < -1) {
-        setVelocity((velocity) => velocity + 0.02);
+        setVelocity((velocity) => velocity + 0.1);
       }
     } else {
       if (newX - xRef.current > 1) {
-        setLength((length) => length + 0.02);
+        setLength((length) => length + 0.1);
       } else if (newX - xRef.current < -1) {
-        setLength((length) => length - 0.02);
+        setLength((length) => length - 0.1);
       }
     }
     xRef.current = newX;
@@ -170,7 +171,7 @@ const Cell = ({ id, step }) => {
   };
 
   const handleTouchEnd = () => {
-    if (cellModRef.current) {
+    if (modRef.current) {
       if (on) modEnd();
     } else {
       prevCellRef.current = null;
@@ -179,17 +180,17 @@ const Cell = ({ id, step }) => {
 
   const modEnd = () => {
     let newVal;
-    if (cellModRef.current === 'pitch') {
+    if (modRef.current === 'pitch') {
       yRef.current = null;
       newVal = pitch;
-      if (newVal < 10) {
-        newVal = 10;
+      if (newVal < 12) {
+        newVal = 12;
         setPitch(newVal);
-      } else if (newVal > 40) {
-        newVal = 40;
+      } else if (newVal > 36) {
+        newVal = 36;
         setPitch(newVal);
       }
-    } else if (cellModRef.current === 'velocity') {
+    } else if (modRef.current === 'velocity') {
       yRef.current = null;
       newVal = velocity;
       if (newVal < 0) {
@@ -210,7 +211,7 @@ const Cell = ({ id, step }) => {
         setLength(newVal);
       }
     }
-    modStep(prevVal.current, newVal, step);
+    modify(prevVal.current, newVal, step);
   };
 
   // const cellMemo = useMemo(() => {

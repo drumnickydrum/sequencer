@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {
+  CloseIcon,
   CopyIcon,
   LengthIcon,
   MuteIcon,
+  PaintIcon,
   PitchIcon,
   SawIcon,
   SoloIcon,
@@ -11,19 +13,21 @@ import {
 import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
 import { useSoloAndMute } from './useSoloAndMute';
-import { Slice, Copy } from './SliceAndCopy';
+import { Paint, Slice, Copy } from './PaintSliceCopy';
 import { PitchVelocityLength } from './PitchVelocityLength';
 
 export const SoundPanel = () => {
   const {
     selectedSound,
     setSelectedSound,
+    painting,
+    setPainting,
     slicing,
     setSlicing,
     copying,
     setCopying,
-    cellMod,
-    setCellMod,
+    mod,
+    setMod,
   } = useContext(Pattern);
   const { kit } = useContext(Kit);
   const { solo, mute, handleSolo, handleMute } = useSoloAndMute();
@@ -39,17 +43,23 @@ export const SoundPanel = () => {
   };
 
   const handleReturn = () => {
-    if (slicing) {
+    if (painting) {
+      handlePaint();
+    } else if (slicing) {
       handleSlice();
     } else if (copying) {
       handleCopy();
-    } else if (cellMod) {
+    } else if (mod) {
       handleCellMod('return');
     } else {
       if (solo) handleSolo();
       if (mute) handleMute();
       setShowEditMenu(false);
     }
+  };
+
+  const handlePaint = () => {
+    setPainting((painting) => !painting);
   };
 
   const handleSlice = () => {
@@ -71,33 +81,44 @@ export const SoundPanel = () => {
     const cells = document.querySelectorAll('.on');
     if (type === 'return') {
       cells.forEach((cell) => cell.classList.remove('flashing'));
-      setCellMod('');
+      setMod('');
     } else {
       cells.forEach((cell) => cell.classList.add('flashing'));
-      setCellMod(type);
+      setMod(type);
     }
   };
 
   return showEditMenu ? (
     <div className='sound-edit'>
-      <button className='sound-panel-return-btn' onClick={handleReturn}>
-        {slicing || copying || cellMod ? 'Edit Menu' : 'Sound Menu'}
-      </button>
-      {slicing ? (
-        <Slice />
+      {painting ? (
+        <Paint handleReturn={handleReturn} />
+      ) : slicing ? (
+        <Slice handleReturn={handleReturn} />
       ) : copying ? (
-        <Copy />
-      ) : cellMod ? (
-        <PitchVelocityLength type={cellMod} selectedSound={selectedSound} />
+        <Copy handleReturn={handleReturn} />
+      ) : mod ? (
+        <PitchVelocityLength
+          type={mod}
+          selectedSound={selectedSound}
+          handleReturn={handleReturn}
+        />
       ) : (
         <div className='sound-edit-menu'>
-          <button className='sound-edit-btn' onClick={handleSolo}>
-            <SoloIcon addClass={solo ? 'flashing' : mute ? 'dim' : ''} />
-            <p className={solo ? 'flashing' : mute ? 'dim' : ''}>Solo</p>
+          <button className='sound-edit-btn' onClick={handleReturn}>
+            <CloseIcon />
+            <p>Sound Menu</p>
           </button>
-          <button className='sound-edit-btn' onClick={handleMute}>
-            <MuteIcon addClass={mute ? 'flashing' : solo ? 'dim' : ''} />
-            <p className={mute ? 'flashing' : solo ? 'dim' : ''}>Mute</p>
+
+          <button
+            className={
+              painting
+                ? `sound-edit-btn color${selectedSound}`
+                : 'sound-edit-btn'
+            }
+            onClick={handlePaint}
+          >
+            <PaintIcon />
+            <p>Paint</p>
           </button>
           <button className='sound-edit-btn' onClick={handleSlice}>
             <SawIcon />
@@ -155,3 +176,12 @@ const SoundBtn = ({ i, sound, selectedSound, handleSelect }) => {
     </div>
   );
 };
+
+// <button className='sound-edit-btn' onClick={handleSolo}>
+//             <SoloIcon addClass={solo ? 'flashing' : mute ? 'dim' : ''} />
+//             <p className={solo ? 'flashing' : mute ? 'dim' : ''}>Solo</p>
+//           </button>
+//           <button className='sound-edit-btn' onClick={handleMute}>
+//             <MuteIcon addClass={mute ? 'flashing' : solo ? 'dim' : ''} />
+//             <p className={mute ? 'flashing' : solo ? 'dim' : ''}>Mute</p>
+//           </button>

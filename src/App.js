@@ -19,12 +19,6 @@ export default function App() {
           <PatternProvider>
             <SequencerProvider>
               <div id='address-bar'></div>
-              <div id='one'>
-                <div className='scroll-container'>
-                  <Transport />
-                  <Edit />
-                </div>
-              </div>
 
               <div id='two'>
                 <Grid />
@@ -34,6 +28,12 @@ export default function App() {
 
               <div id='three'>
                 <SoundPanel />
+              </div>
+              <div id='one'>
+                <div className='scroll-container'>
+                  <Transport />
+                  {/* <Edit /> */}
+                </div>
               </div>
 
               <div id='toolbar'></div>
@@ -45,18 +45,18 @@ export default function App() {
   );
 }
 
-// window.addEventListener('orientationchange', resize);
-// window.addEventListener('blur', () => {
-//   window.addEventListener('focus', resize);
-// });
+window.addEventListener('orientationchange', resize);
+window.addEventListener('blur', () => {
+  window.addEventListener('focus', resize);
+});
 
-// function resize() {
-//   var originalBodyStyle = getComputedStyle(document.body).getPropertyValue(
-//     'display'
-//   );
-//   document.body.style.display = 'none';
-//   setTimeout(function () {
-//     document.body.style.display = originalBodyStyle;
-//   }, 10);
-//   window.removeEventListener('focus', resize);
-// }
+function resize() {
+  var originalBodyStyle = getComputedStyle(document.body).getPropertyValue(
+    'display'
+  );
+  document.body.style.display = 'none';
+  setTimeout(function () {
+    document.body.style.display = originalBodyStyle;
+  }, 10);
+  window.removeEventListener('focus', resize);
+}

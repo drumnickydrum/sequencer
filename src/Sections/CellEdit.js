@@ -4,32 +4,32 @@ import { SoundEdit } from './SoundEdit';
 import { PitchIcon, VelocityIcon, LengthIcon } from '../icons';
 
 export const CellEdit = ({ closeCbRef, selectedSound }) => {
-  const { cellMod, setCellMod, resetCellMods } = useContext(Pattern);
+  const { mod, setMod, resetCellMods } = useContext(Pattern);
   closeCbRef.current.push(() => {
-    setCellMod('');
+    setMod('');
   });
 
   const handleCellMod = (type) => {
     const cells = document.querySelectorAll('.on');
     if (type === 'finish') {
       cells.forEach((cell) => cell.classList.remove('flashing'));
-      setCellMod('');
+      setMod('');
     } else {
       cells.forEach((cell) => cell.classList.add('flashing'));
-      setCellMod(type);
+      setMod(type);
     }
   };
 
   const finish = () => handleCellMod('finish');
 
-  return !cellMod ? (
+  return !mod ? (
     <div className='sound-edit'>
       <div className={`sample-edit color${selectedSound}`}>
         <div className='mod-wrapper'>
           <div onClick={() => handleCellMod('pitch')}>
             <PitchIcon />
             <p>Pitch</p>
-            {cellMod === 'pitch' && 'editing'}
+            {mod === 'pitch' && 'editing'}
           </div>
           {/* <p onClick={() => resetCellMods('pitch')}>reset</p> */}
         </div>
@@ -37,7 +37,7 @@ export const CellEdit = ({ closeCbRef, selectedSound }) => {
           <div onClick={() => handleCellMod('velocity')}>
             <VelocityIcon />
             <p>Velocity</p>
-            {cellMod === 'velocity' && 'editing'}
+            {mod === 'velocity' && 'editing'}
           </div>
           {/* <p onClick={() => resetCellMods('velocity')}>reset</p> */}
         </div>
@@ -45,13 +45,13 @@ export const CellEdit = ({ closeCbRef, selectedSound }) => {
           <div onClick={() => handleCellMod('length')}>
             <LengthIcon />
             <p>Length</p>
-            {cellMod === 'length' && 'editing'}
+            {mod === 'length' && 'editing'}
           </div>
           {/* <p onClick={() => resetCellMods('length')}>reset</p> */}
         </div>
       </div>
     </div>
   ) : (
-    <SoundEdit cellMod={cellMod} finish={finish} />
+    <SoundEdit mod={mod} finish={finish} />
   );
 };

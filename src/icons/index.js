@@ -15,14 +15,20 @@ import { ReactComponent as Length } from './length.svg';
 import { ReactComponent as Square } from './square.svg';
 import { ReactComponent as PointRight } from './point-right.svg';
 import { ReactComponent as PointUp } from './point-up.svg';
+import { ReactComponent as Paint } from './paint.svg';
+import { ReactComponent as Close } from './close.svg';
 
-export const StopIcon = () => <Stop />;
-export const StartIcon = () => <Start />;
+export const StopIcon = ({ addClass = '' }) => <Stop className={addClass} />;
+export const StartIcon = ({ addClass = '' }) => <Start className={addClass} />;
 
-export const UndoIcon = () => <Undo />;
-export const RedoIcon = () => <Redo />;
-export const ClearOneIcon = () => <ClearOne />;
-export const ClearAllIcon = () => <ClearAll />;
+export const UndoIcon = ({ addClass = '' }) => <Undo className={addClass} />;
+export const RedoIcon = ({ addClass = '' }) => <Redo className={addClass} />;
+export const ClearOneIcon = ({ addClass = '' }) => (
+  <ClearOne className={addClass} />
+);
+export const ClearAllIcon = ({ addClass = '' }) => (
+  <ClearAll className={addClass} />
+);
 
 export const SwipeHorizontalIcon = () => <Swipe />;
 export const SwipeVerticalIcon = () => <Swipe className='deg90' />;
@@ -41,12 +47,17 @@ export const LengthIcon = ({ addClass = '' }) => (
   <Length className={addClass} />
 );
 
+export const PaintIcon = ({ addClass = '' }) => (
+  <Paint className={addClass + ' icon'} />
+);
+export const CloseIcon = ({ addClass = '' }) => <Close className={addClass} />;
+
 export const PitchSwipe = () => {
   return (
     <div className='swipe-icon'>
-      <PointRight className='pvl-swipe' />
+      <PointUp className='pvl-swipe' />
       <Square className='square icon' />
-      <p className='swipe-pitch-up'>+5</p>
+      <p className='swipe-pitch-up'>+12</p>
       <p className='swipe-pitch-down'>-5</p>
     </div>
   );
@@ -55,7 +66,7 @@ export const PitchSwipe = () => {
 export const VelocitySwipe = () => {
   return (
     <div className='swipe-icon'>
-      <PointRight className='pvl-swipe' />
+      <PointUp className='pvl-swipe' />
       <Square className='square icon velocity-swipe' />
     </div>
   );

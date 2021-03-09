@@ -10,7 +10,7 @@ import { Undo } from '../Providers/UndoProvider';
 import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
 
-export const SoundEdit = ({ cellMod, finish }) => {
+export const SoundEdit = ({ mod, finish }) => {
   const { setInfo } = useContext(Info);
   const { kit } = useContext(Kit);
   const { selectedSound, setRefreshAll } = useContext(Pattern);
@@ -47,9 +47,9 @@ export const SoundEdit = ({ cellMod, finish }) => {
   return (
     <div className='sound-edit'>
       <div className={`sample-edit color${selectedSound}`}>
-        {cellMod === 'pitch' ? (
+        {mod === 'pitch' ? (
           <PitchIcon />
-        ) : cellMod === 'velocity' ? (
+        ) : mod === 'velocity' ? (
           <VelocityIcon />
         ) : (
           <LengthIcon />
@@ -57,12 +57,12 @@ export const SoundEdit = ({ cellMod, finish }) => {
         <div className='mod-slider-div'>
           <p>Use slider to adjust all cells</p>
           <input
-            className={cellMod === 'length' ? '' : 'deg270'}
+            className={mod === 'length' ? '' : 'deg270'}
             type='range'
             onChange={handleChange}
           />
           <p>
-            or {cellMod === 'length' ? ' horizontally ' : ' vertically '}drag
+            or {mod === 'length' ? ' horizontally ' : ' vertically '}drag
             individual cell
           </p>
         </div>

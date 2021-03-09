@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { Kit } from './Kit';
 
 export const Undo = React.createContext();
@@ -51,6 +51,16 @@ export const UndoProvider = ({ children }) => {
       },
     ]);
   };
+
+  useEffect(() => {
+    const undoRedo = (e) => {
+      // console.log(e.code);
+      if (e.code === 'KeyU') undo();
+      if (e.code === 'KeyR') redo();
+    };
+    document.addEventListener('keydown', undoRedo);
+    return () => document.removeEventListener('keydown', undoRedo);
+  }, []);
 
   return (
     <Undo.Provider

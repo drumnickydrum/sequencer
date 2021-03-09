@@ -2,10 +2,12 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import { analog } from '../defaults/defaultSequences';
 import { Undo } from './UndoProvider';
 import { useStateAndRef } from '../utils/useStateAndRef';
+import { Kit } from './Kit';
 
 export const Pattern = React.createContext();
 export const PatternProvider = ({ children }) => {
   const { addToPatternUndo } = useContext(Undo);
+  const { kit } = useContext(Kit);
 
   const [selectedSound, setSelectedSound] = useState(-1);
 
@@ -14,6 +16,7 @@ export const PatternProvider = ({ children }) => {
   const refreshEventsRef = useRef({});
   const [refreshAll, setRefreshAll] = useState(false);
 
+  const [painting, setPainting] = useState(false);
   const prevCellRef = useRef(null);
   const toggleEventsRef = useRef({});
   const toggleCell = (step) => {
@@ -28,23 +31,31 @@ export const PatternProvider = ({ children }) => {
     addToPatternUndo(toggle, prevOn, newOn, step);
   };
 
-  const [cellMod, setCellMod, cellModRef] = useStateAndRef(null);
-  const modStep = (prevVal, newVal, step) => {
-    const notes = patternRef.current[step][selectedSound].notes;
-    const type = cellModRef.current;
-    function modify(val) {
-      notes.forEach((note) => {
-        if (type === 'pitch') note.pitch = val;
-        if (type === 'velocity') note.velocity = val;
-        if (type === 'length') note.length = val;
-      });
-      document.dispatchEvent(refreshEventsRef.current[`cell-${step}`]);
+  const [mod, setMod, modRef] = useStateAndRef(null);
+  const modify = (prevVal, newVal, step) => {
+    const notes =
+      step || step === 0 ? patternRef.current[step][selectedSound].notes : null;
+    const type = modRef.current;
+    function modifyFunc(val) {
+      if (step || step === 0) {
+        console.log('modify step');
+        notes.forEach((note) => {
+          if (type === 'pitch') note.pitch = val;
+          if (type === 'velocity') note.velocity = val;
+          if (type === 'length') note.length = val;
+        });
+        document.dispatchEvent(refreshEventsRef.current[`cell-${step}`]);
+      } else {
+        console.log('modify all');
+        kit[selectedSound][`${type}Mod`] = val;
+        setRefreshAll(true);
+      }
     }
-    modify(newVal);
-    addToPatternUndo(modify, prevVal, newVal, step);
+    modifyFunc(newVal);
+    addToPatternUndo(modifyFunc, prevVal, newVal, step);
   };
 
-  const resetCellMods = (type) => {
+  const resetMods = (type) => {
     const prevPattern = deepCopyPattern(patternRef.current);
     const newPattern = deepCopyPattern(patternRef.current);
     newPattern.forEach((step) => {
@@ -54,18 +65,24 @@ export const PatternProvider = ({ children }) => {
         if (type === 'length') note.length = 1;
       });
     });
-    function reset(pattern) {
+    function reset(val) {
       patternRef.current.forEach((step, s) => {
         step[selectedSound].notes.forEach((note, n) => {
-          note.pitch = pattern[s][selectedSound].notes[n].pitch;
-          note.velocity = pattern[s][selectedSound].notes[n].velocity;
-          note.length = pattern[s][selectedSound].notes[n].length;
+          note.pitch = val.pattern[s][selectedSound].notes[n].pitch;
+          note.velocity = val.pattern[s][selectedSound].notes[n].velocity;
+          note.length = val.pattern[s][selectedSound].notes[n].length;
         });
       });
+      kit[selectedSound][`${type}Mod`] = val.kit;
       setRefreshAll(true);
     }
-    reset(newPattern);
-    addToPatternUndo(reset, prevPattern, newPattern);
+    const prevVal = {
+      pattern: prevPattern,
+      kit: kit[selectedSound][`${type}Mod`],
+    };
+    const newVal = { pattern: newPattern, kit: type === 'pitch' ? 0 : 1 };
+    reset(newVal);
+    addToPatternUndo(reset, prevVal, newVal);
   };
 
   const [slicing, setSlicing, slicingRef] = useStateAndRef(false);
@@ -150,16 +167,18 @@ export const PatternProvider = ({ children }) => {
         refreshEventsRef,
         refreshAll,
         setRefreshAll,
+        painting,
+        setPainting,
         prevCellRef,
         toggleEventsRef,
         toggleCell,
         selectedSound,
         setSelectedSound,
-        cellMod,
-        setCellMod,
-        cellModRef,
-        modStep,
-        resetCellMods,
+        mod,
+        setMod,
+        modRef,
+        modify,
+        resetMods,
         slicing,
         setSlicing,
         slicingRef,

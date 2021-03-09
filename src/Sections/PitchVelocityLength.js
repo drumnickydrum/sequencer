@@ -1,56 +1,103 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { PitchSwipe, VelocitySwipe, LengthSwipe } from '../icons';
+import {
+  PitchSwipe,
+  VelocitySwipe,
+  LengthSwipe,
+  PitchIcon,
+  VelocityIcon,
+  LengthIcon,
+} from '../icons';
 import { Kit } from '../Providers/Kit';
-import { Undo } from '../Providers/UndoProvider';
+import { Pattern } from '../Providers/Pattern';
 
-export const PitchVelocityLength = ({ type, selectedSound }) => {
-  const { addToModsUndo } = useContext(Undo);
+export const PitchVelocityLength = ({ type, selectedSound, handleReturn }) => {
   const { kit } = useContext(Kit);
+  const { modify, resetMods } = useContext(Pattern);
 
   const [value, setValue] = useState(
     type === 'velocity'
       ? kit[selectedSound].velocityMod
       : type === 'length'
       ? kit[selectedSound].lengthMod
-      : null
+      : kit[selectedSound].pitchMod
   );
-  useEffect(() => {
-    console.log(value);
-    kit[selectedSound][`${type}Mod`] = value;
-  }, [kit, selectedSound, type, value]);
 
   const handleChange = ({ target: { value } }) => {
     setValue(parseFloat(value));
   };
 
+  const handlePitch = (change) => {
+    if (change === 'inc') {
+      if (value !== 12) {
+        modify(value, value + 1);
+        setValue((value) => value + 1);
+      }
+    }
+    if (change === 'dec') {
+      if (value !== -12) {
+        modify(value, value - 1);
+        setValue((value) => value - 1);
+      }
+    }
+  };
+
+  const sliderEnd = () => {
+    const prevVal = kit[selectedSound][`${type}Mod`];
+    if (value !== prevVal) modify(prevVal, value);
+  };
+
+  const handleReset = () => {
+    setValue(type === 'pitch' ? 0 : 1);
+    resetMods(type);
+  };
+
   return (
     <div className={`sound-edit-detail color${selectedSound}`}>
-      {type === 'pitch' ? (
-        <PitchSwipe />
-      ) : type === 'velocity' ? (
-        <VelocitySwipe />
-      ) : (
-        <LengthSwipe />
-      )}
-      <p className='sound-edit-instructions'>
-        Drag a cell {type === 'length' ? ' horizontally ' : ' vertically '}
-        to adjust <strong>{type}</strong>
-      </p>
-      <div className='sound-edit-all'>
-        {type !== 'pitch' && (
-          <>
-            <label htmlFor={`slider-${type}`}>Modify All</label>
-            <input
-              type='range'
-              min={0.1}
-              max={1}
-              step={0.01}
-              value={value}
-              onChange={handleChange}
-            />
-          </>
+      <div className='sound-edit-title' onClick={handleReturn}>
+        {type === 'pitch' ? (
+          <PitchIcon />
+        ) : type === 'velocity' ? (
+          <VelocityIcon />
+        ) : (
+          <LengthIcon />
         )}
-        <button className='sound-edit-btn reset'>reset</button>
+        <p>Go Back</p>
+      </div>
+      <div className='sound-edit-all'>
+        <label htmlFor={`slider-${type}`}>{type}</label>
+        {type === 'pitch' ? (
+          <div className='pitch-input'>
+            <button className='pitch-dec' onClick={() => handlePitch('dec')}>
+              -
+            </button>
+            <p className='pitch-val'>{value}</p>
+            <button className='pitch-inc' onClick={() => handlePitch('inc')}>
+              +
+            </button>
+          </div>
+        ) : (
+          <input
+            type='range'
+            min={0.1}
+            max={1}
+            step={0.01}
+            value={value}
+            onChange={handleChange}
+            onTouchEnd={sliderEnd}
+          />
+        )}
+        <button className='sound-edit-btn reset' onClick={handleReset}>
+          reset
+        </button>
+      </div>
+      <div className='mod-animation'>
+        {type === 'pitch' ? (
+          <PitchSwipe />
+        ) : type === 'velocity' ? (
+          <VelocitySwipe />
+        ) : (
+          <LengthSwipe />
+        )}
       </div>
     </div>
   );

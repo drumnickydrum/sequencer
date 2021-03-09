@@ -2,9 +2,14 @@
 
 ## Dev notes
 
+### 3/9/2021
+
+- Added 'paint' mode.
+- Cell/All mods are handled in PatternProvider. If no step provided it's an all update. This also handles undo/redo. And reset handles both.
+- The scrolling menus work so much better on mobile because the screen doesn't move all over the place.
+
 ### 3/8/2021
 
-- Going to continue with the page extending vertically. It's too crowded trying to keet it all on a small phone screen.
 - Need to re-implement mod-all.
 - Need to add an edit for 'paint' mode. That way you can click and drag the screen around without toggling by mistake.
 - Need to indicate that the transport bar is x-scrollable.
