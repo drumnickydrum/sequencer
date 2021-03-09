@@ -32,7 +32,7 @@ export const Copy = ({ handleReturn }) => {
     <div className='sound-edit-detail'>
       <div className='sound-edit-title' onClick={handleReturn}>
         <CopyIcon addClass='copying' />
-        <p>Copy</p>
+        <p>Go Back</p>
       </div>
       <p className='sound-edit-instructions'>
         Click to paste current sound's pattern

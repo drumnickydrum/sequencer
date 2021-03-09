@@ -176,12 +176,3 @@ const SoundBtn = ({ i, sound, selectedSound, handleSelect }) => {
     </div>
   );
 };
-
-// <button className='sound-edit-btn' onClick={handleSolo}>
-//             <SoloIcon addClass={solo ? 'flashing' : mute ? 'dim' : ''} />
-//             <p className={solo ? 'flashing' : mute ? 'dim' : ''}>Solo</p>
-//           </button>
-//           <button className='sound-edit-btn' onClick={handleMute}>
-//             <MuteIcon addClass={mute ? 'flashing' : solo ? 'dim' : ''} />
-//             <p className={mute ? 'flashing' : solo ? 'dim' : ''}>Mute</p>
-//           </button>

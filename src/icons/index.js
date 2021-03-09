@@ -17,6 +17,33 @@ import { ReactComponent as PointRight } from './point-right.svg';
 import { ReactComponent as PointUp } from './point-up.svg';
 import { ReactComponent as Paint } from './paint.svg';
 import { ReactComponent as Close } from './close.svg';
+import { ReactComponent as ChevronRight } from './chevron-right.svg';
+import { ReactComponent as ChevronLeft } from './chevron-left.svg';
+import { ReactComponent as ChevronDoubleLeft } from './chevron-double-left.svg';
+import { ReactComponent as ChevronDoubleRight } from './chevron-double-right.svg';
+import { ReactComponent as ChevronTripleLeft } from './chevron-triple-left.svg';
+import { ReactComponent as ChevronTripleRight } from './chevron-triple-right.svg';
+
+export const ChevronLeftIcon = ({ addClass = '' }) => (
+  <ChevronLeft className={addClass + ' chevron left'} />
+);
+export const ChevronRightIcon = ({ addClass = '' }) => (
+  <ChevronRight className={addClass + ' chevron right'} />
+);
+
+export const ChevronDoubleLeftIcon = ({ addClass = '' }) => (
+  <ChevronDoubleLeft className={addClass + ' chevron left'} />
+);
+export const ChevronDoubleRightIcon = ({ addClass = '' }) => (
+  <ChevronDoubleRight className={addClass + ' chevron right'} />
+);
+
+export const ChevronTripleLeftIcon = ({ addClass = '' }) => (
+  <ChevronTripleLeft className={addClass + ' chevron left'} />
+);
+export const ChevronTripleRightIcon = ({ addClass = '' }) => (
+  <ChevronTripleRight className={addClass + ' chevron right'} />
+);
 
 export const StopIcon = ({ addClass = '' }) => <Stop className={addClass} />;
 export const StartIcon = ({ addClass = '' }) => <Start className={addClass} />;

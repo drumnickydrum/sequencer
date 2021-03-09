@@ -6,7 +6,7 @@ import { InfoProvider } from './Providers/Info';
 import { SoundPanel } from './Sections/SoundPanel';
 import { Grid } from './Sections/Grid';
 import { PastePattern } from './Sections/PastePattern';
-import { Edit } from './Sections/Edit';
+import { UndoRedo, Clear } from './Sections/UndoRedoClear';
 import { Transport } from './Sections/Transport';
 import { Information } from './Sections/Information';
 import { UndoProvider } from './Providers/UndoProvider';
@@ -32,7 +32,8 @@ export default function App() {
               <div id='one'>
                 <div className='scroll-container'>
                   <Transport />
-                  {/* <Edit /> */}
+                  <UndoRedo />
+                  <Clear />
                 </div>
               </div>
 

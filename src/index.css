@@ -88,7 +88,6 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--black);
-  border: 1px solid gold;
 }
 
 #address-bar,
@@ -121,7 +120,7 @@ body {
   width: 100%;
   height: 100%;
   display: flex;
-  border: 1px dotted orange;
+  border-top: 1px solid var(--purple-half);
 }
 
 #two {
@@ -141,23 +140,107 @@ body {
   overflow-x: scroll;
   white-space: nowrap;
   overflow-y: hidden;
-  border: 1px solid blue;
+  border-top: 1px solid var(--purple-half);
 }
 
 .scroll-container {
   display: flex;
-  /* width: 200vw; */
-  width: 100%;
+  width: 300vw;
   height: 100%;
 }
 
-#edit,
+.undo-redo-clear,
 #transport {
+  position: relative;
   scroll-snap-align: start;
   width: 100%;
   display: inline-flex;
   justify-content: space-evenly;
   align-items: center;
+}
+
+.chevron {
+  height: 1.5rem;
+  fill: var(--purple-half);
+  position: absolute;
+}
+
+.chevron.left {
+  left: 1rem;
+}
+
+.chevron.right {
+  right: 1rem;
+}
+
+.chevron-right-1,
+.chevron-right-2,
+.chevron-right-3,
+.chevron-left-1,
+.chevron-left-2,
+.chevron-left-3 {
+  opacity: 0;
+}
+
+.chevron-right-1,
+.chevron-left-1 {
+  animation: chevron-1 1s infinite;
+}
+@keyframes chevron-1 {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0;
+  }
+}
+
+.chevron-right-2,
+.chevron-left-2 {
+  animation: chevron-2 1s infinite;
+}
+@keyframes chevron-2 {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.chevron-right-3,
+.chevron-left-3 {
+  animation: chevron-3 1s infinite;
+}
+@keyframes chevron-3 {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 /*************************************/
@@ -193,7 +276,6 @@ body {
 }
 
 #paste-pattern-sounds p {
-  /* width: 100%; */
   padding: 0.5rem;
   text-align: center;
   background: var(--black-3q);
@@ -269,12 +351,10 @@ body {
 #sound-menu {
   width: 100%;
   height: 100%;
-  /* min-height: 30vh; */
   padding: 0.25rem;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.2rem;
-  border: 1px solid red;
 }
 
 .sound {
@@ -312,7 +392,6 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
-  border: 1px solid red;
 }
 
 .sound-edit-menu {
@@ -334,7 +413,6 @@ body {
   justify-content: space-evenly;
   align-items: center;
   padding: 0.5rem 0.5rem;
-  border: 1px solid blue;
   overflow-y: hidden;
 }
 
@@ -345,7 +423,6 @@ body {
   justify-content: space-around;
   align-items: center;
   color: var(--white);
-  border: 1px solid red;
 }
 
 .sound-edit-instructions {
@@ -380,7 +457,6 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid gold;
 }
 
 .sound-edit-slider {
@@ -397,7 +473,6 @@ body {
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  border: 1px solid red;
 }
 
 .sound-edit-all label {
@@ -568,30 +643,30 @@ svg.slicing {
 }
 
 /*************************************/
-/**************** Edit ***************/
+/*********** UndoRedo/Clear **********/
 /*************************************/
 
-#edit button {
-  width: 5rem;
-  height: 100%;
-  padding: 0.5rem;
+.undo-redo-clear button {
   border: none;
   outline: none;
   border-radius: 0.3rem;
   background: transparent;
   fill: var(--white);
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   color: var(--white);
 }
 
-#edit label {
+.undo-redo-clear label {
   width: 100%;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-style: italic;
 }
 
-#edit svg {
-  width: 100%;
-  height: 100%;
+.undo-redo-clear svg {
+  height: 2rem;
 }
 
 /*************************************/
@@ -599,6 +674,7 @@ svg.slicing {
 /*************************************/
 
 #transport {
+  position: relative;
   justify-content: center;
 }
 
@@ -616,8 +692,8 @@ svg.slicing {
 }
 
 #transport svg {
-  width: 100%;
-  height: 100%;
+  /* width: 100%;
+  height: 100%; */
 }
 
 #stop {
@@ -626,6 +702,11 @@ svg.slicing {
 
 #start {
   background: var(--lime-3q);
+}
+
+#stop svg,
+#start svg {
+  height: 100%;
 }
 
 @media (hover: hover) {
@@ -906,7 +987,6 @@ p.dim {
 
 .swipe-icon {
   position: relative;
-  /* max-width: 50%; */
   height: 100%;
 }
 
@@ -916,7 +996,6 @@ p.dim {
   left: 0;
   width: 100%;
   height: 100%;
-  border: 1px solid blue;
 }
 
 .sound-edit svg.pvl-swipe {
@@ -929,7 +1008,6 @@ p.dim {
   fill: var(--white);
   transform: translate(-50%, 0%);
   animation: swipe 3s ease-in-out infinite;
-  border: 1px solid red;
 }
 
 @keyframes swipe {

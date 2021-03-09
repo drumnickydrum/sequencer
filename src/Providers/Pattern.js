@@ -38,7 +38,6 @@ export const PatternProvider = ({ children }) => {
     const type = modRef.current;
     function modifyFunc(val) {
       if (step || step === 0) {
-        console.log('modify step');
         notes.forEach((note) => {
           if (type === 'pitch') note.pitch = val;
           if (type === 'velocity') note.velocity = val;
@@ -46,7 +45,6 @@ export const PatternProvider = ({ children }) => {
         });
         document.dispatchEvent(refreshEventsRef.current[`cell-${step}`]);
       } else {
-        console.log('modify all');
         kit[selectedSound][`${type}Mod`] = val;
         setRefreshAll(true);
       }

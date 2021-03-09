@@ -27,13 +27,9 @@ export const PastePattern = () => {
 
 const SoundBtn = ({ i, sound, selected }) => {
   const { patternRef, pastePattern } = useContext(Pattern);
-  const [pasted, setPasted] = useState(false);
 
   const handleClick = () => {
-    if (!pasted) {
-      pastePattern(i);
-      setPasted(true);
-    }
+    pastePattern(i);
   };
 
   let classes = `sound borderDefault`;

@@ -1,5 +1,10 @@
 import React, { useContext } from 'react';
-import { StopIcon, StartIcon } from '../icons';
+import {
+  StopIcon,
+  StartIcon,
+  ChevronRightIcon,
+  ChevronTripleRightIcon,
+} from '../icons';
 import { Sequencer, SetSequencer } from '../Providers/Sequencer';
 
 export const Transport = () => {
@@ -25,6 +30,7 @@ export const Transport = () => {
           bpm
         </label>
       </div>
+      <ChevronTripleRightIcon />
     </div>
   );
 };
