@@ -461,6 +461,10 @@ body {
   font-size: 1.5rem;
 }
 
+.change-kit p {
+  color: white;
+}
+
 .custom-select {
   position: relative;
   width: 50%;
@@ -469,7 +473,7 @@ body {
 .kit-select {
   -webkit-appearance: none;
   width: 100%;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-family: inherit;
   font-style: inherit;
   border: 1px solid var(--purple);

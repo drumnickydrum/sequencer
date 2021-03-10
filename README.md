@@ -2,6 +2,11 @@
 
 ## Dev notes
 
+### 3/10/2021
+
+- You can now change kits even while transport is started. (juggles a restart)
+- I need to dispose the old Samplers/ToneAudioBuffers.
+
 ### 3/9/2021
 
 #### NEXT:
