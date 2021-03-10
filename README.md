@@ -8,6 +8,7 @@
 - I was getting Buffer errors until cleaning up old kit buffers. Sampler/Channel is disposed by calling `dispose()` and then `delete` on the object.
 - `ChangePattern` works well. A callback function to `changePattern` allows `setBpm` to be called and added to the undo/redo function.
 - Undo/Redo and ClearOne are disabled if not available.
+- The iOS bpm bug was because of css `user-select: none`.
 
 ### 3/9/2021
 

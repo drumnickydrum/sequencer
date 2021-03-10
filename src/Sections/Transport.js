@@ -12,7 +12,6 @@ export const Transport = () => {
   const { bpm } = useContext(Sequencer);
 
   const handleChange = ({ target: { value } }) => {
-    if (value && !value[value.length - 1].match(/\d/)) return;
     setBpm(value > 300 ? 300 : value);
   };
 
@@ -25,7 +24,7 @@ export const Transport = () => {
         <StartIcon />
       </button>
       <div className='input'>
-        <input id='bpm' value={bpm} onChange={handleChange} />
+        <input id='bpm' type='number' value={bpm} onChange={handleChange} />
         <label htmlFor='bpm' id='bpm-label'>
           bpm
         </label>
