@@ -7,6 +7,7 @@
 - You can now change kits even while transport is started. (juggles a restart)
 - I was getting Buffer errors until cleaning up old kit buffers. Sampler/Channel is disposed by calling `dispose()` and then `delete` on the object.
 - `ChangePattern` works well. A callback function to `changePattern` allows `setBpm` to be called and added to the undo/redo function.
+- Undo/Redo and ClearOne are disabled if not available.
 
 ### 3/9/2021
 
