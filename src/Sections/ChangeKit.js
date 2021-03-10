@@ -8,7 +8,8 @@ import { SetSequencer } from '../Providers/Sequencer';
 export const ChangeKit = () => {
   const {
     kitRef,
-    setLoadSamples,
+    disposeSamples,
+    loadSamples,
     buffersLoaded,
     setBuffersLoaded,
   } = useContext(Kit);
@@ -25,11 +26,12 @@ export const ChangeKit = () => {
   const handleChange = ({ target: { value } }) => {
     if (Tone.Transport.state === 'started') setRestart(true);
     stop();
+    setBuffersLoaded(false);
+    disposeSamples();
     const newSounds = kits[value].sounds.map((sound) => ({ ...sound }));
     const newKit = { name: kits[value].name, sounds: newSounds };
     kitRef.current = newKit;
-    setBuffersLoaded(false);
-    setLoadSamples(true);
+    loadSamples();
   };
   return (
     <div className='change-kit'>

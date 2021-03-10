@@ -5,7 +5,7 @@
 ### 3/10/2021
 
 - You can now change kits even while transport is started. (juggles a restart)
-- I need to dispose the old Samplers/ToneAudioBuffers.
+- I am disposing the samplers and channels before loading new kits.
 
 ### 3/9/2021
 
