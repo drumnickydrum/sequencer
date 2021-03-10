@@ -12,6 +12,7 @@ export const PatternProvider = ({ children }) => {
   const [selectedSound, setSelectedSound] = useState(-1);
 
   const patternRef = useRef(deepCopyPattern(analog.pattern));
+  const [patternName, setPatternName] = useState(analog.name);
 
   const refreshEventsRef = useRef({});
   const [refreshAll, setRefreshAll] = useState(false);
@@ -126,10 +127,16 @@ export const PatternProvider = ({ children }) => {
     addToPatternUndo(paste, prevSoundPattern, newSoundPattern);
   };
 
-  const changePattern = (newPattern) => {
-    const prevPattern = deepCopyPattern(patternRef.current);
+  const changePattern = (newPattern, changeTempo, bpm) => {
+    const prevPattern = {
+      name: patternName,
+      pattern: deepCopyPattern(patternRef.current),
+      bpm,
+    };
     function change(pattern) {
-      patternRef.current = deepCopyPattern(pattern);
+      patternRef.current = deepCopyPattern(pattern.pattern);
+      changeTempo(pattern.bpm);
+      setPatternName(pattern.name);
       setRefreshAll(true);
     }
     change(newPattern);
@@ -171,6 +178,8 @@ export const PatternProvider = ({ children }) => {
   return (
     <Pattern.Provider
       value={{
+        patternName,
+        setPatternName,
         patternRef,
         refreshEventsRef,
         refreshAll,

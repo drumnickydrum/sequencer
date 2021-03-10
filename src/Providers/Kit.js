@@ -41,7 +41,9 @@ export const KitProvider = ({ children }) => {
   const disposeSamples = () => {
     for (let i = 0; i < 9; i++) {
       kitRef.current.sounds[i].sampler.dispose();
+      delete kitRef.current.sounds[i].sampler;
       kitRef.current.sounds[i].channel.dispose();
+      delete kitRef.current.sounds[i].channel;
     }
   };
 

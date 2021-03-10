@@ -5,8 +5,8 @@
 ### 3/10/2021
 
 - You can now change kits even while transport is started. (juggles a restart)
-- I am disposing the samplers and channels before loading new kits but Memory profile in dev tools shows Samplers growing with each kit load.
-- ChangePattern works well.
+- I was getting Buffer errors until cleaning up old kit buffers. Sampler/Channel is disposed by calling `dispose()` and then `delete` on the object.
+- `ChangePattern` works well. A callback function to `changePattern` allows `setBpm` to be called and added to the undo/redo function.
 
 ### 3/9/2021
 

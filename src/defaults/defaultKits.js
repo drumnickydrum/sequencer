@@ -236,7 +236,7 @@ export const lush = {
       lengthMod: 1,
       velocityMod: 1,
       key: 'num7',
-      color: 5,
+      color: 6,
     },
     {
       name: 'plop',

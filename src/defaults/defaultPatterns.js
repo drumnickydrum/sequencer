@@ -1,5 +1,6 @@
 export const analog = {
   bpm: 100,
+  name: 'analog',
   pattern: [
     [
       { on: true, notes: [{ pitch: 24, velocity: 1, length: 1 }] },
@@ -1047,6 +1048,7 @@ export const analog = {
 
 export const house = {
   bpm: 120,
+  name: 'house',
   pattern: [
     [
       { on: true, notes: [{ pitch: 24, velocity: 1, length: 1 }] },
@@ -1756,6 +1758,7 @@ export const house = {
 };
 export const lush = {
   bpm: 80,
+  name: 'lush',
   pattern: [
     [
       { on: true, notes: [{ pitch: 24, velocity: 1, length: 1 }] },
@@ -2466,6 +2469,7 @@ export const lush = {
 
 export const vinyl = {
   bpm: 90,
+  name: 'vinyl',
   pattern: [
     [
       { on: true, notes: [{ pitch: 24, velocity: 1, length: 1 }] },
