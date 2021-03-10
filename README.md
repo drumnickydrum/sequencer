@@ -5,7 +5,8 @@
 ### 3/10/2021
 
 - You can now change kits even while transport is started. (juggles a restart)
-- I am disposing the samplers and channels before loading new kits.
+- I am disposing the samplers and channels before loading new kits but Memory profile in dev tools shows Samplers growing with each kit load.
+- ChangePattern works well.
 
 ### 3/9/2021
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import * as Tone from 'tone';
-import { init, analog } from '../defaults/defaultSequences';
+import { init, analog } from '../defaults/defaultPatterns';
 import { Pattern } from './Pattern';
 import { MIDI_NOTES } from '../utils/MIDI_NOTES';
 import { Kit } from './Kit';

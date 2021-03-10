@@ -21,7 +21,10 @@ export const KitProvider = ({ children }) => {
           kitRef.current.sounds[i].duration = kitRef.current.sounds[
             i
           ].sampler._buffers._buffers.get('36')._buffer.duration;
-          if (i === 8) setBuffersLoaded(true);
+          if (i === 8) {
+            console.log('buffers loaded');
+            setBuffersLoaded(true);
+          }
         }
       );
       kitRef.current.sounds[i].channel = new Tone.Channel({

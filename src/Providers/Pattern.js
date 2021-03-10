@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { analog } from '../defaults/defaultSequences';
+import { analog } from '../defaults/defaultPatterns';
 import { Undo } from './UndoProvider';
 import { useStateAndRef } from '../utils/useStateAndRef';
 import { Kit } from './Kit';
@@ -126,6 +126,16 @@ export const PatternProvider = ({ children }) => {
     addToPatternUndo(paste, prevSoundPattern, newSoundPattern);
   };
 
+  const changePattern = (newPattern) => {
+    const prevPattern = deepCopyPattern(patternRef.current);
+    function change(pattern) {
+      patternRef.current = deepCopyPattern(pattern);
+      setRefreshAll(true);
+    }
+    change(newPattern);
+    addToPatternUndo(change, prevPattern, newPattern);
+  };
+
   const clearPattern = (one) => {
     const prevPattern = deepCopyPattern(patternRef.current);
     const newPattern = deepCopyPattern(patternRef.current);
@@ -184,6 +194,7 @@ export const PatternProvider = ({ children }) => {
         copying,
         setCopying,
         pastePattern,
+        changePattern,
         clearPattern,
       }}
     >
@@ -230,3 +241,32 @@ const copyValues = (patternRef, patternToCopy) => {
     });
   });
 };
+
+// const INIT_ONE_NOTE = () => ({
+//   pitch: 24,
+//   velocity: 1,
+//   length: 1,
+// });
+
+// const INIT_SOUND_STEP = () => ({
+//   on: false,
+//   notes: [INIT_ONE_NOTE()],
+// });
+
+// const INIT_PATTERN = () => {
+//   const initPattern = [];
+//   for (let i = 0; i < 64; i++) {
+//     const initCell = [];
+//     for (let i = 0; i < 9; i++) {
+//       initCell.push(INIT_SOUND_STEP());
+//     }
+//     initPattern.push(initCell);
+//   }
+//   return initPattern;
+// };
+
+// const init = {
+//   bpm: 128,
+//   instrument: null,
+//   pattern: INIT_PATTERN(),
+// };

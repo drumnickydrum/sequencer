@@ -152,12 +152,13 @@ body {
 }
 
 #middle .scroll-container {
-  width: 200vw;
+  /* width: 200vw; */
 }
 
 /* middle */
 .sound-menu,
-.change-kit {
+.change-kit,
+.change-pattern {
   position: relative;
   scroll-snap-align: start;
 }
@@ -444,10 +445,11 @@ body {
 }
 
 /*************************************/
-/************* ChangeKit *************/
+/********** ChangeKit/Pattern ********/
 /*************************************/
 
-.change-kit {
+.change-kit,
+.change-pattern {
   width: 95%;
   height: 100%;
   padding: 0.25rem;
@@ -457,12 +459,14 @@ body {
   align-items: center;
 }
 
-.change-kit h1 {
+.change-kit h1,
+.change-pattern h1 {
   font-size: 1.5rem;
 }
 
-.change-kit p {
-  color: white;
+.change-kit p,
+.change-pattern p {
+  color: var(--white);
 }
 
 .custom-select {
@@ -470,7 +474,8 @@ body {
   width: 50%;
 }
 
-.kit-select {
+.kit-select,
+.pattern-select {
   -webkit-appearance: none;
   width: 100%;
   font-size: 1.25rem;
@@ -480,7 +485,8 @@ body {
   border-radius: 0.5rem;
 }
 
-.change-kit .chevron.down {
+.change-kit .chevron.down,
+.change-pattern .chevron.down {
   pointer-events: none;
   position: absolute;
   top: 50%;
