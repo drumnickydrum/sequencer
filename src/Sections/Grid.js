@@ -155,15 +155,15 @@ const Cell = ({ id, step }) => {
       }
     } else if (modRef.current === 'velocity') {
       if (newY - yRef.current > 1) {
-        setVelocity((velocity) => velocity - 0.1);
+        setVelocity((velocity) => velocity - 0.05);
       } else if (newY - yRef.current < -1) {
-        setVelocity((velocity) => velocity + 0.1);
+        setVelocity((velocity) => velocity + 0.05);
       }
     } else {
       if (newX - xRef.current > 1) {
-        setLength((length) => length + 0.1);
+        setLength((length) => length + 0.05);
       } else if (newX - xRef.current < -1) {
-        setLength((length) => length - 0.1);
+        setLength((length) => length - 0.05);
       }
     }
     xRef.current = newX;

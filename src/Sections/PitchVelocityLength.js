@@ -1,18 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
-import {
-  PitchSwipe,
-  VelocitySwipe,
-  LengthSwipe,
-  PitchIcon,
-  VelocityIcon,
-  LengthIcon,
-} from '../icons';
+import React, { useState, useContext } from 'react';
+import { PitchSwipe, VelocitySwipe, LengthSwipe, CloseIcon } from '../icons';
 import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
 
 export const PitchVelocityLength = ({ type, selectedSound, handleReturn }) => {
   const { kit } = useContext(Kit);
   const { modify, resetMods } = useContext(Pattern);
+  const [showModAll, setShowModAll] = useState(false);
 
   const [value, setValue] = useState(
     type === 'velocity'
@@ -54,40 +48,44 @@ export const PitchVelocityLength = ({ type, selectedSound, handleReturn }) => {
   return (
     <div className={`sound-edit-detail color${selectedSound}`}>
       <div className='sound-edit-title' onClick={handleReturn}>
-        {type === 'pitch' ? (
-          <PitchIcon />
-        ) : type === 'velocity' ? (
-          <VelocityIcon />
-        ) : (
-          <LengthIcon />
-        )}
-        <p>Go Back</p>
+        <CloseIcon addClass='white' />
+        <p>Menu</p>
       </div>
       <div className='sound-edit-all'>
         <label htmlFor={`slider-${type}`}>{type}</label>
-        {type === 'pitch' ? (
-          <div className='pitch-input'>
-            <button className='pitch-dec' onClick={() => handlePitch('dec')}>
-              -
-            </button>
-            <p className='pitch-val'>{value}</p>
-            <button className='pitch-inc' onClick={() => handlePitch('inc')}>
-              +
-            </button>
-          </div>
+        {showModAll ? (
+          type === 'pitch' ? (
+            <div className='pitch-input'>
+              <button className='pitch-dec' onClick={() => handlePitch('dec')}>
+                -
+              </button>
+              <p className='pitch-val'>{value}</p>
+              <button className='pitch-inc' onClick={() => handlePitch('inc')}>
+                +
+              </button>
+            </div>
+          ) : (
+            <input
+              type='range'
+              min={0.1}
+              max={1}
+              step={0.01}
+              value={value}
+              onChange={handleChange}
+              onTouchEnd={sliderEnd}
+            />
+          )
         ) : (
-          <input
-            type='range'
-            min={0.1}
-            max={1}
-            step={0.01}
-            value={value}
-            onChange={handleChange}
-            onTouchEnd={sliderEnd}
-          />
+          <button className='sound-edit-btn reset' onClick={handleReset}>
+            reset
+          </button>
         )}
-        <button className='sound-edit-btn reset' onClick={handleReset}>
-          reset
+
+        <button
+          className='sound-edit-btn mod-all'
+          onClick={() => setShowModAll((showModAll) => !showModAll)}
+        >
+          {showModAll ? 'show reset' : 'show mod all'}
         </button>
       </div>
       <div className='mod-animation'>

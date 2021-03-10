@@ -414,6 +414,10 @@ body {
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+  /* border: 1px solid red; */
+}
+.sound-edit-all * {
+  /* border: 1px dotted var(--magenta-half); */
 }
 
 .sound-edit-all label {
@@ -424,8 +428,10 @@ body {
 .sound-edit-detail input {
 }
 
-.reset {
+.reset,
+.mod-all {
   height: auto;
+  width: 100%;
   background: var(--black);
   color: var(--white);
   border: 1px solid var(--white);
@@ -539,7 +545,7 @@ body {
 .pitch-down {
   z-index: 4;
   font-size: 0.75rem;
-  color: var(--purple);
+  color: var(--white);
 }
 
 .pitch-up {
@@ -922,6 +928,11 @@ select {
   fill: var(--pink);
 }
 
+.white.icon {
+  color: var(--white);
+  fill: var(--white);
+}
+
 /*************************************/
 /************* Animations ************/
 /*************************************/
@@ -977,6 +988,10 @@ p.dim {
 
 .capitalize {
   text-transform: capitalize;
+}
+
+.o0 {
+  opacity: 0;
 }
 
 .swipe-icon {
