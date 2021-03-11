@@ -1,48 +1,36 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { KitProvider } from './Providers/Kit';
 import { PatternProvider } from './Providers/Pattern';
 import { SequencerProvider } from './Providers/Sequencer';
 import { InfoProvider } from './Providers/Info';
-import { SoundPanel } from './Sections/SoundPanel';
-import { Grid } from './Sections/Grid';
-import { PastePattern } from './Sections/PastePattern';
-import { UndoRedo, Clear } from './Sections/UndoRedoClear';
-import { Transport } from './Sections/Transport';
-import { Information } from './Sections/Information';
 import { UndoProvider } from './Providers/UndoProvider';
+import { UserProvider } from './Providers/User';
+import { LoginPage } from './Pages/LoginPage';
+import { SequencerPage } from './Pages/Sequencer';
 
 export default function App() {
   return (
-    <InfoProvider>
-      <KitProvider>
-        <UndoProvider>
-          <PatternProvider>
-            <SequencerProvider>
-              <div id='address-bar'></div>
-
-              <div id='top'>
-                <Grid />
-                <PastePattern />
-                <Information />
-              </div>
-
-              <div id='middle'>
-                <SoundPanel />
-              </div>
-              <div id='bottom'>
-                <div className='scroll-container'>
-                  <Transport />
-                  <UndoRedo />
-                  <Clear />
-                </div>
-              </div>
-
-              <div id='toolbar'></div>
-            </SequencerProvider>
-          </PatternProvider>
-        </UndoProvider>
-      </KitProvider>
-    </InfoProvider>
+    <UserProvider>
+      <InfoProvider>
+        <KitProvider>
+          <UndoProvider>
+            <PatternProvider>
+              <SequencerProvider>
+                <div id='address-bar'></div>
+                <Router>
+                  <Switch>
+                    <Route path='/' exact component={SequencerPage} />
+                    <Route path='/login' component={LoginPage} />
+                  </Switch>
+                </Router>
+                <div id='toolbar'></div>
+              </SequencerProvider>
+            </PatternProvider>
+          </UndoProvider>
+        </KitProvider>
+      </InfoProvider>
+    </UserProvider>
   );
 }
 

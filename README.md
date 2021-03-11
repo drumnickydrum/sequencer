@@ -2,6 +2,10 @@
 
 ## Dev notes
 
+### 3/11/2021
+
+- Setup a basic google auth and user provider. Going to implement more strategies and ability to save patterns to db.
+
 ### 3/10/2021
 
 - You can now change kits even while transport is started. (juggles a restart)
