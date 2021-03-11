@@ -4,7 +4,10 @@
 
 ### 3/11/2021
 
-- Setup a basic google auth and user provider. Going to implement more strategies and ability to save patterns to db.
+- Setup a user provider and login page.
+- Setup login methods:
+  - Google
+  - Twitter
 
 ### 3/10/2021
 
