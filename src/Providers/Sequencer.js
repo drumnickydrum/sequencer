@@ -54,10 +54,10 @@ export const SequencerProvider = ({ children }) => {
   };
 
   const scheduleCell = (time, stepRef) => {
-    for (const [sound, { on, notes }] of Object.entries(
+    for (const [sound, { noteOn, notes }] of Object.entries(
       patternRef.current[stepRef.current]
     )) {
-      if (on) {
+      if (noteOn) {
         // console.time('schedule note');
         let slice = notes.length;
         let [pitch, velocity, length] = getModdedValues(
