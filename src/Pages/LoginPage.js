@@ -2,19 +2,36 @@ import React from 'react';
 import googleImg from '../img/google.png';
 import twitterImg from '../img/twitter.png';
 import githubImg from '../img/github.png';
+import facebookImg from '../img/facebook.png';
 import styles from './LoginPage.module.css';
 
 export const LoginPage = () => {
   const googleLogin = () => {
-    window.open('http://localhost:4000/auth/google', '_self');
+    window.open(
+      'https://drumnickydrum-sequencer.herokuapp.com/auth/google',
+      '_self'
+    );
   };
 
   const twitterLogin = () => {
-    window.open('http://localhost:4000/auth/twitter', '_self');
+    window.open(
+      'https://drumnickydrum-sequencer.herokuapp.com/auth/twitter',
+      '_self'
+    );
+  };
+
+  const facebookLogin = () => {
+    window.open(
+      'https://drumnickydrum-sequencer.herokuapp.com/auth/facebook',
+      '_self'
+    );
   };
 
   const githubLogin = () => {
-    window.open('http://localhost:4000/auth/github', '_self');
+    window.open(
+      'https://drumnickydrum-sequencer.herokuapp.com/auth/github',
+      '_self'
+    );
   };
 
   return (
@@ -36,6 +53,14 @@ export const LoginPage = () => {
         >
           <img src={twitterImg} alt='Twitter Logo' />
           <p>Login with Twitter</p>
+        </button>
+        <button
+          className={styles.methodBtn}
+          id='login-facebook'
+          onClick={facebookLogin}
+        >
+          <img src={facebookImg} alt='Facebok Logo' />
+          <p>Login with Facebook</p>
         </button>
         <button
           className={styles.methodBtn}
