@@ -2,6 +2,11 @@
 
 ## Dev notes
 
+### 3/12/2021
+
+- Changed `.on` to `.noteOn` to match mongoose schema.
+- Saving patterns to db.
+
 ### 3/11/2021
 
 - Setup a user provider and login page.
@@ -133,7 +138,7 @@ return pattern.map((cell) => { // array of cells
       let newNotes = sound.notes.map((note) => { // each sound's notes object
         return { ...note };
       });
-      return { on: sound.on, notes: newNotes }; // each sound
+      return { on: sound.noteOn, notes: newNotes }; // each sound
     });
   });
 ```

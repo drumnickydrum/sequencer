@@ -14,7 +14,8 @@ export const UserProvider = ({ children }) => {
       if (e.code !== 'KeyG') return;
       try {
         const sessionUser = await axios.get(
-          'https://drumnickydrum-sequencer.herokuapp.com/user',
+          // 'https://drumnickydrum-sequencer.herokuapp.com/user',
+          'http://localhost:4000/user',
           {
             withCredentials: true,
           }

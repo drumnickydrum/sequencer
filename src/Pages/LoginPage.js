@@ -8,7 +8,8 @@ import styles from './LoginPage.module.css';
 export const LoginPage = () => {
   const googleLogin = () => {
     window.open(
-      'https://drumnickydrum-sequencer.herokuapp.com/auth/google',
+      // 'https://drumnickydrum-sequencer.herokuapp.com/auth/google',
+      'http://localhost:4000/auth/google',
       '_self'
     );
   };
@@ -16,13 +17,6 @@ export const LoginPage = () => {
   const twitterLogin = () => {
     window.open(
       'https://drumnickydrum-sequencer.herokuapp.com/auth/twitter',
-      '_self'
-    );
-  };
-
-  const facebookLogin = () => {
-    window.open(
-      'https://drumnickydrum-sequencer.herokuapp.com/auth/facebook',
       '_self'
     );
   };
@@ -53,14 +47,6 @@ export const LoginPage = () => {
         >
           <img src={twitterImg} alt='Twitter Logo' />
           <p>Login with Twitter</p>
-        </button>
-        <button
-          className={styles.methodBtn}
-          id='login-facebook'
-          onClick={facebookLogin}
-        >
-          <img src={facebookImg} alt='Facebok Logo' />
-          <p>Login with Facebook</p>
         </button>
         <button
           className={styles.methodBtn}

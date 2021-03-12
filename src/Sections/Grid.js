@@ -70,7 +70,7 @@ const Cell = ({ id, step }) => {
       if (on === true) setOn(false);
     } else {
       setColor(selectedSound);
-      setOn(patternRef.current[step][selectedSound].on);
+      setOn(patternRef.current[step][selectedSound].noteOn);
       const { pitch, velocity, length } = patternRef.current[step][
         selectedSound
       ].notes[0];
@@ -247,7 +247,7 @@ const Cell = ({ id, step }) => {
         <div className='sound-cells'>
           {kit.sounds.map((_, sound) => {
             const scId = `${id}-${sound}`;
-            const color = patternRef.current[step][sound].on
+            const color = patternRef.current[step][sound].noteOn
               ? `bg${sound}`
               : '';
             const velocity = patternRef.current[step][sound].notes[0];

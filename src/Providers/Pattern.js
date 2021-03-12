@@ -23,10 +23,10 @@ export const PatternProvider = ({ children }) => {
   const toggleCell = (step) => {
     const cell = patternRef.current[step][selectedSound];
     function toggle(val) {
-      cell.on = val;
+      cell.noteOn = val;
       document.dispatchEvent(refreshEventsRef.current[`cell-${step}`]);
     }
-    const prevOn = cell.on;
+    const prevOn = cell.noteOn;
     const newOn = !prevOn;
     toggle(newOn);
     addToPatternUndo(toggle, prevOn, newOn, step);
@@ -108,17 +108,17 @@ export const PatternProvider = ({ children }) => {
     const newSoundPattern = [];
     patternRef.current.forEach((step) => {
       prevSoundPattern.push({
-        on: step[sound].on,
+        noteOn: step[sound].noteOn,
         notes: step[sound].notes.map((note) => ({ ...note })),
       });
       newSoundPattern.push({
-        on: step[selectedSound].on,
+        noteOn: step[selectedSound].noteOn,
         notes: step[selectedSound].notes.map((note) => ({ ...note })),
       });
     });
     function paste(copiedPattern) {
       patternRef.current.forEach((step, i) => {
-        step[sound].on = copiedPattern[i].on;
+        step[sound].noteOn = copiedPattern[i].noteOn;
         step[sound].notes = copiedPattern[i].notes.map((note) => ({ ...note }));
       });
       setRefreshAll(true);
@@ -217,7 +217,7 @@ const deepCopyStep = (step) => {
     let newNotes = sound.notes.map((note) => {
       return { ...note };
     });
-    return { on: sound.on, notes: newNotes };
+    return { noteOn: sound.noteOn, notes: newNotes };
   });
 };
 
@@ -228,7 +228,7 @@ const deepCopyPattern = (pattern) => {
 };
 
 const initSound = (sound) => {
-  sound.on = false;
+  sound.noteOn = false;
   sound.notes.length = 0;
   sound.notes.push({ pitch: 24, velocity: 1, length: 1 });
 };
@@ -242,7 +242,7 @@ const initPattern = (pattern) => {
 const copyValues = (patternRef, patternToCopy) => {
   patternRef.current.forEach((step, i) => {
     step.forEach((sound, s) => {
-      sound.on = patternToCopy[i][s].on;
+      sound.noteOn = patternToCopy[i][s].noteOn;
       sound.notes.length = 0;
       patternToCopy[i][s].notes.forEach((note) => {
         sound.notes.push({ ...note });
@@ -258,7 +258,7 @@ const copyValues = (patternRef, patternToCopy) => {
 // });
 
 // const INIT_SOUND_STEP = () => ({
-//   on: false,
+//   noteOn: false,
 //   notes: [INIT_ONE_NOTE()],
 // });
 

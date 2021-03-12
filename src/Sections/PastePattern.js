@@ -39,7 +39,7 @@ const SoundBtn = ({ i, sound, selected }) => {
       {selected ? <p className='flashing'>copying...</p> : <p>{sound.name}</p>}
       <div className={selected ? 'cells selected' : 'cells'}>
         {patternRef.current.map((_, step) => {
-          const classes = patternRef.current[step][i].on
+          const classes = patternRef.current[step][i].noteOn
             ? `cell bg${i} on`
             : 'cell';
           return <div key={`paste-pattern-${step}-${i}`} className={classes} />;

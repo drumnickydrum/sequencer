@@ -23,7 +23,7 @@ export const useSoloAndMute = () => {
   };
 
   const handleMute = () => {
-    const cells = document.querySelectorAll('.on');
+    const cells = document.querySelectorAll('.noteOn');
     if (mute) {
       cells.forEach((cell) => cell.classList.remove('dim'));
       kit.sounds[selectedSound].channel.mute = false;
