@@ -1223,3 +1223,7 @@ p.dim {
 button:disabled {
   opacity: 0.35;
 }
+
+.d-none {
+  display: none;
+}
