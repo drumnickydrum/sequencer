@@ -24,6 +24,8 @@ import { ReactComponent as ChevronDoubleLeft } from './chevron-double-left.svg';
 import { ReactComponent as ChevronDoubleRight } from './chevron-double-right.svg';
 import { ReactComponent as ChevronTripleLeft } from './chevron-triple-left.svg';
 import { ReactComponent as ChevronTripleRight } from './chevron-triple-right.svg';
+import { ReactComponent as Open } from './open.svg';
+import { ReactComponent as Save } from './save.svg';
 
 export const ChevronDownIcon = ({ addClass = '' }) => (
   <ChevronDown className={addClass + ' chevron down'} />
@@ -94,6 +96,13 @@ export const PaintIcon = ({ addClass = '' }) => (
 );
 export const CloseIcon = ({ addClass = '' }) => (
   <Close className={addClass + ' icon'} />
+);
+
+export const OpenIcon = ({ addClass = '' }) => (
+  <Open className={addClass + ' icon'} />
+);
+export const SaveIcon = ({ addClass = '' }) => (
+  <Save className={addClass + ' icon'} />
 );
 
 export const PitchSwipe = () => {

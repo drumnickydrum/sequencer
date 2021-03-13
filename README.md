@@ -2,6 +2,10 @@
 
 ## Dev notes
 
+### 3/13/2021
+
+- Basic Load Pattern page.
+
 ### 3/12/2021
 
 - Changed `.on` to `.noteOn` to match mongoose schema.

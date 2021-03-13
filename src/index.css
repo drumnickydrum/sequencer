@@ -151,7 +151,7 @@ body {
 
 .scroll-container {
   display: flex;
-  width: 300vw;
+  width: 400vw;
   height: 100%;
 }
 
@@ -161,8 +161,7 @@ body {
 
 /* middle */
 .sound-menu,
-.change-kit,
-.change-pattern {
+.change-kit {
   position: relative;
   scroll-snap-align: start;
 }
@@ -176,6 +175,73 @@ body {
   display: inline-flex;
   justify-content: space-evenly;
   align-items: center;
+}
+
+/*************************************/
+/************ Load Pattern ***********/
+/*************************************/
+
+.load-pattern {
+  pointer-events: none;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: var(--black-90);
+  opacity: 0;
+  transition: 150ms;
+  overflow: hidden;
+}
+
+.load-pattern.show {
+  pointer-events: initial;
+  opacity: 1;
+}
+
+.load-pattern-title {
+  width: 100%;
+  padding: 0.25rem;
+  text-align: center;
+  font-size: 1.5rem;
+  border-bottom: 1px solid var(--purple-half);
+}
+
+.load-pattern-sub {
+  width: 100%;
+  padding: 0.5rem;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border-bottom: 1px solid var(--purple-half);
+}
+
+.pattern-select {
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.pattern {
+  display: flex;
+  width: 100%;
+  padding: 0.5rem;
+  justify-content: space-evenly;
+  align-items: center;
+  background: var(--purple-quarter);
+  border-radius: 0.5rem;
+  margin: 0.25rem 0;
+}
+
+.pattern.select {
+  height: 3rem;
+}
+
+.pattern.selected {
+  background: var(--green-half);
 }
 
 /*************************************/
@@ -458,8 +524,7 @@ body {
 /********** ChangeKit/Pattern ********/
 /*************************************/
 
-.change-kit,
-.change-pattern {
+.change-kit {
   width: 95%;
   height: 100%;
   padding: 0.25rem;
@@ -469,13 +534,11 @@ body {
   align-items: center;
 }
 
-.change-kit h1,
-.change-pattern h1 {
+.change-kit h1 {
   font-size: 1.5rem;
 }
 
-.change-kit p,
-.change-pattern p {
+.change-kit p {
   color: var(--white);
 }
 
@@ -484,8 +547,7 @@ body {
   width: 50%;
 }
 
-.kit-select,
-.pattern-select {
+.kit-select {
   -webkit-appearance: none;
   width: 100%;
   font-size: 1.25rem;
@@ -495,8 +557,7 @@ body {
   border-radius: 0.5rem;
 }
 
-.change-kit .chevron.down,
-.change-pattern .chevron.down {
+.change-kit .chevron.down {
   pointer-events: none;
   position: absolute;
   top: 50%;
@@ -1226,4 +1287,8 @@ button:disabled {
 
 .d-none {
   display: none;
+}
+
+.center {
+  text-align: center;
 }
