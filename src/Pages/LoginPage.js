@@ -16,14 +16,24 @@ export const LoginPage = () => {
 
   const twitterLogin = () => {
     window.open(
-      'https://drumnickydrum-sequencer.herokuapp.com/auth/twitter',
+      // 'https://drumnickydrum-sequencer.herokuapp.com/auth/twitter',
+      'http://localhost:4000/auth/twitter',
+      '_self'
+    );
+  };
+
+  const facebookLogin = () => {
+    window.open(
+      //  'https://drumnickydrum-sequencer.herokuapp.com/auth/facebook',
+      'http://localhost:4000/auth/facebook',
       '_self'
     );
   };
 
   const githubLogin = () => {
     window.open(
-      'https://drumnickydrum-sequencer.herokuapp.com/auth/github',
+      // 'https://drumnickydrum-sequencer.herokuapp.com/auth/github',
+      'http://localhost:4000/auth/github',
       '_self'
     );
   };
@@ -47,6 +57,14 @@ export const LoginPage = () => {
         >
           <img src={twitterImg} alt='Twitter Logo' />
           <p>Login with Twitter</p>
+        </button>
+        <button
+          className={styles.methodBtn}
+          id='login-facebook'
+          onClick={facebookLogin}
+        >
+          <img src={facebookImg} alt='Facebok Logo' />
+          <p>Login with Facebook</p>
         </button>
         <button
           className={styles.methodBtn}

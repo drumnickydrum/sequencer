@@ -4,6 +4,7 @@ import axios from 'axios';
 const INITIAL_USER = {
   googleId: '',
   twitterId: '',
+  facebookId: '',
   githubId: '',
   username: '',
   patterns: [],

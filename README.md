@@ -7,6 +7,7 @@
 - Changed `.on` to `.noteOn` to match mongoose schema.
 - Saving patterns to db.
 - Chooose between default and user patterns.
+- Added facebook login.
 
 ### 3/11/2021
 
