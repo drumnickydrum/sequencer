@@ -8,9 +8,10 @@ const initialKit = { name: analog.name, sounds: initialSounds };
 export const Kit = React.createContext();
 export const KitProvider = ({ children }) => {
   const [buffersLoaded, setBuffersLoaded] = useState(false);
+  const [currentKit, setCurrentKit] = useState(initialKit.name);
   const kitRef = useRef(initialKit);
 
-  const loadSamples = () => {
+  const loadSamples = (kit) => {
     console.log('loading samples');
     for (let i = 0; i < 9; i++) {
       kitRef.current.sounds[i].sampler = new Tone.Sampler(
@@ -22,7 +23,7 @@ export const KitProvider = ({ children }) => {
             i
           ].sampler._buffers._buffers.get('36')._buffer.duration;
           if (i === 8) {
-            console.log('buffers loaded');
+            console.log(kit, 'buffers loaded');
             setBuffersLoaded(true);
           }
         }
@@ -48,7 +49,7 @@ export const KitProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    loadSamples();
+    loadSamples('default');
   }, []);
 
   return (
@@ -56,6 +57,8 @@ export const KitProvider = ({ children }) => {
       value={{
         kitRef: kitRef,
         kit: kitRef.current,
+        currentKit,
+        setCurrentKit,
         disposeSamples,
         loadSamples,
         buffersLoaded,

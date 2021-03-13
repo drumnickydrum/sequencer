@@ -6,7 +6,7 @@ import { Kit } from './Kit';
 
 export const Pattern = React.createContext();
 export const PatternProvider = ({ children }) => {
-  const { addToPatternUndo } = useContext(Undo);
+  const { addToUndo } = useContext(Undo);
   const { kit } = useContext(Kit);
 
   const [selectedSound, setSelectedSound] = useState(-1);
@@ -29,7 +29,7 @@ export const PatternProvider = ({ children }) => {
     const prevOn = cell.noteOn;
     const newOn = !prevOn;
     toggle(newOn);
-    addToPatternUndo(toggle, prevOn, newOn, step);
+    addToUndo(toggle, prevOn, newOn, step);
   };
 
   const [mod, setMod, modRef] = useStateAndRef(null);
@@ -51,7 +51,7 @@ export const PatternProvider = ({ children }) => {
       }
     }
     modifyFunc(newVal);
-    addToPatternUndo(modifyFunc, prevVal, newVal, step);
+    addToUndo(modifyFunc, prevVal, newVal, step);
   };
 
   const resetMods = (type) => {
@@ -81,7 +81,7 @@ export const PatternProvider = ({ children }) => {
     };
     const newVal = { pattern: newPattern, kit: type === 'pitch' ? 0 : 1 };
     reset(newVal);
-    addToPatternUndo(reset, prevVal, newVal);
+    addToUndo(reset, prevVal, newVal);
   };
 
   const [slicing, setSlicing, slicingRef] = useStateAndRef(false);
@@ -99,7 +99,7 @@ export const PatternProvider = ({ children }) => {
       document.dispatchEvent(refreshEventsRef.current[`cell-${step}`]);
     }
     slice(1);
-    addToPatternUndo(slice, 2, 1, step);
+    addToUndo(slice, 2, 1, step);
   };
 
   const [copying, setCopying] = useState(false);
@@ -124,7 +124,7 @@ export const PatternProvider = ({ children }) => {
       setRefreshAll(true);
     }
     paste(newSoundPattern);
-    addToPatternUndo(paste, prevSoundPattern, newSoundPattern);
+    addToUndo(paste, prevSoundPattern, newSoundPattern);
   };
 
   const changePattern = (newPattern, changeTempo, bpm) => {
@@ -140,7 +140,7 @@ export const PatternProvider = ({ children }) => {
       setRefreshAll(true);
     }
     change(newPattern);
-    addToPatternUndo(change, prevPattern, newPattern);
+    addToUndo(change, prevPattern, newPattern);
   };
 
   const clearPattern = (one) => {
@@ -161,7 +161,7 @@ export const PatternProvider = ({ children }) => {
       setRefreshAll(true);
     }
     clear(newPattern);
-    addToPatternUndo(clear, prevPattern, newPattern);
+    addToUndo(clear, prevPattern, newPattern);
   };
 
   // debugging

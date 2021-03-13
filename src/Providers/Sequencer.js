@@ -9,7 +9,7 @@ export const Sequencer = React.createContext();
 export const SetSequencer = React.createContext();
 export const SequencerProvider = ({ children }) => {
   const { patternRef } = useContext(Pattern);
-  const { kit } = useContext(Kit);
+  const { kit, buffersLoaded } = useContext(Kit);
   const [bpm, setBpm] = useState(analog.bpm);
   const stepRef = useRef(0);
 
@@ -17,6 +17,7 @@ export const SequencerProvider = ({ children }) => {
     Tone.Transport.bpm.value = bpm;
   }, [bpm]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const start = () => {
     if (Tone.Transport.state === 'started') return;
     const flashingCells = document.querySelectorAll('.flashing');
@@ -32,6 +33,14 @@ export const SequencerProvider = ({ children }) => {
     const flashingCells = document.querySelectorAll('.flashing');
     flashingCells.forEach((cell) => cell.classList.remove('pause'));
   };
+
+  const [restart, setRestart] = useState(false);
+  useEffect(() => {
+    if (buffersLoaded && restart) {
+      start();
+      setRestart(false);
+    }
+  }, [buffersLoaded, restart, start]);
 
   const schedulePattern = (stepRef) => {
     const cells = document.querySelectorAll(`.cell`);
@@ -113,7 +122,7 @@ export const SequencerProvider = ({ children }) => {
   };
 
   return (
-    <SetSequencer.Provider value={{ setBpm, start, stop }}>
+    <SetSequencer.Provider value={{ setBpm, start, stop, setRestart }}>
       <Sequencer.Provider value={{ bpm }}>{children}</Sequencer.Provider>
     </SetSequencer.Provider>
   );

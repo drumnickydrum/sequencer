@@ -5,6 +5,7 @@
 ### 3/13/2021
 
 - Basic Load Pattern page.
+- Added change kit to undo but if you rage click the samplers don't get set fast enough. Tried making this bulletproof with timing and callbacks, but there's something sneaky happening under the hood somewhere I can't track down just yet. To move on I will disable undo/redo and kit select until buffers are loaded and everything's copacetic
 
 ### 3/12/2021
 

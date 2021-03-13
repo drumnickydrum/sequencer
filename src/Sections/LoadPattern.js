@@ -24,10 +24,11 @@ export const LoadPattern = () => {
       <h1 className='load-pattern-title'>Load Pattern</h1>
       <div className='load-pattern-sub'>
         <p>Name</p>
+        <p>Kit</p>
         <p>Bpm</p>
       </div>
       <div className='pattern-select'>
-        <p className='center'>Default Patterns</p>
+        <p className='pattern-select-sub'>Default Patterns</p>
         {Object.keys(defaultPatterns).map((pattern, i) => (
           <div
             key={`dp-${i}-${pattern}`}
@@ -39,10 +40,12 @@ export const LoadPattern = () => {
             onClick={() => handleClick('dp', pattern)}
           >
             <p>{pattern}</p>
+            <p>{defaultPatterns[pattern].kit}</p>
             <p>{defaultPatterns[pattern].bpm}</p>
           </div>
         ))}
-        <p className='center'>User Patterns</p>
+        <p className='pattern-select-sub'>User Patterns</p>
+        {user.patterns.length === 0 && <p>No user patterns</p>}
         {user.patterns.map((pattern, i) => (
           <div
             key={`up-${i}-${pattern.name}`}
@@ -54,6 +57,7 @@ export const LoadPattern = () => {
             onClick={() => handleClick('up', pattern.name)}
           >
             <p>{pattern.name}</p>
+            <p>{pattern.kit}</p>
             <p>{pattern.bpm}</p>
           </div>
         ))}

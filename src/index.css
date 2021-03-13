@@ -225,6 +225,11 @@ body {
   overflow-y: scroll;
 }
 
+.pattern-select-sub {
+  padding: 0.25rem;
+  text-align: center;
+}
+
 .pattern {
   display: flex;
   width: 100%;
