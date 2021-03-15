@@ -15,6 +15,7 @@ export const SavePattern = () => {
   const [status, setStatus] = useState('');
 
   const handleSave = async (e) => {
+    if (!newName) return;
     e.preventDefault();
     const cleanName = newName.replace(/[^a-zA-Z0-9 ]/g, '');
     const newPattern = {
@@ -25,29 +26,34 @@ export const SavePattern = () => {
     };
     try {
       const res = await axios({
-        url: 'http://localhost:4000/user/pattern',
+        url: 'http://localhost:4000/user/pattern/add',
         method: 'POST',
         data: newPattern,
         withCredentials: true,
       });
       console.log('Success! \n');
-      console.log(res.data);
       setUser(res.data);
     } catch (e) {
       console.log('FAIL ->\n', e);
+    } finally {
+      setNewName('');
     }
   };
 
   return (
     <div className='save-pattern'>
       <form id='save-form' onSubmit={handleSave}>
-        <h1>Save Pattern</h1>
-        <input
-          type='text'
-          value={newName}
-          onChange={(e) => setNewName(e.target.value)}
-        />
-        <button type='submit'>Save</button>
+        <h1 className='pattern-title'>Save Pattern</h1>
+        <div className='save-pattern-input'>
+          <input
+            type='text'
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+          />
+          <button type='submit' disabled={!newName}>
+            Save
+          </button>
+        </div>
       </form>
       {status}
     </div>

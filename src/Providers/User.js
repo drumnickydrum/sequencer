@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const INITIAL_USER = {
+export const INITIAL_USER = {
   googleId: '',
   twitterId: '',
   facebookId: '',
@@ -29,7 +29,7 @@ export const UserProvider = ({ children }) => {
             withCredentials: true,
           }
         );
-        setUser(res.data);
+        if (res.data) setUser(res.data);
       } catch (e) {
         console.log('GET USER ERROR: \n');
         console.log(e.response?.data || e.message);

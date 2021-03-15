@@ -26,6 +26,7 @@ import { ReactComponent as ChevronTripleLeft } from './chevron-triple-left.svg';
 import { ReactComponent as ChevronTripleRight } from './chevron-triple-right.svg';
 import { ReactComponent as Open } from './open.svg';
 import { ReactComponent as Save } from './save.svg';
+import { ReactComponent as Delete } from './delete.svg';
 
 export const ChevronDownIcon = ({ addClass = '' }) => (
   <ChevronDown className={addClass + ' chevron down'} />
@@ -103,6 +104,10 @@ export const OpenIcon = ({ addClass = '' }) => (
 );
 export const SaveIcon = ({ addClass = '' }) => (
   <Save className={addClass + ' icon'} />
+);
+
+export const DeleteIcon = ({ addClass = '' }) => (
+  <Delete className={addClass + ' icon'} />
 );
 
 export const PitchSwipe = () => {

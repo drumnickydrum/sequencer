@@ -6,11 +6,18 @@
   box-sizing: border-box;
   user-select: none;
   /* touch-action: none; */
-  border: 1px dotted var(--magenta-quarter);
+  /* border: 1px dotted var(--magenta-quarter); */
 }
 
 input {
   user-select: initial;
+}
+
+button {
+  font-family: inherit;
+  font-style: inherit;
+  font-weight: bold;
+  letter-spacing: 2px;
 }
 
 :root {
@@ -211,7 +218,40 @@ body {
   height: 100%;
 }
 
-.load-pattern-title {
+.login-div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-btn {
+  width: 100%;
+  background: var(--purple-quarter);
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  text-align: center;
+  color: white;
+  text-decoration: none;
+}
+
+.login-status {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.login-status button {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: var(--black);
+  color: var(--white);
+}
+
+.pattern-title {
   width: 100%;
   padding: 0.25rem;
   text-align: center;
@@ -222,8 +262,8 @@ body {
 .load-pattern-sub {
   width: 100%;
   padding: 0.5rem;
-  display: flex;
-  justify-content: space-evenly;
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.5fr 0.5fr;
   align-items: center;
   border-bottom: 1px solid var(--purple-half);
 }
@@ -240,10 +280,10 @@ body {
 }
 
 .pattern {
-  display: flex;
   width: 100%;
   padding: 0.5rem;
-  justify-content: space-evenly;
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.5fr 0.5fr;
   align-items: center;
   background: var(--purple-quarter);
   border-radius: 0.5rem;
@@ -256,6 +296,85 @@ body {
 
 .pattern.selected {
   background: var(--green-half);
+}
+
+.delete-btn {
+  background: transparent;
+  padding: 0.25rem;
+}
+
+.delete-btn .icon {
+  max-height: 2rem;
+  width: 100%;
+  fill: var(--white);
+}
+
+.confirm-delete {
+  width: 100%;
+  padding: 0.5rem;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background: var(--purple-quarter);
+}
+
+.confirm-delete button {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  color: var(--white);
+}
+
+.save-pattern {
+  height: auto;
+  flex-grow: 0;
+  margin-bottom: 2rem;
+}
+
+.save-pattern-input {
+  width: 100%;
+  display: flex;
+}
+
+#save-form .input {
+  margin: 0 0.5rem;
+  user-select: initial;
+}
+
+#save-form input {
+  width: 100%;
+  height: 100%;
+  padding: 0.25rem;
+  border: none;
+  outline: none;
+  border: 1px solid var(--white);
+  border-radius: 0.3rem;
+  background: var(--black);
+  color: var(--white);
+  overflow: hidden;
+  font-size: 1.25rem;
+}
+
+#save-form button {
+  min-width: 5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background: var(--black);
+  color: white;
+  outline: none;
+  border: none;
+}
+
+.load-save-pattern-close {
+  cursor: pointer;
+  height: 2rem;
+  width: 100%;
+  margin: 0 0.5rem;
+  padding: 0.5rem;
+  border: none;
+  outline: none;
+  border-radius: 0.3rem;
+  color: var(--white);
+  background: var(--purple-quarter);
 }
 
 /*************************************/
@@ -411,9 +530,6 @@ body {
   border-radius: 0.3rem;
   color: var(--white);
   background: var(--black);
-  font-family: inherit;
-  font-style: inherit;
-  letter-spacing: 2px;
 }
 
 .sound-edit .icon {
@@ -570,8 +686,6 @@ body {
   -webkit-appearance: none;
   width: 100%;
   font-size: 1.25rem;
-  font-family: inherit;
-  font-style: inherit;
   border: 1px solid var(--purple);
   border-radius: 0.5rem;
 }
@@ -1012,6 +1126,17 @@ select {
   fill: var(--white);
 }
 
+.red {
+  background: var(--red);
+}
+
+.green {
+  background: var(--green);
+}
+
+.purple {
+  background: var(--black);
+}
 /*************************************/
 /************* Animations ************/
 /*************************************/
