@@ -17,7 +17,6 @@ import { useSoloAndMute } from './useSoloAndMute';
 import { Paint, Slice, Copy } from './PaintSliceCopy';
 import { PitchVelocityLength } from './PitchVelocityLength';
 import { ChangeKit } from './ChangeKit';
-import { ChangePattern } from './ChangePattern';
 
 export const SoundPanel = () => {
   const {
@@ -170,7 +169,6 @@ export const SoundPanel = () => {
         {/* <ChevronTripleRightIcon /> */}
       </div>
       <ChangeKit />
-      <ChangePattern />
     </div>
   );
 };

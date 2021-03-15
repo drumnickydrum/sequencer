@@ -6,6 +6,8 @@
 
 - Disabled `changeKit()` and `undo/redo` before buffers loaded.
 - Passed `kitRef` from `KitProvider` instead of reference to the `current` object. I think this was a noob mistake that was causing some delay. So far, no buffer problems on restart after this change.
+- Filed an issue with Tone.js to see if they can help me track down this multiple `scheduleRepeat` step bug.
+- `loadPattern` also changes kit, both are added to undo/redo.
 
 ### 3/13/2021
 
@@ -30,7 +32,7 @@
 
 - You can now change kits even while transport is started. (juggles a restart)
 - I was getting Buffer errors until cleaning up old kit buffers. Sampler/Channel is disposed by calling `dispose()` and then `delete` on the object.
-- `ChangePattern` works well. A callback function to `changePattern` allows `setBpm` to be called and added to the undo/redo function.
+- `ChangePattern` works well. A callback function to `loadPattern` allows `setBpm` to be called and added to the undo/redo function.
 - Undo/Redo and ClearOne are disabled if not available.
 - The iOS bpm bug was because of css `user-select: none`.
 

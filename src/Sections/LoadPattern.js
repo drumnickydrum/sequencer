@@ -3,12 +3,14 @@ import * as defaultPatterns from '../defaults/defaultPatterns';
 import { Pattern } from '../Providers/Pattern';
 import { Sequencer, SetSequencer } from '../Providers/Sequencer';
 import { User } from '../Providers/User';
+import { useChangeKit } from '../utils/useChangeKit';
 
 export const LoadPattern = () => {
-  const { changePattern, patternName } = useContext(Pattern);
+  const { loadPattern, patternName } = useContext(Pattern);
   const { setBpm } = useContext(SetSequencer);
   const { bpm } = useContext(Sequencer);
   const { user } = useContext(User);
+  const { changeKit } = useChangeKit();
 
   const handleClick = (type, name) => {
     const changeTempo = (newTempo) => setBpm(newTempo);
@@ -16,7 +18,7 @@ export const LoadPattern = () => {
     if (type === 'dp') newPattern = defaultPatterns[name];
     else newPattern = user.patterns.find((pattern) => pattern.name === name);
     console.log('newPattern: ', newPattern);
-    changePattern(newPattern, changeTempo, bpm);
+    loadPattern(newPattern, changeTempo, bpm, changeKit);
   };
 
   return (

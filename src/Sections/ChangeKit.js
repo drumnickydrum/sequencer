@@ -3,10 +3,22 @@ import { ChevronDownIcon } from '../icons';
 import * as kits from '../defaults/defaultKits';
 import { useChangeKit } from '../utils/useChangeKit';
 import { Kit } from '../Providers/Kit';
+import { Undo } from '../Providers/UndoProvider';
 
 export const ChangeKit = () => {
+  const { addToUndo } = useContext(Undo);
   const { currentKit, buffersLoaded } = useContext(Kit);
   const { changeKit } = useChangeKit();
+
+  const handleChange = ({ target: { value } }) => {
+    const prevKit = currentKit;
+    function change(kit) {
+      changeKit(kit);
+    }
+    change(value);
+    addToUndo(change, prevKit, value);
+  };
+
   return (
     <div className='change-kit'>
       <h1>Change Kit</h1>
@@ -16,7 +28,7 @@ export const ChangeKit = () => {
         <select
           className='kit-select'
           value={currentKit}
-          onChange={(e) => changeKit(e.target.value)}
+          onChange={handleChange}
         >
           {Object.keys(kits).map((kit, i) => {
             return (

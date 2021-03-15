@@ -7,7 +7,7 @@ import { Kit } from './Kit';
 export const Pattern = React.createContext();
 export const PatternProvider = ({ children }) => {
   const { addToUndo } = useContext(Undo);
-  const { kitRef } = useContext(Kit);
+  const { kitRef, currentKit } = useContext(Kit);
 
   const [selectedSound, setSelectedSound] = useState(-1);
 
@@ -127,9 +127,10 @@ export const PatternProvider = ({ children }) => {
     addToUndo(paste, prevSoundPattern, newSoundPattern);
   };
 
-  const changePattern = (newPattern, changeTempo, bpm) => {
+  const loadPattern = (newPattern, changeTempo, bpm, changeKit) => {
     const prevPattern = {
       name: patternName,
+      kit: currentKit,
       pattern: deepCopyPattern(patternRef.current),
       bpm,
     };
@@ -138,6 +139,7 @@ export const PatternProvider = ({ children }) => {
       changeTempo(pattern.bpm);
       setPatternName(pattern.name);
       setRefreshAll(true);
+      changeKit(pattern.kit);
     }
     change(newPattern);
     addToUndo(change, prevPattern, newPattern);
@@ -203,7 +205,7 @@ export const PatternProvider = ({ children }) => {
         copying,
         setCopying,
         pastePattern,
-        changePattern,
+        loadPattern,
         clearPattern,
       }}
     >
