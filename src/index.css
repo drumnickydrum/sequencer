@@ -552,6 +552,11 @@ body {
   width: 50%;
 }
 
+.custom-select.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .kit-select {
   -webkit-appearance: none;
   width: 100%;

@@ -1,17 +1,19 @@
 import React, { useContext } from 'react';
 import { ClearAllIcon, ClearOneIcon, RedoIcon, UndoIcon } from '../icons';
+import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
 import { Undo } from '../Providers/UndoProvider';
 
 export const UndoRedo = () => {
   const { undo, redo, undoDisabled, redoDisabled } = useContext(Undo);
+  const { buffersLoaded } = useContext(Kit);
 
   return (
     <div className='undo-redo-clear'>
       <button
         id='undo'
         className='bottom'
-        disabled={undoDisabled}
+        disabled={undoDisabled || !buffersLoaded}
         onClick={undo}
       >
         <UndoIcon />
@@ -20,7 +22,7 @@ export const UndoRedo = () => {
       <button
         id='redo'
         className='bottom'
-        disabled={redoDisabled}
+        disabled={redoDisabled || !buffersLoaded}
         onClick={redo}
       >
         <RedoIcon />

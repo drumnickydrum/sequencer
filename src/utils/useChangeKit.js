@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import * as Tone from 'tone';
 import * as kits from '../defaults/defaultKits';
 import { Kit } from '../Providers/Kit';

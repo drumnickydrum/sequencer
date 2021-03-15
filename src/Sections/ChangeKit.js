@@ -5,12 +5,14 @@ import { useChangeKit } from '../utils/useChangeKit';
 import { Kit } from '../Providers/Kit';
 
 export const ChangeKit = () => {
-  const { currentKit } = useContext(Kit);
+  const { currentKit, buffersLoaded } = useContext(Kit);
   const { changeKit } = useChangeKit();
   return (
     <div className='change-kit'>
       <h1>Change Kit</h1>
-      <div className='custom-select'>
+      <div
+        className={buffersLoaded ? 'custom-select' : 'custom-select disabled'}
+      >
         <select
           className='kit-select'
           value={currentKit}
