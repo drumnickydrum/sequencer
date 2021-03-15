@@ -32,7 +32,7 @@ export const SoundPanel = () => {
     mod,
     setMod,
   } = useContext(Pattern);
-  const { kit } = useContext(Kit);
+  const { kitRef } = useContext(Kit);
   const { solo, mute, handleSolo, handleMute } = useSoloAndMute();
   const [showEditMenu, setShowEditMenu] = useState(false);
 
@@ -158,7 +158,7 @@ export const SoundPanel = () => {
   ) : (
     <div className='scroll-container'>
       <div className='sound-menu'>
-        {kit.sounds.map((sound, i) => (
+        {kitRef.current.sounds.map((sound, i) => (
           <SoundBtn
             key={`sound-menu-${sound.name}`}
             i={i}

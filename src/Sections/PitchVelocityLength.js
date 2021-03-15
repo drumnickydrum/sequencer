@@ -4,16 +4,16 @@ import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
 
 export const PitchVelocityLength = ({ type, selectedSound, handleReturn }) => {
-  const { kit } = useContext(Kit);
+  const { kitRef } = useContext(Kit);
   const { modify, resetMods } = useContext(Pattern);
   const [showModAll, setShowModAll] = useState(false);
 
   const [value, setValue] = useState(
     type === 'velocity'
-      ? kit.sounds[selectedSound].velocityMod
+      ? kitRef.current.sounds[selectedSound].velocityMod
       : type === 'length'
-      ? kit.sounds[selectedSound].lengthMod
-      : kit.sounds[selectedSound].pitchMod
+      ? kitRef.current.sounds[selectedSound].lengthMod
+      : kitRef.current.sounds[selectedSound].pitchMod
   );
 
   const handleChange = ({ target: { value } }) => {
@@ -36,7 +36,7 @@ export const PitchVelocityLength = ({ type, selectedSound, handleReturn }) => {
   };
 
   const sliderEnd = () => {
-    const prevVal = kit.sounds[selectedSound][`${type}Mod`];
+    const prevVal = kitRef.current.sounds[selectedSound][`${type}Mod`];
     if (value !== prevVal) modify(prevVal, value);
   };
 

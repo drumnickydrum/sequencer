@@ -7,7 +7,7 @@ import { Kit } from './Kit';
 export const Pattern = React.createContext();
 export const PatternProvider = ({ children }) => {
   const { addToUndo } = useContext(Undo);
-  const { kit } = useContext(Kit);
+  const { kitRef } = useContext(Kit);
 
   const [selectedSound, setSelectedSound] = useState(-1);
 
@@ -46,7 +46,7 @@ export const PatternProvider = ({ children }) => {
         });
         document.dispatchEvent(refreshEventsRef.current[`cell-${step}`]);
       } else {
-        kit.sounds[selectedSound][`${type}Mod`] = val;
+        kitRef.current.sounds[selectedSound][`${type}Mod`] = val;
         setRefreshAll(true);
       }
     }
@@ -72,12 +72,12 @@ export const PatternProvider = ({ children }) => {
           note.length = val.pattern[s][selectedSound].notes[n].length;
         });
       });
-      kit.sounds[selectedSound][`${type}Mod`] = val.kit;
+      kitRef.current.sounds[selectedSound][`${type}Mod`] = val.kitRef.current;
       setRefreshAll(true);
     }
     const prevVal = {
       pattern: prevPattern,
-      kit: kit.sounds[selectedSound][`${type}Mod`],
+      kit: kitRef.current.sounds[selectedSound][`${type}Mod`],
     };
     const newVal = { pattern: newPattern, kit: type === 'pitch' ? 0 : 1 };
     reset(newVal);
@@ -250,32 +250,3 @@ const copyValues = (patternRef, patternToCopy) => {
     });
   });
 };
-
-// const INIT_ONE_NOTE = () => ({
-//   pitch: 24,
-//   velocity: 1,
-//   length: 1,
-// });
-
-// const INIT_SOUND_STEP = () => ({
-//   noteOn: false,
-//   notes: [INIT_ONE_NOTE()],
-// });
-
-// const INIT_PATTERN = () => {
-//   const initPattern = [];
-//   for (let i = 0; i < 64; i++) {
-//     const initCell = [];
-//     for (let i = 0; i < 9; i++) {
-//       initCell.push(INIT_SOUND_STEP());
-//     }
-//     initPattern.push(initCell);
-//   }
-//   return initPattern;
-// };
-
-// const init = {
-//   bpm: 128,
-//   instrument: null,
-//   pattern: INIT_PATTERN(),
-// };

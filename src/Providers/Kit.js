@@ -56,7 +56,6 @@ export const KitProvider = ({ children }) => {
     <Kit.Provider
       value={{
         kitRef: kitRef,
-        kit: kitRef.current,
         currentKit,
         setCurrentKit,
         disposeSamples,

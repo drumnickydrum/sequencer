@@ -3,13 +3,13 @@ import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
 
 export const PastePattern = () => {
-  const { kit } = useContext(Kit);
+  const { kitRef } = useContext(Kit);
   const { selectedSound, copying } = useContext(Pattern);
 
   return (
     <div id='paste-pattern' className={copying ? 'show' : ''}>
       <div id='paste-pattern-sounds'>
-        {kit.sounds.map((sound, i) => {
+        {kitRef.current.sounds.map((sound, i) => {
           const selected = i === selectedSound;
           return (
             <SoundBtn

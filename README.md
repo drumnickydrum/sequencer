@@ -4,7 +4,8 @@
 
 ### 3/15/2021
 
-- Disabling `changeKit()` and `undo/redo` before buffers loaded seems to have helped, but serious rage clicking sometimes still gets the transport to start before the samplers are loaded. This is a fringe bug at this point.
+- Disabled `changeKit()` and `undo/redo` before buffers loaded.
+- Passed `kitRef` from `KitProvider` instead of reference to the `current` object. I think this was a noob mistake that was causing some delay. So far, no buffer problems on restart after this change.
 
 ### 3/13/2021
 

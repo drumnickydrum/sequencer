@@ -9,7 +9,7 @@ export const Sequencer = React.createContext();
 export const SetSequencer = React.createContext();
 export const SequencerProvider = ({ children }) => {
   const { patternRef } = useContext(Pattern);
-  const { kit, buffersLoaded } = useContext(Kit);
+  const { kitRef, buffersLoaded } = useContext(Kit);
   const [bpm, setBpm] = useState(analog.bpm);
   const stepRef = useRef(0);
 
@@ -22,7 +22,7 @@ export const SequencerProvider = ({ children }) => {
     if (Tone.Transport.state === 'started') return;
     const flashingCells = document.querySelectorAll('.flashing');
     flashingCells.forEach((cell) => cell.classList.add('pause'));
-    schedulePattern(stepRef);
+    schedulePattern();
     Tone.Transport.start();
   };
 
@@ -42,11 +42,11 @@ export const SequencerProvider = ({ children }) => {
     }
   }, [buffersLoaded, restart, start]);
 
-  const schedulePattern = (stepRef) => {
+  const schedulePattern = () => {
     const cells = document.querySelectorAll(`.cell`);
     Tone.Transport.scheduleRepeat((time) => {
       animateCell(time, cells[stepRef.current]);
-      scheduleCell(time, stepRef);
+      scheduleCell(time);
     }, '16n');
   };
 
@@ -62,7 +62,7 @@ export const SequencerProvider = ({ children }) => {
     }, time);
   };
 
-  const scheduleCell = (time, stepRef) => {
+  const scheduleCell = (time) => {
     for (const [sound, { noteOn, notes }] of Object.entries(
       patternRef.current[stepRef.current]
     )) {
@@ -70,10 +70,10 @@ export const SequencerProvider = ({ children }) => {
         // console.time('schedule note');
         let slice = notes.length;
         let [pitch, velocity, length] = getModdedValues(
-          kit.sounds[sound],
+          kitRef.current.sounds[sound],
           notes[0]
         );
-        kit.sounds[sound].sampler.triggerAttackRelease(
+        kitRef.current.sounds[sound].sampler.triggerAttackRelease(
           pitch,
           length,
           time,
@@ -81,10 +81,10 @@ export const SequencerProvider = ({ children }) => {
         );
         if (slice === 2) {
           let [pitch2, velocity2, length2] = getModdedValues(
-            kit.sounds[sound],
+            kitRef.current.sounds[sound],
             notes[1]
           );
-          kit.sounds[sound].sampler.triggerAttackRelease(
+          kitRef.current.sounds[sound].sampler.triggerAttackRelease(
             pitch2,
             length2,
             time + Tone.Time('32n'),
@@ -92,20 +92,20 @@ export const SequencerProvider = ({ children }) => {
           );
         } else if (slice === 3) {
           let [pitch2, velocity2, length2] = getModdedValues(
-            kit.sounds[sound],
+            kitRef.current.sounds[sound],
             notes[1]
           );
           let [pitch3, velocity3, length3] = getModdedValues(
-            kit.sounds[sound],
+            kitRef.current.sounds[sound],
             notes[2]
           );
-          kit.sounds[sound].sampler.triggerAttackRelease(
+          kitRef.current.sounds[sound].sampler.triggerAttackRelease(
             pitch2,
             length2,
             time + Tone.Time('32t'),
             velocity2
           );
-          kit.sounds[sound].sampler.triggerAttackRelease(
+          kitRef.current.sounds[sound].sampler.triggerAttackRelease(
             pitch3,
             length3,
             time + Tone.Time('32t') + Tone.Time('32t'),
