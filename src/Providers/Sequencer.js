@@ -45,6 +45,7 @@ export const SequencerProvider = ({ children }) => {
   const schedulePattern = () => {
     const cells = document.querySelectorAll(`.cell`);
     Tone.Transport.scheduleRepeat((time) => {
+      console.log(stepRef.current);
       animateCell(time, cells[stepRef.current]);
       scheduleCell(time);
     }, '16n');

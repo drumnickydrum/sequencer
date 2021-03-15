@@ -6,7 +6,7 @@
   box-sizing: border-box;
   user-select: none;
   /* touch-action: none; */
-  /* border: 1px dotted var(--magenta-quarter); */
+  border: 1px dotted var(--magenta-quarter);
 }
 
 input {
@@ -130,6 +130,7 @@ body {
 }
 
 #middle {
+  position: relative;
   width: 100%;
   height: 100%;
   scroll-snap-type: x mandatory;
@@ -181,9 +182,11 @@ body {
 /************ Load Pattern ***********/
 /*************************************/
 
-.load-pattern {
+.load-save-pattern {
   pointer-events: none;
   position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
   width: 100%;
   padding: 0.5rem;
@@ -191,15 +194,21 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: var(--black-90);
+  background: var(--black);
   opacity: 0;
   transition: 150ms;
   overflow: hidden;
 }
 
-.load-pattern.show {
+.load-save-pattern.show {
   pointer-events: initial;
   opacity: 1;
+}
+
+.load-pattern,
+.save-pattern {
+  width: 100%;
+  height: 100%;
 }
 
 .load-pattern-title {

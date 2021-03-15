@@ -5,8 +5,8 @@ import { Information } from '../Sections/Information';
 import { PastePattern } from '../Sections/PastePattern';
 import { SoundPanel } from '../Sections/SoundPanel';
 import { Clear, UndoRedo } from '../Sections/UndoRedoClear';
+import { LoadSaveButton } from '../Sections/LoadSaveButton';
 import { LoadSavePattern } from '../Sections/LoadSavePattern';
-import { LoadPattern } from '../Sections/LoadPattern';
 
 export const SequencerPage = () => {
   return (
@@ -15,7 +15,6 @@ export const SequencerPage = () => {
         <Grid />
         <PastePattern />
         <Information />
-        <LoadPattern />
       </div>
 
       <div id='middle'>
@@ -23,12 +22,13 @@ export const SequencerPage = () => {
       </div>
       <div id='bottom'>
         <div className='scroll-container'>
-          <LoadSavePattern />
+          <LoadSaveButton />
           <Transport />
           <UndoRedo />
           <Clear />
         </div>
       </div>
+      <LoadSavePattern />
     </>
   );
 };

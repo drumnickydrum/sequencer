@@ -1,20 +1,15 @@
-import React from 'react';
-import { OpenIcon, SaveIcon } from '../icons';
+import React, { useContext } from 'react';
+import { Pattern } from '../Providers/Pattern';
+import { LoadPattern } from './LoadPattern';
+import { SavePattern } from './SavePattern';
 
 export const LoadSavePattern = () => {
-  const handleLoad = () => {};
-  const handleSave = () => {};
-
+  const { showLoad, setShowLoad } = useContext(Pattern);
   return (
-    <div className='undo-redo-clear'>
-      <button id='load-pattern' className='bottom' onClick={handleLoad}>
-        <OpenIcon />
-        <label htmlFor='load-pattern'>load pattern</label>
-      </button>
-      <button id='save-pattern' className='bottom' onClick={handleSave}>
-        <SaveIcon />
-        <label htmlFor='save-pattern'>save pattern</label>
-      </button>
+    <div className={showLoad ? 'load-save-pattern show' : 'load-save-pattern'}>
+      <LoadPattern />
+      <SavePattern />
+      <button onClick={() => setShowLoad(false)}>close</button>
     </div>
   );
 };

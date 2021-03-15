@@ -22,7 +22,7 @@ export const LoadPattern = () => {
   };
 
   return (
-    <div className='load-pattern show'>
+    <div className='load-pattern'>
       <h1 className='load-pattern-title'>Load Pattern</h1>
       <div className='load-pattern-sub'>
         <p>Name</p>

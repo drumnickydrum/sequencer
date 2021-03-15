@@ -5,6 +5,7 @@ import { PatternProvider } from './Providers/Pattern';
 import { SequencerProvider } from './Providers/Sequencer';
 import { InfoProvider } from './Providers/Info';
 import { UndoProvider } from './Providers/UndoProvider';
+import { ToneProvider } from './Providers/ToneProvider';
 import { UserProvider } from './Providers/User';
 import { LoginPage } from './Pages/LoginPage';
 import { SequencerPage } from './Pages/Sequencer';
@@ -12,24 +13,26 @@ import { SequencerPage } from './Pages/Sequencer';
 export default function App() {
   return (
     <UserProvider>
-      <InfoProvider>
-        <KitProvider>
-          <UndoProvider>
-            <PatternProvider>
-              <SequencerProvider>
-                <div id='address-bar'></div>
-                <Router>
-                  <Switch>
-                    <Route path='/' exact component={SequencerPage} />
-                    <Route path='/login' component={LoginPage} />
-                  </Switch>
-                </Router>
-                <div id='toolbar'></div>
-              </SequencerProvider>
-            </PatternProvider>
-          </UndoProvider>
-        </KitProvider>
-      </InfoProvider>
+      <ToneProvider>
+        <InfoProvider>
+          <KitProvider>
+            <UndoProvider>
+              <PatternProvider>
+                <SequencerProvider>
+                  <div id='address-bar'></div>
+                  <Router>
+                    <Switch>
+                      <Route path='/' exact component={SequencerPage} />
+                      <Route path='/login' component={LoginPage} />
+                    </Switch>
+                  </Router>
+                  <div id='toolbar'></div>
+                </SequencerProvider>
+              </PatternProvider>
+            </UndoProvider>
+          </KitProvider>
+        </InfoProvider>
+      </ToneProvider>
     </UserProvider>
   );
 }

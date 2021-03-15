@@ -8,6 +8,8 @@
 - Passed `kitRef` from `KitProvider` instead of reference to the `current` object. I think this was a noob mistake that was causing some delay. So far, no buffer problems on restart after this change.
 - Filed an issue with Tone.js to see if they can help me track down this multiple `scheduleRepeat` step bug.
 - `loadPattern` also changes kit, both are added to undo/redo.
+- Tried providing the Tone object as a ref from a context provider to see if this would fix the issue of multiple schedules. It did not.
+- Updated `handleSave` to also save `currentKit`.
 
 ### 3/13/2021
 

@@ -11,6 +11,8 @@ export const PatternProvider = ({ children }) => {
 
   const [selectedSound, setSelectedSound] = useState(-1);
 
+  const [showLoad, setShowLoad] = useState(false);
+
   const patternRef = useRef(deepCopyPattern(analog.pattern));
   const [patternName, setPatternName] = useState(analog.name);
 
@@ -207,6 +209,8 @@ export const PatternProvider = ({ children }) => {
         pastePattern,
         loadPattern,
         clearPattern,
+        showLoad,
+        setShowLoad,
       }}
     >
       {children}
