@@ -9,16 +9,14 @@ export const LoadSaveButton = () => {
   };
 
   return (
-    <div className='undo-redo-clear'>
-      <button id='load-pattern' className='bottom' onClick={handleLoad}>
+    <div className='menu-items'>
+      <button id='load-pattern' className='menu-btn' onClick={handleLoad}>
         <OpenIcon />
-        <label htmlFor='load-pattern'>load/save pattern</label>
+        <label htmlFor='load-pattern' className='menu-label'>
+          load/save pattern
+        </label>
         <SaveIcon />
       </button>
-      {/* <button id='save-pattern' className='bottom' onClick={handleSave}>
-        <SaveIcon />
-        <label htmlFor='save-pattern'>save pattern</label>
-      </button> */}
     </div>
   );
 };

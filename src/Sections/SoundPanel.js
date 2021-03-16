@@ -1,14 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {
-  ChevronTripleRightIcon,
   CloseIcon,
   CopyIcon,
   LengthIcon,
-  MuteIcon,
   PaintIcon,
   PitchIcon,
   SawIcon,
-  SoloIcon,
   VelocityIcon,
 } from '../icons';
 import { Kit } from '../Providers/Kit';
@@ -16,7 +13,6 @@ import { Pattern } from '../Providers/Pattern';
 import { useSoloAndMute } from './useSoloAndMute';
 import { Paint, Slice, Copy } from './PaintSliceCopy';
 import { PitchVelocityLength } from './PitchVelocityLength';
-import { ChangeKit } from './ChangeKit';
 
 export const SoundPanel = () => {
   const {
@@ -155,20 +151,16 @@ export const SoundPanel = () => {
       )}
     </div>
   ) : (
-    <div className='scroll-container'>
-      <div className='sound-menu'>
-        {kitRef.current.sounds.map((sound, i) => (
-          <SoundBtn
-            key={`sound-menu-${sound.name}`}
-            i={i}
-            sound={sound}
-            selectedSound={selectedSound}
-            handleSelect={handleSelect}
-          />
-        ))}
-        {/* <ChevronTripleRightIcon /> */}
-      </div>
-      <ChangeKit />
+    <div className='sound-menu'>
+      {kitRef.current.sounds.map((sound, i) => (
+        <SoundBtn
+          key={`sound-menu-${sound.name}`}
+          i={i}
+          sound={sound}
+          selectedSound={selectedSound}
+          handleSelect={handleSelect}
+        />
+      ))}
     </div>
   );
 };

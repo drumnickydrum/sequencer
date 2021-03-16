@@ -3,11 +3,13 @@ import { analog } from '../defaults/defaultPatterns';
 import { Undo } from './UndoProvider';
 import { useStateAndRef } from '../utils/useStateAndRef';
 import { Kit } from './Kit';
+import { Status } from './Status';
 
 export const Pattern = React.createContext();
 export const PatternProvider = ({ children }) => {
   const { addToUndo } = useContext(Undo);
   const { kitRef, currentKit } = useContext(Kit);
+  const { changeStatus } = useContext(Status);
 
   const [selectedSound, setSelectedSound] = useState(-1);
 
@@ -24,13 +26,17 @@ export const PatternProvider = ({ children }) => {
   const toggleEventsRef = useRef({});
   const toggleCell = (step) => {
     const cell = patternRef.current[step][selectedSound];
-    function toggle(val) {
+    function toggle(val, noStatus) {
       cell.noteOn = val;
       document.dispatchEvent(refreshEventsRef.current[`cell-${step}`]);
+      if (!noStatus)
+        changeStatus(
+          `sound: ${selectedSound} | cell: ${step} | ${val ? 'on' : 'off'}`
+        );
     }
     const prevOn = cell.noteOn;
     const newOn = !prevOn;
-    toggle(newOn);
+    toggle(newOn, true);
     addToUndo(toggle, prevOn, newOn, step);
   };
 
@@ -74,7 +80,7 @@ export const PatternProvider = ({ children }) => {
           note.length = val.pattern[s][selectedSound].notes[n].length;
         });
       });
-      kitRef.current.sounds[selectedSound][`${type}Mod`] = val.kitRef.current;
+      kitRef.current.sounds[selectedSound][`${type}Mod`] = val.kit;
       setRefreshAll(true);
     }
     const prevVal = {

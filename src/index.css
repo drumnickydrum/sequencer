@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
 
 * {
   margin: 0;
@@ -78,14 +79,13 @@ body {
 }
 
 body {
+  position: relative;
   max-width: 100%;
-  max-height: 100%;
   background: var(--black);
   color: var(--white);
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
   font-style: italic;
-  /* overflow: hidden; */
 }
 
 #root {
@@ -93,31 +93,8 @@ body {
   z-index: 1;
   width: 100%;
   max-width: 800px;
-  height: 100%;
-  padding: 0.25rem;
-  display: flex;
-  flex-direction: column;
+  min-height: 100%;
   background: var(--black);
-}
-
-#address-bar,
-#toolbar {
-  display: none;
-  z-index: 2;
-  width: 100%;
-  left: 0;
-}
-#address-bar {
-  position: fixed;
-  top: 0;
-  background: var(--grey-half);
-  height: 95px;
-}
-#toolbar {
-  position: fixed;
-  bottom: 0;
-  background: var(--grey-half);
-  height: 70px;
 }
 
 #top,
@@ -128,61 +105,22 @@ body {
 
 #top {
   position: relative;
-  flex-shrink: 0;
+  /* padding-top: 2.5rem; */
   width: 100%;
-  height: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 #middle {
-  position: relative;
   width: 100%;
-  height: 100%;
-  scroll-snap-type: x mandatory;
-  overflow-x: scroll;
-  white-space: nowrap;
-  overflow-y: hidden;
+  height: 30vh;
   border-top: 1px solid var(--purple-half);
 }
 
 #bottom {
   width: 100%;
-  flex-shrink: 0;
-  scroll-snap-type: x mandatory;
-  overflow-x: scroll;
-  white-space: nowrap;
-  overflow-y: hidden;
   border-top: 1px solid var(--purple-half);
-}
-
-.scroll-container {
-  display: flex;
-  width: 400vw;
-  height: 100%;
-}
-
-#middle .scroll-container {
-  width: 200vw;
-}
-
-/* middle */
-.sound-menu,
-.change-kit {
-  position: relative;
-  scroll-snap-align: start;
-}
-
-/* bottom */
-.undo-redo-clear,
-#transport {
-  position: relative;
-  scroll-snap-align: start;
-  width: 100%;
-  display: inline-flex;
-  justify-content: space-evenly;
-  align-items: center;
 }
 
 /*************************************/
@@ -451,59 +389,16 @@ body {
 }
 
 /*************************************/
-/*************** Info ****************/
-/*************************************/
-
-#information {
-  pointer-events: none;
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  background: var(--black-3q);
-  opacity: 0;
-  transition: 150ms;
-}
-
-#information.show {
-  opacity: 1;
-}
-
-#info {
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 1.5rem 0 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-#info svg {
-  fill: white;
-  height: 4rem;
-}
-
-#info p {
-  font-size: 1.5rem;
-}
-
-/*************************************/
 /************* SoundPanel ************/
 /*************************************/
 
-.sound-panel {
-  width: 100%;
-  display: flex;
-}
-
 .sound-menu {
-  width: 95%;
+  width: 100%;
   height: 100%;
   padding: 0.25rem;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: 1fr 1fr 1fr;
   gap: 0.2rem;
 }
 
@@ -685,7 +580,14 @@ body {
 
 .custom-select {
   position: relative;
+  cursor: pointer;
   width: 50%;
+  padding: 0.5rem;
+  background: var(--black);
+  color: var(--white);
+  outline: none;
+  border: none;
+  border-radius: 0.3rem;
 }
 
 .custom-select.disabled {
@@ -852,10 +754,19 @@ body {
 }
 
 /*************************************/
-/*********** UndoRedo/Clear **********/
+/************* Menu Items ************/
 /*************************************/
 
-.undo-redo-clear button {
+.menu-items {
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border-bottom: 1px solid var(--purple-half);
+}
+
+.menu-btn {
   border: none;
   outline: none;
   border-radius: 0.3rem;
@@ -867,14 +778,14 @@ body {
   color: var(--white);
 }
 
-.undo-redo-clear label {
+.menu-label {
   width: 100%;
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
   font-style: italic;
 }
 
-.undo-redo-clear svg {
+.menu-items svg {
   height: 2rem;
 }
 
@@ -882,12 +793,12 @@ body {
 /************* Transport *************/
 /*************************************/
 
-#transport {
+.transport {
   position: relative;
   justify-content: center;
 }
 
-#transport button {
+.transport button {
   cursor: pointer;
   height: 2rem;
   width: 4rem;
@@ -928,12 +839,12 @@ body {
   }
 }
 
-#transport .input {
+.transport .input {
   margin: 0 0.5rem;
   user-select: initial;
 }
 
-#transport input {
+.transport input {
   max-width: 5rem;
   height: 100%;
   padding: 0.25rem;
@@ -955,14 +866,38 @@ body {
   padding: 0.5rem;
 }
 
-select {
-  cursor: pointer;
+/*************************************/
+/************ StatusBar **************/
+/*************************************/
+
+.status-bar {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  height: 2.5rem;
+  width: 100%;
+  z-index: 5;
+}
+.status {
   padding: 0.5rem;
-  background: var(--black);
-  color: var(--white);
-  outline: none;
-  border: none;
-  border-radius: 0.3rem;
+  font-size: 1.25rem;
+  font-family: Orbitron, Roboto, sans-serif;
+  color: var(--red);
+  letter-spacing: 2px;
+  text-align: center;
+  background: var(--black-half);
+  filter: drop-shadow(2px 2px 2px var(--purple-half));
+  opacity: 0;
+  transition: 1500ms;
+}
+
+.status.fade-out-2 {
+  opacity: 1;
+}
+
+.status.fade-out {
+  opacity: 1;
+  transition: none;
 }
 
 /*************************************/

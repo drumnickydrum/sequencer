@@ -9,26 +9,29 @@ export const UndoRedo = () => {
   const { buffersLoaded } = useContext(Kit);
 
   return (
-    <div className='undo-redo-clear'>
+    <div className='menu-items'>
       <button
         id='undo'
-        className='bottom'
+        className='menu-btn'
         disabled={undoDisabled || !buffersLoaded}
         onClick={undo}
       >
         <UndoIcon />
-        <label htmlFor='undo'>undo</label>
+        <label htmlFor='undo' className='menu-btn'>
+          undo
+        </label>
       </button>
       <button
         id='redo'
-        className='bottom'
+        className='menu-btn'
         disabled={redoDisabled || !buffersLoaded}
         onClick={redo}
       >
         <RedoIcon />
-        <label htmlFor='redo'>redo</label>
+        <label htmlFor='redo' className='menu-label'>
+          redo
+        </label>
       </button>
-      {/* <ChevronTripleRightIcon /> */}
     </div>
   );
 };
@@ -36,20 +39,27 @@ export const UndoRedo = () => {
 export const Clear = () => {
   const { clearPattern, selectedSound } = useContext(Pattern);
   return (
-    <div className='undo-redo-clear'>
-      {/* <ChevronTripleLeftIcon /> */}
+    <div className='menu-items'>
       <button
         id='clear-one'
-        className='bottom'
+        className='menu-btn'
         disabled={selectedSound === -1}
         onClick={() => clearPattern(true)}
       >
         <ClearOneIcon />
-        <label htmlFor='clear-one'>clear one</label>
+        <label htmlFor='clear-one' className='menu-label'>
+          clear one
+        </label>
       </button>
-      <button id='clear-all' className='bottom' onClick={() => clearPattern()}>
+      <button
+        id='clear-all'
+        className='menu-btn'
+        onClick={() => clearPattern()}
+      >
         <ClearAllIcon />
-        <label htmlFor='clear-all'>clear all</label>
+        <label htmlFor='clear-all' className='menu-label'>
+          clear all
+        </label>
       </button>
     </div>
   );
