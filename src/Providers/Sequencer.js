@@ -44,6 +44,8 @@ export const SequencerProvider = ({ children }) => {
 
   const schedulePattern = () => {
     Tone.Transport.cancel(0);
+    Tone.Transport.cancel(0);
+    Tone.Transport.cancel(0);
     console.log(Tone.Transport._repeatedEvents);
     const cells = document.querySelectorAll(`.cell`);
     Tone.Transport.scheduleRepeat((time) => {

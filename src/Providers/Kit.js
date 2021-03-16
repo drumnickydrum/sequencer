@@ -14,11 +14,12 @@ export const KitProvider = ({ children }) => {
   const loadSamples = (kit) => {
     console.log('loading samples');
     for (let i = 0; i < 9; i++) {
-      kitRef.current.sounds[i].sampler = new Tone.Sampler(
-        {
+      kitRef.current.sounds[i].sampler = new Tone.Sampler({
+        urls: {
           C2: kitRef.current.sounds[i].sample,
         },
-        () => {
+        onload: () => {
+          console.log('onload');
           kitRef.current.sounds[i].duration = kitRef.current.sounds[
             i
           ].sampler._buffers._buffers.get('36')._buffer.duration;
@@ -26,8 +27,8 @@ export const KitProvider = ({ children }) => {
             console.log(kit, 'buffers loaded');
             setBuffersLoaded(true);
           }
-        }
-      );
+        },
+      });
       kitRef.current.sounds[i].channel = new Tone.Channel({
         volume: 0,
         pan: 0,
@@ -37,6 +38,7 @@ export const KitProvider = ({ children }) => {
         kitRef.current.sounds[i].channel
       );
     }
+    console.log(kitRef.current);
   };
 
   const disposeSamples = () => {

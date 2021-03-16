@@ -3,7 +3,7 @@ import {
   CloseIcon,
   CopyIcon,
   LengthIcon,
-  PaintIcon,
+  EraserIcon,
   PitchIcon,
   SawIcon,
   VelocityIcon,
@@ -11,7 +11,7 @@ import {
 import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
 import { useSoloAndMute } from './useSoloAndMute';
-import { Paint, Slice, Copy } from './PaintSliceCopy';
+import { Erase, Slice, Copy } from './EraseSliceCopy';
 import { PitchVelocityLength } from './PitchVelocityLength';
 
 export const SoundPanel = () => {
@@ -89,7 +89,7 @@ export const SoundPanel = () => {
   return showEditMenu ? (
     <div className='sound-edit'>
       {erasing ? (
-        <Paint handleReturn={handleReturn} />
+        <Erase handleReturn={handleReturn} />
       ) : slicing ? (
         <Slice handleReturn={handleReturn} />
       ) : copying ? (
@@ -115,8 +115,8 @@ export const SoundPanel = () => {
             }
             onClick={handleErase}
           >
-            <PaintIcon />
-            <p>Paint</p>
+            <EraserIcon />
+            <p>Erase</p>
           </button>
           <button className='sound-edit-btn' onClick={handleSlice}>
             <SawIcon />

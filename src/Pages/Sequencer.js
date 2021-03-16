@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router';
 import { Transport } from '../Sections/Transport';
 import { Grid } from '../Sections/Grid';
 import { PastePattern } from '../Sections/PastePattern';
@@ -8,23 +9,27 @@ import { LoadSaveButton } from '../Sections/LoadSaveButton';
 import { LoadSavePattern } from '../Sections/LoadSavePattern';
 
 export const SequencerPage = () => {
+  const { redirect } = useParams();
+
   return (
     <>
-      <div id='top'>
+      <div id='transport'>
+        <Transport />
+      </div>
+      <div id='main'>
         <Grid />
         <PastePattern />
       </div>
 
-      <div id='middle'>
+      <div id='sound-panel'>
         <SoundPanel />
       </div>
       <div id='bottom'>
-        <Transport />
         <UndoRedo />
         <Clear />
         <LoadSaveButton />
       </div>
-      <LoadSavePattern />
+      <LoadSavePattern show={redirect === 'load'} />
     </>
   );
 };

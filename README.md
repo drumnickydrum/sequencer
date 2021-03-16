@@ -8,6 +8,8 @@
 - Basic status bar at the top of screen.
 - Edits add a status update on undo/redo.
 - Painting is default, Erasing is a switch in sound menu.
+- Playing with React Router to bring in different views... for some reason now Tone is not loading audio buffers. Samplers and Channels are added to the kit but the `onload` callback is never called. This is directly a result of playing with the window location.
+- \*\*\* Figure out how to get query params without making tone mad.
 
 ### 3/15/2021
 

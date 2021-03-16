@@ -28,6 +28,7 @@ import { ReactComponent as Open } from './open.svg';
 import { ReactComponent as Save } from './save.svg';
 import { ReactComponent as Delete } from './delete.svg';
 import { ReactComponent as Kit } from './kit.svg';
+import { ReactComponent as Eraser } from './eraser.svg';
 
 export const ChevronDownIcon = ({ addClass = '' }) => (
   <ChevronDown className={addClass + ' chevron down'} />
@@ -109,6 +110,10 @@ export const SaveIcon = ({ addClass = '' }) => (
 
 export const DeleteIcon = ({ addClass = '' }) => (
   <Delete className={addClass + ' icon'} />
+);
+
+export const EraserIcon = ({ addClass = '' }) => (
+  <Eraser className={addClass + ' icon'} />
 );
 
 export const KitIcon = ({ addClass = '' }) => (

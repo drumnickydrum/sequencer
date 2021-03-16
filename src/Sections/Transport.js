@@ -11,7 +11,7 @@ export const Transport = () => {
   };
 
   return (
-    <div className='menu-items transport'>
+    <div className='transport'>
       <button id='stop' onClick={stop}>
         <StopIcon />
       </button>

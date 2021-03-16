@@ -4,6 +4,7 @@ import twitterImg from '../img/twitter.png';
 import githubImg from '../img/github.png';
 import facebookImg from '../img/facebook.png';
 import styles from './LoginPage.module.css';
+import { Link } from 'react-router-dom';
 
 export const LoginPage = () => {
   const googleLogin = () => {
@@ -74,6 +75,11 @@ export const LoginPage = () => {
           <img src={githubImg} alt='Github Logo' />
           <p>Login with Github</p>
         </button>
+      </div>
+      <div className='bottom-btn show'>
+        <Link className='load-save-pattern-close' to='/?load=true'>
+          Close
+        </Link>
       </div>
     </div>
   );

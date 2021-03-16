@@ -97,22 +97,27 @@ body {
   background: var(--black);
 }
 
-#top,
-#middle,
+#transport,
+#main,
+#sound-panel,
 #bottom {
   padding: 0.25rem;
 }
 
-#top {
+#transport {
+  width: 100%;
+}
+
+#main {
   position: relative;
-  /* padding-top: 2.5rem; */
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-top: 1px solid var(--purple-half);
 }
 
-#middle {
+#sound-panel {
   width: 100%;
   height: 30vh;
   border-top: 1px solid var(--purple-half);
@@ -128,21 +133,21 @@ body {
 /*************************************/
 
 .load-save-pattern {
-  pointer-events: none;
   position: absolute;
   top: 0;
-  left: 0;
   min-height: 100%;
   width: 100%;
   padding: 0.5rem;
+  padding-bottom: 2.5rem;
   background: var(--black);
   opacity: 0;
+  pointer-events: none;
   transition: 150ms;
 }
 
 .load-save-pattern.show {
-  pointer-events: initial;
   opacity: 1;
+  pointer-events: initial;
 }
 
 .load-pattern,
@@ -314,16 +319,35 @@ body {
   min-height: 1.5rem;
 }
 
-.load-save-pattern-close {
-  cursor: pointer;
-  height: 2rem;
+.bottom-btn {
+  position: fixed;
+  bottom: 0;
   width: 100%;
   padding: 0.5rem;
-  border: none;
+  background: var(--black);
+  opacity: 0;
+  pointer-events: none;
+  transition: 150ms;
+}
+
+.bottom-btn.show {
+  opacity: 1;
+  pointer-events: initial;
+}
+
+.load-save-pattern-close {
+  display: block;
+  cursor: pointer;
+  height: 2.5rem;
+  width: 100%;
+  padding: 0.5rem;
   outline: none;
+  border: 1px solid var(--white);
   border-radius: 0.3rem;
   color: var(--white);
-  background: var(--purple-quarter);
+  background: var(--black);
+  text-decoration: none;
+  text-align: center;
 }
 
 /*************************************/
@@ -799,7 +823,11 @@ body {
 
 .transport {
   position: relative;
+  width: 100%;
+  height: 10vh;
+  display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .transport button {

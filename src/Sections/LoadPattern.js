@@ -10,7 +10,7 @@ import { useChangeKit } from '../utils/useChangeKit';
 
 export const LoadPattern = () => {
   const { loadPattern, patternName } = useContext(Pattern);
-  const { setBpm } = useContext(SetSequencer);
+  const { setBpm, stop } = useContext(SetSequencer);
   const { bpm } = useContext(Sequencer);
   const { user } = useContext(User);
   const { changeKit } = useChangeKit();
@@ -40,7 +40,7 @@ export const LoadPattern = () => {
               <p className='pattern-select-sub'>
                 Login to load/save user patterns
               </p>
-              <Link className='login-btn' to='/login'>
+              <Link className='login-btn' onClick={stop} to='/login'>
                 Login
               </Link>
             </div>

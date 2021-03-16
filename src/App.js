@@ -24,7 +24,7 @@ export default function App() {
                   <SequencerProvider>
                     <Router>
                       <Switch>
-                        <Route path='/' exact component={SequencerPage} />
+                        <Route path='/' component={SequencerPage} />
                         <Route path='/login' component={LoginPage} />
                       </Switch>
                     </Router>

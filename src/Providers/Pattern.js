@@ -173,14 +173,15 @@ export const PatternProvider = ({ children }) => {
       pattern: deepCopyPattern(patternRef.current),
       bpm,
     };
-    function change(pattern) {
+    function change(pattern, noStatus) {
       patternRef.current = deepCopyPattern(pattern.pattern);
       changeTempo(pattern.bpm);
       setPatternName(pattern.name);
       setRefreshAll(true);
       changeKit(pattern.kit);
+      if (!noStatus) changeStatus(`load pattern: ${pattern.name}`);
     }
-    change(newPattern);
+    change(newPattern, true);
     addToUndo(change, prevPattern, newPattern);
   };
 
@@ -197,11 +198,13 @@ export const PatternProvider = ({ children }) => {
     } else {
       initPattern(newPattern);
     }
-    function clear(patternToCopy) {
+    function clear(patternToCopy, noStatus) {
       copyValues(patternRef, patternToCopy);
       setRefreshAll(true);
+      if (!noStatus)
+        changeStatus(`clear ${one ? 'sound: ' + selectedSound : 'all'}`);
     }
-    clear(newPattern);
+    clear(newPattern, true);
     addToUndo(clear, prevPattern, newPattern);
   };
 
