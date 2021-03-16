@@ -21,7 +21,15 @@ export const PatternProvider = ({ children }) => {
   const refreshEventsRef = useRef({});
   const [refreshAll, setRefreshAll] = useState(false);
 
-  const [painting, setPainting] = useState(false);
+  const [painting, setPainting] = useState(true);
+  const [erasing, setErasing] = useState(false);
+  useEffect(() => {
+    if (erasing) {
+      setPainting(false);
+    } else {
+      setPainting(true);
+    }
+  }, [erasing]);
   const prevCellRef = useRef(null);
   const toggleEventsRef = useRef({});
   const toggleCell = (step) => {
@@ -41,11 +49,18 @@ export const PatternProvider = ({ children }) => {
   };
 
   const [mod, setMod, modRef] = useStateAndRef(null);
+  useEffect(() => {
+    if (mod) {
+      setPainting(false);
+    } else {
+      setPainting(true);
+    }
+  }, [mod]);
   const modify = (prevVal, newVal, step) => {
     const notes =
       step || step === 0 ? patternRef.current[step][selectedSound].notes : null;
     const type = modRef.current;
-    function modifyFunc(val) {
+    function modifyFunc(val, noStatus) {
       if (step || step === 0) {
         notes.forEach((note) => {
           if (type === 'pitch') note.pitch = val;
@@ -53,12 +68,17 @@ export const PatternProvider = ({ children }) => {
           if (type === 'length') note.length = val;
         });
         document.dispatchEvent(refreshEventsRef.current[`cell-${step}`]);
+        if (!noStatus)
+          changeStatus(
+            `sound: ${selectedSound} | step: ${step} | mod: ${type}`
+          );
       } else {
         kitRef.current.sounds[selectedSound][`${type}Mod`] = val;
+        if (!noStatus) changeStatus(`sound: ${selectedSound} | mod: ${type}`);
         setRefreshAll(true);
       }
     }
-    modifyFunc(newVal);
+    modifyFunc(newVal, true);
     addToUndo(modifyFunc, prevVal, newVal, step);
   };
 
@@ -72,7 +92,7 @@ export const PatternProvider = ({ children }) => {
         if (type === 'length') note.length = 1;
       });
     });
-    function reset(val) {
+    function reset(val, noStatus) {
       patternRef.current.forEach((step, s) => {
         step[selectedSound].notes.forEach((note, n) => {
           note.pitch = val.pattern[s][selectedSound].notes[n].pitch;
@@ -82,19 +102,27 @@ export const PatternProvider = ({ children }) => {
       });
       kitRef.current.sounds[selectedSound][`${type}Mod`] = val.kit;
       setRefreshAll(true);
+      if (!noStatus) changeStatus(`sound: ${selectedSound} | mod: ${type}`);
     }
     const prevVal = {
       pattern: prevPattern,
       kit: kitRef.current.sounds[selectedSound][`${type}Mod`],
     };
     const newVal = { pattern: newPattern, kit: type === 'pitch' ? 0 : 1 };
-    reset(newVal);
+    reset(newVal, true);
     addToUndo(reset, prevVal, newVal);
   };
 
   const [slicing, setSlicing, slicingRef] = useStateAndRef(false);
+  useEffect(() => {
+    if (slicing) {
+      setPainting(false);
+    } else {
+      setPainting(true);
+    }
+  }, [slicing]);
   const sliceStep = (step) => {
-    function slice(count) {
+    function slice(count, noStatus) {
       function sliceFunc(count) {
         let notes = patternRef.current[step][selectedSound].notes;
         const len = notes.length;
@@ -105,8 +133,10 @@ export const PatternProvider = ({ children }) => {
       }
       sliceFunc(count);
       document.dispatchEvent(refreshEventsRef.current[`cell-${step}`]);
+      if (!noStatus)
+        changeStatus(`slice sound: ${selectedSound} | cell: ${step}`);
     }
-    slice(1);
+    slice(1, true);
     addToUndo(slice, 2, 1, step);
   };
 
@@ -124,14 +154,15 @@ export const PatternProvider = ({ children }) => {
         notes: step[selectedSound].notes.map((note) => ({ ...note })),
       });
     });
-    function paste(copiedPattern) {
+    function paste(copiedPattern, noStatus) {
       patternRef.current.forEach((step, i) => {
         step[sound].noteOn = copiedPattern[i].noteOn;
         step[sound].notes = copiedPattern[i].notes.map((note) => ({ ...note }));
       });
       setRefreshAll(true);
+      if (!noStatus) changeStatus(`copy from: ${selectedSound} | to: ${sound}`);
     }
-    paste(newSoundPattern);
+    paste(newSoundPattern, true);
     addToUndo(paste, prevSoundPattern, newSoundPattern);
   };
 
@@ -194,6 +225,8 @@ export const PatternProvider = ({ children }) => {
         refreshEventsRef,
         refreshAll,
         setRefreshAll,
+        erasing,
+        setErasing,
         painting,
         setPainting,
         prevCellRef,

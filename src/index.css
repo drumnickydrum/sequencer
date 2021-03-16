@@ -629,6 +629,10 @@ body {
   border-radius: 0.5rem;
 }
 
+#grid.no-drag {
+  touch-action: none;
+}
+
 .cell {
   cursor: pointer;
   width: 0;
@@ -880,7 +884,7 @@ body {
 }
 .status {
   padding: 0.5rem;
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-family: Orbitron, Roboto, sans-serif;
   color: var(--red);
   letter-spacing: 2px;

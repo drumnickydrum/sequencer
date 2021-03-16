@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export const Status = React.createContext();
 export const StatusProvider = ({ children }) => {
   const [status, setStatus] = useState('status: loading');
+  const countRef = useRef(0);
 
   const changeStatus = (newStatus) => {
     // setStatus('');
     // setTimeout(() => setStatus(newStatus), 0);
-    setStatus(newStatus);
+    countRef.current++;
+    setStatus(`${countRef.current}#${newStatus}`);
   };
 
   useEffect(() => {

@@ -18,8 +18,8 @@ export const SoundPanel = () => {
   const {
     selectedSound,
     setSelectedSound,
-    painting,
-    setPainting,
+    erasing,
+    setErasing,
     slicing,
     setSlicing,
     copying,
@@ -41,8 +41,8 @@ export const SoundPanel = () => {
   };
 
   const handleReturn = () => {
-    if (painting) {
-      handlePaint();
+    if (erasing) {
+      handleErase();
     } else if (slicing) {
       handleSlice();
     } else if (copying) {
@@ -56,8 +56,8 @@ export const SoundPanel = () => {
     }
   };
 
-  const handlePaint = () => {
-    setPainting((painting) => !painting);
+  const handleErase = () => {
+    setErasing((erasing) => !erasing);
   };
 
   const handleSlice = () => {
@@ -88,7 +88,7 @@ export const SoundPanel = () => {
 
   return showEditMenu ? (
     <div className='sound-edit'>
-      {painting ? (
+      {erasing ? (
         <Paint handleReturn={handleReturn} />
       ) : slicing ? (
         <Slice handleReturn={handleReturn} />
@@ -109,11 +109,11 @@ export const SoundPanel = () => {
 
           <button
             className={
-              painting
+              erasing
                 ? `sound-edit-btn color${selectedSound}`
                 : 'sound-edit-btn'
             }
-            onClick={handlePaint}
+            onClick={handleErase}
           >
             <PaintIcon />
             <p>Paint</p>

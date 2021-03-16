@@ -11,26 +11,40 @@ import { Kit } from '../Providers/Kit';
 import { SawIcon } from '../icons';
 
 export const Grid = () => {
-  const { patternRef, painting, prevCellRef, toggleEventsRef } = useContext(
-    Pattern
-  );
+  const {
+    patternRef,
+    erasing,
+    painting,
+    prevCellRef,
+    toggleEventsRef,
+    selectedSound,
+  } = useContext(Pattern);
 
   const handleDrag = (e) => {
-    if (!painting) return;
+    if (!painting && !erasing) return;
     const touch = e.touches[0];
     const cell = document.elementFromPoint(touch.clientX, touch.clientY);
     if (cell) {
       const id = cell.id;
       if (!id.match(/cell/)) return;
       if (prevCellRef.current !== id) {
-        document.dispatchEvent(toggleEventsRef.current[id]);
         prevCellRef.current = id;
+        if (erasing && cell.classList.contains('on')) {
+          console.log('erase!');
+          document.dispatchEvent(toggleEventsRef.current[id]);
+        } else if (painting && !cell.classList.contains('on')) {
+          document.dispatchEvent(toggleEventsRef.current[id]);
+        }
       }
     }
   };
 
   return (
-    <div id='grid' onTouchMove={handleDrag}>
+    <div
+      id='grid'
+      className={selectedSound === -1 ? '' : 'no-drag'}
+      onTouchMove={handleDrag}
+    >
       {patternRef.current.map((_, step) => {
         const id = `cell-${step}`;
         return <Cell key={id} id={id} step={step} />;
@@ -53,6 +67,7 @@ const Cell = ({ id, step }) => {
     modify,
     slicingRef,
     sliceStep,
+    erasing,
   } = useContext(Pattern);
   const { kitRef } = useContext(Kit);
 
@@ -102,7 +117,6 @@ const Cell = ({ id, step }) => {
     } else {
       toggleCell(step);
     }
-    setRefresh(true);
   }, [selectedSound, on, step, slicingRef, toggleCell, sliceStep]);
 
   const cellRef = useRef(null);
@@ -124,7 +138,7 @@ const Cell = ({ id, step }) => {
       if (on) modStart(e);
     } else {
       prevCellRef.current = id;
-      handleToggle();
+      if (!(erasing && !on)) handleToggle();
     }
   };
 

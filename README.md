@@ -5,6 +5,9 @@
 ### 3/16/2021
 
 - Styling the load/save pattern screen.
+- Basic status bar at the top of screen.
+- Edits add a status update on undo/redo.
+- Painting is default, Erasing is a switch in sound menu.
 
 ### 3/15/2021
 
