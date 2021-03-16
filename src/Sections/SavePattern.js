@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
 import { Sequencer } from '../Providers/Sequencer';
@@ -12,7 +12,18 @@ export const SavePattern = () => {
   const { currentKit } = useContext(Kit);
 
   const [newName, setNewName] = useState('');
-  const [status, setStatus] = useState('');
+
+  const [confirmation, setConfirmation] = useState('');
+  useEffect(() => {
+    let timeout = setTimeout(() => setConfirmation(''), 3000);
+    return () => clearTimeout(timeout);
+  }, [confirmation]);
+
+  const [error, setError] = useState('');
+  useEffect(() => {
+    let timeout = setTimeout(() => setError(''), 3000);
+    return () => clearTimeout(timeout);
+  }, [error]);
 
   const handleSave = async (e) => {
     if (!newName) return;
@@ -24,6 +35,7 @@ export const SavePattern = () => {
       bpm,
       pattern: patternRef.current,
     };
+    setNewName('');
     try {
       const res = await axios({
         url: 'http://localhost:4000/user/pattern/add',
@@ -31,12 +43,11 @@ export const SavePattern = () => {
         data: newPattern,
         withCredentials: true,
       });
-      console.log('Success! \n');
+      setConfirmation('Pattern saved!');
       setUser(res.data);
     } catch (e) {
       console.log('FAIL ->\n', e);
-    } finally {
-      setNewName('');
+      setError('Server error: please try again later.');
     }
   };
 
@@ -55,7 +66,9 @@ export const SavePattern = () => {
           </button>
         </div>
       </form>
-      {status}
+      <p className={error ? 'error' : 'confirmation'}>
+        {error ? error : confirmation}
+      </p>
     </div>
   );
 };

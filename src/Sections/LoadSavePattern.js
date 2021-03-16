@@ -1,6 +1,5 @@
 import axios from 'axios';
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
 import { Pattern } from '../Providers/Pattern';
 import { User } from '../Providers/User';
 import { LoadPattern } from './LoadPattern';
@@ -27,6 +26,12 @@ export const LoadSavePattern = () => {
 
   return (
     <div className={showLoad ? 'load-save-pattern show' : 'load-save-pattern'}>
+      <button
+        className='load-save-pattern-close'
+        onClick={() => setShowLoad(false)}
+      >
+        Close
+      </button>
       {user.username && (
         <>
           <div className='login-status'>
@@ -37,12 +42,6 @@ export const LoadSavePattern = () => {
         </>
       )}
       <LoadPattern />
-      <button
-        className='load-save-pattern-close'
-        onClick={() => setShowLoad(false)}
-      >
-        Close
-      </button>
     </div>
   );
 };

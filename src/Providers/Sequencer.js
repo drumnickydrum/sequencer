@@ -37,15 +37,17 @@ export const SequencerProvider = ({ children }) => {
   const [restart, setRestart] = useState(false);
   useEffect(() => {
     if (buffersLoaded && restart) {
-      start();
       setRestart(false);
+      start();
     }
   }, [buffersLoaded, restart, start]);
 
   const schedulePattern = () => {
+    Tone.Transport.cancel(0);
+    console.log(Tone.Transport._repeatedEvents);
     const cells = document.querySelectorAll(`.cell`);
     Tone.Transport.scheduleRepeat((time) => {
-      console.log(stepRef.current);
+      // console.log(`time: ${time}, stepRef.current: ${stepRef.current}`);
       animateCell(time, cells[stepRef.current]);
       scheduleCell(time);
     }, '16n');

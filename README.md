@@ -2,6 +2,10 @@
 
 ## Dev notes
 
+### 3/16/2021
+
+- Styling the load/save pattern screen.
+
 ### 3/15/2021
 
 - Disabled `changeKit()` and `undo/redo` before buffers loaded.
