@@ -36,6 +36,13 @@ export const UndoProvider = ({ children }) => {
     setRedoDisabled(true);
     redoRef.current.length = 0;
     undoRef.current.push([() => func(prevVal), () => func(newVal)]);
+    if (undoRef.current.length > 150) clearOld();
+  };
+
+  const clearOld = () => {
+    setUndoDisabled(true);
+    undoRef.current.splice(0, 50);
+    setUndoDisabled(false);
   };
 
   useEffect(() => {

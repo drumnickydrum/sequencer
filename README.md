@@ -8,6 +8,7 @@
 - Back to the 'native experience' with a full screen and scrolling menu at the bottom. This feels and looks best.
 - Added chevrons to easily tap or scroll to next menu item.
 - Added local and session storage to keep app up to date on refresh or redirect.
+- Undo now splices out the first 50 events after 150 for garbage collection.
 
 ### 3/16/2021
 
