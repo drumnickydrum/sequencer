@@ -54,9 +54,8 @@ export const PatternProvider = ({ children }) => {
   const prevCellRef = useRef(null);
   const toggleEventsRef = useRef({});
   const toggleCell = (step) => {
-    const cell = patternRef.current[step][selectedSound];
     function toggle(val, noStatus) {
-      cell.noteOn = val;
+      patternRef.current[step][selectedSound].noteOn = val;
       document.dispatchEvent(refreshEventsRef.current[`cell-${step}`]);
       if (!noStatus)
         changeStatus(
@@ -64,10 +63,10 @@ export const PatternProvider = ({ children }) => {
         );
       updatePatternLS();
     }
-    const prevOn = cell.noteOn;
+    const prevOn = patternRef.current[step][selectedSound].noteOn;
     const newOn = !prevOn;
     toggle(newOn, true);
-    addToUndo(toggle, prevOn, newOn, step);
+    addToUndo(toggle, prevOn, newOn);
   };
 
   const [mod, setMod, modRef] = useStateAndRef(null);
@@ -80,12 +79,10 @@ export const PatternProvider = ({ children }) => {
   }, [mod]);
 
   const modify = (prevVal, newVal, step) => {
-    const notes =
-      step || step === 0 ? patternRef.current[step][selectedSound].notes : null;
     const type = modRef.current;
     function modifyFunc(val, noStatus) {
       if (step || step === 0) {
-        notes.forEach((note) => {
+        patternRef.current[step][selectedSound].notes.forEach((note) => {
           if (type === 'pitch') note.pitch = val;
           if (type === 'velocity') note.velocity = val;
           if (type === 'length') note.length = val;

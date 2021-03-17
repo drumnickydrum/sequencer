@@ -97,11 +97,13 @@ body {
   height: 100%;
   max-width: 800px;
   background: var(--black);
+  overflow-y: scroll;
 }
 
 #main {
   margin: 0 auto;
-  position: relative;
+  position: fixed;
+  top: 0;
   width: 100%;
   max-width: 60vh;
   height: 60%;
@@ -113,6 +115,8 @@ body {
 }
 
 #sound-panel {
+  position: fixed;
+  top: 60%;
   width: 100%;
   height: 25%;
   padding: 0.25rem;

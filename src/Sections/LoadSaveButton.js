@@ -11,11 +11,8 @@ export const LoadSaveButton = ({ scroll }) => {
   const { setShowLoad } = useContext(Pattern);
   const handleLoad = () => {
     setShowLoad((showLoad) => !showLoad);
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth',
-    });
+    console.log('scroll to top');
+    document.getElementById('root').scrollTop = 0;
   };
 
   return (
