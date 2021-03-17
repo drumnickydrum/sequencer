@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import * as Tone from 'tone';
-import { init, analog } from '../defaults/defaultPatterns';
+import { defaultAnalog } from '../defaults/defaultPatterns';
 import { Pattern } from './Pattern';
 import { MIDI_NOTES } from '../utils/MIDI_NOTES';
 import { Kit } from './Kit';
+import { getLS } from '../utils/storage';
 
 export const Sequencer = React.createContext();
 export const SetSequencer = React.createContext();
 export const SequencerProvider = ({ children }) => {
   const { patternRef } = useContext(Pattern);
   const { kitRef, buffersLoaded } = useContext(Kit);
-  const [bpm, setBpm] = useState(analog.bpm);
+  const [bpm, setBpm] = useState(getLS('bpm') || defaultAnalog.bpm);
   const stepRef = useRef(0);
 
   useEffect(() => {
@@ -46,14 +47,11 @@ export const SequencerProvider = ({ children }) => {
   }, [buffersLoaded, restart, start]);
 
   const schedulePattern = () => {
-    // console.log('before schedule repeat ->', Tone.Transport._repeatedEvents);
     const cells = document.querySelectorAll(`.cell`);
     Tone.Transport.scheduleRepeat((time) => {
-      // console.log(`time: ${time}, stepRef.current: ${stepRef.current}`);
       animateCell(time, cells[stepRef.current]);
       scheduleCell(time);
     }, '16n');
-    // console.log('after schedule repeat ->', Tone.Transport._repeatedEvents);
   };
 
   const animateCell = (time, cell) => {

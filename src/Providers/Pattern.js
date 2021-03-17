@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { analog } from '../defaults/defaultPatterns';
+import { defaultAnalog } from '../defaults/defaultPatterns';
 import { Undo } from './UndoProvider';
 import { useStateAndRef } from '../utils/useStateAndRef';
 import { Kit } from './Kit';
 import { Status } from './Status';
+import { getLS, getSS, setLS, setSS } from '../utils/storage';
 
 export const Pattern = React.createContext();
 export const PatternProvider = ({ children }) => {
@@ -13,10 +14,29 @@ export const PatternProvider = ({ children }) => {
 
   const [selectedSound, setSelectedSound] = useState(-1);
 
-  const [showLoad, setShowLoad] = useState(false);
+  const [showLoad, setShowLoad] = useState(getSS('showLoad') || false);
+  useEffect(() => {
+    setSS('showLoad', showLoad);
+  }, [showLoad]);
 
-  const patternRef = useRef(deepCopyPattern(analog.pattern));
-  const [patternName, setPatternName] = useState(analog.name);
+  const patternRef = useRef(
+    deepCopyPattern(getLS('pattern') || defaultAnalog.pattern)
+  );
+  const updatePatternLS = () => setLS('pattern', patternRef.current);
+
+  const [patternId, setPatternId] = useState(
+    getLS('patternId') || defaultAnalog._id
+  );
+  useEffect(() => {
+    setLS('patternId', patternId);
+  }, [patternId]);
+
+  const [patternName, setPatternName] = useState(
+    getLS('patternName') || defaultAnalog.name
+  );
+  useEffect(() => {
+    setLS('patternName', patternName);
+  }, [patternName]);
 
   const refreshEventsRef = useRef({});
   const [refreshAll, setRefreshAll] = useState(false);
@@ -30,6 +50,7 @@ export const PatternProvider = ({ children }) => {
       setPainting(true);
     }
   }, [erasing]);
+
   const prevCellRef = useRef(null);
   const toggleEventsRef = useRef({});
   const toggleCell = (step) => {
@@ -41,6 +62,7 @@ export const PatternProvider = ({ children }) => {
         changeStatus(
           `sound: ${selectedSound} | cell: ${step} | ${val ? 'on' : 'off'}`
         );
+      updatePatternLS();
     }
     const prevOn = cell.noteOn;
     const newOn = !prevOn;
@@ -56,6 +78,7 @@ export const PatternProvider = ({ children }) => {
       setPainting(true);
     }
   }, [mod]);
+
   const modify = (prevVal, newVal, step) => {
     const notes =
       step || step === 0 ? patternRef.current[step][selectedSound].notes : null;
@@ -77,6 +100,7 @@ export const PatternProvider = ({ children }) => {
         if (!noStatus) changeStatus(`sound: ${selectedSound} | mod: ${type}`);
         setRefreshAll(true);
       }
+      updatePatternLS();
     }
     modifyFunc(newVal, true);
     addToUndo(modifyFunc, prevVal, newVal, step);
@@ -103,6 +127,7 @@ export const PatternProvider = ({ children }) => {
       kitRef.current.sounds[selectedSound][`${type}Mod`] = val.kit;
       setRefreshAll(true);
       if (!noStatus) changeStatus(`sound: ${selectedSound} | mod: ${type}`);
+      updatePatternLS();
     }
     const prevVal = {
       pattern: prevPattern,
@@ -121,6 +146,7 @@ export const PatternProvider = ({ children }) => {
       setPainting(true);
     }
   }, [slicing]);
+
   const sliceStep = (step) => {
     function slice(count, noStatus) {
       function sliceFunc(count) {
@@ -135,6 +161,7 @@ export const PatternProvider = ({ children }) => {
       document.dispatchEvent(refreshEventsRef.current[`cell-${step}`]);
       if (!noStatus)
         changeStatus(`slice sound: ${selectedSound} | cell: ${step}`);
+      updatePatternLS();
     }
     slice(1, true);
     addToUndo(slice, 2, 1, step);
@@ -161,6 +188,7 @@ export const PatternProvider = ({ children }) => {
       });
       setRefreshAll(true);
       if (!noStatus) changeStatus(`copy from: ${selectedSound} | to: ${sound}`);
+      updatePatternLS();
     }
     paste(newSoundPattern, true);
     addToUndo(paste, prevSoundPattern, newSoundPattern);
@@ -168,6 +196,7 @@ export const PatternProvider = ({ children }) => {
 
   const loadPattern = (newPattern, changeTempo, bpm, changeKit) => {
     const prevPattern = {
+      _id: patternId,
       name: patternName,
       kit: currentKit,
       pattern: deepCopyPattern(patternRef.current),
@@ -176,10 +205,12 @@ export const PatternProvider = ({ children }) => {
     function change(pattern, noStatus) {
       patternRef.current = deepCopyPattern(pattern.pattern);
       changeTempo(pattern.bpm);
+      setPatternId(pattern._id);
       setPatternName(pattern.name);
       setRefreshAll(true);
       changeKit(pattern.kit);
       if (!noStatus) changeStatus(`load pattern: ${pattern.name}`);
+      updatePatternLS();
     }
     change(newPattern, true);
     addToUndo(change, prevPattern, newPattern);
@@ -203,6 +234,7 @@ export const PatternProvider = ({ children }) => {
       setRefreshAll(true);
       if (!noStatus)
         changeStatus(`clear ${one ? 'sound: ' + selectedSound : 'all'}`);
+      updatePatternLS();
     }
     clear(newPattern, true);
     addToUndo(clear, prevPattern, newPattern);
@@ -222,6 +254,8 @@ export const PatternProvider = ({ children }) => {
   return (
     <Pattern.Provider
       value={{
+        patternId,
+        setPatternId,
         patternName,
         setPatternName,
         patternRef,

@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import * as Tone from 'tone';
 import { analog } from '../defaults/defaultKits';
+import { getLS } from '../utils/storage';
 
-const initialSounds = analog.sounds.map((sound) => ({ ...sound }));
-const initialKit = { name: analog.name, sounds: initialSounds };
+const initialKit = getLS('kit') || analog;
+const initialSounds = initialKit.sounds.map((sound) => ({ ...sound }));
+const kit = { name: initialKit.name, sounds: initialSounds };
 
 export const Kit = React.createContext();
 export const KitProvider = ({ children }) => {
   const [buffersLoaded, setBuffersLoaded] = useState(false);
-  const [currentKit, setCurrentKit] = useState(initialKit.name);
-  const kitRef = useRef(initialKit);
+  const [currentKit, setCurrentKit] = useState(kit.name);
+  const kitRef = useRef(kit);
 
   const loadSamples = (kit) => {
     console.log('loading samples');
@@ -19,7 +21,6 @@ export const KitProvider = ({ children }) => {
           C2: kitRef.current.sounds[i].sample,
         },
         onload: () => {
-          console.log('onload');
           kitRef.current.sounds[i].duration = kitRef.current.sounds[
             i
           ].sampler._buffers._buffers.get('36')._buffer.duration;
@@ -38,7 +39,6 @@ export const KitProvider = ({ children }) => {
         kitRef.current.sounds[i].channel
       );
     }
-    console.log(kitRef.current);
   };
 
   const disposeSamples = () => {

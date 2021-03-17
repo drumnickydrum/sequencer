@@ -810,6 +810,10 @@ body {
   vertical-align: top;
 }
 
+.menu-dummy {
+  width: 1rem;
+}
+
 .menu-btn {
   cursor: pointer;
   border: none;
@@ -1324,7 +1328,7 @@ p.dim {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  fill: var(--purple-half);
+  fill: var(--purple);
   width: 1.5rem;
   height: 1.5rem;
 }

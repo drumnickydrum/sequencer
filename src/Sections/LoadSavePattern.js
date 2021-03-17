@@ -5,9 +5,8 @@ import { User } from '../Providers/User';
 import { LoadPattern } from './LoadPattern';
 import { SavePattern } from './SavePattern';
 import { INITIAL_USER } from '../Providers/User';
-import { Link } from 'react-router-dom';
 
-export const LoadSavePattern = ({ show }) => {
+export const LoadSavePattern = () => {
   const { user, setUser } = useContext(User);
   const { showLoad, setShowLoad } = useContext(Pattern);
 
@@ -27,7 +26,9 @@ export const LoadSavePattern = ({ show }) => {
 
   return (
     <>
-      <div className={show ? 'load-save-pattern show' : 'load-save-pattern'}>
+      <div
+        className={showLoad ? 'load-save-pattern show' : 'load-save-pattern'}
+      >
         {user.username && (
           <>
             <div className='login-status'>
@@ -39,10 +40,13 @@ export const LoadSavePattern = ({ show }) => {
         )}
         <LoadPattern />
       </div>
-      <div className={show ? 'bottom-btn show' : 'bottom-btn'}>
-        <Link className='load-save-pattern-close' to='/'>
+      <div className={showLoad ? 'bottom-btn show' : 'bottom-btn'}>
+        <button
+          className='load-save-pattern-close'
+          onClick={() => setShowLoad(false)}
+        >
           Close
-        </Link>
+        </button>
       </div>
     </>
   );

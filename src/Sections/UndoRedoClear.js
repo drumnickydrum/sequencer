@@ -19,6 +19,7 @@ export const UndoRedo = ({ scroll }) => {
 
   return (
     <div className='menu-items'>
+      <span className='menu-dummy' />
       <button
         id='undo'
         className='menu-btn'
@@ -41,6 +42,7 @@ export const UndoRedo = ({ scroll }) => {
           redo
         </label>
       </button>
+      <span className='menu-dummy' />
       <div className='chevron left' onClick={() => scroll('left')}>
         {/* <ChevronTripleLeftIcon /> */}
         <ChevronLeftIcon />
@@ -57,6 +59,7 @@ export const Clear = ({ scroll }) => {
   const { clearPattern, selectedSound } = useContext(Pattern);
   return (
     <div className='menu-items'>
+      <span className='menu-dummy' />
       <button
         id='clear-one'
         className='menu-btn'
@@ -78,6 +81,7 @@ export const Clear = ({ scroll }) => {
           clear all
         </label>
       </button>
+      <span className='menu-dummy' />
       <div className='chevron left' onClick={() => scroll('left')}>
         {/* <ChevronTripleLeftIcon /> */}
         <ChevronLeftIcon />

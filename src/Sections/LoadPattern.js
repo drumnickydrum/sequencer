@@ -9,7 +9,7 @@ import { User } from '../Providers/User';
 import { useChangeKit } from '../utils/useChangeKit';
 
 export const LoadPattern = () => {
-  const { loadPattern, patternName } = useContext(Pattern);
+  const { loadPattern, patternId } = useContext(Pattern);
   const { setBpm, stop } = useContext(SetSequencer);
   const { bpm } = useContext(Sequencer);
   const { user } = useContext(User);
@@ -21,12 +21,13 @@ export const LoadPattern = () => {
     return () => clearTimeout(timeout);
   }, [error]);
 
-  const handleClick = (e, type, name) => {
+  const handleClick = (e, type, id) => {
     e.stopPropagation();
     const changeTempo = (newTempo) => setBpm(newTempo);
     let newPattern;
-    if (type === 'dp') newPattern = defaultPatterns[name];
-    else newPattern = user.patterns.find((pattern) => pattern.name === name);
+    if (type === 'dp') newPattern = defaultPatterns[id];
+    if (type === 'up')
+      newPattern = user.patterns.find((pattern) => pattern._id === id);
     loadPattern(newPattern, changeTempo, bpm, changeKit);
   };
 
@@ -58,11 +59,11 @@ export const LoadPattern = () => {
                     <p>Bpm</p>
                     <p>Delete</p>
                   </div>
-                  {user.patterns.map((pattern, i) => (
+                  {user.patterns.map((pattern) => (
                     <UserPattern
-                      key={`up-${i}-${pattern.name}`}
+                      key={pattern._id}
                       pattern={pattern}
-                      patternName={patternName}
+                      patternId={patternId}
                       handleClick={handleClick}
                       setError={setError}
                     />
@@ -80,27 +81,28 @@ export const LoadPattern = () => {
             <p>Bpm</p>
             <p></p>
           </div>
-          {Object.keys(defaultPatterns).map((pattern, i) => (
-            <div
-              key={`dp-${i}-${pattern}`}
-              className={
-                pattern === patternName ? 'pattern selected' : 'pattern'
-              }
-              onClick={(e) => handleClick(e, 'dp', pattern)}
-            >
-              <p>{pattern}</p>
-              <p>{defaultPatterns[pattern].kit}</p>
-              <p>{defaultPatterns[pattern].bpm}</p>
-              <p></p>
-            </div>
-          ))}
+          {Object.keys(defaultPatterns).map((pattern) => {
+            const id = defaultPatterns[pattern]._id;
+            return (
+              <div
+                key={id}
+                className={id === patternId ? 'pattern selected' : 'pattern'}
+                onClick={(e) => handleClick(e, 'dp', id)}
+              >
+                <p>{pattern}</p>
+                <p>{defaultPatterns[pattern].kit}</p>
+                <p>{defaultPatterns[pattern].bpm}</p>
+                <p></p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
   );
 };
 
-const UserPattern = ({ pattern, patternName, handleClick, setError }) => {
+const UserPattern = ({ pattern, patternId, handleClick, setError }) => {
   const { setUser } = useContext(User);
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -146,11 +148,9 @@ const UserPattern = ({ pattern, patternName, handleClick, setError }) => {
   ) : (
     <div
       className={
-        pattern.name === patternName
-          ? 'pattern select selected'
-          : 'pattern select'
+        pattern._id === patternId ? 'pattern select selected' : 'pattern select'
       }
-      onClick={(e) => handleClick(e, 'up', pattern.name)}
+      onClick={(e) => handleClick(e, 'up', pattern._id)}
     >
       <p>{pattern.name}</p>
       <p>{pattern.kit}</p>

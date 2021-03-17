@@ -30,7 +30,6 @@ export const Grid = () => {
       if (prevCellRef.current !== id) {
         prevCellRef.current = id;
         if (erasing && cell.classList.contains('on')) {
-          console.log('erase!');
           document.dispatchEvent(toggleEventsRef.current[id]);
         } else if (painting && !cell.classList.contains('on')) {
           document.dispatchEvent(toggleEventsRef.current[id]);
