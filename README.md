@@ -9,6 +9,7 @@
 - Added chevrons to easily tap or scroll to next menu item.
 - Added local and session storage to keep app up to date on refresh or redirect.
 - Undo now splices out the first 50 events after 150 for garbage collection.
+- Disable login while fetching on reload.
 
 ### 3/16/2021
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { defaultAnalog } from '../defaults/defaultPatterns';
+import { analog } from '../defaults/defaultPatterns';
 import { Undo } from './UndoProvider';
 import { useStateAndRef } from '../utils/useStateAndRef';
 import { Kit } from './Kit';
@@ -20,19 +20,17 @@ export const PatternProvider = ({ children }) => {
   }, [showLoad]);
 
   const patternRef = useRef(
-    deepCopyPattern(getLS('pattern') || defaultAnalog.pattern)
+    deepCopyPattern(getLS('pattern') || analog.pattern)
   );
   const updatePatternLS = () => setLS('pattern', patternRef.current);
 
-  const [patternId, setPatternId] = useState(
-    getLS('patternId') || defaultAnalog._id
-  );
+  const [patternId, setPatternId] = useState(getLS('patternId') || analog._id);
   useEffect(() => {
     setLS('patternId', patternId);
   }, [patternId]);
 
   const [patternName, setPatternName] = useState(
-    getLS('patternName') || defaultAnalog.name
+    getLS('patternName') || analog.name
   );
   useEffect(() => {
     setLS('patternName', patternName);

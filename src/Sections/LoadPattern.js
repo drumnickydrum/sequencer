@@ -12,7 +12,7 @@ export const LoadPattern = () => {
   const { loadPattern, patternId } = useContext(Pattern);
   const { setBpm, stop } = useContext(SetSequencer);
   const { bpm } = useContext(Sequencer);
-  const { user } = useContext(User);
+  const { user, fetching } = useContext(User);
   const { changeKit } = useChangeKit();
 
   const [error, setError] = useState('');
@@ -25,7 +25,10 @@ export const LoadPattern = () => {
     e.stopPropagation();
     const changeTempo = (newTempo) => setBpm(newTempo);
     let newPattern;
-    if (type === 'dp') newPattern = defaultPatterns[id];
+    if (type === 'dp')
+      newPattern = Object.values(defaultPatterns).find(
+        (pattern) => pattern._id === id
+      );
     if (type === 'up')
       newPattern = user.patterns.find((pattern) => pattern._id === id);
     loadPattern(newPattern, changeTempo, bpm, changeKit);
@@ -39,10 +42,17 @@ export const LoadPattern = () => {
           {!user.username ? (
             <div className='login-div'>
               <p className='pattern-select-sub'>
-                Login to load/save user patterns
+                {fetching
+                  ? 'Logging in...'
+                  : 'Login to load/save user patterns'}
               </p>
-              <Link className='login-btn' onClick={stop} to='/login'>
-                Login
+              <Link
+                className='login-btn'
+                onClick={stop}
+                to='/login'
+                disabled={fetching}
+              >
+                {fetching ? 'x' : 'Login'}
               </Link>
             </div>
           ) : (

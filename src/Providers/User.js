@@ -13,14 +13,11 @@ export const INITIAL_USER = {
 export const User = React.createContext();
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(INITIAL_USER);
+  const [fetching, setFetching] = useState(false);
 
   useEffect(() => {
-    console.log(user);
-  }, [user]);
-
-  useEffect(() => {
-    const getUser = async (e) => {
-      if (e.code !== 'KeyG') return;
+    const getUser = async () => {
+      setFetching(true);
       try {
         const res = await axios.get(
           // 'https://drumnickydrum-sequencer.herokuapp.com/user',
@@ -33,12 +30,16 @@ export const UserProvider = ({ children }) => {
       } catch (e) {
         console.log('GET USER ERROR: \n');
         console.log(e.response?.data || e.message);
+      } finally {
+        setFetching(false);
       }
     };
-    getUser({ code: 'KeyG' });
-    document.addEventListener('keydown', getUser);
-    return () => document.removeEventListener('keydown', getUser);
+    getUser();
   }, []);
 
-  return <User.Provider value={{ user, setUser }}>{children}</User.Provider>;
+  return (
+    <User.Provider value={{ user, setUser, fetching }}>
+      {children}
+    </User.Provider>
+  );
 };

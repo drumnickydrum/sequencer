@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import * as Tone from 'tone';
-import { defaultAnalog } from '../defaults/defaultPatterns';
+import { analog } from '../defaults/defaultPatterns';
 import { Pattern } from './Pattern';
 import { MIDI_NOTES } from '../utils/MIDI_NOTES';
 import { Kit } from './Kit';
@@ -11,7 +11,7 @@ export const SetSequencer = React.createContext();
 export const SequencerProvider = ({ children }) => {
   const { patternRef } = useContext(Pattern);
   const { kitRef, buffersLoaded } = useContext(Kit);
-  const [bpm, setBpm] = useState(getLS('bpm') || defaultAnalog.bpm);
+  const [bpm, setBpm] = useState(getLS('bpm') || analog.bpm);
   const stepRef = useRef(0);
 
   useEffect(() => {

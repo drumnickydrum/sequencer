@@ -1,5 +1,5 @@
-export const defaultAnalog = {
-  _id: 'defaultAnalog',
+export const analog = {
+  _id: 'analog',
   bpm: 100,
   name: 'analog',
   kit: 'analog',
@@ -1048,7 +1048,7 @@ export const defaultAnalog = {
   ],
 };
 
-export const defaultHouse = {
+export const house = {
   _id: 'defaultHouse',
   bpm: 120,
   name: 'house',
@@ -1760,7 +1760,7 @@ export const defaultHouse = {
     ],
   ],
 };
-export const defaultLush = {
+export const lush = {
   _id: 'defaultLush',
   bpm: 80,
   name: 'lush',
@@ -2473,7 +2473,7 @@ export const defaultLush = {
   ],
 };
 
-export const defaultVinyl = {
+export const vinyl = {
   _id: 'defaultVinyl',
   bpm: 90,
   name: 'vinyl',
