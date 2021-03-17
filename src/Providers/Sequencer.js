@@ -20,18 +20,21 @@ export const SequencerProvider = ({ children }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const start = () => {
     if (Tone.Transport.state === 'started') return;
-    const flashingCells = document.querySelectorAll('.flashing');
-    flashingCells.forEach((cell) => cell.classList.add('pause'));
+    // const flashingCells = document.querySelectorAll('.flashing');
+    // flashingCells.forEach((cell) => cell.classList.add('pause'));
     schedulePattern();
     Tone.Transport.start();
   };
 
   const stop = () => {
     Tone.Transport.stop();
+    Tone.Transport.position = 0;
     Tone.Transport.cancel(0);
+    const scheduledEvents = Tone.Transport._scheduledEvents;
+    Object.keys(scheduledEvents).forEach((id) => Tone.Transport.clear(id));
     stepRef.current = 0;
-    const flashingCells = document.querySelectorAll('.flashing');
-    flashingCells.forEach((cell) => cell.classList.remove('pause'));
+    // const flashingCells = document.querySelectorAll('.flashing');
+    // flashingCells.forEach((cell) => cell.classList.remove('pause'));
   };
 
   const [restart, setRestart] = useState(false);
@@ -43,16 +46,14 @@ export const SequencerProvider = ({ children }) => {
   }, [buffersLoaded, restart, start]);
 
   const schedulePattern = () => {
-    Tone.Transport.cancel(0);
-    Tone.Transport.cancel(0);
-    Tone.Transport.cancel(0);
-    console.log(Tone.Transport._repeatedEvents);
+    // console.log('before schedule repeat ->', Tone.Transport._repeatedEvents);
     const cells = document.querySelectorAll(`.cell`);
     Tone.Transport.scheduleRepeat((time) => {
       // console.log(`time: ${time}, stepRef.current: ${stepRef.current}`);
       animateCell(time, cells[stepRef.current]);
       scheduleCell(time);
     }, '16n');
+    // console.log('after schedule repeat ->', Tone.Transport._repeatedEvents);
   };
 
   const animateCell = (time, cell) => {

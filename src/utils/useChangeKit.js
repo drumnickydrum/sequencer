@@ -17,8 +17,8 @@ export const useChangeKit = () => {
   const changeKit = (kit) => {
     setBuffersLoaded(false);
     if (Tone.Transport.state === 'started') {
-      setRestart(true);
       stop();
+      setRestart(true);
     }
     disposeSamples();
     const newSounds = kits[kit].sounds.map((sound) => ({ ...sound }));
