@@ -5,6 +5,8 @@
 ### 3/17/2021
 
 - Tracked down that ugly repeated events bug. `Tone.Transport.cancel()` was not effectively cancelling all `_scheduledEvents`... well, it was, but randomly it let an event make it out alive. So I wrote a hack that follows the `cancel()` call. It reads the private `Tone.Transport._scheduledEvents` property, then iterates over the ids and calls `clear()` on them individually. Low and behold, the issue has yet to return. This is clearly a hack, but unless I (or Tone people) can track down why `cancel()` isn't clearing all ids, it'll have to do.
+- Back to the 'native experience' with a full screen and scrolling menu at the bottom. This feels and looks best.
+- Added chevrons to easily tap or scroll to next menu item.
 
 ### 3/16/2021
 

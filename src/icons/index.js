@@ -31,40 +31,48 @@ import { ReactComponent as Kit } from './kit.svg';
 import { ReactComponent as Eraser } from './eraser.svg';
 
 export const ChevronDownIcon = ({ addClass = '' }) => (
-  <ChevronDown className={addClass + ' chevron down'} />
+  <ChevronDown className={addClass + ' chevron-down'} />
 );
 
 export const ChevronLeftIcon = ({ addClass = '' }) => (
-  <ChevronLeft className={addClass + ' chevron left'} />
+  <ChevronLeft className={addClass + ' icon'} />
 );
 export const ChevronRightIcon = ({ addClass = '' }) => (
-  <ChevronRight className={addClass + ' chevron right'} />
+  <ChevronRight className={addClass + ' icon'} />
 );
 
 export const ChevronDoubleLeftIcon = ({ addClass = '' }) => (
-  <ChevronDoubleLeft className={addClass + ' chevron left'} />
+  <ChevronDoubleLeft className={addClass + ' icon'} />
 );
 export const ChevronDoubleRightIcon = ({ addClass = '' }) => (
-  <ChevronDoubleRight className={addClass + ' chevron right'} />
+  <ChevronDoubleRight className={addClass + ' icon'} />
 );
 
 export const ChevronTripleLeftIcon = ({ addClass = '' }) => (
-  <ChevronTripleLeft className={addClass + ' chevron left'} />
+  <ChevronTripleLeft className={addClass + ' icon'} />
 );
-export const ChevronTripleRightIcon = ({ addClass = '' }) => (
-  <ChevronTripleRight className={addClass + ' chevron right'} />
+export const ChevronTripleRightIcon = (addClass = '') => (
+  <ChevronTripleRight className={addClass + ' icon'} />
 );
 
-export const StopIcon = ({ addClass = '' }) => <Stop className={addClass} />;
-export const StartIcon = ({ addClass = '' }) => <Start className={addClass} />;
+export const StopIcon = ({ addClass = '' }) => (
+  <Stop className={addClass + ' icon'} />
+);
+export const StartIcon = ({ addClass = '' }) => (
+  <Start className={addClass + ' icon'} />
+);
 
-export const UndoIcon = ({ addClass = '' }) => <Undo className={addClass} />;
-export const RedoIcon = ({ addClass = '' }) => <Redo className={addClass} />;
+export const UndoIcon = ({ addClass = '' }) => (
+  <Undo className={addClass + ' icon'} />
+);
+export const RedoIcon = ({ addClass = '' }) => (
+  <Redo className={addClass + ' icon'} />
+);
 export const ClearOneIcon = ({ addClass = '' }) => (
-  <ClearOne className={addClass} />
+  <ClearOne className={addClass + ' icon'} />
 );
 export const ClearAllIcon = ({ addClass = '' }) => (
-  <ClearAll className={addClass} />
+  <ClearAll className={addClass + ' icon'} />
 );
 
 export const SwipeHorizontalIcon = () => <Swipe />;

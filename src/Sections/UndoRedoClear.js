@@ -1,10 +1,19 @@
 import React, { useContext } from 'react';
-import { ClearAllIcon, ClearOneIcon, RedoIcon, UndoIcon } from '../icons';
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ChevronTripleLeftIcon,
+  ChevronTripleRightIcon,
+  ClearAllIcon,
+  ClearOneIcon,
+  RedoIcon,
+  UndoIcon,
+} from '../icons';
 import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
 import { Undo } from '../Providers/UndoProvider';
 
-export const UndoRedo = () => {
+export const UndoRedo = ({ scroll }) => {
   const { undo, redo, undoDisabled, redoDisabled } = useContext(Undo);
   const { buffersLoaded } = useContext(Kit);
 
@@ -17,7 +26,7 @@ export const UndoRedo = () => {
         onClick={undo}
       >
         <UndoIcon />
-        <label htmlFor='undo' className='menu-btn'>
+        <label htmlFor='undo' className='menu-label'>
           undo
         </label>
       </button>
@@ -32,11 +41,19 @@ export const UndoRedo = () => {
           redo
         </label>
       </button>
+      <div className='chevron left' onClick={() => scroll('left')}>
+        {/* <ChevronTripleLeftIcon /> */}
+        <ChevronLeftIcon />
+      </div>
+      <div className='chevron right' onClick={() => scroll('right')}>
+        {/* <ChevronTripleRightIcon /> */}
+        <ChevronRightIcon />
+      </div>
     </div>
   );
 };
 
-export const Clear = () => {
+export const Clear = ({ scroll }) => {
   const { clearPattern, selectedSound } = useContext(Pattern);
   return (
     <div className='menu-items'>
@@ -61,6 +78,14 @@ export const Clear = () => {
           clear all
         </label>
       </button>
+      <div className='chevron left' onClick={() => scroll('left')}>
+        {/* <ChevronTripleLeftIcon /> */}
+        <ChevronLeftIcon />
+      </div>
+      <div className='chevron right' onClick={() => scroll('right')}>
+        {/* <ChevronTripleRightIcon /> */}
+        <ChevronRightIcon />
+      </div>
     </div>
   );
 };

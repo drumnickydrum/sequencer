@@ -1,5 +1,4 @@
 import React from 'react';
-import { useParams } from 'react-router';
 import { Transport } from '../Sections/Transport';
 import { Grid } from '../Sections/Grid';
 import { PastePattern } from '../Sections/PastePattern';
@@ -9,27 +8,29 @@ import { LoadSaveButton } from '../Sections/LoadSaveButton';
 import { LoadSavePattern } from '../Sections/LoadSavePattern';
 
 export const SequencerPage = () => {
-  const { redirect } = useParams();
+  const scroll = (dir) => {
+    const container = document.getElementById('bottom');
+    const offset = dir === 'right' ? window.innerWidth : window.innerWidth * -1;
+    const start = container.scrollLeft;
+    container.scrollTo({ left: start + offset, behavior: 'smooth' });
+  };
 
   return (
     <>
-      <div id='transport'>
-        <Transport />
-      </div>
       <div id='main'>
         <Grid />
         <PastePattern />
       </div>
-
       <div id='sound-panel'>
         <SoundPanel />
       </div>
       <div id='bottom'>
-        <UndoRedo />
-        <Clear />
-        <LoadSaveButton />
+        <Transport scroll={scroll} />
+        <UndoRedo scroll={scroll} />
+        <Clear scroll={scroll} />
+        <LoadSaveButton scroll={scroll} />
       </div>
-      <LoadSavePattern show={redirect === 'load'} />
+      <LoadSavePattern />
     </>
   );
 };
