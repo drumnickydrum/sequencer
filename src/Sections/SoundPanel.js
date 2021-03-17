@@ -103,8 +103,10 @@ export const SoundPanel = () => {
       ) : (
         <div className='sound-edit-menu'>
           <button className='sound-edit-btn' onClick={handleReturn}>
-            <CloseIcon />
-            <p>Sound Menu</p>
+            <div className='sound-edit-icon-div'>
+              <CloseIcon />
+              <p>Sound Menu</p>
+            </div>
           </button>
 
           <button
@@ -115,37 +117,49 @@ export const SoundPanel = () => {
             }
             onClick={handleErase}
           >
-            <EraserIcon />
-            <p>Erase</p>
+            <div className='sound-edit-icon-div'>
+              <EraserIcon />
+              <p>Erase</p>
+            </div>
           </button>
           <button className='sound-edit-btn' onClick={handleSlice}>
-            <SawIcon />
-            <p>Slice</p>
+            <div className='sound-edit-icon-div'>
+              <SawIcon />
+              <p>Slice</p>
+            </div>
           </button>
           <button className='sound-edit-btn' onClick={handleCopy}>
-            <CopyIcon />
-            <p>Copy</p>
+            <div className='sound-edit-icon-div'>
+              <CopyIcon />
+              <p>Copy</p>
+            </div>
           </button>
           <button
             className='sound-edit-btn'
             onClick={() => handleCellMod('velocity')}
           >
-            <VelocityIcon />
-            <p>Velocity</p>
+            <div className='sound-edit-icon-div'>
+              <VelocityIcon />
+              <p>Velocity</p>
+            </div>
           </button>
           <button
             className='sound-edit-btn'
             onClick={() => handleCellMod('length')}
           >
-            <LengthIcon />
-            <p>Length</p>
+            <div className='sound-edit-icon-div'>
+              <LengthIcon />
+              <p>Length</p>
+            </div>
           </button>
           <button
             className='sound-edit-btn'
             onClick={() => handleCellMod('pitch')}
           >
-            <PitchIcon />
-            <p>Pitch</p>
+            <div className='sound-edit-icon-div'>
+              <PitchIcon />
+              <p>Pitch</p>
+            </div>
           </button>
         </div>
       )}
