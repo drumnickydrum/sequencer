@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { Button, NavLeft, NavRight } from '../Components/Button';
 import { StopIcon, StartIcon } from '../icons';
 import { Sequencer, SetSequencer } from '../Providers/Sequencer';
-import { pressDown, pressUp } from '../utils/press';
 
 export const Transport = () => {
   const { setBpm, start, stop } = useContext(SetSequencer);

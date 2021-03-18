@@ -3,13 +3,20 @@ import { ChevronLeftIcon, ChevronRightIcon } from '../icons';
 import { pressDown, pressUp } from '../utils/press';
 import { BottomScroll } from '../Pages/Sequencer';
 
-export const Button = ({ id, classes, onClick, children }) => {
+export const Button = ({
+  id,
+  classes,
+  onClick,
+  disabled = false,
+  children,
+}) => {
   const ref = useRef(null);
   return (
     <button
       ref={ref}
       id={id}
       className={classes + ' btn'}
+      disabled={disabled}
       onTouchStart={() => pressDown(ref)}
       onTouchEnd={() => pressUp(ref)}
       onClick={onClick}
