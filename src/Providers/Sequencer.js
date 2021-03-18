@@ -18,20 +18,32 @@ export const SequencerProvider = ({ children }) => {
     Tone.Transport.bpm.value = bpm;
   }, [bpm]);
 
+  const [transportState, setTransportState] = useState(Tone.Transport.state);
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const start = () => {
-    if (Tone.Transport.state === 'started') return;
-    schedulePattern();
-    Tone.Transport.start();
+    if (transportState !== 'started') {
+      if (transportState === 'stopped') schedulePattern();
+      setTransportState('started');
+      Tone.Transport.start();
+    } else {
+      pause();
+    }
   };
 
   const stop = () => {
+    setTransportState('stopped');
     Tone.Transport.stop();
     Tone.Transport.position = 0;
     Tone.Transport.cancel(0);
     const scheduledEvents = Tone.Transport._scheduledEvents;
     Object.keys(scheduledEvents).forEach((id) => Tone.Transport.clear(id));
     stepRef.current = 0;
+  };
+
+  const pause = () => {
+    setTransportState('paused');
+    Tone.Transport.pause();
   };
 
   const [restart, setRestart] = useState(false);
@@ -137,7 +149,9 @@ export const SequencerProvider = ({ children }) => {
   };
 
   return (
-    <SetSequencer.Provider value={{ setBpm, start, stop, setRestart }}>
+    <SetSequencer.Provider
+      value={{ setBpm, transportState, start, stop, setRestart }}
+    >
       <Sequencer.Provider value={{ bpm }}>{children}</Sequencer.Provider>
     </SetSequencer.Provider>
   );

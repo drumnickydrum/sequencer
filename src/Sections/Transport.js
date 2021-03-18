@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Button, NavLeft, NavRight } from '../Components/Button';
-import { StopIcon, StartIcon } from '../icons';
+import { StopIcon, StartIcon, PauseIcon } from '../icons';
 import { Sequencer, SetSequencer } from '../Providers/Sequencer';
 
 export const Transport = () => {
-  const { setBpm, start, stop } = useContext(SetSequencer);
+  const { setBpm, transportState, start, stop } = useContext(SetSequencer);
   const { bpm } = useContext(Sequencer);
 
   const handleChange = ({ target: { value } }) => {
@@ -19,7 +19,7 @@ export const Transport = () => {
           <label htmlFor='stop'>stop</label>
         </Button>
         <Button id='start' classes='menu-btn' onClick={start}>
-          <StartIcon />
+          {transportState === 'started' ? <PauseIcon /> : <StartIcon />}
           <label htmlFor='start'>start</label>
         </Button>
         <div className='input'>

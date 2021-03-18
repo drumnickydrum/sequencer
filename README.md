@@ -15,6 +15,7 @@
 - Bunch of button states and broke out some components:
 - `<Button />`
 - `<NavLeft />` and `<NavRight />`
+- Implemented `start/pause`
 
 ### 3/17/2021
 

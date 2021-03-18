@@ -1,5 +1,6 @@
 import { ReactComponent as Stop } from './stop.svg';
 import { ReactComponent as Start } from './start.svg';
+import { ReactComponent as Pause } from './pause.svg';
 import { ReactComponent as Undo } from './undo.svg';
 import { ReactComponent as Redo } from './redo.svg';
 import { ReactComponent as ClearOne } from './clear-one.svg';
@@ -61,6 +62,9 @@ export const StopIcon = ({ addClass = '' }) => (
 );
 export const StartIcon = ({ addClass = '' }) => (
   <Start className={addClass + ' icon'} />
+);
+export const PauseIcon = ({ addClass = '' }) => (
+  <Pause className={addClass + ' icon'} />
 );
 
 export const UndoIcon = ({ addClass = '' }) => (
