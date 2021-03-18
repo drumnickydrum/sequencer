@@ -44,16 +44,14 @@ export const SequencerProvider = ({ children }) => {
 
   const schedulePattern = () => {
     Tone.Transport.scheduleRepeat((time) => {
-      scheduleCell(time);
+      console.log(stepRef.current);
+      scheduleCell(time, stepRef.current);
       animateCell(
         time,
         cellsRef.current[`cell-${stepRef.current}`].cellRef.current
       );
-      animateSound(time);
-      stepRef.current =
-        stepRef.current === patternRef.current.length - 1
-          ? 0
-          : stepRef.current + 1;
+      animateSound(time, stepRef.current);
+      stepRef.current = (stepRef.current + 1) % patternRef.current.length;
     }, '16n');
   };
 
@@ -69,11 +67,10 @@ export const SequencerProvider = ({ children }) => {
     }, time);
   };
 
-  const animateSound = (time) => {
+  const animateSound = (time, step) => {
     Tone.Draw.schedule(() => {
-      patternRef.current[stepRef.current].forEach((sound, i) => {
+      patternRef.current[step].forEach((sound, i) => {
         if (sound.noteOn) {
-          soundsRef.current[i].current.classList.remove('pulse');
           soundsRef.current[i].current.classList.add('pulse');
           setTimeout(
             () => soundsRef.current[i].current.classList.remove('pulse'),
@@ -84,9 +81,9 @@ export const SequencerProvider = ({ children }) => {
     }, time);
   };
 
-  const scheduleCell = (time) => {
+  const scheduleCell = (time, step) => {
     for (const [sound, { noteOn, notes }] of Object.entries(
-      patternRef.current[stepRef.current]
+      patternRef.current[step]
     )) {
       if (noteOn) {
         // console.time('schedule note');
