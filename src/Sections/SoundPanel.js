@@ -7,14 +7,17 @@ import {
   PitchIcon,
   SawIcon,
   VelocityIcon,
+  PointDownIcon,
 } from '../icons';
 import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
 import { useSoloAndMute } from './useSoloAndMute';
 import { Erase, Slice, Copy } from './EraseSliceCopy';
 import { PitchVelocityLength } from './PitchVelocityLength';
+import { Status } from '../Providers/Status';
 
 export const SoundPanel = () => {
+  const { spAlert } = useContext(Status);
   const {
     selectedSound,
     setSelectedSound,
@@ -86,96 +89,106 @@ export const SoundPanel = () => {
     }
   };
 
-  return showEditMenu ? (
-    <div className='sound-edit'>
-      {erasing ? (
-        <Erase handleReturn={handleReturn} />
-      ) : slicing ? (
-        <Slice handleReturn={handleReturn} />
-      ) : copying ? (
-        <Copy handleReturn={handleReturn} />
-      ) : mod ? (
-        <PitchVelocityLength
-          type={mod}
-          selectedSound={selectedSound}
-          handleReturn={handleReturn}
-        />
-      ) : (
-        <div className='sound-edit-menu'>
-          <button className='sound-edit-btn' onClick={handleReturn}>
-            <div className='sound-edit-icon-div'>
-              <CloseIcon />
-              <p>Sound Menu</p>
-            </div>
-          </button>
+  const index = spAlert.indexOf('#');
+  const alert = spAlert.substr(index + 1);
 
-          <button
-            className={
-              erasing
-                ? `sound-edit-btn color${selectedSound}`
-                : 'sound-edit-btn'
-            }
-            onClick={handleErase}
-          >
-            <div className='sound-edit-icon-div'>
-              <EraserIcon />
-              <p>Erase</p>
+  return (
+    <>
+      <div id='sp-alert' className='sp-alert'>
+        <span className='menu-dummy' />
+        <p className='alert'>{alert}</p>
+        <PointDownIcon />
+        <span className='menu-dummy' />
+      </div>
+      {showEditMenu ? (
+        <div className='sound-edit'>
+          {erasing ? (
+            <Erase handleReturn={handleReturn} />
+          ) : slicing ? (
+            <Slice handleReturn={handleReturn} />
+          ) : copying ? (
+            <Copy handleReturn={handleReturn} />
+          ) : mod ? (
+            <PitchVelocityLength
+              type={mod}
+              selectedSound={selectedSound}
+              handleReturn={handleReturn}
+            />
+          ) : (
+            <div className='sound-edit-menu'>
+              <button className='sound-edit-close' onClick={handleReturn}>
+                <CloseIcon />
+              </button>
+              <div className='sound-edit-dummy' />
+              <button
+                className={
+                  erasing
+                    ? `sound-edit-btn color${selectedSound}`
+                    : 'sound-edit-btn'
+                }
+                onClick={handleErase}
+              >
+                <div className='sound-edit-icon-div'>
+                  <EraserIcon />
+                  <p>Erase</p>
+                </div>
+              </button>
+              <button className='sound-edit-btn' onClick={handleSlice}>
+                <div className='sound-edit-icon-div'>
+                  <SawIcon />
+                  <p>Slice</p>
+                </div>
+              </button>
+              <button className='sound-edit-btn' onClick={handleCopy}>
+                <div className='sound-edit-icon-div'>
+                  <CopyIcon />
+                  <p>Copy</p>
+                </div>
+              </button>
+              <button
+                className='sound-edit-btn'
+                onClick={() => handleCellMod('velocity')}
+              >
+                <div className='sound-edit-icon-div'>
+                  <VelocityIcon />
+                  <p>Velocity</p>
+                </div>
+              </button>
+              <button
+                className='sound-edit-btn'
+                onClick={() => handleCellMod('length')}
+              >
+                <div className='sound-edit-icon-div'>
+                  <LengthIcon />
+                  <p>Length</p>
+                </div>
+              </button>
+              <button
+                className='sound-edit-btn'
+                onClick={() => handleCellMod('pitch')}
+              >
+                <div className='sound-edit-icon-div'>
+                  <PitchIcon />
+                  <p>Pitch</p>
+                </div>
+              </button>
             </div>
-          </button>
-          <button className='sound-edit-btn' onClick={handleSlice}>
-            <div className='sound-edit-icon-div'>
-              <SawIcon />
-              <p>Slice</p>
-            </div>
-          </button>
-          <button className='sound-edit-btn' onClick={handleCopy}>
-            <div className='sound-edit-icon-div'>
-              <CopyIcon />
-              <p>Copy</p>
-            </div>
-          </button>
-          <button
-            className='sound-edit-btn'
-            onClick={() => handleCellMod('velocity')}
-          >
-            <div className='sound-edit-icon-div'>
-              <VelocityIcon />
-              <p>Velocity</p>
-            </div>
-          </button>
-          <button
-            className='sound-edit-btn'
-            onClick={() => handleCellMod('length')}
-          >
-            <div className='sound-edit-icon-div'>
-              <LengthIcon />
-              <p>Length</p>
-            </div>
-          </button>
-          <button
-            className='sound-edit-btn'
-            onClick={() => handleCellMod('pitch')}
-          >
-            <div className='sound-edit-icon-div'>
-              <PitchIcon />
-              <p>Pitch</p>
-            </div>
-          </button>
+          )}
+        </div>
+      ) : (
+        <div className='sound-menu'>
+          {kitRef.current.sounds.map((sound, i) => (
+            <SoundBtn
+              key={`sound-menu-${sound.name}`}
+              i={i}
+              sound={sound}
+              selectedSound={selectedSound}
+              handleSelect={handleSelect}
+            />
+          ))}
         </div>
       )}
-    </div>
-  ) : (
-    <div className='sound-menu'>
-      {kitRef.current.sounds.map((sound, i) => (
-        <SoundBtn
-          key={`sound-menu-${sound.name}`}
-          i={i}
-          sound={sound}
-          selectedSound={selectedSound}
-          handleSelect={handleSelect}
-        />
-      ))}
-    </div>
+    </>
   );
 };
 

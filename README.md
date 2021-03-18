@@ -5,6 +5,8 @@
 ### 3/18/2021
 
 - Removed `clear-one` as it was confusing and not helpful. Removed an unncessary iteration of `pattern` during `clearPattern()`.
+- Added instruction if user clicks grid without selecting a sound.
+- Better 'back' and 'close' icons for sound panel as per Andrea.
 
 ### 3/17/2021
 

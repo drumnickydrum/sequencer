@@ -1,5 +1,10 @@
 import React, { useState, useContext } from 'react';
-import { PitchSwipe, VelocitySwipe, LengthSwipe, CloseIcon } from '../icons';
+import {
+  PitchSwipe,
+  VelocitySwipe,
+  LengthSwipe,
+  ChevronLeftIcon,
+} from '../icons';
 import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
 
@@ -47,10 +52,10 @@ export const PitchVelocityLength = ({ type, selectedSound, handleReturn }) => {
 
   return (
     <div className={`sound-edit-detail color${selectedSound}`}>
-      <div className='sound-edit-title' onClick={handleReturn}>
-        <CloseIcon addClass='white' />
-        <p>Menu</p>
-      </div>
+      <button className='sound-edit-close' onClick={handleReturn}>
+        <ChevronLeftIcon />
+      </button>
+      <div className='sound-edit-dummy' />
       <div className='sound-edit-all'>
         <label htmlFor={`slider-${type}`}>{type}</label>
         {showModAll ? (

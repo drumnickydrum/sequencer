@@ -15,6 +15,7 @@ import { ReactComponent as Length } from './length.svg';
 import { ReactComponent as Square } from './square.svg';
 import { ReactComponent as PointRight } from './point-right.svg';
 import { ReactComponent as PointUp } from './point-up.svg';
+import { ReactComponent as PointDown } from './point-down.svg';
 import { ReactComponent as Paint } from './paint.svg';
 import { ReactComponent as Close } from './close.svg';
 import { ReactComponent as ChevronDown } from './chevron-down.svg';
@@ -35,7 +36,7 @@ export const ChevronDownIcon = ({ addClass = '' }) => (
 );
 
 export const ChevronLeftIcon = ({ addClass = '' }) => (
-  <ChevronLeft className={addClass + ' icon'} />
+  <ChevronLeft className={addClass + ' chevron-left'} />
 );
 export const ChevronRightIcon = ({ addClass = '' }) => (
   <ChevronRight className={addClass + ' icon'} />
@@ -126,6 +127,10 @@ export const EraserIcon = ({ addClass = '' }) => (
 
 export const KitIcon = ({ addClass = '' }) => (
   <Kit className={addClass + ' icon'} />
+);
+
+export const PointDownIcon = ({ addClass = '' }) => (
+  <PointDown className={addClass + ' icon'} />
 );
 
 export const PitchSwipe = () => {

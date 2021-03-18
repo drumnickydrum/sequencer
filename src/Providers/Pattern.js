@@ -10,9 +10,20 @@ export const Pattern = React.createContext();
 export const PatternProvider = ({ children }) => {
   const { addToUndo } = useContext(Undo);
   const { kitRef, currentKit } = useContext(Kit);
-  const { changeStatus } = useContext(Status);
+  const { changeStatus, alertSelectSound } = useContext(Status);
 
   const [selectedSound, setSelectedSound] = useState(-1);
+  useEffect(() => {
+    if (selectedSound === -1) {
+      document
+        .getElementById('grid')
+        .addEventListener('click', alertSelectSound);
+    }
+    return () =>
+      document
+        .getElementById('grid')
+        .removeEventListener('click', alertSelectSound);
+  }, [selectedSound, alertSelectSound]);
 
   const [show, setShow] = useState(getSS('show') || false);
   useEffect(() => {
