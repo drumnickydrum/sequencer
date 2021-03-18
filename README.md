@@ -10,6 +10,10 @@
 - Added local and session storage to keep app up to date on refresh or redirect.
 - Undo now splices out the first 50 events after 150 for garbage collection.
 - Disable login while fetching on reload.
+- Added `ChangeKit` to the `menu-items`.
+- Always start with transport scrolled into view.
+- Bottom scrolling is apparent now with purple background and animating white chevrons.
+- Load and Save are separate tabs in the popup screen.
 
 ### 3/16/2021
 

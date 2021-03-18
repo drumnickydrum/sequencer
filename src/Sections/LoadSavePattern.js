@@ -8,7 +8,7 @@ import { INITIAL_USER } from '../Providers/User';
 
 export const LoadSavePattern = () => {
   const { user, setUser } = useContext(User);
-  const { showLoad, setShowLoad } = useContext(Pattern);
+  const { show, setShow } = useContext(Pattern);
 
   const handleLogout = async () => {
     try {
@@ -24,27 +24,46 @@ export const LoadSavePattern = () => {
     }
   };
 
+  const handleTab = (type) => {
+    setShow(type);
+  };
+
+  let loadStyle = 'load-save-tab';
+  let saveStyle = loadStyle;
+  if (show === 'load') loadStyle += ' selected';
+  if (show === 'save') saveStyle += ' selected';
   return (
     <>
-      <div
-        className={showLoad ? 'load-save-pattern show' : 'load-save-pattern'}
-      >
+      <div className={show ? 'load-save-pattern show' : 'load-save-pattern'}>
+        <div className='load-save-tabs'>
+          <button
+            id='load-tab'
+            className={loadStyle}
+            onClick={() => handleTab('load')}
+          >
+            <label htmlFor='load-tab'>Load</label>
+          </button>
+          <button
+            id='save-tab'
+            className={saveStyle}
+            onClick={() => handleTab('save')}
+          >
+            <label htmlFor='save-tab'>Save</label>
+          </button>
+        </div>
         {user.username && (
           <>
             <div className='login-status'>
               <p>Logged in as: {user.username}</p>
               <button onClick={handleLogout}>logout</button>
             </div>
-            <SavePattern />
           </>
         )}
-        <LoadPattern />
+        {show === 'save' && <SavePattern />}
+        {show === 'load' && <LoadPattern />}
       </div>
-      <div className={showLoad ? 'bottom-btn show' : 'bottom-btn'}>
-        <button
-          className='load-save-pattern-close'
-          onClick={() => setShowLoad(false)}
-        >
+      <div className={show ? 'bottom-btn show' : 'bottom-btn'}>
+        <button className='load-save-pattern-close' onClick={() => setShow('')}>
           Close
         </button>
       </div>

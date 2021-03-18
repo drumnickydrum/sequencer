@@ -41,15 +41,15 @@ export const LoginPage = () => {
 
   return (
     <div className={styles.loginPage}>
+      <h1>Login</h1>
       <div className={styles.loginMethods}>
-        <h1>Login</h1>
         <button
           className={styles.methodBtn}
           id='login-google'
           onClick={googleLogin}
         >
           <img src={googleImg} alt='Google Logo' />
-          <p>Login with Google</p>
+          {/* <p>Login with Google</p> */}
         </button>
         <button
           className={styles.methodBtn}
@@ -57,7 +57,7 @@ export const LoginPage = () => {
           onClick={twitterLogin}
         >
           <img src={twitterImg} alt='Twitter Logo' />
-          <p>Login with Twitter</p>
+          {/* <p>Login with Twitter</p> */}
         </button>
         <button
           className={styles.methodBtn}
@@ -65,7 +65,7 @@ export const LoginPage = () => {
           onClick={facebookLogin}
         >
           <img src={facebookImg} alt='Facebok Logo' />
-          <p>Login with Facebook</p>
+          {/* <p>Login with Facebook</p> */}
         </button>
         <button
           className={styles.methodBtn}
@@ -73,7 +73,7 @@ export const LoginPage = () => {
           onClick={githubLogin}
         >
           <img src={githubImg} alt='Github Logo' />
-          <p>Login with Github</p>
+          {/* <p>Login with Github</p> */}
         </button>
       </div>
       <div className='bottom-btn show'>

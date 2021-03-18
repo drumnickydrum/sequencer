@@ -5,9 +5,7 @@ export const StatusProvider = ({ children }) => {
   const [status, setStatus] = useState('status: loading');
   const countRef = useRef(0);
 
-  const changeStatus = (newStatus) => {
-    // setStatus('');
-    // setTimeout(() => setStatus(newStatus), 0);
+  const changeStatus = (newStatus = 'loading') => {
     countRef.current++;
     setStatus(`${countRef.current}#${newStatus}`);
   };

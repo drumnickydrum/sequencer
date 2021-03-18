@@ -1,7 +1,5 @@
 import React, { useContext } from 'react';
 import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
   ChevronTripleLeftIcon,
   ChevronTripleRightIcon,
   ClearAllIcon,
@@ -44,12 +42,10 @@ export const UndoRedo = ({ scroll }) => {
       </button>
       <span className='menu-dummy' />
       <div className='chevron left' onClick={() => scroll('left')}>
-        {/* <ChevronTripleLeftIcon /> */}
-        <ChevronLeftIcon />
+        <ChevronTripleLeftIcon />
       </div>
       <div className='chevron right' onClick={() => scroll('right')}>
-        {/* <ChevronTripleRightIcon /> */}
-        <ChevronRightIcon />
+        <ChevronTripleRightIcon />
       </div>
     </div>
   );
@@ -83,12 +79,7 @@ export const Clear = ({ scroll }) => {
       </button>
       <span className='menu-dummy' />
       <div className='chevron left' onClick={() => scroll('left')}>
-        {/* <ChevronTripleLeftIcon /> */}
-        <ChevronLeftIcon />
-      </div>
-      <div className='chevron right' onClick={() => scroll('right')}>
-        {/* <ChevronTripleRightIcon /> */}
-        <ChevronRightIcon />
+        <ChevronTripleLeftIcon />
       </div>
     </div>
   );

@@ -42,9 +42,7 @@ export const LoadPattern = () => {
           {!user.username ? (
             <div className='login-div'>
               <p className='pattern-select-sub'>
-                {fetching
-                  ? 'Logging in...'
-                  : 'Login to load/save user patterns'}
+                {fetching ? 'Logging in...' : 'Login to load user patterns'}
               </p>
               <Link
                 className='login-btn'

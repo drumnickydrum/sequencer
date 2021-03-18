@@ -1,14 +1,16 @@
 import axios from 'axios';
 import React, { useState, useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
-import { Sequencer } from '../Providers/Sequencer';
+import { Sequencer, SetSequencer } from '../Providers/Sequencer';
 import { User } from '../Providers/User';
 
 export const SavePattern = () => {
   const { patternRef } = useContext(Pattern);
   const { bpm } = useContext(Sequencer);
-  const { setUser } = useContext(User);
+  const { stop } = useContext(SetSequencer);
+  const { user, setUser, fetching } = useContext(User);
   const { currentKit } = useContext(Kit);
 
   const [newName, setNewName] = useState('');
@@ -53,22 +55,44 @@ export const SavePattern = () => {
 
   return (
     <div className='save-pattern'>
-      <form id='save-form' onSubmit={handleSave}>
-        <h1 className='pattern-title'>Save Pattern</h1>
-        <div className='save-pattern-input'>
-          <input
-            type='text'
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-          />
-          <button type='submit' disabled={!newName}>
-            Save
-          </button>
+      {!user.username ? (
+        <div className='pattern-select-group'>
+          <div className='login-div'>
+            <p className='pattern-select-sub'>
+              {fetching ? 'Logging in...' : 'Login to save user patterns'}
+            </p>
+            <Link
+              className='login-btn'
+              onClick={stop}
+              to='/login'
+              disabled={fetching}
+            >
+              {fetching ? 'x' : 'Login'}
+            </Link>
+          </div>
         </div>
-      </form>
-      <p className={error ? 'error' : 'confirmation'}>
-        {error ? error : confirmation}
-      </p>
+      ) : (
+        <form id='save-form' onSubmit={handleSave}>
+          <h1 className='pattern-title'>Save Pattern</h1>
+
+          <div className='save-pattern-input'>
+            <input
+              type='text'
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              placeholder='Enter pattern name'
+            />
+            <button type='submit' disabled={!newName}>
+              Save
+            </button>
+          </div>
+        </form>
+      )}
+      {user.username && (
+        <p className={error ? 'error' : 'confirmation'}>
+          {error ? error : confirmation}
+        </p>
+      )}
     </div>
   );
 };

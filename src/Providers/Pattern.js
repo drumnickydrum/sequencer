@@ -14,10 +14,10 @@ export const PatternProvider = ({ children }) => {
 
   const [selectedSound, setSelectedSound] = useState(-1);
 
-  const [showLoad, setShowLoad] = useState(getSS('showLoad') || false);
+  const [show, setShow] = useState(getSS('show') || false);
   useEffect(() => {
-    setSS('showLoad', showLoad);
-  }, [showLoad]);
+    setSS('show', show);
+  }, [show]);
 
   const patternRef = useRef(
     deepCopyPattern(getLS('pattern') || analog.pattern)
@@ -280,8 +280,8 @@ export const PatternProvider = ({ children }) => {
         pastePattern,
         loadPattern,
         clearPattern,
-        showLoad,
-        setShowLoad,
+        show,
+        setShow,
       }}
     >
       {children}
