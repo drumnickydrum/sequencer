@@ -55,18 +55,6 @@ export const Clear = ({ scroll }) => {
   const { clearPattern, selectedSound } = useContext(Pattern);
   return (
     <div className='menu-items'>
-      <span className='menu-dummy' />
-      <button
-        id='clear-one'
-        className='menu-btn'
-        disabled={selectedSound === -1}
-        onClick={() => clearPattern(true)}
-      >
-        <ClearOneIcon />
-        <label htmlFor='clear-one' className='menu-label'>
-          clear one
-        </label>
-      </button>
       <button
         id='clear-all'
         className='menu-btn'
@@ -74,10 +62,9 @@ export const Clear = ({ scroll }) => {
       >
         <ClearAllIcon />
         <label htmlFor='clear-all' className='menu-label'>
-          clear all
+          clear pattern
         </label>
       </button>
-      <span className='menu-dummy' />
       <div className='chevron left' onClick={() => scroll('left')}>
         <ChevronTripleLeftIcon />
       </div>

@@ -211,24 +211,13 @@ export const PatternProvider = ({ children }) => {
     addToUndo(change, prevPattern, newPattern);
   };
 
-  const clearPattern = (one) => {
+  const clearPattern = () => {
     const prevPattern = deepCopyPattern(patternRef.current);
-    const newPattern = deepCopyPattern(patternRef.current);
-    if (one) {
-      if (selectedSound === -1) return;
-      newPattern.forEach((step) =>
-        step.forEach((sound, s) => {
-          if (s === selectedSound) initSound(sound);
-        })
-      );
-    } else {
-      initPattern(newPattern);
-    }
+    const newPattern = INIT_PATTERN();
     function clear(patternToCopy, noStatus) {
       copyValues(patternRef, patternToCopy);
       setRefreshAll(true);
-      if (!noStatus)
-        changeStatus(`clear ${one ? 'sound: ' + selectedSound : 'all'}`);
+      if (!noStatus) changeStatus('clear pattern');
       updatePatternLS();
     }
     clear(newPattern, true);
@@ -304,17 +293,17 @@ const deepCopyPattern = (pattern) => {
   });
 };
 
-const initSound = (sound) => {
-  sound.noteOn = false;
-  sound.notes.length = 0;
-  sound.notes.push({ pitch: 24, velocity: 1, length: 1 });
-};
+// const initSound = (sound) => {
+//   sound.noteOn = false;
+//   sound.notes.length = 0;
+//   sound.notes.push({ pitch: 24, velocity: 1, length: 1 });
+// };
 
-const initPattern = (pattern) => {
-  pattern.forEach((step) => {
-    step.forEach((sound) => initSound(sound));
-  });
-};
+// const initPattern = (pattern) => {
+//   pattern.forEach((step) => {
+//     step.forEach((sound) => initSound(sound));
+//   });
+// };
 
 const copyValues = (patternRef, patternToCopy) => {
   patternRef.current.forEach((step, i) => {
@@ -326,4 +315,27 @@ const copyValues = (patternRef, patternToCopy) => {
       });
     });
   });
+};
+
+const INIT_ONE_NOTE = () => ({
+  pitch: 24,
+  velocity: 1,
+  length: 1,
+});
+
+const INIT_SOUND_STEP = () => ({
+  noteOn: false,
+  notes: [INIT_ONE_NOTE()],
+});
+
+const INIT_PATTERN = () => {
+  const initPattern = [];
+  for (let i = 0; i < 64; i++) {
+    const initCell = [];
+    for (let i = 0; i < 9; i++) {
+      initCell.push(INIT_SOUND_STEP());
+    }
+    initPattern.push(initCell);
+  }
+  return initPattern;
 };

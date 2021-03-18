@@ -2,6 +2,10 @@
 
 ## Dev notes
 
+### 3/18/2021
+
+- Removed `clear-one` as it was confusing and not helpful. Removed an unncessary iteration of `pattern` during `clearPattern()`.
+
 ### 3/17/2021
 
 - Tracked down that ugly repeated events bug. `Tone.Transport.cancel()` was not effectively cancelling all `_scheduledEvents`... well, it was, but randomly it let an event make it out alive. So I wrote a hack that follows the `cancel()` call. It reads the private `Tone.Transport._scheduledEvents` property, then iterates over the ids and calls `clear()` on them individually. Low and behold, the issue has yet to return. This is clearly a hack, but unless I can track down why `cancel()` isn't clearing all ids, it'll have to do.
@@ -15,7 +19,7 @@
 - Bottom scrolling is apparent now with purple background and animating white chevrons.
 - Load and Save are separate tabs in the popup screen.
 - \*\*\* NEXT:
-  - `sound-edit-` close button as top left
+  - `sound-edit` close button as top left
   - all button & action states
   - horizontal mobile layout
   - desktop layout
