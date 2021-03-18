@@ -45,7 +45,10 @@ export const SequencerProvider = ({ children }) => {
   const schedulePattern = () => {
     Tone.Transport.scheduleRepeat((time) => {
       scheduleCell(time);
-      animateCell(time, cellsRef.current[stepRef.current].current);
+      animateCell(
+        time,
+        cellsRef.current[`cell-${stepRef.current}`].cellRef.current
+      );
       animateSound(time);
       stepRef.current =
         stepRef.current === patternRef.current.length - 1

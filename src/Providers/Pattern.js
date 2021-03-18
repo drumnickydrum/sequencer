@@ -50,7 +50,6 @@ export const PatternProvider = ({ children }) => {
     setLS('patternName', patternName);
   }, [patternName]);
 
-  const refreshEventsRef = useRef({});
   const [refreshAll, setRefreshAll] = useState(false);
 
   const [painting, setPainting] = useState(true);
@@ -64,11 +63,10 @@ export const PatternProvider = ({ children }) => {
   }, [erasing]);
 
   const prevCellRef = useRef(null);
-  const toggleEventsRef = useRef({});
   const toggleCell = (step) => {
     function toggle(val, noStatus) {
       patternRef.current[step][selectedSound].noteOn = val;
-      document.dispatchEvent(refreshEventsRef.current[`cell-${step}`]);
+      document.dispatchEvent(cellsRef.current[`cell-${step}`].events.refresh);
       if (!noStatus)
         changeStatus(
           `sound: ${selectedSound} | cell: ${step} | ${val ? 'on' : 'off'}`
@@ -99,7 +97,7 @@ export const PatternProvider = ({ children }) => {
           if (type === 'velocity') note.velocity = val;
           if (type === 'length') note.length = val;
         });
-        document.dispatchEvent(refreshEventsRef.current[`cell-${step}`]);
+        document.dispatchEvent(cellsRef.current[`cell-${step}`].events.refresh);
         if (!noStatus)
           changeStatus(
             `sound: ${selectedSound} | step: ${step} | mod: ${type}`
@@ -167,7 +165,7 @@ export const PatternProvider = ({ children }) => {
         if (count === 2) sliceFunc(1);
       }
       sliceFunc(count);
-      document.dispatchEvent(refreshEventsRef.current[`cell-${step}`]);
+      document.dispatchEvent(cellsRef.current[`cell-${step}`].events.refresh);
       if (!noStatus)
         changeStatus(`slice sound: ${selectedSound} | cell: ${step}`);
       updatePatternLS();
@@ -258,7 +256,6 @@ export const PatternProvider = ({ children }) => {
         setPatternName,
         patternRef,
         cellsRef,
-        refreshEventsRef,
         refreshAll,
         setRefreshAll,
         erasing,
@@ -266,7 +263,6 @@ export const PatternProvider = ({ children }) => {
         painting,
         setPainting,
         prevCellRef,
-        toggleEventsRef,
         toggleCell,
         selectedSound,
         setSelectedSound,

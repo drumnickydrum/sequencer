@@ -16,8 +16,8 @@ export const Grid = () => {
     erasing,
     painting,
     prevCellRef,
-    toggleEventsRef,
     selectedSound,
+    cellsRef,
   } = useContext(Pattern);
 
   const handleDrag = (e) => {
@@ -30,9 +30,9 @@ export const Grid = () => {
       if (prevCellRef.current !== id) {
         prevCellRef.current = id;
         if (erasing && cell.classList.contains('on')) {
-          document.dispatchEvent(toggleEventsRef.current[id]);
+          document.dispatchEvent(cellsRef.current[id].events.toggle);
         } else if (painting && !cell.classList.contains('on')) {
-          document.dispatchEvent(toggleEventsRef.current[id]);
+          document.dispatchEvent(cellsRef.current[id].events.toggle);
         }
       }
     }
@@ -58,9 +58,7 @@ const Cell = ({ id, step }) => {
     cellsRef,
     refreshAll,
     setRefreshAll,
-    refreshEventsRef,
     prevCellRef,
-    toggleEventsRef,
     toggleCell,
     selectedSound,
     modRef,
@@ -122,16 +120,18 @@ const Cell = ({ id, step }) => {
   const cellRef = useRef(null);
   useEffect(() => {
     if (cellRef.current) {
-      cellsRef.current[step] = cellRef;
+      cellsRef.current[id] = { events: {} };
+      cellsRef.current[id].cellRef = cellRef;
       const toggleEvent = new Event(`toggle-${id}`);
       document.addEventListener(`toggle-${id}`, handleToggle);
-      toggleEventsRef.current[id] = toggleEvent;
+      cellsRef.current[id].events.toggle = toggleEvent;
       const refreshEvent = new Event(`refresh-${id}`);
       document.addEventListener(`refresh-${id}`, () => setRefresh(true));
-      refreshEventsRef.current[id] = refreshEvent;
+      cellsRef.current[id].events.refresh = refreshEvent;
+      console.log(cellsRef.current[id]);
     }
     return () => document.removeEventListener(`toggle-${id}`, handleToggle);
-  }, [id, cellsRef, step, toggleEventsRef, handleToggle, refreshEventsRef]);
+  }, [id, cellsRef, handleToggle]);
 
   const handleTouchStart = (e) => {
     e.stopPropagation();
