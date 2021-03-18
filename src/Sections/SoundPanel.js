@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import {
   CloseIcon,
   CopyIcon,
@@ -193,11 +193,27 @@ export const SoundPanel = () => {
 };
 
 const SoundBtn = ({ i, sound, selectedSound, handleSelect }) => {
-  let classes = `sound borderDefault`;
-  if (i === selectedSound) classes += ` border${sound.color} `;
+  const ref = useRef(null);
+
+  const handleTouchStart = () => {
+    if (ref.current) ref.current.classList.add('pressed');
+  };
+
+  const handleTouchEnd = () => {
+    if (ref.current) ref.current.classList.remove('pressed');
+  };
+
   return (
-    <div className={classes} onClick={() => handleSelect(i)}>
-      {sound.name}
+    <div
+      ref={ref}
+      className='sound'
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onClick={() => handleSelect(i)}
+    >
+      <p className='sound-name'>{sound.name}</p>
+      <div className='border' />
+      <div className={`bg bg${i}`} />
     </div>
   );
 };
