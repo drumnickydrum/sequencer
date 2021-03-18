@@ -35,8 +35,8 @@ export const SequencerProvider = ({ children }) => {
     Tone.Transport.cancel(0);
     const scheduledEvents = Tone.Transport._scheduledEvents;
     Object.keys(scheduledEvents).forEach((id) => Tone.Transport.clear(id));
-    stepRef.current = 0;
     removeCursor();
+    stepRef.current = 0;
   };
 
   const pause = () => {
@@ -46,9 +46,8 @@ export const SequencerProvider = ({ children }) => {
   };
 
   const addCursor = () => {
-    cellsRef.current[`cell-${stepRef.current}`].cellRef.current.classList.add(
-      'cursor-flashing'
-    );
+    cellsRef.current[`cell-${stepRef.current}`].cellRef.current.dataset.cursor =
+      'true';
   };
 
   const removeCursor = () => {
@@ -56,15 +55,9 @@ export const SequencerProvider = ({ children }) => {
     const step = stepRef.current;
     const prevStep = step - 1 > 0 ? step - 1 : len - 1;
     const nextStep = (step + 1) % len;
-    cellsRef.current[`cell-${step}`].cellRef.current.classList.remove(
-      'cursor-flashing'
-    );
-    cellsRef.current[`cell-${prevStep}`].cellRef.current.classList.remove(
-      'cursor-flashing'
-    );
-    cellsRef.current[`cell-${nextStep}`].cellRef.current.classList.remove(
-      'cursor-flashing'
-    );
+    cellsRef.current[`cell-${step}`].cellRef.current.dataset.cursor = false;
+    cellsRef.current[`cell-${prevStep}`].cellRef.current.dataset.cursor = false;
+    cellsRef.current[`cell-${nextStep}`].cellRef.current.dataset.cursor = false;
   };
 
   const [restart, setRestart] = useState(false);

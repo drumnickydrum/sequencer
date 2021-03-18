@@ -17,6 +17,7 @@
   - `<NavLeft />` and `<NavRight />`
 - Implemented `start/pause`.
 - Added a blinking cursor during `pause`.
+  - use dataset attribute to avoid class changing with cell edits.
 
 ### 3/17/2021
 

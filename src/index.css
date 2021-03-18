@@ -1338,7 +1338,7 @@ p.dim {
   background: var(--white-quarter);
 }
 
-.cursor-flashing .cursor {
+div[data-cursor='true'] .cursor {
   animation: flashing 200ms alternate infinite;
 }
 
