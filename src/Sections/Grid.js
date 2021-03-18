@@ -258,6 +258,9 @@ const Cell = ({ id, step }) => {
             </div>
           )}
         </div>
+        <div className='border borderDefault' />
+        <div className='border-flashing' />
+        <div className={`bg${color}`} />
         <div className='sound-cells'>
           {kitRef.current.sounds.map((_, sound) => {
             const scId = `${id}-${sound}`;

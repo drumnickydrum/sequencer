@@ -10,6 +10,7 @@
 - Added `pressed` state to sound select buttons.
 - Added sound panel animations.
 - Storing cells in refs instead of query selecting before animation.
+- Flashing animation only affects opacity of absolute positioned border div for high performance.
 
 ### 3/17/2021
 

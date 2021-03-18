@@ -65,7 +65,7 @@ export const SoundPanel = () => {
   };
 
   const handleSlice = () => {
-    const cells = document.querySelectorAll('.noteOn');
+    const cells = document.querySelectorAll('.on');
     if (slicing) {
       cells.forEach((cell) => cell.classList.remove('flashing'));
       setSlicing(false);
@@ -80,7 +80,7 @@ export const SoundPanel = () => {
   };
 
   const handleCellMod = (type) => {
-    const cells = document.querySelectorAll('.noteOn');
+    const cells = document.querySelectorAll('.on');
     if (type === 'return') {
       cells.forEach((cell) => cell.classList.remove('flashing'));
       setMod('');

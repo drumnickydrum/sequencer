@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
 
@@ -28,16 +28,22 @@ export const PastePattern = () => {
 const SoundBtn = ({ i, sound, selected }) => {
   const { patternRef, pastePattern } = useContext(Pattern);
 
+  const ref = useRef(null);
+
   const handleClick = () => {
     pastePattern(i);
+    if (ref.current) {
+      ref.current.classList.add('selected');
+      setTimeout(() => ref.current.classList.remove('selected'));
+    }
   };
 
   let classes = `sound borderDefault`;
-  if (selected) classes += ` border${sound.color} `;
+  if (selected) classes += ` border${sound.color} flashing`;
   return (
     <div className={classes} onClick={handleClick}>
       {selected ? <p className='flashing'>copying...</p> : <p>{sound.name}</p>}
-      <div className={selected ? 'cells selected' : 'cells'}>
+      <div ref={ref} className={selected ? 'cells selected' : 'cells'}>
         {patternRef.current.map((_, step) => {
           const classes = patternRef.current[step][i].noteOn
             ? `cell bg${i} on`
@@ -45,6 +51,7 @@ const SoundBtn = ({ i, sound, selected }) => {
           return <div key={`paste-pattern-${step}-${i}`} className={classes} />;
         })}
       </div>
+      <div className='border-flashing' />
     </div>
   );
 };

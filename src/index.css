@@ -387,6 +387,7 @@ body {
 }
 
 #paste-pattern-sounds {
+  position: relative;
   min-width: 100%;
   min-height: 100%;
   padding: 0.25rem;
@@ -419,9 +420,11 @@ body {
   gap: 5px;
   border-radius: 0.5rem;
   opacity: 0.35;
+  transition: 150ms;
 }
 
 #paste-pattern-sounds .cells.selected {
+  transition: none;
   opacity: 1;
 }
 
@@ -806,11 +809,11 @@ body {
 }
 
 .cell {
+  position: relative;
   cursor: pointer;
   width: 100%;
   height: 100%;
   opacity: 1;
-  border: 1px solid var(--purple);
   border-radius: 0.5rem;
   background: var(--none);
   transform: scale(1) rotate(0);
@@ -819,7 +822,11 @@ body {
 }
 
 .cell .border {
+  position: absolute;
+  width: 100%;
+  height: 100%;
   opacity: 1;
+  border-radius: 0.5rem;
 }
 
 .cell.on .border {
@@ -1101,7 +1108,7 @@ body {
   background-color: var(--purple-quarter);
 }
 .borderDefault {
-  border-color: var(--purple-3q);
+  border: 1px solid var(--purple-3q);
 }
 .colorDefault .icon {
   fill: var(--purple-3q);
@@ -1278,24 +1285,29 @@ p.dim {
   opacity: 0;
 }
 
-.flashing {
-  /* animation: flashing 500ms alternate infinite; */
+.border-flashing {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid var(--white);
+  opacity: 0;
 }
 
-.flashing.pause {
+.flashing .border-flashing {
+  animation: flashing 500ms alternate infinite;
+}
+
+.flashing.pause .border-flashing {
   animation: none;
 }
 
 @keyframes flashing {
   0% {
-    border-color: var(--white-half);
-    color: var(--white-half);
-    stroke: var(--white-half);
+    opacity: 0.5;
   }
   100% {
-    border-color: var(--white);
-    color: var(--white);
-    stroke: var(--white);
+    opacity: 1;
   }
 }
 
