@@ -223,13 +223,24 @@ export const PatternProvider = ({ children }) => {
     addToUndo(change, prevPattern, newPattern);
   };
 
-  const clearPattern = () => {
+  const clearPattern = (one) => {
     const prevPattern = deepCopyPattern(patternRef.current);
-    const newPattern = INIT_PATTERN();
+    const newPattern = deepCopyPattern(patternRef.current);
+    if (one) {
+      if (selectedSound === -1) return;
+      newPattern.forEach((step) =>
+        step.forEach((sound, s) => {
+          if (s === selectedSound) initSound(sound);
+        })
+      );
+    } else {
+      initPattern(newPattern);
+    }
     function clear(patternToCopy, noStatus) {
       copyValues(patternRef, patternToCopy);
       setRefreshAll(true);
-      if (!noStatus) changeStatus('clear pattern');
+      if (!noStatus)
+        changeStatus(`clear ${one ? 'sound: ' + selectedSound : 'all'}`);
       updatePatternLS();
     }
     clear(newPattern, true);
@@ -304,17 +315,17 @@ const deepCopyPattern = (pattern) => {
   });
 };
 
-// const initSound = (sound) => {
-//   sound.noteOn = false;
-//   sound.notes.length = 0;
-//   sound.notes.push({ pitch: 24, velocity: 1, length: 1 });
-// };
+const initSound = (sound) => {
+  sound.noteOn = false;
+  sound.notes.length = 0;
+  sound.notes.push({ pitch: 24, velocity: 1, length: 1 });
+};
 
-// const initPattern = (pattern) => {
-//   pattern.forEach((step) => {
-//     step.forEach((sound) => initSound(sound));
-//   });
-// };
+const initPattern = (pattern) => {
+  pattern.forEach((step) => {
+    step.forEach((sound) => initSound(sound));
+  });
+};
 
 const copyValues = (patternRef, patternToCopy) => {
   patternRef.current.forEach((step, i) => {

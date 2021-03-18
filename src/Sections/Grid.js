@@ -128,7 +128,6 @@ const Cell = ({ id, step }) => {
       const refreshEvent = new Event(`refresh-${id}`);
       document.addEventListener(`refresh-${id}`, () => setRefresh(true));
       cellsRef.current[id].events.refresh = refreshEvent;
-      console.log(cellsRef.current[id]);
     }
     return () => document.removeEventListener(`toggle-${id}`, handleToggle);
   }, [id, cellsRef, handleToggle]);
