@@ -15,6 +15,7 @@ import { useSoloAndMute } from './useSoloAndMute';
 import { Erase, Slice, Copy } from './EraseSliceCopy';
 import { PitchVelocityLength } from './PitchVelocityLength';
 import { Status } from '../Providers/Status';
+import { Sequencer } from '../Providers/Sequencer';
 
 export const SoundPanel = () => {
   const { spAlert } = useContext(Status);
@@ -100,7 +101,7 @@ export const SoundPanel = () => {
         <PointDownIcon />
         <span className='menu-dummy' />
       </div>
-      {showEditMenu ? (
+      {showEditMenu && (
         <div className='sound-edit'>
           {erasing ? (
             <Erase handleReturn={handleReturn} />
@@ -175,25 +176,28 @@ export const SoundPanel = () => {
             </div>
           )}
         </div>
-      ) : (
-        <div className='sound-menu'>
-          {kitRef.current.sounds.map((sound, i) => (
-            <SoundBtn
-              key={`sound-menu-${sound.name}`}
-              i={i}
-              sound={sound}
-              selectedSound={selectedSound}
-              handleSelect={handleSelect}
-            />
-          ))}
-        </div>
       )}
+      <div className='sound-menu'>
+        {kitRef.current.sounds.map((sound, i) => (
+          <SoundBtn
+            key={`sound-menu-${sound.name}`}
+            i={i}
+            sound={sound}
+            handleSelect={handleSelect}
+          />
+        ))}
+      </div>
     </>
   );
 };
 
-const SoundBtn = ({ i, sound, selectedSound, handleSelect }) => {
+const SoundBtn = ({ i, sound, handleSelect }) => {
+  const { soundsRef } = useContext(Kit);
+
   const ref = useRef(null);
+  useEffect(() => {
+    if (ref.current) soundsRef.current[i] = ref;
+  });
 
   const handleTouchStart = () => {
     if (ref.current) ref.current.classList.add('pressed');
@@ -206,13 +210,14 @@ const SoundBtn = ({ i, sound, selectedSound, handleSelect }) => {
   return (
     <div
       ref={ref}
-      className='sound'
+      className='sound sound-btn'
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onClick={() => handleSelect(i)}
     >
       <p className='sound-name'>{sound.name}</p>
       <div className='border' />
+      <div className={`border-pulse border${i}`} />
       <div className={`bg bg${i}`} />
     </div>
   );

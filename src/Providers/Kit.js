@@ -57,6 +57,8 @@ export const KitProvider = ({ children }) => {
     loadSamples('default');
   }, []);
 
+  const soundsRef = useRef({});
+
   return (
     <Kit.Provider
       value={{
@@ -67,6 +69,7 @@ export const KitProvider = ({ children }) => {
         loadSamples,
         buffersLoaded,
         setBuffersLoaded,
+        soundsRef,
       }}
     >
       {children}

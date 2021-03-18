@@ -12,17 +12,19 @@ export const PatternProvider = ({ children }) => {
   const { kitRef, currentKit } = useContext(Kit);
   const { changeStatus, alertSelectSound } = useContext(Status);
 
+  const gridRef = useRef(null);
+
   const [selectedSound, setSelectedSound] = useState(-1);
   useEffect(() => {
+    const grid = gridRef.current;
     if (selectedSound === -1) {
-      document
-        .getElementById('grid')
-        .addEventListener('click', alertSelectSound);
+      if (grid) {
+        grid.addEventListener('click', alertSelectSound);
+      }
     }
-    return () =>
-      document
-        .getElementById('grid')
-        .removeEventListener('click', alertSelectSound);
+    return () => {
+      if (grid) grid.removeEventListener('click', alertSelectSound);
+    };
   }, [selectedSound, alertSelectSound]);
 
   const [show, setShow] = useState(getSS('show') || false);
@@ -34,6 +36,7 @@ export const PatternProvider = ({ children }) => {
     deepCopyPattern(getLS('pattern') || analog.pattern)
   );
   const updatePatternLS = () => setLS('pattern', patternRef.current);
+  const cellsRef = useRef({});
 
   const [patternId, setPatternId] = useState(getLS('patternId') || analog._id);
   useEffect(() => {
@@ -254,6 +257,7 @@ export const PatternProvider = ({ children }) => {
         patternName,
         setPatternName,
         patternRef,
+        cellsRef,
         refreshEventsRef,
         refreshAll,
         setRefreshAll,

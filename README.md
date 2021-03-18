@@ -8,6 +8,8 @@
 - Added instruction if user clicks grid without selecting a sound.
 - Better 'back' and 'close' icons for sound panel as per Andrea.
 - Added `pressed` state to sound select buttons.
+- Added sound panel animations.
+- Storing cells in refs instead of query selecting before animation.
 
 ### 3/17/2021
 

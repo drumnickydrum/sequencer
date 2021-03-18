@@ -63,7 +63,7 @@ export const SavePattern = () => {
             </p>
             <Link
               className='login-btn'
-              onClick={stop}
+              onTouchStart={stop}
               to='/login'
               disabled={fetching}
             >

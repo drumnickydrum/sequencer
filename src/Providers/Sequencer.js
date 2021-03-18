@@ -9,8 +9,8 @@ import { getLS } from '../utils/storage';
 export const Sequencer = React.createContext();
 export const SetSequencer = React.createContext();
 export const SequencerProvider = ({ children }) => {
-  const { patternRef } = useContext(Pattern);
-  const { kitRef, buffersLoaded } = useContext(Kit);
+  const { patternRef, cellsRef } = useContext(Pattern);
+  const { kitRef, buffersLoaded, soundsRef } = useContext(Kit);
   const [bpm, setBpm] = useState(getLS('bpm') || analog.bpm);
   const stepRef = useRef(0);
 
@@ -21,8 +21,6 @@ export const SequencerProvider = ({ children }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const start = () => {
     if (Tone.Transport.state === 'started') return;
-    // const flashingCells = document.querySelectorAll('.flashing');
-    // flashingCells.forEach((cell) => cell.classList.add('pause'));
     schedulePattern();
     Tone.Transport.start();
   };
@@ -34,8 +32,6 @@ export const SequencerProvider = ({ children }) => {
     const scheduledEvents = Tone.Transport._scheduledEvents;
     Object.keys(scheduledEvents).forEach((id) => Tone.Transport.clear(id));
     stepRef.current = 0;
-    // const flashingCells = document.querySelectorAll('.flashing');
-    // flashingCells.forEach((cell) => cell.classList.remove('pause'));
   };
 
   const [restart, setRestart] = useState(false);
@@ -47,10 +43,14 @@ export const SequencerProvider = ({ children }) => {
   }, [buffersLoaded, restart, start]);
 
   const schedulePattern = () => {
-    const cells = document.querySelectorAll(`.cell`);
     Tone.Transport.scheduleRepeat((time) => {
-      animateCell(time, cells[stepRef.current]);
       scheduleCell(time);
+      animateCell(time, cellsRef.current[stepRef.current].current);
+      animateSound(time);
+      stepRef.current =
+        stepRef.current === patternRef.current.length - 1
+          ? 0
+          : stepRef.current + 1;
     }, '16n');
   };
 
@@ -63,6 +63,21 @@ export const SequencerProvider = ({ children }) => {
         cell.classList.add('flash');
         setTimeout(() => cell.classList.remove('flash'), 0);
       }
+    }, time);
+  };
+
+  const animateSound = (time) => {
+    Tone.Draw.schedule(() => {
+      patternRef.current[stepRef.current].forEach((sound, i) => {
+        if (sound.noteOn) {
+          soundsRef.current[i].current.classList.remove('pulse');
+          soundsRef.current[i].current.classList.add('pulse');
+          setTimeout(
+            () => soundsRef.current[i].current.classList.remove('pulse'),
+            0
+          );
+        }
+      });
     }, time);
   };
 
@@ -119,10 +134,6 @@ export const SequencerProvider = ({ children }) => {
         // console.timeEnd('schedule note');
       }
     }
-    stepRef.current =
-      stepRef.current === patternRef.current.length - 1
-        ? 0
-        : stepRef.current + 1;
   };
 
   return (

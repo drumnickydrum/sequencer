@@ -55,6 +55,7 @@ export const Grid = () => {
 const Cell = ({ id, step }) => {
   const {
     patternRef,
+    cellsRef,
     refreshAll,
     setRefreshAll,
     refreshEventsRef,
@@ -121,6 +122,7 @@ const Cell = ({ id, step }) => {
   const cellRef = useRef(null);
   useEffect(() => {
     if (cellRef.current) {
+      cellsRef.current[step] = cellRef;
       const toggleEvent = new Event(`toggle-${id}`);
       document.addEventListener(`toggle-${id}`, handleToggle);
       toggleEventsRef.current[id] = toggleEvent;
@@ -129,7 +131,7 @@ const Cell = ({ id, step }) => {
       refreshEventsRef.current[id] = refreshEvent;
     }
     return () => document.removeEventListener(`toggle-${id}`, handleToggle);
-  }, [id, toggleEventsRef, handleToggle, refreshEventsRef]);
+  }, [id, cellsRef, step, toggleEventsRef, handleToggle, refreshEventsRef]);
 
   const handleTouchStart = (e) => {
     e.stopPropagation();

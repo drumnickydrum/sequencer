@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Pattern } from '../Providers/Pattern';
 import { User } from '../Providers/User';
 import { LoadPattern } from './LoadPattern';
@@ -9,9 +9,11 @@ import { INITIAL_USER } from '../Providers/User';
 export const LoadSavePattern = () => {
   const { user, setUser } = useContext(User);
   const { show, setShow } = useContext(Pattern);
+  const [fetching, setFetching] = useState(false);
 
   const handleLogout = async () => {
     try {
+      setFetching(true);
       await axios({
         url: 'http://localhost:4000/user/logout',
         method: 'GET',
@@ -21,6 +23,8 @@ export const LoadSavePattern = () => {
       setUser(INITIAL_USER);
     } catch (e) {
       console.log('FAIL ->\n', e);
+    } finally {
+      setFetching(false);
     }
   };
 
@@ -54,8 +58,14 @@ export const LoadSavePattern = () => {
         {user.username && (
           <>
             <div className='login-status'>
-              <p>Logged in as: {user.username}</p>
-              <button onClick={handleLogout}>logout</button>
+              {fetching ? (
+                <p>Logging out...</p>
+              ) : (
+                <p>Logged in as: {user.username}</p>
+              )}
+              <button disabled={fetching} onClick={handleLogout}>
+                logout
+              </button>
             </div>
           </>
         )}
