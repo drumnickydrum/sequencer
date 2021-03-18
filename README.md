@@ -13,9 +13,10 @@
 - Flashing animation only affects opacity of absolute positioned border div for high performance.
   - Don't forget `pointer-events: none` when absolutely positioning stuff for visuals.
 - Bunch of button states and broke out some components:
-- `<Button />`
-- `<NavLeft />` and `<NavRight />`
-- Implemented `start/pause`
+  - `<Button />`
+  - `<NavLeft />` and `<NavRight />`
+- Implemented `start/pause`.
+- Added a blinking cursor during `pause`.
 
 ### 3/17/2021
 

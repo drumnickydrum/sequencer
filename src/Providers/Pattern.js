@@ -50,6 +50,13 @@ export const PatternProvider = ({ children }) => {
     setLS('patternName', patternName);
   }, [patternName]);
 
+  const [patternBpm, setPatternBpm] = useState(
+    getLS('patternBpm') || analog.bpm
+  );
+  useEffect(() => {
+    setLS('patternBpm', patternBpm);
+  }, [patternBpm]);
+
   const [refreshAll, setRefreshAll] = useState(false);
 
   const [painting, setPainting] = useState(true);
@@ -201,17 +208,17 @@ export const PatternProvider = ({ children }) => {
     addToUndo(paste, prevSoundPattern, newSoundPattern);
   };
 
-  const loadPattern = (newPattern, changeTempo, bpm, changeKit) => {
+  const loadPattern = (newPattern, changeKit) => {
     const prevPattern = {
       _id: patternId,
       name: patternName,
+      bpm: patternBpm,
       kit: currentKit,
       pattern: deepCopyPattern(patternRef.current),
-      bpm,
     };
     function change(pattern, noStatus) {
       patternRef.current = deepCopyPattern(pattern.pattern);
-      changeTempo(pattern.bpm);
+      setPatternBpm(pattern.bpm);
       setPatternId(pattern._id);
       setPatternName(pattern.name);
       setRefreshAll(true);
@@ -265,6 +272,8 @@ export const PatternProvider = ({ children }) => {
         setPatternId,
         patternName,
         setPatternName,
+        patternBpm,
+        setPatternBpm,
         patternRef,
         cellsRef,
         refreshAll,

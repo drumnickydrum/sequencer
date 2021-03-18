@@ -1,27 +1,24 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import * as Tone from 'tone';
-import { analog } from '../defaults/defaultPatterns';
 import { Pattern } from './Pattern';
 import { MIDI_NOTES } from '../utils/MIDI_NOTES';
 import { Kit } from './Kit';
-import { getLS } from '../utils/storage';
 
 export const Sequencer = React.createContext();
-export const SetSequencer = React.createContext();
 export const SequencerProvider = ({ children }) => {
-  const { patternRef, cellsRef } = useContext(Pattern);
+  const { patternRef, cellsRef, patternBpm } = useContext(Pattern);
   const { kitRef, buffersLoaded, soundsRef } = useContext(Kit);
-  const [bpm, setBpm] = useState(getLS('bpm') || analog.bpm);
   const stepRef = useRef(0);
 
   useEffect(() => {
-    Tone.Transport.bpm.value = bpm;
-  }, [bpm]);
+    Tone.Transport.bpm.value = patternBpm;
+  }, [patternBpm]);
 
   const [transportState, setTransportState] = useState(Tone.Transport.state);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const start = () => {
+    removeCursor();
     if (transportState !== 'started') {
       if (transportState === 'stopped') schedulePattern();
       setTransportState('started');
@@ -39,11 +36,35 @@ export const SequencerProvider = ({ children }) => {
     const scheduledEvents = Tone.Transport._scheduledEvents;
     Object.keys(scheduledEvents).forEach((id) => Tone.Transport.clear(id));
     stepRef.current = 0;
+    removeCursor();
   };
 
   const pause = () => {
     setTransportState('paused');
     Tone.Transport.pause();
+    addCursor();
+  };
+
+  const addCursor = () => {
+    cellsRef.current[`cell-${stepRef.current}`].cellRef.current.classList.add(
+      'cursor-flashing'
+    );
+  };
+
+  const removeCursor = () => {
+    const len = patternRef.current.length;
+    const step = stepRef.current;
+    const prevStep = step - 1 > 0 ? step - 1 : len - 1;
+    const nextStep = (step + 1) % len;
+    cellsRef.current[`cell-${step}`].cellRef.current.classList.remove(
+      'cursor-flashing'
+    );
+    cellsRef.current[`cell-${prevStep}`].cellRef.current.classList.remove(
+      'cursor-flashing'
+    );
+    cellsRef.current[`cell-${nextStep}`].cellRef.current.classList.remove(
+      'cursor-flashing'
+    );
   };
 
   const [restart, setRestart] = useState(false);
@@ -56,7 +77,6 @@ export const SequencerProvider = ({ children }) => {
 
   const schedulePattern = () => {
     Tone.Transport.scheduleRepeat((time) => {
-      console.log(stepRef.current);
       scheduleCell(time, stepRef.current);
       animateCell(
         time,
@@ -149,11 +169,9 @@ export const SequencerProvider = ({ children }) => {
   };
 
   return (
-    <SetSequencer.Provider
-      value={{ setBpm, transportState, start, stop, setRestart }}
-    >
-      <Sequencer.Provider value={{ bpm }}>{children}</Sequencer.Provider>
-    </SetSequencer.Provider>
+    <Sequencer.Provider value={{ transportState, start, stop, setRestart }}>
+      {children}
+    </Sequencer.Provider>
   );
 };
 

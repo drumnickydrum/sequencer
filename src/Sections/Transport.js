@@ -1,14 +1,15 @@
 import React, { useContext } from 'react';
 import { Button, NavLeft, NavRight } from '../Components/Button';
 import { StopIcon, StartIcon, PauseIcon } from '../icons';
-import { Sequencer, SetSequencer } from '../Providers/Sequencer';
+import { Pattern } from '../Providers/Pattern';
+import { Sequencer } from '../Providers/Sequencer';
 
 export const Transport = () => {
-  const { setBpm, transportState, start, stop } = useContext(SetSequencer);
-  const { bpm } = useContext(Sequencer);
+  const { patternBpm, setPatternBpm } = useContext(Pattern);
+  const { transportState, start, stop } = useContext(Sequencer);
 
   const handleChange = ({ target: { value } }) => {
-    setBpm(value > 300 ? 300 : value);
+    setPatternBpm(value > 300 ? 300 : value);
   };
 
   return (
@@ -23,7 +24,12 @@ export const Transport = () => {
           <label htmlFor='start'>start</label>
         </Button>
         <div className='input'>
-          <input id='bpm' type='number' value={bpm} onChange={handleChange} />
+          <input
+            id='bpm'
+            type='number'
+            value={patternBpm}
+            onChange={handleChange}
+          />
           <label htmlFor='bpm' id='bpm-label'>
             bpm
           </label>

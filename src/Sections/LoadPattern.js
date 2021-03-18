@@ -4,14 +4,13 @@ import { Link } from 'react-router-dom';
 import * as defaultPatterns from '../defaults/defaultPatterns';
 import { DeleteIcon } from '../icons';
 import { Pattern } from '../Providers/Pattern';
-import { Sequencer, SetSequencer } from '../Providers/Sequencer';
+import { Sequencer } from '../Providers/Sequencer';
 import { User } from '../Providers/User';
 import { useChangeKit } from '../utils/useChangeKit';
 
 export const LoadPattern = () => {
   const { loadPattern, patternId } = useContext(Pattern);
-  const { setBpm, stop } = useContext(SetSequencer);
-  const { bpm } = useContext(Sequencer);
+  const { stop } = useContext(Sequencer);
   const { user, fetching } = useContext(User);
   const { changeKit } = useChangeKit();
 
@@ -23,7 +22,6 @@ export const LoadPattern = () => {
 
   const handleClick = (e, type, id) => {
     e.stopPropagation();
-    const changeTempo = (newTempo) => setBpm(newTempo);
     let newPattern;
     if (type === 'dp')
       newPattern = Object.values(defaultPatterns).find(
@@ -31,7 +29,7 @@ export const LoadPattern = () => {
       );
     if (type === 'up')
       newPattern = user.patterns.find((pattern) => pattern._id === id);
-    loadPattern(newPattern, changeTempo, bpm, changeKit);
+    loadPattern(newPattern, changeKit);
   };
 
   return (

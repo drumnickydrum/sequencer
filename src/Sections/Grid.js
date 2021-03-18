@@ -260,6 +260,7 @@ const Cell = ({ id, step }) => {
         </div>
         <div className='border borderDefault' />
         <div className='border-flashing p-none' />
+        <div className='cursor p-none' />
         <div className={`bg${color} p-none`} />
         <div className='sound-cells'>
           {kitRef.current.sounds.map((_, sound) => {

@@ -1315,6 +1315,7 @@ p.dim {
   opacity: 0;
 }
 
+.cursor,
 .border-flashing {
   position: absolute;
   width: 100%;
@@ -1330,6 +1331,15 @@ p.dim {
 
 .flashing.pause .border-flashing {
   animation: none;
+}
+
+.cursor {
+  border: none;
+  background: var(--white-quarter);
+}
+
+.cursor-flashing .cursor {
+  animation: flashing 200ms alternate infinite;
 }
 
 @keyframes flashing {

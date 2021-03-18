@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import * as Tone from 'tone';
 import * as kits from '../defaults/defaultKits';
 import { Kit } from '../Providers/Kit';
-import { SetSequencer } from '../Providers/Sequencer';
+import { Sequencer } from '../Providers/Sequencer';
 
 export const useChangeKit = () => {
   const {
@@ -12,7 +12,7 @@ export const useChangeKit = () => {
     loadSamples,
     setBuffersLoaded,
   } = useContext(Kit);
-  const { stop, setRestart } = useContext(SetSequencer);
+  const { stop, setRestart } = useContext(Sequencer);
 
   const changeKit = (kit) => {
     setBuffersLoaded(false);

@@ -3,13 +3,12 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
-import { Sequencer, SetSequencer } from '../Providers/Sequencer';
+import { Sequencer } from '../Providers/Sequencer';
 import { User } from '../Providers/User';
 
 export const SavePattern = () => {
-  const { patternRef } = useContext(Pattern);
-  const { bpm } = useContext(Sequencer);
-  const { stop } = useContext(SetSequencer);
+  const { patternRef, patternBpm } = useContext(Pattern);
+  const { stop } = useContext(Sequencer);
   const { user, setUser, fetching } = useContext(User);
   const { currentKit } = useContext(Kit);
 
@@ -34,7 +33,7 @@ export const SavePattern = () => {
     const newPattern = {
       name: cleanName,
       kit: currentKit,
-      bpm,
+      patternBpm,
       pattern: patternRef.current,
     };
     setNewName('');
