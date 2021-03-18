@@ -1,13 +1,9 @@
 import React, { useContext } from 'react';
-import {
-  ChevronTripleLeftIcon,
-  ChevronTripleRightIcon,
-  OpenIcon,
-  SaveIcon,
-} from '../icons';
+import { Button, NavLeft, NavRight } from '../Components/Button';
+import { OpenIcon, SaveIcon } from '../icons';
 import { Pattern } from '../Providers/Pattern';
 
-export const LoadSaveButton = ({ scroll }) => {
+export const LoadSaveButton = () => {
   const { setShow } = useContext(Pattern);
   const handleClick = (type) => {
     if (type === 'load') setShow('load');
@@ -18,33 +14,30 @@ export const LoadSaveButton = ({ scroll }) => {
   return (
     <div className='menu-items'>
       <span className='menu-dummy' />
-      <button
+      <Button
         id='load-pattern'
-        className='menu-btn'
+        classes='menu-btn'
         onClick={() => handleClick('load')}
       >
         <OpenIcon />
         <label htmlFor='load-pattern' className='menu-label'>
           load
         </label>
-      </button>
-      <button
+      </Button>
+      <Button
         id='save-pattern'
-        className='menu-btn'
+        classes='menu-btn'
         onClick={() => handleClick('save')}
       >
         <SaveIcon />
         <label htmlFor='save-pattern' className='menu-label'>
           save
         </label>
-      </button>
+      </Button>
       <span className='menu-dummy' />
-      <div className='chevron left' onClick={() => scroll('left')}>
-        <ChevronTripleLeftIcon />
-      </div>
-      <div className='chevron right' onClick={() => scroll('right')}>
-        <ChevronTripleRightIcon />
-      </div>
+
+      <NavLeft />
+      <NavRight />
     </div>
   );
 };

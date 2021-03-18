@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
-import { ChevronDownIcon, ChevronTripleRightIcon } from '../icons';
+import { ChevronDownIcon } from '../icons';
 import * as kits from '../defaults/defaultKits';
 import { useChangeKit } from '../utils/useChangeKit';
 import { Kit } from '../Providers/Kit';
 import { Undo } from '../Providers/UndoProvider';
+import { NavRight } from '../Components/Button';
 
-export const ChangeKit = ({ scroll }) => {
+export const ChangeKit = () => {
   const { addToUndo } = useContext(Undo);
   const { currentKit, buffersLoaded } = useContext(Kit);
   const { changeKit } = useChangeKit();
@@ -43,9 +44,8 @@ export const ChangeKit = ({ scroll }) => {
           <ChevronDownIcon />
         </div>
       </div>
-      <div className='chevron right' onClick={() => scroll('right')}>
-        <ChevronTripleRightIcon />
-      </div>
+
+      <NavRight />
     </div>
   );
 };

@@ -15,7 +15,8 @@ import { useSoloAndMute } from './useSoloAndMute';
 import { Erase, Slice, Copy } from './EraseSliceCopy';
 import { PitchVelocityLength } from './PitchVelocityLength';
 import { Status } from '../Providers/Status';
-import { Sequencer } from '../Providers/Sequencer';
+import { pressDown, pressUp } from '../utils/press';
+import { Button } from '../Components/Button';
 
 export const SoundPanel = () => {
   const { spAlert } = useContext(Status);
@@ -117,12 +118,12 @@ export const SoundPanel = () => {
             />
           ) : (
             <div className='sound-edit-menu'>
-              <button className='sound-edit-close' onClick={handleReturn}>
+              <Button classes='sound-edit-close' onClick={handleReturn}>
                 <CloseIcon />
-              </button>
+              </Button>
               <div className='sound-edit-dummy' />
-              <button
-                className={
+              <Button
+                classes={
                   erasing
                     ? `sound-edit-btn color${selectedSound}`
                     : 'sound-edit-btn'
@@ -133,46 +134,46 @@ export const SoundPanel = () => {
                   <EraserIcon />
                   <p>Erase</p>
                 </div>
-              </button>
-              <button className='sound-edit-btn' onClick={handleSlice}>
+              </Button>
+              <Button classes='sound-edit-btn' onClick={handleSlice}>
                 <div className='sound-edit-icon-div'>
                   <SawIcon />
                   <p>Slice</p>
                 </div>
-              </button>
-              <button className='sound-edit-btn' onClick={handleCopy}>
+              </Button>
+              <Button classes='sound-edit-btn' onClick={handleCopy}>
                 <div className='sound-edit-icon-div'>
                   <CopyIcon />
                   <p>Copy</p>
                 </div>
-              </button>
-              <button
-                className='sound-edit-btn'
+              </Button>
+              <Button
+                classes='sound-edit-btn'
                 onClick={() => handleCellMod('velocity')}
               >
                 <div className='sound-edit-icon-div'>
                   <VelocityIcon />
                   <p>Velocity</p>
                 </div>
-              </button>
-              <button
-                className='sound-edit-btn'
+              </Button>
+              <Button
+                classes='sound-edit-btn'
                 onClick={() => handleCellMod('length')}
               >
                 <div className='sound-edit-icon-div'>
                   <LengthIcon />
                   <p>Length</p>
                 </div>
-              </button>
-              <button
-                className='sound-edit-btn'
+              </Button>
+              <Button
+                classes='sound-edit-btn'
                 onClick={() => handleCellMod('pitch')}
               >
                 <div className='sound-edit-icon-div'>
                   <PitchIcon />
                   <p>Pitch</p>
                 </div>
-              </button>
+              </Button>
             </div>
           )}
         </div>
@@ -199,26 +200,18 @@ const SoundBtn = ({ i, sound, handleSelect }) => {
     if (ref.current) soundsRef.current[i] = ref;
   });
 
-  const handleTouchStart = () => {
-    if (ref.current) ref.current.classList.add('pressed');
-  };
-
-  const handleTouchEnd = () => {
-    if (ref.current) ref.current.classList.remove('pressed');
-  };
-
   return (
-    <div
+    <button
       ref={ref}
       className='sound sound-btn'
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
+      onTouchStart={() => pressDown(ref)}
+      onTouchEnd={() => pressUp(ref)}
       onClick={() => handleSelect(i)}
     >
-      <p className='sound-name'>{sound.name}</p>
+      <label className='sound-name'>{sound.name}</label>
       <div className='border' />
       <div className={`border-pulse border${i}`} />
       <div className={`bg bg${i}`} />
-    </div>
+    </button>
   );
 };

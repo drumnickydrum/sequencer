@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { Button } from '../Components/Button';
 import {
   PitchSwipe,
   VelocitySwipe,
@@ -52,22 +53,22 @@ export const PitchVelocityLength = ({ type, selectedSound, handleReturn }) => {
 
   return (
     <div className={`sound-edit-detail color${selectedSound}`}>
-      <button className='sound-edit-close' onClick={handleReturn}>
+      <Button classes='sound-edit-close' onClick={handleReturn}>
         <ChevronLeftIcon />
-      </button>
+      </Button>
       <div className='sound-edit-dummy' />
       <div className='sound-edit-all'>
         <label htmlFor={`slider-${type}`}>{type}</label>
         {showModAll ? (
           type === 'pitch' ? (
             <div className='pitch-input'>
-              <button className='pitch-dec' onClick={() => handlePitch('dec')}>
+              <Button classes='pitch-dec' onClick={() => handlePitch('dec')}>
                 -
-              </button>
+              </Button>
               <p className='pitch-val'>{value}</p>
-              <button className='pitch-inc' onClick={() => handlePitch('inc')}>
+              <Button classes='pitch-inc' onClick={() => handlePitch('inc')}>
                 +
-              </button>
+              </Button>
             </div>
           ) : (
             <input
@@ -81,17 +82,17 @@ export const PitchVelocityLength = ({ type, selectedSound, handleReturn }) => {
             />
           )
         ) : (
-          <button className='sound-edit-btn reset' onClick={handleReset}>
+          <Button classes='sound-edit-btn reset' onClick={handleReset}>
             reset
-          </button>
+          </Button>
         )}
 
-        <button
-          className='sound-edit-btn mod-all'
+        <Button
+          classes='sound-edit-btn mod-all'
           onClick={() => setShowModAll((showModAll) => !showModAll)}
         >
           {showModAll ? 'show reset' : 'show mod all'}
-        </button>
+        </Button>
       </div>
       <div className='mod-animation'>
         {type === 'pitch' ? (

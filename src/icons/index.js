@@ -39,7 +39,7 @@ export const ChevronLeftIcon = ({ addClass = '' }) => (
   <ChevronLeft className={addClass + ' chevron-left'} />
 );
 export const ChevronRightIcon = ({ addClass = '' }) => (
-  <ChevronRight className={addClass + ' icon'} />
+  <ChevronRight className={addClass + ' chevron-right'} />
 );
 
 export const ChevronDoubleLeftIcon = ({ addClass = '' }) => (

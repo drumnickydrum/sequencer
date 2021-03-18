@@ -1,13 +1,10 @@
 import React, { useContext } from 'react';
-import {
-  StopIcon,
-  StartIcon,
-  ChevronTripleRightIcon,
-  ChevronTripleLeftIcon,
-} from '../icons';
+import { Button, NavLeft, NavRight } from '../Components/Button';
+import { StopIcon, StartIcon } from '../icons';
 import { Sequencer, SetSequencer } from '../Providers/Sequencer';
+import { pressDown, pressUp } from '../utils/press';
 
-export const Transport = ({ scroll }) => {
+export const Transport = () => {
   const { setBpm, start, stop } = useContext(SetSequencer);
   const { bpm } = useContext(Sequencer);
 
@@ -18,12 +15,14 @@ export const Transport = ({ scroll }) => {
   return (
     <div className='menu-items transport'>
       <div className='transport-wrapper'>
-        <button id='stop' className='menu-btn' onClick={stop}>
+        <Button id='stop' classes='menu-btn' onClick={stop}>
           <StopIcon />
-        </button>
-        <button id='start' className='menu-btn' onClick={start}>
+          <label htmlFor='stop'>stop</label>
+        </Button>
+        <Button id='start' classes='menu-btn' onClick={start}>
           <StartIcon />
-        </button>
+          <label htmlFor='start'>start</label>
+        </Button>
         <div className='input'>
           <input id='bpm' type='number' value={bpm} onChange={handleChange} />
           <label htmlFor='bpm' id='bpm-label'>
@@ -32,12 +31,8 @@ export const Transport = ({ scroll }) => {
         </div>
       </div>
 
-      <div className='chevron left' onClick={() => scroll('left')}>
-        <ChevronTripleLeftIcon />
-      </div>
-      <div className='chevron right' onClick={() => scroll('right')}>
-        <ChevronTripleRightIcon />
-      </div>
+      <NavLeft />
+      <NavRight />
     </div>
   );
 };

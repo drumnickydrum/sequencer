@@ -8,14 +8,9 @@ import { LoadSaveButton } from '../Sections/LoadSaveButton';
 import { LoadSavePattern } from '../Sections/LoadSavePattern';
 import { ChangeKit } from '../Sections/ChangeKit';
 
+export const BottomScroll = React.createContext();
 export const SequencerPage = () => {
   const bottomRef = useRef(null);
-
-  const scroll = (dir) => {
-    const offset = dir === 'right' ? window.innerWidth : window.innerWidth * -1;
-    const start = bottomRef.current.scrollLeft;
-    bottomRef.current.scrollTo({ left: start + offset, behavior: 'smooth' });
-  };
 
   useEffect(() => {
     if (bottomRef.current) {
@@ -23,6 +18,12 @@ export const SequencerPage = () => {
       bottomRef.current.scrollTo({ left: width * 2, behavior: 'smooth' });
     }
   });
+
+  const scroll = (dir) => {
+    const offset = dir === 'right' ? window.innerWidth : window.innerWidth * -1;
+    const start = bottomRef.current.scrollLeft;
+    bottomRef.current.scrollTo({ left: start + offset, behavior: 'smooth' });
+  };
 
   return (
     <>
@@ -34,11 +35,13 @@ export const SequencerPage = () => {
         <SoundPanel />
       </div>
       <div ref={bottomRef} id='bottom'>
-        <ChangeKit scroll={scroll} />
-        <LoadSaveButton scroll={scroll} />
-        <Transport scroll={scroll} />
-        <UndoRedo scroll={scroll} />
-        <Clear scroll={scroll} />
+        <BottomScroll.Provider value={{ scroll }}>
+          <ChangeKit />
+          <LoadSaveButton />
+          <Transport />
+          <UndoRedo />
+          <Clear />
+        </BottomScroll.Provider>
       </div>
       <LoadSavePattern />
     </>

@@ -1,27 +1,34 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
+import { NavLeft, NavRight } from '../Components/Button';
 import {
-  ChevronTripleLeftIcon,
-  ChevronTripleRightIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
   ClearAllIcon,
-  ClearOneIcon,
   RedoIcon,
   UndoIcon,
 } from '../icons';
 import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
 import { Undo } from '../Providers/UndoProvider';
+import { pressDown, pressUp } from '../utils/press';
 
 export const UndoRedo = ({ scroll }) => {
   const { undo, redo, undoDisabled, redoDisabled } = useContext(Undo);
   const { buffersLoaded } = useContext(Kit);
 
+  const undoBtnRef = useRef(null);
+  const redoBtnRef = useRef(null);
+
   return (
     <div className='menu-items'>
       <span className='menu-dummy' />
       <button
+        ref={undoBtnRef}
         id='undo'
         className='menu-btn'
         disabled={undoDisabled || !buffersLoaded}
+        onTouchStart={() => pressDown(undoBtnRef)}
+        onTouchEnd={() => pressUp(undoBtnRef)}
         onClick={undo}
       >
         <UndoIcon />
@@ -30,9 +37,12 @@ export const UndoRedo = ({ scroll }) => {
         </label>
       </button>
       <button
+        ref={redoBtnRef}
         id='redo'
         className='menu-btn'
         disabled={redoDisabled || !buffersLoaded}
+        onTouchStart={() => pressDown(redoBtnRef)}
+        onTouchEnd={() => pressUp(redoBtnRef)}
         onClick={redo}
       >
         <RedoIcon />
@@ -41,23 +51,28 @@ export const UndoRedo = ({ scroll }) => {
         </label>
       </button>
       <span className='menu-dummy' />
-      <div className='chevron left' onClick={() => scroll('left')}>
-        <ChevronTripleLeftIcon />
-      </div>
-      <div className='chevron right' onClick={() => scroll('right')}>
-        <ChevronTripleRightIcon />
-      </div>
+
+      <NavLeft />
+      <NavRight />
     </div>
   );
 };
 
 export const Clear = ({ scroll }) => {
-  const { clearPattern, selectedSound } = useContext(Pattern);
+  const { clearPattern } = useContext(Pattern);
+
+  const clearAllBtnRef = useRef(null);
+
+  const leftRef = useRef(null);
+
   return (
     <div className='menu-items'>
       <button
+        ref={clearAllBtnRef}
         id='clear-all'
         className='menu-btn'
+        onTouchStart={() => pressDown(clearAllBtnRef)}
+        onTouchEnd={() => pressUp(clearAllBtnRef)}
         onClick={() => clearPattern()}
       >
         <ClearAllIcon />
@@ -65,9 +80,17 @@ export const Clear = ({ scroll }) => {
           clear pattern
         </label>
       </button>
-      <div className='chevron left' onClick={() => scroll('left')}>
-        <ChevronTripleLeftIcon />
+      <div
+        ref={leftRef}
+        className='chevron left'
+        onTouchStart={() => pressDown(leftRef)}
+        onTouchEnd={() => pressUp(leftRef)}
+        onClick={() => scroll('left')}
+      >
+        <ChevronLeftIcon />
       </div>
+
+      <NavLeft />
     </div>
   );
 };

@@ -540,6 +540,11 @@ body {
   opacity: 1;
 }
 
+.sound-btn {
+  background: none;
+  border: none;
+}
+
 .sound-name {
   z-index: 2;
 }
@@ -601,6 +606,11 @@ body {
 
 .sound-edit-close .chevron-left {
   width: 2.5rem;
+}
+
+.sound-edit-close.pressed {
+  transition: none;
+  transform: scale(0.8);
 }
 
 .sound-edit .icon {
@@ -743,6 +753,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.change-kit-wrapper label {
+  margin-right: 0.5rem;
 }
 
 .custom-select {
@@ -950,7 +964,7 @@ body {
   white-space: nowrap;
   overflow-y: hidden;
   scroll-behavior: smooth;
-  background-color: var(--purple-third);
+  background-color: var(--purple-half);
 }
 
 /*************************************/
@@ -966,6 +980,14 @@ body {
   justify-content: space-evenly;
   align-items: center;
   vertical-align: top;
+}
+
+.menu-items .chevron.left,
+.menu-items .chevron.right {
+  height: 100%;
+  max-width: 2rem;
+  display: flex;
+  align-items: center;
 }
 
 .menu-dummy {
@@ -1019,6 +1041,14 @@ body {
 
 #start {
   background: var(--lime-3q);
+}
+
+#stop label,
+#start label {
+  visibility: hidden;
+  width: 0;
+  user-select: none;
+  pointer-events: none;
 }
 
 .transport .input {
@@ -1108,7 +1138,7 @@ body {
   background-color: var(--purple-quarter);
 }
 .borderDefault {
-  border: 1px solid var(--purple-3q);
+  border: 1px solid var(--purple);
 }
 .colorDefault .icon {
   fill: var(--purple-3q);
@@ -1481,11 +1511,11 @@ p.dim {
 }
 
 .chevron.left {
-  left: 0.5rem;
+  left: 0;
 }
 
 .chevron.right {
-  right: 0.5rem;
+  right: 0;
 }
 
 .chevron .icon {
@@ -1593,12 +1623,10 @@ a.disabled {
 }
 
 .btn {
-  background: var(--black);
-  color: var(--white);
-  padding: 0.5rem;
-  outline: none;
-  border: 1px solid var(--white);
-  border-radius: 0.5rem;
+}
+
+.btn * {
+  filter: drop-shadow(2px 2px 2px var(--purple-quarter));
 }
 
 .bg {
@@ -1611,4 +1639,34 @@ a.disabled {
 
 .p-none {
   pointer-events: none;
+}
+
+.pressed {
+  transition: none;
+  transform: scale(0.95);
+}
+
+.chevron-left,
+.chevron-right {
+  fill: var(--white);
+  width: 100%;
+  height: 100%;
+}
+
+.nav-right,
+.nav-left {
+  position: absolute;
+  height: 100%;
+  width: 2rem;
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.nav-left {
+  left: 0;
+}
+.nav-right {
+  right: 0;
 }

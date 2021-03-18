@@ -26,14 +26,12 @@ export const Grid = () => {
     const cell = document.elementFromPoint(touch.clientX, touch.clientY);
     if (cell) {
       const id = cell.id;
-      console.log(id);
       if (!id.match(/cell/)) return;
       if (prevCellRef.current !== id) {
         prevCellRef.current = id;
         if (erasing && cell.classList.contains('on')) {
           document.dispatchEvent(cellsRef.current[id].events.toggle);
         } else if (painting && !cell.classList.contains('on')) {
-          console.log('dispatching');
           document.dispatchEvent(cellsRef.current[id].events.toggle);
         }
       }
