@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Button } from '../Components/Button';
 import { ChevronLeftIcon, CopyIcon, EraserIcon, SawIcon } from '../icons';
-import { Pattern } from '../Providers/Pattern';
+import { PatternAction } from '../Providers/Actions/Pattern';
 
 export const Erase = ({ handleReturn }) => {
-  const { clearPattern } = useContext(Pattern);
+  const { clearPattern } = useContext(PatternAction);
 
   const handleAll = () => {
     clearPattern(true);

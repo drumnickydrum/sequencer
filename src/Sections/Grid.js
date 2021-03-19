@@ -9,6 +9,7 @@ import React, {
 import { Pattern } from '../Providers/Pattern';
 import { Kit } from '../Providers/Kit';
 import { SawIcon } from '../icons';
+import { PatternAction } from '../Providers/Actions/Pattern';
 
 export const Grid = () => {
   const {
@@ -61,14 +62,12 @@ const Cell = ({ id, step }) => {
     refreshAll,
     setRefreshAll,
     prevCellRef,
-    toggleCell,
     selectedSound,
     modRef,
-    modify,
     slicingRef,
-    sliceStep,
     erasing,
   } = useContext(Pattern);
+  const { toggleCell, modify, sliceStep } = useContext(PatternAction);
   const { kitRef } = useContext(Kit);
 
   const [refresh, setRefresh] = useState(true);

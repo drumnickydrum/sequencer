@@ -5,6 +5,10 @@
 ### 3/19/2021
 
 - Custom hook `useStateAndLS`.
+- Separate PatternProvider into:
+  - PatternProvider | Holds pattern state
+  - PatternFunction | Functions to change pattern state
+  - PatternAction | User actions: Determines prev/new vals for undo/redo before calling pattern functions.
 
 ### 3/18/2021
 

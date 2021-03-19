@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Button, NavLeft, NavRight } from '../Components/Button';
 import { ClearAllIcon, RedoIcon, UndoIcon } from '../icons';
+import { PatternAction } from '../Providers/Actions/Pattern';
 import { Kit } from '../Providers/Kit';
-import { Pattern } from '../Providers/Pattern';
 import { Undo } from '../Providers/UndoProvider';
 
 export const UndoRedo = () => {
@@ -43,7 +43,7 @@ export const UndoRedo = () => {
 };
 
 export const Clear = () => {
-  const { clearPattern } = useContext(Pattern);
+  const { clearPattern } = useContext(PatternAction);
 
   return (
     <div className='menu-items'>

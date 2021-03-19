@@ -7,10 +7,12 @@ import { InfoProvider } from './Providers/Info';
 import { UndoProvider } from './Providers/UndoProvider';
 import { ToneProvider } from './Providers/ToneProvider';
 import { UserProvider } from './Providers/User';
+import { PatternActionProvider } from './Providers/Actions/Pattern';
 import { StatusProvider } from './Providers/Status';
 import { LoginPage } from './Pages/LoginPage';
 import { SequencerPage } from './Pages/Sequencer';
 import { StatusBar } from './Sections/StatusBar';
+import { PatternFunctionProvider } from './Providers/Functions/Pattern';
 
 export default function App() {
   return (
@@ -21,15 +23,19 @@ export default function App() {
             <KitProvider>
               <UndoProvider>
                 <PatternProvider>
-                  <SequencerProvider>
-                    <Router>
-                      <Switch>
-                        <Route path='/' exact component={SequencerPage} />
-                        <Route path='/login' component={LoginPage} />
-                      </Switch>
-                    </Router>
-                    <StatusBar />
-                  </SequencerProvider>
+                  <PatternFunctionProvider>
+                    <PatternActionProvider>
+                      <SequencerProvider>
+                        <Router>
+                          <Switch>
+                            <Route path='/' exact component={SequencerPage} />
+                            <Route path='/login' component={LoginPage} />
+                          </Switch>
+                        </Router>
+                        <StatusBar />
+                      </SequencerProvider>
+                    </PatternActionProvider>
+                  </PatternFunctionProvider>
                 </PatternProvider>
               </UndoProvider>
             </KitProvider>

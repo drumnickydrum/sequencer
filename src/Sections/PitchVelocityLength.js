@@ -6,12 +6,12 @@ import {
   LengthSwipe,
   ChevronLeftIcon,
 } from '../icons';
+import { PatternAction } from '../Providers/Actions/Pattern';
 import { Kit } from '../Providers/Kit';
-import { Pattern } from '../Providers/Pattern';
 
 export const PitchVelocityLength = ({ type, selectedSound, handleReturn }) => {
   const { kitRef } = useContext(Kit);
-  const { modify, resetMods } = useContext(Pattern);
+  const { modify, resetMods } = useContext(PatternAction);
   const [showModAll, setShowModAll] = useState(false);
 
   const [value, setValue] = useState(

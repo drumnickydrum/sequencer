@@ -1,4 +1,5 @@
 import React, { useState, useContext, useRef } from 'react';
+import { PatternAction } from '../Providers/Actions/Pattern';
 import { Kit } from '../Providers/Kit';
 import { Pattern } from '../Providers/Pattern';
 
@@ -26,7 +27,8 @@ export const PastePattern = () => {
 };
 
 const SoundBtn = ({ i, sound, selected }) => {
-  const { patternRef, pastePattern } = useContext(Pattern);
+  const { patternRef } = useContext(Pattern);
+  const { pastePattern } = useContext(PatternAction);
 
   const ref = useRef(null);
 
