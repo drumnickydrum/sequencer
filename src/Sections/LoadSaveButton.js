@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Button, NavLeft, NavRight } from '../Components/Button';
 import { OpenIcon, SaveIcon } from '../icons';
-import { Pattern } from '../Providers/Pattern';
+import { PatternState } from '../Providers/Pattern';
 
 export const LoadSaveButton = () => {
-  const { setShow } = useContext(Pattern);
+  const { setShow } = useContext(PatternState);
   const handleClick = (type) => {
     if (type === 'load') setShow('load');
     if (type === 'save') setShow('save');

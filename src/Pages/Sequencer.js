@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Transport } from '../Sections/Transport';
+import { TransportPanel } from '../Sections/TransportPanel';
 import { Grid } from '../Sections/Grid';
 import { PastePattern } from '../Sections/PastePattern';
 import { SoundPanel } from '../Sections/SoundPanel';
@@ -38,7 +38,7 @@ export const SequencerPage = () => {
         <BottomScroll.Provider value={{ scroll }}>
           <ChangeKit />
           <LoadSaveButton />
-          <Transport />
+          <TransportPanel />
           <UndoRedo />
           <Clear />
         </BottomScroll.Provider>

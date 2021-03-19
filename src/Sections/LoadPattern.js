@@ -4,15 +4,15 @@ import { Link } from 'react-router-dom';
 import * as defaultPatterns from '../defaults/defaultPatterns';
 import { DeleteIcon } from '../icons';
 import { PatternAction } from '../Providers/Actions/Pattern';
-import { Pattern } from '../Providers/Pattern';
-import { Sequencer } from '../Providers/Sequencer';
+import { PatternState } from '../Providers/Pattern';
+import { Transport } from '../Providers/Transport';
 import { User } from '../Providers/User';
 import { useChangeKit } from '../utils/useChangeKit';
 
 export const LoadPattern = () => {
-  const { patternId } = useContext(Pattern);
+  const { patternId } = useContext(PatternState);
   const { loadPattern } = useContext(PatternAction);
-  const { stop } = useContext(Sequencer);
+  const { stop } = useContext(Transport);
   const { user, fetching } = useContext(User);
   const { changeKit } = useChangeKit();
 

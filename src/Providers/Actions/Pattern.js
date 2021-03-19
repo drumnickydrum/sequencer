@@ -1,7 +1,12 @@
 import React, { useContext } from 'react';
 import { PatternFunction } from '../Functions/Pattern';
 import { Kit } from '../Kit';
-import { Pattern, deepCopyPattern, initSound, initPattern } from '../Pattern';
+import {
+  PatternState,
+  deepCopyPattern,
+  initSound,
+  initPattern,
+} from '../Pattern';
 import { Undo } from '../UndoProvider';
 
 export const PatternAction = React.createContext();
@@ -15,7 +20,7 @@ export const PatternActionProvider = ({ children }) => {
     patternId,
     patternName,
     patternBpm,
-  } = useContext(Pattern);
+  } = useContext(PatternState);
   const { toggle, modifyFunc, reset, slice, paste, load, clear } = useContext(
     PatternFunction
   );

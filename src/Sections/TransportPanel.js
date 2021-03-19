@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import { Button, NavLeft, NavRight } from '../Components/Button';
 import { StopIcon, StartIcon, PauseIcon } from '../icons';
-import { Pattern } from '../Providers/Pattern';
-import { Sequencer } from '../Providers/Sequencer';
+import { PatternState } from '../Providers/Pattern';
+import { Transport } from '../Providers/Transport';
 
-export const Transport = () => {
-  const { patternBpm, setPatternBpm } = useContext(Pattern);
-  const { transportState, start, stop } = useContext(Sequencer);
+export const TransportPanel = () => {
+  const { patternBpm, setPatternBpm } = useContext(PatternState);
+  const { transportState, start, stop } = useContext(Transport);
 
   const handleChange = ({ target: { value } }) => {
     setPatternBpm(value > 300 ? 300 : value);

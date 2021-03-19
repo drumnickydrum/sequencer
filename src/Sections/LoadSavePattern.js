@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useContext, useState } from 'react';
-import { Pattern } from '../Providers/Pattern';
+import { PatternState } from '../Providers/Pattern';
 import { User } from '../Providers/User';
 import { LoadPattern } from './LoadPattern';
 import { SavePattern } from './SavePattern';
@@ -8,7 +8,7 @@ import { INITIAL_USER } from '../Providers/User';
 
 export const LoadSavePattern = () => {
   const { user, setUser } = useContext(User);
-  const { show, setShow } = useContext(Pattern);
+  const { show, setShow } = useContext(PatternState);
   const [fetching, setFetching] = useState(false);
 
   const handleLogout = async () => {

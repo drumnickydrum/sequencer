@@ -10,7 +10,7 @@ import {
   PointDownIcon,
 } from '../icons';
 import { Kit } from '../Providers/Kit';
-import { Pattern } from '../Providers/Pattern';
+import { PatternState } from '../Providers/Pattern';
 import { useSoloAndMute } from './useSoloAndMute';
 import { Erase, Slice, Copy } from './EraseSliceCopy';
 import { PitchVelocityLength } from './PitchVelocityLength';
@@ -31,7 +31,7 @@ export const SoundPanel = () => {
     setCopying,
     mod,
     setMod,
-  } = useContext(Pattern);
+  } = useContext(PatternState);
   const { kitRef } = useContext(Kit);
   const { solo, mute, handleSolo, handleMute } = useSoloAndMute();
   const [showEditMenu, setShowEditMenu] = useState(false);

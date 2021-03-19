@@ -2,13 +2,13 @@ import axios from 'axios';
 import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Kit } from '../Providers/Kit';
-import { Pattern } from '../Providers/Pattern';
-import { Sequencer } from '../Providers/Sequencer';
+import { PatternState } from '../Providers/Pattern';
+import { Transport } from '../Providers/Transport';
 import { User } from '../Providers/User';
 
 export const SavePattern = () => {
-  const { patternRef, patternBpm } = useContext(Pattern);
-  const { stop } = useContext(Sequencer);
+  const { patternRef, patternBpm } = useContext(PatternState);
+  const { stop } = useContext(Transport);
   const { user, setUser, fetching } = useContext(User);
   const { currentKit } = useContext(Kit);
 

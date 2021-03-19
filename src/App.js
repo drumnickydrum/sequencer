@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { KitProvider } from './Providers/Kit';
-import { PatternProvider } from './Providers/Pattern';
-import { SequencerProvider } from './Providers/Sequencer';
+import { PatternStateProvider } from './Providers/Pattern';
+import { TransportProvider } from './Providers/Transport';
 import { InfoProvider } from './Providers/Info';
 import { UndoProvider } from './Providers/UndoProvider';
 import { ToneProvider } from './Providers/ToneProvider';
@@ -22,10 +22,10 @@ export default function App() {
           <InfoProvider>
             <KitProvider>
               <UndoProvider>
-                <PatternProvider>
+                <PatternStateProvider>
                   <PatternFunctionProvider>
                     <PatternActionProvider>
-                      <SequencerProvider>
+                      <TransportProvider>
                         <Router>
                           <Switch>
                             <Route path='/' exact component={SequencerPage} />
@@ -33,10 +33,10 @@ export default function App() {
                           </Switch>
                         </Router>
                         <StatusBar />
-                      </SequencerProvider>
+                      </TransportProvider>
                     </PatternActionProvider>
                   </PatternFunctionProvider>
-                </PatternProvider>
+                </PatternStateProvider>
               </UndoProvider>
             </KitProvider>
           </InfoProvider>

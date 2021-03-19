@@ -1,10 +1,10 @@
 import { useState, useContext } from 'react';
 import { Kit } from '../Providers/Kit';
-import { Pattern } from '../Providers/Pattern';
+import { PatternState } from '../Providers/Pattern';
 
 export const useSoloAndMute = () => {
   const { kitRef } = useContext(Kit);
-  const { selectedSound } = useContext(Pattern);
+  const { selectedSound } = useContext(PatternState);
   const [solo, setSolo] = useState(false);
   const [mute, setMute] = useState(false);
 

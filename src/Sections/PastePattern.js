@@ -1,11 +1,11 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import { PatternAction } from '../Providers/Actions/Pattern';
 import { Kit } from '../Providers/Kit';
-import { Pattern } from '../Providers/Pattern';
+import { PatternState } from '../Providers/Pattern';
 
 export const PastePattern = () => {
   const { kitRef } = useContext(Kit);
-  const { selectedSound, copying } = useContext(Pattern);
+  const { selectedSound, copying } = useContext(PatternState);
 
   return (
     <div id='paste-pattern' className={copying ? 'show' : ''}>
@@ -27,7 +27,7 @@ export const PastePattern = () => {
 };
 
 const SoundBtn = ({ i, sound, selected }) => {
-  const { patternRef } = useContext(Pattern);
+  const { patternRef } = useContext(PatternState);
   const { pastePattern } = useContext(PatternAction);
 
   const ref = useRef(null);

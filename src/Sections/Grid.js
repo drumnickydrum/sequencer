@@ -6,7 +6,7 @@ import React, {
   useRef,
   useCallback,
 } from 'react';
-import { Pattern } from '../Providers/Pattern';
+import { PatternState } from '../Providers/Pattern';
 import { Kit } from '../Providers/Kit';
 import { SawIcon } from '../icons';
 import { PatternAction } from '../Providers/Actions/Pattern';
@@ -20,7 +20,7 @@ export const Grid = () => {
     prevCellRef,
     selectedSound,
     cellsRef,
-  } = useContext(Pattern);
+  } = useContext(PatternState);
 
   const handleDrag = (e) => {
     if (!painting && !erasing) return;
@@ -66,7 +66,7 @@ const Cell = ({ id, step }) => {
     modRef,
     slicingRef,
     erasing,
-  } = useContext(Pattern);
+  } = useContext(PatternState);
   const { toggleCell, modify, sliceStep } = useContext(PatternAction);
   const { kitRef } = useContext(Kit);
 

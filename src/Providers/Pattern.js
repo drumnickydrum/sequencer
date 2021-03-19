@@ -5,8 +5,8 @@ import { Status } from './Status';
 import { getLS, setLS } from '../utils/storage';
 import { useStateAndLS, useStateAndSS } from '../utils/storage';
 
-export const Pattern = React.createContext();
-export const PatternProvider = ({ children }) => {
+export const PatternState = React.createContext();
+export const PatternStateProvider = ({ children }) => {
   const { alertSelectSound } = useContext(Status);
 
   //! this belongs App level
@@ -88,7 +88,7 @@ export const PatternProvider = ({ children }) => {
   });
 
   return (
-    <Pattern.Provider
+    <PatternState.Provider
       value={{
         gridRef,
         patternId,
@@ -122,7 +122,7 @@ export const PatternProvider = ({ children }) => {
       }}
     >
       {children}
-    </Pattern.Provider>
+    </PatternState.Provider>
   );
 };
 

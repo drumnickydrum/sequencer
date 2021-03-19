@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import * as Tone from 'tone';
-import { Pattern } from './Pattern';
+import { PatternState } from './Pattern';
 import { MIDI_NOTES } from '../utils/MIDI_NOTES';
 import { Kit } from './Kit';
 
-export const Sequencer = React.createContext();
-export const SequencerProvider = ({ children }) => {
-  const { patternRef, cellsRef, patternBpm } = useContext(Pattern);
+export const Transport = React.createContext();
+export const TransportProvider = ({ children }) => {
+  const { patternRef, cellsRef, patternBpm } = useContext(PatternState);
   const { kitRef, buffersLoaded, soundsRef } = useContext(Kit);
   const stepRef = useRef(0);
 
@@ -162,9 +162,9 @@ export const SequencerProvider = ({ children }) => {
   };
 
   return (
-    <Sequencer.Provider value={{ transportState, start, stop, setRestart }}>
+    <Transport.Provider value={{ transportState, start, stop, setRestart }}>
       {children}
-    </Sequencer.Provider>
+    </Transport.Provider>
   );
 };
 
