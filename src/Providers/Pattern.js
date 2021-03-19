@@ -8,7 +8,7 @@ export const PatternProvider = ({ children }) => {
   return (
     <PatternStateProvider>
       <PatternFunctionProvider>
-        <PatternActionProvider>{children} </PatternActionProvider>
+        <PatternActionProvider>{children}</PatternActionProvider>
       </PatternFunctionProvider>
     </PatternStateProvider>
   );

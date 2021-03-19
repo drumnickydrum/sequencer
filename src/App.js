@@ -16,8 +16,8 @@ export default function App() {
     <StatusProvider>
       <UserProvider>
         <InfoProvider>
-          <KitProvider>
-            <UndoProvider>
+          <UndoProvider>
+            <KitProvider>
               <PatternProvider>
                 <TransportProvider>
                   <Router>
@@ -29,8 +29,8 @@ export default function App() {
                   <StatusBar />
                 </TransportProvider>
               </PatternProvider>
-            </UndoProvider>
-          </KitProvider>
+            </KitProvider>
+          </UndoProvider>
         </InfoProvider>
       </UserProvider>
     </StatusProvider>
