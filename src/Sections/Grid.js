@@ -12,6 +12,7 @@ import { SawIcon } from '../icons';
 
 export const Grid = () => {
   const {
+    gridRef,
     patternRef,
     erasing,
     painting,
@@ -40,6 +41,7 @@ export const Grid = () => {
 
   return (
     <div
+      ref={gridRef}
       id='grid'
       className={selectedSound === -1 ? '' : 'no-drag'}
       onTouchMove={handleDrag}

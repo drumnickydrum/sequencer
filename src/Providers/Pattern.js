@@ -4,7 +4,7 @@ import { Undo } from './UndoProvider';
 import { useStateAndRef } from '../utils/useStateAndRef';
 import { Kit } from './Kit';
 import { Status } from './Status';
-import { getLS, getSS, setLS, setSS } from '../utils/storage';
+import { getLS, setLS } from '../utils/storage';
 import { useStateAndLS, useStateAndSS } from '../utils/storage';
 
 export const Pattern = React.createContext();
@@ -14,7 +14,6 @@ export const PatternProvider = ({ children }) => {
   const { changeStatus, alertSelectSound } = useContext(Status);
 
   const gridRef = useRef(null);
-
   const [selectedSound, setSelectedSound] = useState(-1);
   useEffect(() => {
     const grid = gridRef.current;
@@ -276,6 +275,7 @@ export const PatternProvider = ({ children }) => {
   return (
     <Pattern.Provider
       value={{
+        gridRef,
         patternId,
         setPatternId,
         patternName,
