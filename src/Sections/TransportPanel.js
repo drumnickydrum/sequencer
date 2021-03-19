@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Button, NavLeft, NavRight } from '../Components/Button';
 import { StopIcon, StartIcon, PauseIcon } from '../icons';
-import { PatternState } from '../Providers/Pattern';
+import { PatternState } from '../Providers/State/Pattern';
 import { Transport } from '../Providers/Transport';
 
 export const TransportPanel = () => {

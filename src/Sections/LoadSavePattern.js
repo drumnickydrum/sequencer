@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useContext, useState } from 'react';
-import { PatternState } from '../Providers/Pattern';
+import { PatternState } from '../Providers/State/Pattern';
 import { User } from '../Providers/User';
 import { LoadPattern } from './LoadPattern';
 import { SavePattern } from './SavePattern';

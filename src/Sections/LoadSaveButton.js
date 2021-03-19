@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Button, NavLeft, NavRight } from '../Components/Button';
 import { OpenIcon, SaveIcon } from '../icons';
-import { PatternState } from '../Providers/Pattern';
+import { PatternState } from '../Providers/State/Pattern';
 
 export const LoadSaveButton = () => {
   const { setShow } = useContext(PatternState);

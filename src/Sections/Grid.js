@@ -6,7 +6,7 @@ import React, {
   useRef,
   useCallback,
 } from 'react';
-import { PatternState } from '../Providers/Pattern';
+import { PatternState } from '../Providers/State/Pattern';
 import { Kit } from '../Providers/Kit';
 import { SawIcon } from '../icons';
 import { PatternAction } from '../Providers/Actions/Pattern';

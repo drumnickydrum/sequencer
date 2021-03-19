@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import * as Tone from 'tone';
 import * as defaultKits from '../defaults/defaultKits';
-import { getLS, setLS } from '../utils/storage';
+import { getLS, useStateAndLS } from '../utils/storage';
 
 const kit = getLS('kit') || 'analog';
 const initialSounds = defaultKits[kit].sounds.map((sound) => ({ ...sound }));
@@ -10,10 +10,8 @@ const initialKit = { name: defaultKits[kit].name, sounds: initialSounds };
 export const Kit = React.createContext();
 export const KitProvider = ({ children }) => {
   const [buffersLoaded, setBuffersLoaded] = useState(false);
-  const [currentKit, setCurrentKit] = useState(initialKit.name);
-  useEffect(() => {
-    setLS('kit', currentKit);
-  }, [currentKit]);
+
+  const [currentKit, setCurrentKit] = useStateAndLS('kit', initialKit.name);
   const kitRef = useRef(initialKit);
 
   const loadSamples = (kit) => {

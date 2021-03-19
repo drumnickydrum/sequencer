@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { Kit } from '../Providers/Kit';
-import { PatternState } from '../Providers/Pattern';
+import { PatternState } from '../Providers/State/Pattern';
 
 export const useSoloAndMute = () => {
   const { kitRef } = useContext(Kit);

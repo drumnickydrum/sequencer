@@ -6,7 +6,7 @@ import {
   deepCopyPattern,
   initSound,
   initPattern,
-} from '../Pattern';
+} from '../State/Pattern';
 import { Undo } from '../UndoProvider';
 
 export const PatternAction = React.createContext();

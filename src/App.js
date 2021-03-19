@@ -1,46 +1,37 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { KitProvider } from './Providers/Kit';
-import { PatternStateProvider } from './Providers/Pattern';
+import { PatternProvider } from './Providers/Pattern';
 import { TransportProvider } from './Providers/Transport';
 import { InfoProvider } from './Providers/Info';
 import { UndoProvider } from './Providers/UndoProvider';
-import { ToneProvider } from './Providers/ToneProvider';
 import { UserProvider } from './Providers/User';
-import { PatternActionProvider } from './Providers/Actions/Pattern';
 import { StatusProvider } from './Providers/Status';
 import { LoginPage } from './Pages/LoginPage';
 import { SequencerPage } from './Pages/Sequencer';
 import { StatusBar } from './Sections/StatusBar';
-import { PatternFunctionProvider } from './Providers/Functions/Pattern';
 
 export default function App() {
   return (
     <StatusProvider>
       <UserProvider>
-        <ToneProvider>
-          <InfoProvider>
-            <KitProvider>
-              <UndoProvider>
-                <PatternStateProvider>
-                  <PatternFunctionProvider>
-                    <PatternActionProvider>
-                      <TransportProvider>
-                        <Router>
-                          <Switch>
-                            <Route path='/' exact component={SequencerPage} />
-                            <Route path='/login' component={LoginPage} />
-                          </Switch>
-                        </Router>
-                        <StatusBar />
-                      </TransportProvider>
-                    </PatternActionProvider>
-                  </PatternFunctionProvider>
-                </PatternStateProvider>
-              </UndoProvider>
-            </KitProvider>
-          </InfoProvider>
-        </ToneProvider>
+        <InfoProvider>
+          <KitProvider>
+            <UndoProvider>
+              <PatternProvider>
+                <TransportProvider>
+                  <Router>
+                    <Switch>
+                      <Route path='/' exact component={SequencerPage} />
+                      <Route path='/login' component={LoginPage} />
+                    </Switch>
+                  </Router>
+                  <StatusBar />
+                </TransportProvider>
+              </PatternProvider>
+            </UndoProvider>
+          </KitProvider>
+        </InfoProvider>
       </UserProvider>
     </StatusProvider>
   );

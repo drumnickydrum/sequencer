@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Kit } from '../Kit';
-import { PatternState, deepCopyPattern, copyValues } from '../Pattern';
+import { PatternState, deepCopyPattern, copyValues } from '../State/Pattern';
 import { Status } from '../Status';
 
 export const PatternFunction = React.createContext();

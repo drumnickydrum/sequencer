@@ -1,7 +1,7 @@
 import React, { useContext, useRef } from 'react';
 import { PatternAction } from '../Providers/Actions/Pattern';
 import { Kit } from '../Providers/Kit';
-import { PatternState } from '../Providers/Pattern';
+import { PatternState } from '../Providers/State/Pattern';
 
 export const PastePattern = () => {
   const { kitRef } = useContext(Kit);

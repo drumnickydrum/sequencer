@@ -10,7 +10,7 @@ import {
   PointDownIcon,
 } from '../icons';
 import { Kit } from '../Providers/Kit';
-import { PatternState } from '../Providers/Pattern';
+import { PatternState } from '../Providers/State/Pattern';
 import { useSoloAndMute } from './useSoloAndMute';
 import { Erase, Slice, Copy } from './EraseSliceCopy';
 import { PitchVelocityLength } from './PitchVelocityLength';

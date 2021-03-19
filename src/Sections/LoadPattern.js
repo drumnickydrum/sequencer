@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import * as defaultPatterns from '../defaults/defaultPatterns';
 import { DeleteIcon } from '../icons';
 import { PatternAction } from '../Providers/Actions/Pattern';
-import { PatternState } from '../Providers/Pattern';
+import { PatternState } from '../Providers/State/Pattern';
 import { Transport } from '../Providers/Transport';
 import { User } from '../Providers/User';
 import { useChangeKit } from '../utils/useChangeKit';
