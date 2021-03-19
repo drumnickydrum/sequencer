@@ -5,6 +5,7 @@ import { useStateAndRef } from '../utils/useStateAndRef';
 import { Kit } from './Kit';
 import { Status } from './Status';
 import { getLS, getSS, setLS, setSS } from '../utils/storage';
+import { useStateAndLS, useStateAndSS } from '../utils/storage';
 
 export const Pattern = React.createContext();
 export const PatternProvider = ({ children }) => {
@@ -27,35 +28,42 @@ export const PatternProvider = ({ children }) => {
     };
   }, [selectedSound, alertSelectSound]);
 
-  const [show, setShow] = useState(getSS('show') || false);
-  useEffect(() => {
-    setSS('show', show);
-  }, [show]);
+  // const [show, setShow] = useState(getSS('show') || false);
+  // useEffect(() => {
+  //   setSS('show', show);
+  // }, [show]);
+  const [show, setShow] = useStateAndSS('show', false);
+
+  // const [patternId, setPatternId] = useState(getLS('patternId') || analog._id);
+  // useEffect(() => {
+  //   setLS('patternId', patternId);
+  // }, [patternId]);
+  const [patternId, setPatternId] = useStateAndLS('patternId', analog._id);
+  const [patternName, setPatternName] = useStateAndLS(
+    'patternName',
+    analog.name
+  );
+  const [patternBpm, setPatternBpm] = useStateAndLS('patternBpm', analog.bpm);
+
+  // const [patternName, setPatternName] = useState(
+  //   getLS('patternName') || analog.name
+  // );
+  // useEffect(() => {
+  //   setLS('patternName', patternName);
+  // }, [patternName]);
+
+  // const [patternBpm, setPatternBpm] = useState(
+  //   getLS('patternBpm') || analog.bpm
+  // );
+  // useEffect(() => {
+  //   setLS('patternBpm', patternBpm);
+  // }, [patternBpm]);
 
   const patternRef = useRef(
     deepCopyPattern(getLS('pattern') || analog.pattern)
   );
   const updatePatternLS = () => setLS('pattern', patternRef.current);
   const cellsRef = useRef({});
-
-  const [patternId, setPatternId] = useState(getLS('patternId') || analog._id);
-  useEffect(() => {
-    setLS('patternId', patternId);
-  }, [patternId]);
-
-  const [patternName, setPatternName] = useState(
-    getLS('patternName') || analog.name
-  );
-  useEffect(() => {
-    setLS('patternName', patternName);
-  }, [patternName]);
-
-  const [patternBpm, setPatternBpm] = useState(
-    getLS('patternBpm') || analog.bpm
-  );
-  useEffect(() => {
-    setLS('patternBpm', patternBpm);
-  }, [patternBpm]);
 
   const [refreshAll, setRefreshAll] = useState(false);
 

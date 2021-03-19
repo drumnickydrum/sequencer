@@ -2,6 +2,10 @@
 
 ## Dev notes
 
+### 3/19/2021
+
+- Custom hook `useStateAndLS`.
+
 ### 3/18/2021
 
 - Moved `clearPattern(one)` to `sound-edit` panel where it should be.
