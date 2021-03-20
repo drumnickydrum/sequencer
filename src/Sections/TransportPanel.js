@@ -36,8 +36,8 @@ export const TransportPanel = () => {
         </div>
       </div>
 
-      <NavLeft />
-      <NavRight />
+      {/* <NavLeft /> */}
+      {/* <NavRight /> */}
     </div>
   );
 };

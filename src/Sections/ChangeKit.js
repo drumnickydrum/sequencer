@@ -48,7 +48,7 @@ export const ChangeKit = () => {
         </div>
       </div>
 
-      <NavRight />
+      {/* <NavRight /> */}
     </div>
   );
 };

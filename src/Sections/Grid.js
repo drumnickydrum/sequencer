@@ -40,6 +40,8 @@ export const Grid = () => {
     }
   };
 
+  console.log('rendering grid');
+
   return (
     <div
       ref={gridRef}

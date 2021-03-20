@@ -9,6 +9,7 @@ import { ReactComponent as OpenHat } from './oh.svg';
 import { ReactComponent as Shaker } from './shk.svg';
 import { ReactComponent as Shaker2 } from './shk2.svg';
 import { ReactComponent as Snare } from './snr.svg';
+import { ReactComponent as Snare2 } from './snr2.svg';
 import { ReactComponent as Sticks } from './sticks.svg';
 import { ReactComponent as Sticks2 } from './sticks2.svg';
 import { ReactComponent as Tom } from './tom.svg';
@@ -80,6 +81,12 @@ export const snr = (color) => {
   const classes =
     color || color === 0 ? `icon color color${color}` : 'icon white';
   return <Snare className={classes} />;
+};
+
+export const snr2 = (color) => {
+  const classes =
+    color || color === 0 ? `icon color color${color}` : 'icon white';
+  return <Snare2 className={classes} />;
 };
 
 export const sticks = (color) => {

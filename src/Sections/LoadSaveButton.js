@@ -36,8 +36,8 @@ export const LoadSaveButton = () => {
       </Button>
       <span className='menu-dummy' />
 
-      <NavLeft />
-      <NavRight />
+      {/* <NavLeft /> */}
+      {/* <NavRight /> */}
     </div>
   );
 };

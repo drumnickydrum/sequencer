@@ -37,8 +37,8 @@ export const UndoRedo = () => {
       </Button>
       <span className='menu-dummy' />
 
-      <NavLeft />
-      <NavRight />
+      {/* <NavLeft /> */}
+      {/* <NavRight /> */}
     </div>
   );
 };
@@ -61,7 +61,7 @@ export const Clear = () => {
         </label>
       </Button>
 
-      <NavLeft />
+      {/* <NavLeft /> */}
     </div>
   );
 };
