@@ -29,6 +29,7 @@ button {
   --lime-3q: rgba(64, 244, 195, 0.75);
   --lime-half: rgba(64, 244, 195, 0.5);
   --lime-quarter: rgba(64, 244, 195, 0.25);
+  --purple-dark: rgb(60, 10, 99);
   --purple: rgba(113, 18, 185, 1);
   --purple-3q: rgba(113, 18, 185, 0.75);
   --purple-half: rgba(113, 18, 185, 0.5);
@@ -193,6 +194,7 @@ body {
   border-top: 1px solid var(--purple);
   border-bottom: 1px solid var(--purple);
   background: var(--purple-third);
+  overflow: hidden;
 }
 
 /*************************************/
@@ -477,6 +479,17 @@ body {
   background: var(--black-3q);
   border-radius: 0.5rem;
   z-index: 3;
+}
+
+.paste-icon-wrapper {
+  height: 25%;
+  width: 25%;
+}
+
+#paste-pattern-sounds .icon {
+  height: 100%;
+  width: 100%;
+  fill: var(--white);
 }
 
 #paste-pattern-sounds .cells {
@@ -927,18 +940,18 @@ body {
   background: var(--none);
   transform: scale(1) rotate(0);
   transition: 200ms;
-  transition-property: opacity, transform;
+  transition-property: transform;
 }
 
 .cell .bg,
 .cursor,
-.border-flashing {
+.border-flashing,
+.bg-color {
   pointer-events: none;
   position: absolute;
   width: 100%;
   height: 100%;
   border-radius: 0.5rem;
-  transition: 200ms;
 }
 
 .cell .bg {
@@ -947,8 +960,14 @@ body {
 }
 
 .cursor,
-.border-flashing {
+.border-flashing,
+.bg-color {
   opacity: 0;
+}
+
+.bg-color.show {
+  transition: none;
+  opacity: 1;
 }
 
 .border-flashing {
@@ -1071,7 +1090,7 @@ div[data-cursor='true'] .cursor {
 
 .slice svg {
   stroke-width: 2px;
-  stroke: var(--purple);
+  stroke: var(--purple-dark);
   fill: transparent;
   width: 0;
   height: 0;

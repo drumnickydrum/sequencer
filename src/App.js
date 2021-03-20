@@ -43,12 +43,12 @@ window.addEventListener('orientationchange', resize);
 // });
 
 function resize() {
-  var originalBodyStyle = getComputedStyle(document.body).getPropertyValue(
-    'display'
-  );
+  // var originalBodyStyle = getComputedStyle(document.body).getPropertyValue(
+  //   'display'
+  // );
   document.body.style.display = 'none';
   setTimeout(function () {
-    document.body.style.display = originalBodyStyle;
+    document.body.style.display = 'initial';
   }, 10);
   // window.removeEventListener('focus', resize);
 }

@@ -2,6 +2,7 @@ import React, { useContext, useRef } from 'react';
 import { PatternAction } from '../Providers/Actions/Pattern';
 import { Kit } from '../Providers/Kit';
 import { PatternState } from '../Providers/State/Pattern';
+import * as icons from '../icons/kit';
 
 export const PastePattern = () => {
   const { kitRef } = useContext(Kit);
@@ -44,7 +45,13 @@ const SoundBtn = ({ i, sound, selected }) => {
   if (selected) classes += ' flashing';
   return (
     <div className={classes} onClick={handleClick}>
-      {selected ? <p className='flashing'>copying...</p> : <p>{sound.name}</p>}
+      {selected ? (
+        <p className='flashing'>copying...</p>
+      ) : (
+        <div className='paste-icon-wrapper'>
+          {icons[sound.icon](sound.color)}
+        </div>
+      )}
       <div ref={ref} className={selected ? 'cells selected' : 'cells'}>
         {patternRef.current.map((_, step) => {
           const classes = patternRef.current[step][i].noteOn

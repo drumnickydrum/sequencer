@@ -40,8 +40,6 @@ export const Grid = () => {
     }
   };
 
-  console.log('rendering grid');
-
   return (
     <div
       ref={gridRef}
@@ -247,7 +245,7 @@ const Cell = ({ id, step }) => {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <div className={on ? `cell-mods bg${color}` : ''} style={modStyle}>
+        <div className={on ? 'cell-mods' : ''} style={modStyle}>
           <p className={on && pitch > 24 ? 'pitch-up show' : 'pitch-up'}>
             +{pitch - 24}
           </p>
@@ -270,10 +268,12 @@ const Cell = ({ id, step }) => {
           </div>
         </div>
         <div className='bg' />
-        <div className={`noteOn bg${color}`} />
+        <div
+          className={on ? `bg-color bg${color} show` : `bg-color bg${color}`}
+        />
         <div className='cursor' />
         <div className='border-flashing' />
-        <div className='sound-cells'>
+        {/* <div className='sound-cells'>
           {kitRef.current.sounds.map((_, sound) => {
             const scId = `${id}-${sound}`;
             const color = patternRef.current[step][sound].noteOn
@@ -289,7 +289,7 @@ const Cell = ({ id, step }) => {
               />
             );
           })}
-        </div>
+        </div> */}
       </div>
     </div>
   );
