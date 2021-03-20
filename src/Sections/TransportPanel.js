@@ -9,6 +9,7 @@ export const TransportPanel = () => {
   const { transportState, start, stop } = useContext(Transport);
 
   const handleChange = ({ target: { value } }) => {
+    if (value.match(/\D/)) return;
     setPatternBpm(value > 300 ? 300 : value);
   };
 
@@ -26,7 +27,7 @@ export const TransportPanel = () => {
         <div className='input'>
           <input
             id='bpm'
-            type='number'
+            type='tel'
             value={patternBpm}
             onChange={handleChange}
           />

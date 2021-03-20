@@ -20,6 +20,7 @@ export const TransportProvider = ({ children }) => {
   const start = () => {
     removeCursor();
     if (transportState !== 'started') {
+      pauseFlashing();
       if (transportState === 'stopped') schedulePattern();
       setTransportState('started');
       Tone.Transport.start();
@@ -36,6 +37,7 @@ export const TransportProvider = ({ children }) => {
     const scheduledEvents = Tone.Transport._scheduledEvents;
     Object.keys(scheduledEvents).forEach((id) => Tone.Transport.clear(id));
     removeCursor();
+    startFlashing();
     stepRef.current = 0;
   };
 
@@ -43,6 +45,17 @@ export const TransportProvider = ({ children }) => {
     setTransportState('paused');
     Tone.Transport.pause();
     addCursor();
+    startFlashing();
+  };
+
+  const startFlashing = () => {
+    const flashingCells = document.querySelectorAll('.flashing');
+    flashingCells.forEach((cell) => cell.classList.remove('pause'));
+  };
+
+  const pauseFlashing = () => {
+    const flashingCells = document.querySelectorAll('.flashing');
+    flashingCells.forEach((cell) => cell.classList.add('pause'));
   };
 
   const addCursor = () => {

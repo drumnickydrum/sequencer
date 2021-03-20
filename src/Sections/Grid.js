@@ -248,18 +248,26 @@ const Cell = ({ id, step }) => {
         onTouchEnd={handleTouchEnd}
       >
         <div className={on ? `cell-mods bg${color}` : ''} style={modStyle}>
-          {on && pitch > 24 && <p className='pitch-up'>+{pitch - 24}</p>}
-          {on && pitch < 24 && <p className='pitch-down'>{pitch - 24}</p>}
-          {on && slice > 1 && (
-            <div className={slice === 2 ? 'slice' : 'slice slice-3'}>
-              <SawIcon />
-            </div>
-          )}
-          {on && slice > 2 && (
-            <div className='slice slice-2'>
-              <SawIcon />
-            </div>
-          )}
+          <p className={on && pitch > 24 ? 'pitch-up show' : 'pitch-up'}>
+            +{pitch - 24}
+          </p>
+          <p className={on && pitch < 24 ? 'pitch-down show' : 'pitch-down'}>
+            {pitch - 24}
+          </p>
+          <div
+            className={
+              on && slice === 2
+                ? 'slice slice-2'
+                : on && slice === 3
+                ? 'slice slice-3'
+                : 'slice'
+            }
+          >
+            <SawIcon />
+          </div>
+          <div className={on && slice > 2 ? 'slice slice-2' : 'slice'}>
+            <SawIcon />
+          </div>
         </div>
         <div className='bg' />
         <div className={`noteOn bg${color}`} />

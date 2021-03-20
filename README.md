@@ -8,6 +8,8 @@
 - Fixed bug during `animateSound`. Just needed a null check for the ref.
 - Disabled clear buttons if just used.
 - Scroll button component that disableds when element reaches either end.
+- Brought back the pause animation on start.
+- Fixed performance issue with slice and cell mods. Conditionally add opactiy, not render the elements.
 
 ### 3/19/2021
 

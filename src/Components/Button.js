@@ -26,63 +26,22 @@ export const Button = ({
   );
 };
 
-export const useScrollBtns = (elemRef, scrollbarRef, scroll, numChildren) => {
-  const leftRef = useRef(null);
-  const rightRef = useRef(null);
+export const ScrollLeft = ({ fwdRef, onClick }) => {
+  return (
+    <Button fwdRef={fwdRef} classes='scroll-left' onClick={onClick}>
+      <div className=''>
+        <ChevronLeftIcon />
+      </div>
+    </Button>
+  );
+};
 
-  const handleScroll = (dir) => {
-    if (dir === 'left') {
-      if (elemRef.current.scrollLeft - scrollbarRef.current.clientWidth <= 0) {
-        if (leftRef.current) {
-          leftRef.current.disabled = true;
-        }
-      } else {
-        if (rightRef.current) {
-          rightRef.current.disabled = false;
-        }
-      }
-    } else {
-      if (
-        elemRef.current.scrollLeft + scrollbarRef.current.clientWidth >=
-        (numChildren - 1) * scrollbarRef.current.clientWidth
-      ) {
-        if (rightRef.current) {
-          rightRef.current.disabled = true;
-        }
-      }
-      if (leftRef.current) {
-        leftRef.current.disabled = false;
-      }
-    }
-    scroll(dir);
-  };
-
-  const ScrollLeft = () => {
-    return (
-      <Button
-        fwdRef={leftRef}
-        classes='scroll-left'
-        onClick={() => handleScroll('left')}
-      >
-        <div className=''>
-          <ChevronLeftIcon />
-        </div>
-      </Button>
-    );
-  };
-  const ScrollRight = () => {
-    return (
-      <Button
-        fwdRef={rightRef}
-        classes='scroll-right'
-        onClick={() => handleScroll('right')}
-      >
-        <div className=''>
-          <ChevronRightIcon />
-        </div>
-      </Button>
-    );
-  };
-
-  return { ScrollLeft, ScrollRight };
+export const ScrollRight = ({ fwdRef, onClick }) => {
+  return (
+    <Button fwdRef={fwdRef} classes='scroll-right' onClick={onClick}>
+      <div className=''>
+        <ChevronRightIcon />
+      </div>
+    </Button>
+  );
 };
