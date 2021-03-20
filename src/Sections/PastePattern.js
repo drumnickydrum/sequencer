@@ -41,7 +41,7 @@ const SoundBtn = ({ i, sound, selected }) => {
   };
 
   let classes = `sound borderDefault`;
-  if (selected) classes += ` border${sound.color} flashing`;
+  if (selected) classes += ' flashing';
   return (
     <div className={classes} onClick={handleClick}>
       {selected ? <p className='flashing'>copying...</p> : <p>{sound.name}</p>}

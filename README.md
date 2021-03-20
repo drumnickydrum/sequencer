@@ -6,6 +6,7 @@
 
 - Clean up css from yesterday. Resolved low-performance paint issue (transitioning cursor bgcolor).
 - Fixed bug during `animateSound`. Just needed a null check for the ref.
+- Disabled clear buttons if just used.
 
 ### 3/19/2021
 

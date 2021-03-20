@@ -2,8 +2,10 @@ import React, { useContext } from 'react';
 import { Button } from '../Components/Button';
 import { ChevronLeftIcon, CopyIcon, EraserIcon, SawIcon } from '../icons';
 import { PatternAction } from '../Providers/Actions/Pattern';
+import { PatternState } from '../Providers/State/Pattern';
 
 export const Erase = ({ handleReturn }) => {
+  const { clearOneDisabled } = useContext(PatternState);
   const { clearPattern } = useContext(PatternAction);
 
   const handleAll = () => {
@@ -18,7 +20,11 @@ export const Erase = ({ handleReturn }) => {
       <div className='sound-edit-dummy' />
       <div className='sound-edit-middle'>
         <p className=''>Click and drag to toggle cells off</p>
-        <Button classes='sound-edit-btn mod-all' onClick={handleAll}>
+        <Button
+          classes='sound-edit-btn mod-all'
+          disabled={clearOneDisabled}
+          onClick={handleAll}
+        >
           Erase All
         </Button>
       </div>

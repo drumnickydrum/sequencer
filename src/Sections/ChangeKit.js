@@ -5,16 +5,19 @@ import { useChangeKit } from '../utils/useChangeKit';
 import { Kit } from '../Providers/Kit';
 import { Undo } from '../Providers/UndoProvider';
 import { NavRight } from '../Components/Button';
+import { Status } from '../Providers/Status';
 
 export const ChangeKit = () => {
   const { addToUndo } = useContext(Undo);
   const { currentKit, buffersLoaded } = useContext(Kit);
   const { changeKit } = useChangeKit();
+  const { changeStatus } = useContext(Status);
 
   const handleChange = ({ target: { value } }) => {
     const prevKit = currentKit;
     function change(kit) {
       changeKit(kit);
+      changeStatus(`change kit: ${kit}`);
     }
     change(value);
     addToUndo(change, prevKit, value);

@@ -76,6 +76,9 @@ export const PatternStateProvider = ({ children }) => {
 
   const [copying, setCopying] = useState(false);
 
+  const [clearOneDisabled, setClearOneDisabled] = useState(false);
+  const [clearAllDisabled, setClearAllDisabled] = useState(false);
+
   //! debugging
   useEffect(() => {
     const printPattern = (e) => {
@@ -119,6 +122,10 @@ export const PatternStateProvider = ({ children }) => {
         setCopying,
         show,
         setShow,
+        clearOneDisabled,
+        setClearOneDisabled,
+        clearAllDisabled,
+        setClearAllDisabled,
       }}
     >
       {children}

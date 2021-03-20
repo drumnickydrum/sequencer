@@ -63,7 +63,6 @@ export const TransportProvider = ({ children }) => {
   const [restart, setRestart] = useState(false);
   useEffect(() => {
     if (buffersLoaded && restart) {
-      console.log('restarting');
       setRestart(false);
       start();
     }

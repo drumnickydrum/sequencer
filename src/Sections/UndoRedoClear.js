@@ -3,6 +3,7 @@ import { Button, NavLeft, NavRight } from '../Components/Button';
 import { ClearAllIcon, RedoIcon, UndoIcon } from '../icons';
 import { PatternAction } from '../Providers/Actions/Pattern';
 import { Kit } from '../Providers/Kit';
+import { PatternState } from '../Providers/State/Pattern';
 import { Undo } from '../Providers/UndoProvider';
 
 export const UndoRedo = () => {
@@ -43,11 +44,17 @@ export const UndoRedo = () => {
 };
 
 export const Clear = () => {
+  const { clearAllDisabled } = useContext(PatternState);
   const { clearPattern } = useContext(PatternAction);
 
   return (
     <div className='menu-items'>
-      <Button id='clear-all' classes='menu-btn' onClick={() => clearPattern()}>
+      <Button
+        id='clear-all'
+        classes='menu-btn'
+        disabled={clearAllDisabled}
+        onClick={() => clearPattern()}
+      >
         <ClearAllIcon />
         <label htmlFor='clear-all' className='menu-label'>
           clear pattern

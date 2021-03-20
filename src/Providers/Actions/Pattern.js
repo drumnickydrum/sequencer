@@ -20,6 +20,8 @@ export const PatternActionProvider = ({ children }) => {
     patternId,
     patternName,
     patternBpm,
+    clearOneDisabled,
+    clearAllDisabled,
   } = useContext(PatternState);
   const { toggle, modifyFunc, reset, slice, paste, load, clear } = useContext(
     PatternFunction
@@ -116,8 +118,18 @@ export const PatternActionProvider = ({ children }) => {
     } else {
       initPattern(newPattern);
     }
-    const prevVal = { one, pattern: prevPattern };
-    const newVal = { one, pattern: newPattern };
+    const prevVal = {
+      one,
+      pattern: prevPattern,
+      cod: clearOneDisabled,
+      cad: clearAllDisabled,
+    };
+    const newVal = {
+      one,
+      pattern: newPattern,
+      cod: true,
+      cad: !one || prevVal.cad,
+    };
     clear(newVal, true);
     addToUndo(clear, prevVal, newVal);
   };

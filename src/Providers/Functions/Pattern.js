@@ -14,6 +14,8 @@ export const PatternFunctionProvider = ({ children }) => {
     setPatternBpm,
     setPatternId,
     setPatternName,
+    setClearOneDisabled,
+    setClearAllDisabled,
   } = useContext(PatternState);
   const { kitRef } = useContext(Kit);
   const { changeStatus } = useContext(Status);
@@ -112,6 +114,8 @@ export const PatternFunctionProvider = ({ children }) => {
     if (!noStatus)
       changeStatus(`clear ${val.one ? 'sound: ' + selectedSound : 'all'}`);
     updatePatternLS();
+    setClearOneDisabled(val.cod);
+    setClearAllDisabled(val.cad);
   }
 
   return (
