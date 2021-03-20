@@ -58,7 +58,7 @@ button {
   --yellow-quarter: rgba(210, 254, 147, 0.25);
 
   --bg: rgb(40, 30, 50, 0.45);
-  --grey: rgb(150, 140, 170, 1);
+  --grey: rgb(197, 185, 219);
   --grey-half: rgb(150, 140, 170, 0.5);
   --grey-quarter: rgb(150, 140, 170, 0.25);
   --none: rgb(150, 140, 170, 0);
@@ -71,6 +71,60 @@ button {
   --white-3q: rgba(236, 237, 229, 0.75);
   --white-half: rgba(236, 237, 229, 0.5);
   --white-quarter: rgba(236, 237, 229, 0.25);
+
+  --color-green: rgba(47, 222, 126, 1);
+  --color-green-3q: rgba(47, 222, 126, 0.75);
+  --color-green-half: rgba(47, 222, 126, 0.5);
+  --color-green-quarter: rgba(47, 222, 126, 0.25);
+  --color-red: rgba(232, 12, 48, 1);
+  --color-red-3q: rgba(232, 12, 48, 0.75);
+  --color-red-half: rgba(232, 12, 48, 0.5);
+  --color-red-quarter: rgba(232, 12, 48, 0.25);
+  --color-default: rgba(113, 27, 228, 1);
+  --color-default-3q: rgba(113, 27, 228, 0.75);
+  --color-default-half: rgba(113, 27, 228, 0.5);
+  --color-default-quarter: rgba(113, 27, 228, 0.25);
+
+  --color-0: rgba(231, 15, 111, 1);
+  --color-0-3q: rgba(231, 15, 111, 0.75);
+  --color-0-half: rgba(231, 15, 111, 0.5);
+  --color-0-quarter: rgba(231, 15, 111, 0.25);
+  --color-1: rgba(230, 18, 173, 1);
+  --color-1-3q: rgba(230, 18, 173, 0.75);
+  --color-1-half: rgba(230, 18, 173, 0.5);
+  --color-1-quarter: rgba(230, 18, 173, 0.25);
+  --color-2: rgba(227, 21, 230, 1);
+  --color-2-3q: rgba(227, 21, 230, 0.75);
+  --color-2-half: rgba(227, 21, 230, 0.5);
+  --color-2-quarter: rgba(227, 21, 230, 0.25);
+  --color-3: rgba(169, 24, 229, 1);
+  --color-3-3q: rgba(169, 24, 229, 0.75);
+  --color-3-half: rgba(169, 24, 229, 0.5);
+  --color-3-quarter: rgba(169, 24, 229, 0.25);
+  --color-4: rgba(58, 30, 227, 1);
+  --color-4-3q: rgba(58, 30, 227, 0.75);
+  --color-4-half: rgba(58, 30, 227, 0.5);
+  --color-4-quarter: rgba(58, 30, 227, 0.25);
+  --color-5: rgba(33, 60, 226, 1);
+  --color-5-3q: rgba(33, 60, 226, 0.75);
+  --color-5-half: rgba(33, 60, 226, 0.5);
+  --color-5-quarter: rgba(33, 60, 226, 0.25);
+  --color-6: rgba(36, 115, 225, 1);
+  --color-6-3q: rgba(36, 115, 225, 0.75);
+  --color-6-half: rgba(36, 115, 225, 0.5);
+  --color-6-quarter: rgba(36, 115, 225, 0.25);
+  --color-7: rgba(39, 169, 225, 1);
+  --color-7-3q: rgba(39, 169, 225, 0.75);
+  --color-7-half: rgba(39, 169, 225, 0.5);
+  --color-7-quarter: rgba(39, 169, 225, 0.25);
+  --color-8: rgba(41, 221, 224, 1);
+  --color-8-3q: rgba(41, 221, 224, 0.75);
+  --color-8-half: rgba(41, 221, 224, 0.5);
+  --color-8-quarter: rgba(41, 221, 224, 0.25);
+  --color-9: rgba(44, 223, 175, 1);
+  --color-9-3q: rgba(44, 223, 175, 0.75);
+  --color-9-half: rgba(44, 223, 175, 0.5);
+  --color-9-quarter: rgba(44, 223, 175, 0.25);
 }
 
 html,
@@ -84,11 +138,11 @@ body {
   max-width: 100%;
   max-height: 100%;
   overflow: hidden;
-  background: var(--black);
   color: var(--white);
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
   font-style: italic;
+  background: var(--black);
 }
 
 #root {
@@ -97,7 +151,6 @@ body {
   width: 100%;
   height: 100%;
   max-width: 800px;
-  background: var(--black);
   overflow-y: scroll;
 }
 
@@ -112,16 +165,16 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-top: 1px solid var(--purple-half);
 }
 
 #sound-panel {
   position: fixed;
   top: 60%;
   width: 100%;
-  height: 25%;
+  height: 30%;
   padding: 0.25rem;
-  border-top: 1px solid var(--purple-half);
+  border-top: 1px solid var(--purple);
+  border-bottom: 1px solid var(--purple);
 }
 
 /*************************************/
@@ -503,13 +556,14 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
-  border-radius: 0.5rem;
   opacity: 1;
   transition: 500ms;
 }
 
 .sound .border {
   border: 1px solid var(--purple);
+  opacity: 0.35;
+  animation: glow alternate infinite;
 }
 
 .sound .border-pulse {
@@ -520,8 +574,7 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
-  border-radius: 0.5rem;
-  opacity: 0;
+  opacity: 1;
 }
 
 .sound.pressed .border,
@@ -541,8 +594,36 @@ body {
 }
 
 .sound-btn {
-  background: none;
   border: none;
+  border-radius: 0;
+  color: none;
+  background: var(--black);
+}
+
+.sound-btn .bg {
+  background: var(--purple);
+  opacity: 0.25;
+}
+
+.sound-btn .icon {
+  position: absolute;
+  height: 1.5rem;
+  transition: 500ms;
+}
+
+.sound-btn .icon.colorDefault {
+  opacity: 1;
+}
+
+.sound-btn .icon.color {
+  opacity: 1;
+}
+
+.sound-btn label {
+  visibility: hidden;
+  width: 0;
+  user-select: none;
+  pointer-events: none;
 }
 
 .sound-name {
@@ -820,6 +901,7 @@ body {
 .cell-wrapper {
   width: 100%;
   height: 100%;
+  border-radius: 0.5rem;
 }
 
 .cell {
@@ -839,8 +921,19 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
-  opacity: 1;
+  opacity: 0;
   border-radius: 0.5rem;
+  border: 1px solid var(--purple);
+  animation: glow linear alternate infinite;
+}
+
+@keyframes glow {
+  0% {
+    opacity: 0.35;
+  }
+  100% {
+    opacity: 0.5;
+  }
 }
 
 .cell.on .border {
@@ -956,15 +1049,13 @@ body {
 #bottom {
   position: fixed;
   bottom: 0;
-  height: 15%;
+  height: 10%;
   width: 100%;
-  border-top: 1px solid var(--purple-half);
   scroll-snap-type: x mandatory;
   overflow-x: scroll;
   white-space: nowrap;
   overflow-y: hidden;
   scroll-behavior: smooth;
-  background-color: var(--purple-half);
 }
 
 /*************************************/
@@ -1023,6 +1114,7 @@ body {
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .transport .menu-btn {
@@ -1128,155 +1220,176 @@ body {
 .borderNone {
   border: 1px solid var(--none);
 }
+
+.colorNone.icon,
 .colorNone .icon {
   fill: var(--none);
 }
 .colorDefault {
-  color: var(--purple-3q);
+  color: var(--color-default-3q);
 }
 .bgDefault {
-  background-color: var(--purple-quarter);
+  background: var(--color-default-quarter);
 }
 .borderDefault {
-  border: 1px solid var(--purple);
+  border: 1px solid var(--color-default);
 }
+.colorDefault.icon,
 .colorDefault .icon {
-  fill: var(--purple-3q);
+  fill: var(--color-default-3q);
 }
+
 .color0 {
-  color: var(--blue);
+  color: var(--color-0);
 }
 .bg0 {
-  background-color: var(--blue);
+  background-color: var(--color-0);
 }
 .bg0Q {
-  background-color: var(--blue-quarter);
+  background-color: var(--color-0-quarter);
 }
 .border0 {
-  border: 1px solid var(--blue);
+  border: 1px solid var(--color-0);
 }
+.color0.icon,
 .color0 .icon {
-  fill: var(--blue);
+  fill: var(--color-0);
 }
+
 .color1 {
-  color: var(--lime);
+  color: var(--color-1);
 }
 .bg1 {
-  background-color: var(--lime);
+  background-color: var(--color-1);
 }
 .bg1Q {
-  background-color: var(--lime-quarter);
+  background-color: var(--color-1-quarter);
 }
 .border1 {
-  border: 1px solid var(--lime);
+  border: 1px solid var(--color-1);
 }
+.color1.icon,
 .color1 .icon {
-  fill: var(--lime);
+  fill: var(--color-1);
 }
+
 .color2 {
-  color: var(--magenta);
+  color: var(--color-2);
 }
 .bg2 {
-  background-color: var(--magenta);
+  background-color: var(--color-2);
 }
 .bg2Q {
-  background-color: var(--magenta-quarter);
+  background-color: var(--color-2-quarter);
 }
 .border2 {
-  border: 1px solid var(--magenta);
+  border: 1px solid var(--color-2);
 }
+.color2.icon,
 .color2 .icon {
-  fill: var(--magenta);
+  fill: var(--color-2);
 }
+
 .color3 {
-  color: var(--yellow);
+  color: var(--color-3);
 }
 .bg3 {
-  background-color: var(--yellow);
+  background-color: var(--color-3);
 }
 .bg3Q {
-  background-color: var(--yellow-quarter);
+  background-color: var(--color-3-quarter);
 }
 .border3 {
-  border: 1px solid var(--yellow);
+  border: 1px solid var(--color-3);
 }
+.color3.icon,
 .color3 .icon {
-  fill: var(--yellow);
+  fill: var(--color-3);
 }
+
 .color4 {
-  color: var(--red);
+  color: var(--color-4);
 }
 .bg4 {
-  background-color: var(--red);
+  background-color: var(--color-4);
 }
 .bg4Q {
-  background-color: var(--red-quarter);
+  background-color: var(--color-4-quarter);
 }
 .border4 {
-  border: 1px solid var(--red);
+  border: 1px solid var(--color-4);
 }
+.color4.icon,
 .color4 .icon {
-  fill: var(--red);
+  fill: var(--color-4);
 }
+
 .color5 {
-  color: var(--baby-blue);
+  color: var(--color-5);
 }
 .bg5 {
-  background-color: var(--baby-blue);
+  background-color: var(--color-5);
 }
 .bg5Q {
-  background-color: var(--baby-blue-quarter);
+  background-color: var(--color-5-quarter);
 }
 .border5 {
-  border: 1px solid var(--baby-blue);
+  border: 1px solid var(--color-5);
 }
+.color5.icon,
 .color5 .icon {
-  fill: var(--baby-blue);
+  fill: var(--color-5);
 }
+
 .color6 {
-  color: var(--orange);
+  color: var(--color-6);
 }
 .bg6 {
-  background-color: var(--orange);
+  background-color: var(--color-6);
 }
 .bg6Q {
-  background-color: var(--orange-quarter);
+  background-color: var(--color-6-quarter);
 }
 .border6 {
-  border: 1px solid var(--orange);
+  border: 1px solid var(--color-6);
 }
+.color6.icon,
 .color6 .icon {
-  fill: var(--orange);
+  fill: var(--color-6);
 }
+
 .color7 {
-  color: var(--green);
+  color: var(--color-7);
 }
 .bg7 {
-  background-color: var(--green);
+  background-color: var(--color-7);
 }
 .bg7Q {
-  background-color: var(--green-quarter);
+  background-color: var(--color-7-quarter);
 }
 .border7 {
-  border: 1px solid var(--green);
+  border: 1px solid var(--color-7);
 }
+.color7.icon,
 .color7 .icon {
-  fill: var(--green);
+  fill: var(--color-7);
 }
+
 .color8 {
-  color: var(--pink);
+  color: var(--color-8);
 }
 .bg8 {
-  background-color: var(--pink);
+  background-color: var(--color-8);
 }
 .bg8Q {
-  background-color: var(--pink-quarter);
+  background-color: var(--color-8-quarter);
 }
 .border8 {
-  border: 1px solid var(--pink);
+  border: 1px solid var(--color-8);
 }
+.color8.icon,
 .color8 .icon {
-  fill: var(--pink);
+  fill: var(--color-8);
 }
 
 .white.icon {
@@ -1284,12 +1397,16 @@ body {
   fill: var(--white);
 }
 
+.bg.white {
+  background: var(--white);
+}
+
 .red {
-  background: var(--red);
+  background: var(--color-red);
 }
 
 .green {
-  background: var(--green);
+  background: var(--color-green);
 }
 
 .purple {

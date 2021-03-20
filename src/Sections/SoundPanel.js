@@ -9,6 +9,7 @@ import {
   VelocityIcon,
   PointDownIcon,
 } from '../icons';
+import * as icons from '../icons/kit';
 import { Kit } from '../Providers/Kit';
 import { PatternState } from '../Providers/State/Pattern';
 import { useSoloAndMute } from './useSoloAndMute';
@@ -203,15 +204,19 @@ const SoundBtn = ({ i, sound, handleSelect }) => {
   return (
     <button
       ref={ref}
-      className='sound sound-btn'
+      className='sound sound-btn btn'
       onTouchStart={() => pressDown(ref)}
       onTouchEnd={() => pressUp(ref)}
       onClick={() => handleSelect(i)}
     >
+      {icons[sound.icon](sound.color)}
       <label className='sound-name'>{sound.name}</label>
-      <div className='border' />
+      <div
+        className='border'
+        style={{ animationDuration: Math.random() + 3 + 's' }}
+      />
       <div className={`border-pulse border${i}`} />
-      <div className={`bg bg${i}`} />
+      {/* <div className={`bg`} /> */}
     </button>
   );
 };

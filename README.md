@@ -10,7 +10,8 @@
   - PatternFunction | Functions to change pattern state
   - PatternAction | User actions: Determines prev/new vals for undo/redo before calling pattern functions.
 - Renamed `SequencerProvider` to `TransportProvider`.
-- DL'd icons for kit.
+- Kit icons and new colors.
+- Playing with glow fx. Not sure.
 
 ### 3/18/2021
 

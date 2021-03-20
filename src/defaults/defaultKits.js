@@ -9,6 +9,7 @@ export const analog = {
       velocityMod: 1,
       key: 'num1',
       color: 0,
+      icon: 'kick',
     },
     {
       name: 'snr',
@@ -18,6 +19,7 @@ export const analog = {
       velocityMod: 1,
       key: 'num2',
       color: 1,
+      icon: 'snr',
     },
     {
       name: 'clp',
@@ -27,6 +29,7 @@ export const analog = {
       velocityMod: 1,
       key: 'num3',
       color: 2,
+      icon: 'clp',
     },
     {
       name: 'ch',
@@ -36,6 +39,7 @@ export const analog = {
       velocityMod: 1,
       key: 'num4',
       color: 3,
+      icon: 'ch',
     },
     {
       name: 'oh',
@@ -45,6 +49,7 @@ export const analog = {
       velocityMod: 1,
       key: 'num5',
       color: 4,
+      icon: 'oh',
     },
     {
       name: 'cym',
@@ -54,6 +59,7 @@ export const analog = {
       velocityMod: 1,
       key: 'num6',
       color: 5,
+      icon: 'cym',
     },
     {
       name: 'ht',
@@ -63,6 +69,7 @@ export const analog = {
       velocityMod: 1,
       key: 'num7',
       color: 6,
+      icon: 'tom',
     },
     {
       name: 'mt',
@@ -72,6 +79,7 @@ export const analog = {
       velocityMod: 1,
       key: 'num8',
       color: 7,
+      icon: 'tom',
     },
     {
       name: 'lt',
@@ -81,6 +89,7 @@ export const analog = {
       velocityMod: 1,
       key: 'num9',
       color: 8,
+      icon: 'tom',
     },
   ],
 };
@@ -96,6 +105,7 @@ export const house = {
       velocityMod: 1,
       key: 'num1',
       color: 0,
+      icon: 'kick',
     },
     {
       name: 'kick',
@@ -105,6 +115,7 @@ export const house = {
       velocityMod: 1,
       key: 'num2',
       color: 1,
+      icon: 'kick',
     },
     {
       name: 'snr',
@@ -114,6 +125,7 @@ export const house = {
       velocityMod: 1,
       key: 'num3',
       color: 2,
+      icon: 'snr',
     },
     {
       name: 'shk',
@@ -123,6 +135,7 @@ export const house = {
       velocityMod: 1,
       key: 'num4',
       color: 3,
+      icon: 'shk',
     },
     {
       name: 'oh',
@@ -132,6 +145,7 @@ export const house = {
       velocityMod: 1,
       key: 'num5',
       color: 4,
+      icon: 'oh',
     },
     {
       name: 'clp',
@@ -141,6 +155,7 @@ export const house = {
       velocityMod: 1,
       key: 'num6',
       color: 5,
+      icon: 'clp',
     },
     {
       name: 'voc',
@@ -150,6 +165,7 @@ export const house = {
       velocityMod: 1,
       key: 'num7',
       color: 6,
+      icon: 'voc',
     },
     {
       name: 'mt',
@@ -159,6 +175,7 @@ export const house = {
       velocityMod: 1,
       key: 'num8',
       color: 7,
+      icon: 'tom',
     },
     {
       name: 'lt',
@@ -168,6 +185,7 @@ export const house = {
       velocityMod: 1,
       key: 'num9',
       color: 8,
+      icon: 'tom',
     },
   ],
 };
@@ -183,6 +201,7 @@ export const lush = {
       velocityMod: 1,
       key: 'num1',
       color: 0,
+      icon: 'kick',
     },
     {
       name: 'med kick',
@@ -192,6 +211,7 @@ export const lush = {
       velocityMod: 1,
       key: 'num2',
       color: 1,
+      icon: 'kick',
     },
     {
       name: 'short kick',
@@ -201,6 +221,7 @@ export const lush = {
       velocityMod: 1,
       key: 'num3',
       color: 2,
+      icon: 'kick',
     },
     {
       name: 'ch',
@@ -210,6 +231,7 @@ export const lush = {
       velocityMod: 1,
       key: 'num4',
       color: 3,
+      icon: 'ch',
     },
     {
       name: 'oh',
@@ -219,6 +241,7 @@ export const lush = {
       velocityMod: 1,
       key: 'num5',
       color: 4,
+      icon: 'oh',
     },
     {
       name: 'snr',
@@ -228,6 +251,7 @@ export const lush = {
       velocityMod: 1,
       key: 'num6',
       color: 5,
+      icon: 'snr',
     },
     {
       name: 'tamb',
@@ -237,6 +261,7 @@ export const lush = {
       velocityMod: 1,
       key: 'num7',
       color: 6,
+      icon: 'tamb',
     },
     {
       name: 'plop',
@@ -246,6 +271,7 @@ export const lush = {
       velocityMod: 1,
       key: 'num8',
       color: 7,
+      icon: 'wb',
     },
     {
       name: 'clp',
@@ -255,6 +281,7 @@ export const lush = {
       velocityMod: 1,
       key: 'num9',
       color: 8,
+      icon: 'clp',
     },
   ],
 };
@@ -270,6 +297,7 @@ export const vinyl = {
       velocityMod: 1,
       key: 'num1',
       color: 0,
+      icon: 'kick',
     },
     {
       name: 'kick 2',
@@ -279,6 +307,7 @@ export const vinyl = {
       velocityMod: 1,
       key: 'num2',
       color: 1,
+      icon: 'kick2',
     },
     {
       name: 'snr',
@@ -288,6 +317,7 @@ export const vinyl = {
       velocityMod: 1,
       key: 'num3',
       color: 2,
+      icon: 'snr',
     },
     {
       name: 'ch',
@@ -297,6 +327,7 @@ export const vinyl = {
       velocityMod: 1,
       key: 'num4',
       color: 3,
+      icon: 'ch',
     },
     {
       name: 'oh',
@@ -306,6 +337,7 @@ export const vinyl = {
       velocityMod: 1,
       key: 'num5',
       color: 4,
+      icon: 'oh',
     },
     {
       name: 'clp',
@@ -313,9 +345,9 @@ export const vinyl = {
       pitchMod: 0,
       lengthMod: 1,
       velocityMod: 1,
-
       key: 'num6',
       color: 5,
+      icon: 'clp',
     },
     {
       name: 'bass',
@@ -325,6 +357,7 @@ export const vinyl = {
       velocityMod: 1,
       key: 'num7',
       color: 6,
+      icon: 'voc',
     },
     {
       name: 'shk',
@@ -334,6 +367,7 @@ export const vinyl = {
       velocityMod: 1,
       key: 'num8',
       color: 7,
+      icon: 'shk',
     },
     {
       name: 'rim',
@@ -343,6 +377,7 @@ export const vinyl = {
       velocityMod: 1,
       key: 'num9',
       color: 8,
+      icon: 'sticks',
     },
   ],
 };

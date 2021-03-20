@@ -4,6 +4,7 @@ import { ReactComponent as Clap } from './clp.svg';
 import { ReactComponent as Cymbal } from './cym.svg';
 import { ReactComponent as FX } from './fx.svg';
 import { ReactComponent as Kick } from './kick.svg';
+import { ReactComponent as Kick2 } from './kick2.svg';
 import { ReactComponent as OpenHat } from './oh.svg';
 import { ReactComponent as Shaker } from './shk.svg';
 import { ReactComponent as Shaker2 } from './shk2.svg';
@@ -13,63 +14,106 @@ import { ReactComponent as Sticks2 } from './sticks2.svg';
 import { ReactComponent as Tom } from './tom.svg';
 import { ReactComponent as Vocal } from './voc.svg';
 import { ReactComponent as Woodblock } from './wb.svg';
+import { ReactComponent as Tambourine } from './tamb.svg';
 
-export const CowbellIcon = ({ addClass = '' }) => (
-  <Cowbell className={addClass + ' icon'} />
-);
+export const cb = (color) => {
+  const classes =
+    color || color === 0 ? `icon color color${color}` : 'icon white';
+  return <Cowbell className={classes} />;
+};
 
-export const ClosedHatIcon = ({ addClass = '' }) => (
-  <ClosedHat className={addClass + ' icon'} />
-);
+export const ch = (color) => {
+  const classes =
+    color || color === 0 ? `icon color color${color}` : 'icon white';
+  return <ClosedHat className={classes} />;
+};
 
-export const ClapIcon = ({ addClass = '' }) => (
-  <Clap className={addClass + ' icon'} />
-);
+export const clp = (color) => {
+  const classes =
+    color || color === 0 ? `icon color color${color}` : 'icon white';
+  return <Clap className={classes} />;
+};
 
-export const CymbalIcon = ({ addClass = '' }) => (
-  <Cymbal className={addClass + ' icon'} />
-);
+export const cym = (color) => {
+  const classes =
+    color || color === 0 ? `icon color color${color}` : 'icon white';
+  return <Cymbal className={classes} />;
+};
 
-export const FXIcon = ({ addClass = '' }) => (
-  <FX className={addClass + ' icon'} />
-);
+export const fx = (color) => {
+  const classes =
+    color || color === 0 ? `icon color color${color}` : 'icon white';
+  return <FX className={classes} />;
+};
 
-export const KickIcon = ({ addClass = '' }) => (
-  <Kick className={addClass + ' icon'} />
-);
+export const kick = (color) => {
+  const classes =
+    color || color === 0 ? `icon color color${color}` : 'icon white';
+  return <Kick className={classes} />;
+};
 
-export const OpenHatIcon = ({ addClass = '' }) => (
-  <OpenHat className={addClass + ' icon'} />
-);
+export const kick2 = (color) => {
+  const classes =
+    color || color === 0 ? `icon color color${color}` : 'icon white';
+  return <Kick2 className={classes} />;
+};
 
-export const ShakerIcon = ({ addClass = '' }) => (
-  <Shaker className={addClass + ' icon'} />
-);
+export const oh = (color) => {
+  const classes =
+    color || color === 0 ? `icon color color${color}` : 'icon white';
+  return <OpenHat className={classes} />;
+};
 
-export const Shaker2Icon = ({ addClass = '' }) => (
-  <Shaker2 className={addClass + ' icon'} />
-);
+export const shk = (color) => {
+  const classes =
+    color || color === 0 ? `icon color color${color}` : 'icon white';
+  return <Shaker className={classes} />;
+};
 
-export const SnareIcon = ({ addClass = '' }) => (
-  <Snare className={addClass + ' icon'} />
-);
+export const shk2 = (color) => {
+  const classes =
+    color || color === 0 ? `icon color color${color}` : 'icon white';
+  return <Shaker2 className={classes} />;
+};
 
-export const SticksIcon = ({ addClass = '' }) => (
-  <Sticks className={addClass + ' icon'} />
-);
+export const snr = (color) => {
+  const classes =
+    color || color === 0 ? `icon color color${color}` : 'icon white';
+  return <Snare className={classes} />;
+};
 
-export const Sticks2Icon = ({ addClass = '' }) => (
-  <Sticks2 className={addClass + ' icon'} />
-);
+export const sticks = (color) => {
+  const classes =
+    color || color === 0 ? `icon color color${color}` : 'icon white';
+  return <Sticks className={classes} />;
+};
 
-export const TomIcon = ({ addClass = '' }) => (
-  <Tom className={addClass + ' icon'} />
-);
+export const sticks2 = (color) => {
+  const classes =
+    color || color === 0 ? `icon color color${color}` : 'icon white';
+  return <Sticks2 className={classes} />;
+};
 
-export const VocalIcon = ({ addClass = '' }) => (
-  <Vocal className={addClass + ' icon'} />
-);
+export const tom = (color) => {
+  const classes =
+    color || color === 0 ? `icon color color${color}` : 'icon white';
+  return <Tom className={classes} />;
+};
 
-export const WoodblockIcon = ({ addClass = '' }) => (
-  <Woodblock className={addClass + ' icon'} />
-);
+export const voc = (color) => {
+  const classes =
+    color || color === 0 ? `icon color color${color}` : 'icon white';
+  return <Vocal className={classes} />;
+};
+
+export const wb = (color) => {
+  const classes =
+    color || color === 0 ? `icon color color${color}` : 'icon white';
+  return <Woodblock className={classes} />;
+};
+
+export const tamb = (color) => {
+  const classes =
+    color || color === 0 ? `icon color color${color}` : 'icon white';
+  return <Tambourine className={classes} />;
+};
