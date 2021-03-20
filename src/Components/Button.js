@@ -4,16 +4,17 @@ import { pressDown, pressUp } from '../utils/press';
 import { BottomScroll } from '../Pages/Sequencer';
 
 export const Button = ({
+  fwdRef,
   id,
   classes,
-  onClick,
   disabled = false,
+  onClick,
   children,
 }) => {
   const ref = useRef(null);
   return (
     <button
-      ref={ref}
+      ref={fwdRef || ref}
       id={id}
       className={classes + ' btn'}
       disabled={disabled}

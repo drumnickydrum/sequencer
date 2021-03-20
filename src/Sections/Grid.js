@@ -259,16 +259,10 @@ const Cell = ({ id, step }) => {
             </div>
           )}
         </div>
-        <div
-          className='border'
-          style={{ animationDuration: Math.random() + 3 + 's' }}
-        />
-        <div className='border-flashing p-none' />
-        <div className='cursor p-none' />
-        <div
-          className={`bg${color} p-none`}
-          style={{ animationDuration: Math.random() + 3 + 's' }}
-        />
+        <div className='bg' />
+        <div className={`noteOn bg${color}`} />
+        <div className='cursor' />
+        <div className='border-flashing' />
         <div className='sound-cells'>
           {kitRef.current.sounds.map((_, sound) => {
             const scId = `${id}-${sound}`;

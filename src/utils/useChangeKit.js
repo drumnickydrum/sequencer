@@ -15,11 +15,11 @@ export const useChangeKit = () => {
   const { stop, setRestart } = useContext(Transport);
 
   const changeKit = (kit) => {
-    setBuffersLoaded(false);
     if (Tone.Transport.state === 'started') {
       stop();
       setRestart(true);
     }
+    setBuffersLoaded(false);
     disposeSamples();
     const newSounds = kits[kit].sounds.map((sound) => ({ ...sound }));
     const newKit = { name: kit, sounds: newSounds };

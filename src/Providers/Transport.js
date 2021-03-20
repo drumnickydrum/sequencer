@@ -63,6 +63,7 @@ export const TransportProvider = ({ children }) => {
   const [restart, setRestart] = useState(false);
   useEffect(() => {
     if (buffersLoaded && restart) {
+      console.log('restarting');
       setRestart(false);
       start();
     }
@@ -96,11 +97,13 @@ export const TransportProvider = ({ children }) => {
     Tone.Draw.schedule(() => {
       patternRef.current[step].forEach((sound, i) => {
         if (sound.noteOn) {
-          soundsRef.current[i].current.classList.add('pulse');
-          setTimeout(
-            () => soundsRef.current[i].current.classList.remove('pulse'),
-            0
-          );
+          if (soundsRef.current[i].current) {
+            soundsRef.current[i].current.classList.add('pulse');
+            setTimeout(
+              () => soundsRef.current[i].current.classList.remove('pulse'),
+              0
+            );
+          }
         }
       });
     }, time);

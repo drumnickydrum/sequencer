@@ -2,6 +2,11 @@
 
 ## Dev notes
 
+### 3/20/2021
+
+- Clean up css from yesterday. Resolved low-performance paint issue (transitioning cursor bgcolor).
+- Fixed bug during `animateSound`. Just needed a null check for the ref.
+
 ### 3/19/2021
 
 - Custom hook `useStateAndLS`.

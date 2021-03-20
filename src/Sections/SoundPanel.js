@@ -16,7 +16,6 @@ import { useSoloAndMute } from './useSoloAndMute';
 import { Erase, Slice, Copy } from './EraseSliceCopy';
 import { PitchVelocityLength } from './PitchVelocityLength';
 import { Status } from '../Providers/Status';
-import { pressDown, pressUp } from '../utils/press';
 import { Button } from '../Components/Button';
 
 export const SoundPanel = () => {
@@ -202,21 +201,15 @@ const SoundBtn = ({ i, sound, handleSelect }) => {
   });
 
   return (
-    <button
-      ref={ref}
-      className='sound sound-btn btn'
-      onTouchStart={() => pressDown(ref)}
-      onTouchEnd={() => pressUp(ref)}
+    <Button
+      fwdRef={ref}
+      classes={`sound sound-btn color${i}`}
       onClick={() => handleSelect(i)}
     >
       {icons[sound.icon](sound.color)}
       <label className='sound-name'>{sound.name}</label>
-      <div
-        className='border'
-        style={{ animationDuration: Math.random() + 3 + 's' }}
-      />
+      <div className='border' />
       <div className={`border-pulse border${i}`} />
-      {/* <div className={`bg`} /> */}
-    </button>
+    </Button>
   );
 };

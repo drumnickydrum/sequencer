@@ -11,6 +11,10 @@ export const Kit = React.createContext();
 export const KitProvider = ({ children }) => {
   const [buffersLoaded, setBuffersLoaded] = useState(false);
 
+  // useEffect(() => {
+  //   console.log('buffersLoaded: ', buffersLoaded);
+  // }, [buffersLoaded]);
+
   const [currentKit, setCurrentKit] = useStateAndLS('kit', initialKit.name);
   const kitRef = useRef(initialKit);
 

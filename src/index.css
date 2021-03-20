@@ -58,9 +58,11 @@ button {
   --yellow-quarter: rgba(210, 254, 147, 0.25);
 
   --bg: rgb(40, 30, 50, 0.45);
-  --grey: rgb(197, 185, 219);
-  --grey-half: rgb(150, 140, 170, 0.5);
-  --grey-quarter: rgb(150, 140, 170, 0.25);
+  --grey: rgba(197, 185, 219, 1);
+  --grey-3q: rgba(197, 185, 219, 0.75);
+  --grey-half: rgba(150, 140, 170, 0.5);
+  --grey-quarter: rgba(150, 140, 170, 0.25);
+  --grey-dim: rgb(150, 140, 170, 0.15);
   --none: rgb(150, 140, 170, 0);
   --black: #000;
   --black-90: rgba(0, 0, 0, 0.9);
@@ -71,6 +73,7 @@ button {
   --white-3q: rgba(236, 237, 229, 0.75);
   --white-half: rgba(236, 237, 229, 0.5);
   --white-quarter: rgba(236, 237, 229, 0.25);
+  --white-dim: rgba(236, 237, 229, 0.1);
 
   --color-green: rgba(47, 222, 126, 1);
   --color-green-3q: rgba(47, 222, 126, 0.75);
@@ -492,13 +495,15 @@ body {
 .sp-alert {
   pointer-events: none;
   position: absolute;
+  top: -3rem;
+  margin: 0 auto;
   width: 100%;
   height: 3rem;
-  top: -3rem;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   background: var(--black-90);
+  transform: translateX(-0.25rem);
   opacity: 0;
   transition: 1500ms;
 }
@@ -560,12 +565,6 @@ body {
   transition: 500ms;
 }
 
-.sound .border {
-  border: 1px solid var(--purple);
-  opacity: 0.35;
-  animation: glow alternate infinite;
-}
-
 .sound .border-pulse {
   opacity: 0;
 }
@@ -595,14 +594,13 @@ body {
 
 .sound-btn {
   border: none;
-  border-radius: 0;
   color: none;
   background: var(--black);
 }
 
-.sound-btn .bg {
-  background: var(--purple);
-  opacity: 0.25;
+.sound-btn .border {
+  opacity: 1;
+  border: 1px solid var(--purple-half);
 }
 
 .sound-btn .icon {
@@ -917,27 +915,61 @@ body {
   transition-property: opacity, transform;
 }
 
-.cell .border {
+.cell .bg,
+.cursor,
+.border-flashing {
+  pointer-events: none;
   position: absolute;
   width: 100%;
   height: 100%;
-  opacity: 0;
   border-radius: 0.5rem;
-  border: 1px solid var(--purple);
-  animation: glow linear alternate infinite;
+  transition: 200ms;
 }
 
-@keyframes glow {
+.cell .bg {
+  opacity: 1;
+  background: var(--grey-dim);
+}
+
+.cursor,
+.border-flashing {
+  opacity: 0;
+}
+
+.cursor {
+  background: var(--grey-half);
+}
+
+.cell.pulse {
+  transition: none;
+  opacity: 1;
+  transform: scale(0.8) rotate(2deg);
+}
+
+.cell.flash .cursor {
+  transition: none;
+  opacity: 1;
+}
+
+.flashing .border-flashing {
+  animation: flashing 500ms alternate infinite;
+}
+
+.flashing.pause .border-flashing {
+  animation: none;
+}
+
+div[data-cursor='true'] .cursor {
+  animation: flashing 200ms alternate infinite;
+}
+
+@keyframes flashing {
   0% {
-    opacity: 0.35;
-  }
-  100% {
     opacity: 0.5;
   }
-}
-
-.cell.on .border {
-  opacity: 0;
+  100% {
+    opacity: 1;
+  }
 }
 
 .cell-mods {
@@ -965,17 +997,6 @@ body {
   position: absolute;
   bottom: 0.25rem;
   right: 0.25rem;
-}
-
-.cell.pulse {
-  transition: none;
-  opacity: 1;
-  transform: scale(0.8) rotate(2deg);
-}
-
-.cell.flash {
-  transition: none;
-  background: var(--white-half);
 }
 
 .sound-cells {
@@ -1413,7 +1434,7 @@ body {
   background: var(--black);
 }
 /*************************************/
-/************* Animations ************/
+/*************** Global **************/
 /*************************************/
 
 div.dim {
@@ -1430,42 +1451,6 @@ p.dim {
 
 .off {
   opacity: 0;
-}
-
-.cursor,
-.border-flashing {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 0.5rem;
-  border: 1px solid var(--white);
-  opacity: 0;
-}
-
-.flashing .border-flashing {
-  animation: flashing 500ms alternate infinite;
-}
-
-.flashing.pause .border-flashing {
-  animation: none;
-}
-
-.cursor {
-  border: none;
-  background: var(--white-quarter);
-}
-
-div[data-cursor='true'] .cursor {
-  animation: flashing 200ms alternate infinite;
-}
-
-@keyframes flashing {
-  0% {
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 1;
-  }
 }
 
 .deg90 {
