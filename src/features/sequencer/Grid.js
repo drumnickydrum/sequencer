@@ -7,7 +7,7 @@ import React, {
   useCallback,
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { MODES } from './editorSlice';
+import { MODES } from './editModeSlice';
 import { toggleCell, sliceCell } from './sequencerSlice';
 import { SawIcon } from '../../icons';
 import { Kit } from '../../Providers/Kit';

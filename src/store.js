@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import sequencerReducer from './features/sequencer/sequencerSlice';
-import editorReducer from './features/sequencer/editorSlice';
+import editorReducer from './features/sequencer/editModeSlice';
 
 export default configureStore({
   reducer: {

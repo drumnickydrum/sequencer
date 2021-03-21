@@ -2,7 +2,7 @@ import React, { useContext, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Kit } from '../Providers/Kit';
 import * as icons from '../icons/kit';
-import { MODES } from '../features/sequencer/editorSlice';
+import { MODES } from '../features/sequencer/editModeSlice';
 import { paste } from '../features/sequencer/sequencerSlice';
 
 export const PastePattern = () => {

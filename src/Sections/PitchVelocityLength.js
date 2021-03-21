@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useDispatch } from 'react-redux';
-import { MODES } from '../features/sequencer/editorSlice';
+import { MODES } from '../features/sequencer/editModeSlice';
 import { Button } from '../Components/Button';
 import {
   PitchSwipe,

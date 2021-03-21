@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { close, edit, setMode, MODES } from '../features/sequencer/editorSlice';
+import {
+  close,
+  edit,
+  setMode,
+  MODES,
+} from '../features/sequencer/editModeSlice';
 import {
   CloseIcon,
   CopyIcon,

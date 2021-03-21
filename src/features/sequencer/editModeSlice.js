@@ -21,8 +21,8 @@ const INITIAL_STATE = {
   mode: null,
 };
 
-export const editorSlice = createSlice({
-  name: 'editor',
+export const editModeSlice = createSlice({
+  name: 'editMode',
   initialState: INITIAL_STATE,
   reducers: {
     close: (state) => {
@@ -39,6 +39,6 @@ export const editorSlice = createSlice({
   },
 });
 
-export const { close, edit, setMode } = editorSlice.actions;
+export const { close, edit, setMode } = editModeSlice.actions;
 
-export default editorSlice.reducer;
+export default editModeSlice.reducer;
