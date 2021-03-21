@@ -1,30 +1,25 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { eraseSound } from '../features/sequencer/sequencerSlice';
 import { Button } from '../Components/Button';
 import { ChevronLeftIcon, CopyIcon, EraserIcon, SawIcon } from '../icons';
-import { PatternAction } from '../Providers/Actions/Pattern';
-import { PatternState } from '../Providers/State/Pattern';
 
-export const Erase = ({ handleReturn }) => {
-  const { clearOneDisabled } = useContext(PatternState);
-  const { clearPattern } = useContext(PatternAction);
+export const Erase = ({ onReturn, selectedSound }) => {
+  const dispatch = useDispatch();
 
-  const handleAll = () => {
-    clearPattern(true);
+  const onEraseAll = () => {
+    dispatch(eraseSound({ selectedSound }));
   };
 
   return (
     <div className='sound-edit-detail'>
-      <Button classes='sound-edit-close' onClick={handleReturn}>
+      <Button classes='sound-edit-close' onClick={onReturn}>
         <ChevronLeftIcon />
       </Button>
       <div className='sound-edit-dummy' />
       <div className='sound-edit-middle'>
-        <p className=''>Click and drag to toggle cells off</p>
-        <Button
-          classes='sound-edit-btn mod-all'
-          disabled={clearOneDisabled}
-          onClick={handleAll}
-        >
+        <p className=''>Click and drag to erase cells</p>
+        <Button classes='sound-edit-btn mod-all' onClick={onEraseAll}>
           Erase All
         </Button>
       </div>
@@ -33,10 +28,10 @@ export const Erase = ({ handleReturn }) => {
   );
 };
 
-export const Slice = ({ handleReturn }) => {
+export const Slice = ({ onReturn }) => {
   return (
     <div className='sound-edit-detail'>
-      <Button classes='sound-edit-close' onClick={handleReturn}>
+      <Button classes='sound-edit-close' onClick={onReturn}>
         <ChevronLeftIcon />
       </Button>
       <div className='sound-edit-dummy' />
@@ -48,10 +43,10 @@ export const Slice = ({ handleReturn }) => {
   );
 };
 
-export const Copy = ({ handleReturn }) => {
+export const Copy = ({ onReturn }) => {
   return (
     <div className='sound-edit-detail'>
-      <Button classes='sound-edit-close' onClick={handleReturn}>
+      <Button classes='sound-edit-close' onClick={onReturn}>
         <ChevronLeftIcon />
       </Button>
       <div className='sound-edit-dummy' />

@@ -1,24 +1,28 @@
 import React, { useContext, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { PatternAction } from '../Providers/Actions/Pattern';
 import { Kit } from '../Providers/Kit';
 import { PatternState } from '../Providers/State/Pattern';
 import * as icons from '../icons/kit';
+import { MODES } from '../features/sequencer/editorSlice';
+import { paste } from '../features/sequencer/sequencerSlice';
 
 export const PastePattern = () => {
   const { kitRef } = useContext(Kit);
-  const { selectedSound, copying } = useContext(PatternState);
+
+  const selectedSound = useSelector((state) => state.editor.selectedSound);
+  const mode = useSelector((state) => state.editor.mode);
 
   return (
-    <div id='paste-pattern' className={copying ? 'show' : ''}>
+    <div id='paste-pattern' className={mode === MODES.COPYING ? 'show' : ''}>
       <div id='paste-pattern-sounds'>
         {kitRef.current.sounds.map((sound, i) => {
-          const selected = i === selectedSound;
           return (
             <SoundBtn
               key={`paste-pattern-${sound.name}`}
               i={i}
               sound={sound}
-              selected={selected}
+              selectedSound={selectedSound}
             />
           );
         })}
@@ -27,14 +31,13 @@ export const PastePattern = () => {
   );
 };
 
-const SoundBtn = ({ i, sound, selected }) => {
-  const { patternRef } = useContext(PatternState);
-  const { pastePattern } = useContext(PatternAction);
+const SoundBtn = ({ i, sound, selectedSound }) => {
+  const dispatch = useDispatch();
+  const pattern = useSelector((state) => state.sequencer.pattern);
 
   const ref = useRef(null);
-
-  const handleClick = () => {
-    pastePattern(i);
+  const onClick = () => {
+    dispatch(paste({ sound: i, selectedSound }));
     if (ref.current) {
       ref.current.classList.add('selected');
       setTimeout(() => ref.current.classList.remove('selected'));
@@ -42,9 +45,10 @@ const SoundBtn = ({ i, sound, selected }) => {
   };
 
   let classes = `sound borderDefault`;
+  const selected = i === selectedSound;
   if (selected) classes += ' flashing';
   return (
-    <div className={classes} onClick={handleClick}>
+    <div className={classes} onClick={onClick}>
       {selected ? (
         <p className='flashing'>copying...</p>
       ) : (
@@ -53,11 +57,9 @@ const SoundBtn = ({ i, sound, selected }) => {
         </div>
       )}
       <div ref={ref} className={selected ? 'cells selected' : 'cells'}>
-        {patternRef.current.map((_, step) => {
-          const classes = patternRef.current[step][i].noteOn
-            ? `cell bg${i} on`
-            : 'cell';
-          return <div key={`paste-pattern-${step}-${i}`} className={classes} />;
+        {pattern.map((step, s) => {
+          const classes = step[i].noteOn ? `cell bg${i} on` : 'cell';
+          return <div key={`paste-pattern-${s}-${i}`} className={classes} />;
         })}
       </div>
       <div className='border-flashing' />

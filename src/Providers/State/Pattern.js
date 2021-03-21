@@ -49,37 +49,37 @@ export const PatternStateProvider = ({ children }) => {
   const modeRef = useRef('painting');
 
   // //! MODE: PAINTING/ERASING
-  // const [painting, setPainting] = useState(true);
-  // const [erasing, setErasing] = useState(false);
-  // useEffect(() => {
-  //   if (erasing) {
-  //     setPainting(false);
-  //   } else {
-  //     setPainting(true);
-  //   }
-  // }, [erasing]);
+  const [painting, setPainting] = useState(true);
+  const [erasing, setErasing] = useState(false);
+  useEffect(() => {
+    if (erasing) {
+      setPainting(false);
+    } else {
+      setPainting(true);
+    }
+  }, [erasing]);
 
-  // const prevCellRef = useRef(null);
+  const prevCellRef = useRef(null);
 
-  // const [mod, setMod, modRef] = useStateAndRef(null);
-  // useEffect(() => {
-  //   if (mod) {
-  //     setPainting(false);
-  //   } else {
-  //     setPainting(true);
-  //   }
-  // }, [mod]);
+  const [mod, setMod, modRef] = useStateAndRef(null);
+  useEffect(() => {
+    if (mod) {
+      setPainting(false);
+    } else {
+      setPainting(true);
+    }
+  }, [mod]);
 
-  // const [slicing, setSlicing, slicingRef] = useStateAndRef(false);
-  // useEffect(() => {
-  //   if (slicing) {
-  //     setPainting(false);
-  //   } else {
-  //     setPainting(true);
-  //   }
-  // }, [slicing]);
+  const [slicing, setSlicing, slicingRef] = useStateAndRef(false);
+  useEffect(() => {
+    if (slicing) {
+      setPainting(false);
+    } else {
+      setPainting(true);
+    }
+  }, [slicing]);
 
-  // const [copying, setCopying] = useState(false);
+  const [copying, setCopying] = useState(false);
 
   const [clearOneDisabled, setClearOneDisabled] = useState(false);
   const [clearAllDisabled, setClearAllDisabled] = useState(false);
@@ -110,21 +110,21 @@ export const PatternStateProvider = ({ children }) => {
         cellsRef,
         // refreshAll,
         // setRefreshAll,
-        // erasing,
-        // setErasing,
-        // painting,
-        // setPainting,
+        erasing,
+        setErasing,
+        painting,
+        setPainting,
         // prevCellRef,
         selectedSound,
         setSelectedSound,
-        // mod,
-        // setMod,
-        // modRef,
-        // slicing,
-        // setSlicing,
-        // slicingRef,
-        // copying,
-        // setCopying,
+        mod,
+        setMod,
+        modRef,
+        slicing,
+        setSlicing,
+        slicingRef,
+        copying,
+        setCopying,
         show,
         setShow,
         clearOneDisabled,

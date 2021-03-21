@@ -6,19 +6,27 @@ import React, {
   useRef,
   useCallback,
 } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { MODES } from './editorSlice';
+import { toggleCell, sliceCell } from './sequencerSlice';
 import { SawIcon } from '../../icons';
 import { Kit } from '../../Providers/Kit';
-import { PatternState } from '../../Providers/State/Pattern';
 
 export const Grid = () => {
-  const { selectedSound } = useContext(PatternState);
   const { kitRef } = useContext(Kit);
+
   const length = useSelector((state) => state.sequencer.length);
+  const selectedSound = useSelector((state) => state.editor.selectedSound);
+  const mode = useSelector((state) => state.editor.mode);
+
+  const cellsRef = useRef({});
+  const prevCellRef = useRef(null);
+
   const grid = [];
   for (let i = 0; i < length; i++) {
     grid.push(1);
   }
+
   return (
     <div
       // ref={gridRef}
@@ -35,7 +43,10 @@ export const Grid = () => {
             id={id}
             step={step}
             selectedSound={selectedSound}
+            mode={mode}
             kitRef={kitRef}
+            cellsRef={cellsRef}
+            prevCellRef={prevCellRef}
           />
         );
       })}
@@ -43,7 +54,17 @@ export const Grid = () => {
   );
 };
 
-const Cell = ({ id, step, selectedSound, kitRef }) => {
+const Cell = ({
+  id,
+  step,
+  selectedSound,
+  mode,
+  kitRef,
+  cellsRef,
+  prevCellRef,
+}) => {
+  const dispatch = useDispatch();
+
   const noteOn = useSelector((state) =>
     selectedSound !== -1
       ? state.sequencer.pattern[step][selectedSound].noteOn
@@ -70,7 +91,37 @@ const Cell = ({ id, step, selectedSound, kitRef }) => {
       : 1
   );
 
+  const handleToggle = useCallback(() => {
+    if (selectedSound !== -1) {
+      if (mode === MODES.SLICING) {
+        if (noteOn) {
+          dispatch(sliceCell({ step, selectedSound }));
+        }
+      } else {
+        dispatch(toggleCell({ step, selectedSound }));
+      }
+    }
+  }, [dispatch, mode, noteOn, selectedSound, step]);
+
   const cellRef = useRef(null);
+  useEffect(() => {
+    cellsRef.current[id] = { events: {} };
+    cellsRef.current[id].cellRef = cellRef;
+    const toggleEvent = new Event(`toggle-${id}`);
+    document.addEventListener(`toggle-${id}`, handleToggle);
+    cellsRef.current[id].events.toggle = toggleEvent;
+    return () => {
+      document.removeEventListener(`toggle-${id}`, handleToggle);
+    };
+  }, [id, cellsRef, handleToggle]);
+
+  const handleTouchStart = (e) => {
+    e.stopPropagation();
+    // if (modRef.current) {
+    // if (on) modStart(e);
+    prevCellRef.current = id;
+    if (!(mode === MODES.ERASING && !noteOn)) handleToggle();
+  };
 
   const modStyle = {
     opacity: noteOn ? velocity : 1,
@@ -82,7 +133,7 @@ const Cell = ({ id, step, selectedSound, kitRef }) => {
         ref={cellRef}
         id={id}
         className={noteOn ? 'cell on' : 'cell'}
-        // onTouchStart={handleTouchStart}
+        onTouchStart={handleTouchStart}
         // onTouchMove={handleTouchMove}
         // onTouchEnd={handleTouchEnd}
       >
@@ -143,12 +194,15 @@ const SoundCell = ({ id, step, i, sound }) => {
   const velocity = useSelector(
     (state) => state.sequencer.pattern[step][i].notes[0].velocity
   );
-  const classes = `sound-cell bg${sound.color}`;
-  return (
-    <div
-      id={id}
-      className={classes}
-      style={{ opacity: noteOn ? velocity : 0 }}
-    />
-  );
+  const scMemo = useMemo(() => {
+    const classes = `sound-cell bg${sound.color}`;
+    return (
+      <div
+        id={id}
+        className={classes}
+        style={{ opacity: noteOn ? velocity : 0 }}
+      />
+    );
+  }, [id, sound.color, velocity, noteOn]);
+  return scMemo;
 };

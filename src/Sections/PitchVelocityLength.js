@@ -1,4 +1,6 @@
 import React, { useState, useContext } from 'react';
+import { useDispatch } from 'react-redux';
+import { MODES } from '../features/sequencer/editorSlice';
 import { Button } from '../Components/Button';
 import {
   PitchSwipe,
@@ -9,24 +11,22 @@ import {
 import { PatternAction } from '../Providers/Actions/Pattern';
 import { Kit } from '../Providers/Kit';
 
-export const PitchVelocityLength = ({ type, selectedSound, handleReturn }) => {
+export const PitchVelocityLength = ({ mode, selectedSound, onReturn }) => {
+  const dispatch = useDispatch();
+
   const { kitRef } = useContext(Kit);
   const { modify, resetMods } = useContext(PatternAction);
   const [showModAll, setShowModAll] = useState(false);
 
   const [value, setValue] = useState(
-    type === 'velocity'
-      ? kitRef.current.sounds[selectedSound].velocityMod
-      : type === 'length'
-      ? kitRef.current.sounds[selectedSound].lengthMod
-      : kitRef.current.sounds[selectedSound].pitchMod
+    kitRef.current.sounds[selectedSound][`${mode}Mod`]
   );
 
-  const handleChange = ({ target: { value } }) => {
+  const onChange = ({ target: { value } }) => {
     setValue(parseFloat(value));
   };
 
-  const handlePitch = (change) => {
+  const editAllPitch = (change) => {
     if (change === 'inc') {
       if (value !== 12) {
         modify(value, value + 1);
@@ -42,31 +42,32 @@ export const PitchVelocityLength = ({ type, selectedSound, handleReturn }) => {
   };
 
   const sliderEnd = () => {
-    const prevVal = kitRef.current.sounds[selectedSound][`${type}Mod`];
-    if (value !== prevVal) modify(prevVal, value);
+    const prevVal = kitRef.current.sounds[selectedSound][`${mode}Mod`];
+    // if (value !== prevVal) dispatch(modifyAll({ selectedSound, mode, value }));
   };
 
   const handleReset = () => {
-    setValue(type === 'pitch' ? 0 : 1);
-    resetMods(type);
+    setValue(mode === MODES.MOD_PITCH ? 0 : 1);
+    resetMods(mode);
   };
 
+  const label = mode && mode.substr(4).toLowerCase();
   return (
     <div className={`sound-edit-detail color${selectedSound}`}>
-      <Button classes='sound-edit-close' onClick={handleReturn}>
+      <Button classes='sound-edit-close' onClick={onReturn}>
         <ChevronLeftIcon />
       </Button>
       <div className='sound-edit-dummy' />
       <div className='sound-edit-all'>
-        <label htmlFor={`slider-${type}`}>{type}</label>
+        <label htmlFor={`slider-${mode}`}>{label}</label>
         {showModAll ? (
-          type === 'pitch' ? (
+          mode === MODES.MOD_PITCH ? (
             <div className='pitch-input'>
-              <Button classes='pitch-dec' onClick={() => handlePitch('dec')}>
+              <Button classes='pitch-dec' onClick={() => editAllPitch('dec')}>
                 -
               </Button>
               <p className='pitch-val'>{value}</p>
-              <Button classes='pitch-inc' onClick={() => handlePitch('inc')}>
+              <Button classes='pitch-inc' onClick={() => editAllPitch('inc')}>
                 +
               </Button>
             </div>
@@ -77,7 +78,7 @@ export const PitchVelocityLength = ({ type, selectedSound, handleReturn }) => {
               max={1}
               step={0.01}
               value={value}
-              onChange={handleChange}
+              onChange={onChange}
               onTouchEnd={sliderEnd}
             />
           )
@@ -95,9 +96,9 @@ export const PitchVelocityLength = ({ type, selectedSound, handleReturn }) => {
         </Button>
       </div>
       <div className='mod-animation'>
-        {type === 'pitch' ? (
+        {mode === MODES.MOD_PITCH ? (
           <PitchSwipe />
-        ) : type === 'velocity' ? (
+        ) : mode === MODES.MOD_VELOCITY ? (
           <VelocitySwipe />
         ) : (
           <LengthSwipe />

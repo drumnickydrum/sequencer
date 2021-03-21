@@ -8,22 +8,29 @@ import { LoadSaveButton } from '../Sections/LoadSaveButton';
 import { LoadSavePattern } from '../Sections/LoadSavePattern';
 import { ChangeKit } from '../Sections/ChangeKit';
 import { ScrollLeft, ScrollRight } from '../Components/Button';
+import { KitProvider } from '../Providers/Kit';
+import { PatternProvider } from '../Providers/Pattern';
+import { TransportProvider } from '../Providers/Transport';
 
 export const SequencerPage = () => {
   return (
-    <>
-      <div id='sequencer'>
-        <div id='main'>
-          <Grid />
-          <PastePattern />
-        </div>
-        <div id='sound-panel'>
-          <SoundPanel />
-        </div>
-        <Bottom />
-      </div>
-      <LoadSavePattern />
-    </>
+    <KitProvider>
+      <PatternProvider>
+        <TransportProvider>
+          <div id='sequencer'>
+            <div id='main'>
+              <Grid />
+              <PastePattern />
+            </div>
+            <div id='sound-panel'>
+              <SoundPanel />
+            </div>
+            <Bottom />
+          </div>
+          <LoadSavePattern />
+        </TransportProvider>
+      </PatternProvider>
+    </KitProvider>
   );
 };
 

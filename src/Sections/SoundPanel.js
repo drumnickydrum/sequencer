@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { close, edit, setMode, MODES } from '../features/sequencer/editorSlice';
 import {
   CloseIcon,
   CopyIcon,
@@ -11,87 +13,48 @@ import {
 } from '../icons';
 import * as icons from '../icons/kit';
 import { Kit } from '../Providers/Kit';
-import { PatternState } from '../Providers/State/Pattern';
-import { useSoloAndMute } from './useSoloAndMute';
 import { Erase, Slice, Copy } from './EraseSliceCopy';
 import { PitchVelocityLength } from './PitchVelocityLength';
 import { Status } from '../Providers/Status';
 import { Button } from '../Components/Button';
 
 export const SoundPanel = () => {
-  const { spAlert } = useContext(Status);
-  const {
-    selectedSound,
-    setSelectedSound,
-    erasing,
-    setErasing,
-    slicing,
-    setSlicing,
-    copying,
-    setCopying,
-    mod,
-    setMod,
-  } = useContext(PatternState);
+  const dispatch = useDispatch();
+
+  const selectedSound = useSelector((state) => state.editor.selectedSound);
+  const mode = useSelector((state) => state.editor.mode);
+
   const { kitRef } = useContext(Kit);
-  const { solo, mute, handleSolo, handleMute } = useSoloAndMute();
+
   const [showEditMenu, setShowEditMenu] = useState(false);
 
-  // useEffect(() => {
-  //   if (!showEditMenu) setSelectedSound(-1);
-  // }, [showEditMenu, setSelectedSound]);
+  const onClose = () => {
+    dispatch(close());
+    setShowEditMenu(false);
+  };
 
-  const handleSelect = (i) => {
-    setSelectedSound(i === selectedSound ? -1 : i);
+  const selectSound = (i) => {
+    dispatch(edit({ sound: i }));
     setShowEditMenu(true);
   };
 
-  const handleReturn = () => {
-    if (erasing) {
-      handleErase();
-    } else if (slicing) {
-      handleSlice();
-    } else if (copying) {
-      handleCopy();
-    } else if (mod) {
-      handleCellMod('return');
-    } else {
-      if (solo) handleSolo();
-      if (mute) handleMute();
-      setShowEditMenu(false);
-    }
-    setSelectedSound(-1);
-  };
-
-  const handleErase = () => {
-    setErasing((erasing) => !erasing);
-  };
-
-  const handleSlice = () => {
-    const cells = document.querySelectorAll('.on');
-    if (slicing) {
+  const onReturn = () => {
+    if (mode !== MODES.ERASING || mode !== MODES.COPYING) {
+      const cells = document.querySelectorAll('.on');
       cells.forEach((cell) => cell.classList.remove('flashing'));
-      setSlicing(false);
-    } else {
-      cells.forEach((cell) => cell.classList.add('flashing'));
-      setSlicing(true);
     }
+    dispatch(setMode({ mode: MODES.PAINTING }));
   };
 
-  const handleCopy = () => {
-    setCopying((copying) => !copying);
-  };
-
-  const handleCellMod = (type) => {
-    const cells = document.querySelectorAll('.on');
-    if (type === 'return') {
-      cells.forEach((cell) => cell.classList.remove('flashing'));
-      setMod('');
-    } else {
+  const selectMode = (mode) => {
+    if (mode !== MODES.ERASING && mode !== MODES.COPYING) {
+      const cells = document.querySelectorAll('.on');
       cells.forEach((cell) => cell.classList.add('flashing'));
-      setMod(type);
     }
+    dispatch(setMode({ mode }));
   };
 
+  const { spAlert } = useContext(Status);
   const index = spAlert.indexOf('#');
   const alert = spAlert.substr(index + 1);
 
@@ -103,89 +66,83 @@ export const SoundPanel = () => {
         <PointDownIcon />
         <span className='menu-dummy' />
       </div>
-      {showEditMenu && (
-        <div className='sound-edit'>
-          {erasing ? (
-            <Erase handleReturn={handleReturn} />
-          ) : slicing ? (
-            <Slice handleReturn={handleReturn} />
-          ) : copying ? (
-            <Copy handleReturn={handleReturn} />
-          ) : mod ? (
-            <PitchVelocityLength
-              type={mod}
-              selectedSound={selectedSound}
-              handleReturn={handleReturn}
-            />
-          ) : (
-            <div className='sound-edit-menu'>
-              <Button classes='sound-edit-close' onClick={handleReturn}>
-                <CloseIcon />
-              </Button>
-              <div className='sound-edit-dummy' />
-              <Button
-                classes={
-                  erasing
-                    ? `sound-edit-btn color${selectedSound}`
-                    : 'sound-edit-btn'
-                }
-                onClick={handleErase}
-              >
-                <div className='sound-edit-icon-div'>
-                  <EraserIcon />
-                  <p>Erase</p>
-                </div>
-              </Button>
-              <Button classes='sound-edit-btn' onClick={handleSlice}>
-                <div className='sound-edit-icon-div'>
-                  <SawIcon />
-                  <p>Slice</p>
-                </div>
-              </Button>
-              <Button classes='sound-edit-btn' onClick={handleCopy}>
-                <div className='sound-edit-icon-div'>
-                  <CopyIcon />
-                  <p>Copy</p>
-                </div>
-              </Button>
-              <Button
-                classes='sound-edit-btn'
-                onClick={() => handleCellMod('velocity')}
-              >
-                <div className='sound-edit-icon-div'>
-                  <VelocityIcon />
-                  <p>Velocity</p>
-                </div>
-              </Button>
-              <Button
-                classes='sound-edit-btn'
-                onClick={() => handleCellMod('length')}
-              >
-                <div className='sound-edit-icon-div'>
-                  <LengthIcon />
-                  <p>Length</p>
-                </div>
-              </Button>
-              <Button
-                classes='sound-edit-btn'
-                onClick={() => handleCellMod('pitch')}
-              >
-                <div className='sound-edit-icon-div'>
-                  <PitchIcon />
-                  <p>Pitch</p>
-                </div>
-              </Button>
-            </div>
-          )}
-        </div>
-      )}
+      <div className={showEditMenu ? 'sound-edit show' : 'sound-edit'}>
+        {mode === MODES.ERASING ? (
+          <Erase onReturn={onReturn} selectedSound={selectedSound} />
+        ) : mode === MODES.SLICING ? (
+          <Slice onReturn={onReturn} />
+        ) : mode === MODES.COPYING ? (
+          <Copy onReturn={onReturn} />
+        ) : (
+          <div className='sound-edit-menu'>
+            <Button classes='sound-edit-close' onClick={onClose}>
+              <CloseIcon />
+            </Button>
+            <div className='sound-edit-dummy' />
+            <Button
+              classes={'sound-edit-btn'}
+              onClick={() => selectMode(MODES.ERASING)}
+            >
+              <div className='sound-edit-icon-div'>
+                <EraserIcon />
+                <p>Erase</p>
+              </div>
+            </Button>
+            <Button
+              classes='sound-edit-btn'
+              onClick={() => selectMode(MODES.SLICING)}
+            >
+              <div className='sound-edit-icon-div'>
+                <SawIcon />
+                <p>Slice</p>
+              </div>
+            </Button>
+            <Button
+              classes='sound-edit-btn'
+              onClick={() => selectMode(MODES.COPYING)}
+            >
+              <div className='sound-edit-icon-div'>
+                <CopyIcon />
+                <p>Copy</p>
+              </div>
+            </Button>
+            <Button
+              classes='sound-edit-btn'
+              onClick={() => selectMode(MODES.MOD_VELOCITY)}
+            >
+              <div className='sound-edit-icon-div'>
+                <VelocityIcon />
+                <p>Velocity</p>
+              </div>
+            </Button>
+            <Button
+              classes='sound-edit-btn'
+              onClick={() => selectMode(MODES.MOD_LENGTH)}
+            >
+              <div className='sound-edit-icon-div'>
+                <LengthIcon />
+                <p>Length</p>
+              </div>
+            </Button>
+            <Button
+              classes='sound-edit-btn'
+              onClick={() => selectMode(MODES.MOD_PITCH)}
+            >
+              <div className='sound-edit-icon-div'>
+                <PitchIcon />
+                <p>Pitch</p>
+              </div>
+            </Button>
+          </div>
+        )}
+      </div>
       <div className='sound-menu'>
         {kitRef.current.sounds.map((sound, i) => (
           <SoundBtn
             key={`sound-menu-${sound.name}`}
             i={i}
             sound={sound}
-            handleSelect={handleSelect}
+            selectSound={selectSound}
           />
         ))}
       </div>
@@ -193,7 +150,7 @@ export const SoundPanel = () => {
   );
 };
 
-const SoundBtn = ({ i, sound, handleSelect }) => {
+const SoundBtn = ({ i, sound, selectSound }) => {
   const { soundsRef } = useContext(Kit);
 
   const ref = useRef(null);
@@ -205,7 +162,7 @@ const SoundBtn = ({ i, sound, handleSelect }) => {
     <Button
       fwdRef={ref}
       classes={`sound sound-btn color${i}`}
-      onClick={() => handleSelect(i)}
+      onClick={() => selectSound(i)}
     >
       {icons[sound.icon](sound.color)}
       <label className='sound-name'>{sound.name}</label>
@@ -214,3 +171,10 @@ const SoundBtn = ({ i, sound, handleSelect }) => {
     </Button>
   );
 };
+
+/* ) : mode !== MODES.PAINTING ? (
+          <PitchVelocityLength
+            mode={mode}
+            selectedSound={selectedSound}
+            onReturn={onReturn}
+          /> */
