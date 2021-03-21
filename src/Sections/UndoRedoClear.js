@@ -36,16 +36,13 @@ export const UndoRedo = () => {
         </label>
       </Button>
       <span className='menu-dummy' />
-
-      {/* <NavLeft /> */}
-      {/* <NavRight /> */}
     </div>
   );
 };
 
 export const Clear = () => {
   const dispatch = useDispatch();
-  const total = useSelector((state) => state.sequencer.noteTally.total);
+  const tally = useSelector((state) => state.sequencer.noteTally.total);
 
   const onClick = () => dispatch(eraseAll());
 
@@ -54,7 +51,7 @@ export const Clear = () => {
       <Button
         id='clear-all'
         classes='menu-btn'
-        disabled={total === 0}
+        disabled={tally === 0}
         onClick={onClick}
       >
         <ClearAllIcon />

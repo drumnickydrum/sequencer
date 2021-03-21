@@ -1,11 +1,14 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { eraseSound } from '../features/sequencer/sequencerSlice';
 import { Button } from '../Components/Button';
 import { ChevronLeftIcon, CopyIcon, EraserIcon, SawIcon } from '../icons';
 
 export const Erase = ({ onReturn, selectedSound }) => {
   const dispatch = useDispatch();
+  const tally = useSelector(
+    (state) => state.sequencer.noteTally[selectedSound]
+  );
 
   const onEraseAll = () => {
     dispatch(eraseSound({ selectedSound }));
@@ -19,7 +22,11 @@ export const Erase = ({ onReturn, selectedSound }) => {
       <div className='sound-edit-dummy' />
       <div className='sound-edit-middle'>
         <p className=''>Click and drag to erase cells</p>
-        <Button classes='sound-edit-btn mod-all' onClick={onEraseAll}>
+        <Button
+          classes='sound-edit-btn mod-all'
+          disabled={tally === 0}
+          onClick={onEraseAll}
+        >
           Erase All
         </Button>
       </div>
