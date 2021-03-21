@@ -10,44 +10,51 @@ import { PatternState } from '../Providers/State/Pattern';
 import { Kit } from '../Providers/Kit';
 import { SawIcon } from '../icons';
 import { PatternAction } from '../Providers/Actions/Pattern';
+import {
+  INIT_GRID,
+  GridDispatch,
+  GridState,
+  CellsRef,
+} from '../Providers/Grid';
 
 export const Grid = () => {
-  const {
-    gridRef,
-    patternRef,
-    erasing,
-    painting,
-    prevCellRef,
-    selectedSound,
-    cellsRef,
-  } = useContext(PatternState);
+  // const {
+  //   gridRef,
+  //   patternRef,
+  //   erasing,
+  //   painting,
+  //   prevCellRef,
+  //   selectedSound,
+  //   cellsRef,
+  // } = useContext(PatternState);
 
-  const handleDrag = (e) => {
-    if (!painting && !erasing) return;
-    const touch = e.touches[0];
-    const cell = document.elementFromPoint(touch.clientX, touch.clientY);
-    if (cell) {
-      const id = cell.id;
-      if (!id.match(/cell/)) return;
-      if (prevCellRef.current !== id) {
-        prevCellRef.current = id;
-        if (erasing && cell.classList.contains('on')) {
-          document.dispatchEvent(cellsRef.current[id].events.toggle);
-        } else if (painting && !cell.classList.contains('on')) {
-          document.dispatchEvent(cellsRef.current[id].events.toggle);
-        }
-      }
-    }
-  };
-
+  // const handleDrag = (e) => {
+  //   if (!painting && !erasing) return;
+  //   const touch = e.touches[0];
+  //   const cell = document.elementFromPoint(touch.clientX, touch.clientY);
+  //   if (cell) {
+  //     const id = cell.id;
+  //     if (!id.match(/cell/)) return;
+  //     if (prevCellRef.current !== id) {
+  //       prevCellRef.current = id;
+  //       if (erasing && cell.classList.contains('on')) {
+  //         document.dispatchEvent(cellsRef.current[id].events.toggle);
+  //       } else if (painting && !cell.classList.contains('on')) {
+  //         document.dispatchEvent(cellsRef.current[id].events.toggle);
+  //       }
+  //     }
+  //   }
+  // };
+  let grid = INIT_GRID();
   return (
     <div
-      ref={gridRef}
+      // ref={gridRef}
       id='grid'
-      className={selectedSound === -1 ? '' : 'no-drag'}
-      onTouchMove={handleDrag}
+      // className={selectedSound === -1 ? '' : 'no-drag'}
+      // onTouchMove={handleDrag}
     >
-      {patternRef.current.map((_, step) => {
+      {/* {patternRef.current.map((_, step) => { */}
+      {grid.map((_, step) => {
         const id = `cell-${step}`;
         return <Cell key={id} id={id} step={step} />;
       })}
@@ -56,67 +63,78 @@ export const Grid = () => {
 };
 
 const Cell = ({ id, step }) => {
-  const {
-    patternRef,
-    cellsRef,
-    refreshAll,
-    setRefreshAll,
-    prevCellRef,
-    selectedSound,
-    modRef,
-    slicingRef,
-    erasing,
-  } = useContext(PatternState);
-  const { toggleCell, modify, sliceStep } = useContext(PatternAction);
-  const { kitRef } = useContext(Kit);
+  // const {
+  //   patternRef,
+  //   cellsRef,
+  //   refreshAll,
+  //   setRefreshAll,
+  //   prevCellRef,
+  //   selectedSound,
+  //   modRef,
+  //   slicingRef,
+  //   erasing,
+  // } = useContext(PatternState);
+  // const { toggleCell, modify, sliceStep } = useContext(PatternAction);
+  // // const { kitRef } = useContext(Kit);
 
-  const [refresh, setRefresh] = useState(true);
+  // const [refresh, setRefresh] = useState(true);
 
-  const [color, setColor] = useState(-1);
-  const [on, setOn] = useState(false);
-  const [pitch, setPitch] = useState(24);
-  const [velocity, setVelocity] = useState(1);
-  const [length, setLength] = useState(1);
-  const [slice, setSlice] = useState(1);
+  // // useEffect(() => {
+  // //   if (selectedSound === -1) {
+  // //     if (on === true) setOn(false);
+  // //   } else {
+  // //     setColor(selectedSound);
+  // //     setOn(patternRef.current[step][selectedSound].noteOn);
+  // //     const { pitch, velocity, length } = patternRef.current[step][
+  // //       selectedSound
+  // //     ].notes[0];
+  // //     setPitch(pitch + kitRef.current.sounds[selectedSound].pitchMod);
+  // //     setVelocity(velocity * kitRef.current.sounds[selectedSound].velocityMod);
+  // //     setLength(length * kitRef.current.sounds[selectedSound].lengthMod);
+  // //     setSlice(patternRef.current[step][selectedSound].notes.length);
+  // //   }
+  // //   setRefresh(false);
+  // //   setRefreshAll(false);
+  // // }, [
+  // //   selectedSound,
+  // //   refresh,
+  // //   refreshAll,
+  // //   step,
+  // //   kitRef,
+  // //   on,
+  // //   patternRef,
+  // //   setRefreshAll,
+  // // ]);
 
+  const state = useContext(GridState);
+  const dispatch = useContext(GridDispatch);
+  const cellsRef = useContext(CellsRef);
+
+  // const handleToggle = useCallback(() => {
+  //   if (selectedSound === -1) return;
+  //   if (slicingRef.current) {
+  //     if (on) {
+  //       sliceStep(step);
+  //       setSlice((slice) => (slice === 3 ? 1 : slice + 1));
+  //     }
+  //   } else {
+  //     toggleCell(step);
+  //   }
+  // }, [selectedSound, on, step, slicingRef, toggleCell, sliceStep]);
+
+  const [refresh, setRefresh] = useState(false);
   useEffect(() => {
-    if (selectedSound === -1) {
-      if (on === true) setOn(false);
-    } else {
-      setColor(selectedSound);
-      setOn(patternRef.current[step][selectedSound].noteOn);
-      const { pitch, velocity, length } = patternRef.current[step][
-        selectedSound
-      ].notes[0];
-      setPitch(pitch + kitRef.current.sounds[selectedSound].pitchMod);
-      setVelocity(velocity * kitRef.current.sounds[selectedSound].velocityMod);
-      setLength(length * kitRef.current.sounds[selectedSound].lengthMod);
-      setSlice(patternRef.current[step][selectedSound].notes.length);
+    if (refresh) {
+      setRefresh(false);
     }
-    setRefresh(false);
-    setRefreshAll(false);
-  }, [
-    selectedSound,
-    refresh,
-    refreshAll,
-    step,
-    kitRef,
-    on,
-    patternRef,
-    setRefreshAll,
-  ]);
+  }, [refresh]);
 
-  const handleToggle = useCallback(() => {
-    if (selectedSound === -1) return;
-    if (slicingRef.current) {
-      if (on) {
-        sliceStep(step);
-        setSlice((slice) => (slice === 3 ? 1 : slice + 1));
-      }
-    } else {
-      toggleCell(step);
-    }
-  }, [selectedSound, on, step, slicingRef, toggleCell, sliceStep]);
+  const handleToggle = useCallback(
+    () => dispatch({ type: 'toggle', payload: step }),
+    [dispatch, step]
+  );
+
+  const handleRefresh = useCallback(() => setRefresh(true));
 
   const cellRef = useRef(null);
   useEffect(() => {
@@ -127,149 +145,166 @@ const Cell = ({ id, step }) => {
       document.addEventListener(`toggle-${id}`, handleToggle);
       cellsRef.current[id].events.toggle = toggleEvent;
       const refreshEvent = new Event(`refresh-${id}`);
-      document.addEventListener(`refresh-${id}`, () => setRefresh(true));
+      document.addEventListener(`refresh-${id}`, handleRefresh);
       cellsRef.current[id].events.refresh = refreshEvent;
     }
-    return () => document.removeEventListener(`toggle-${id}`, handleToggle);
-  }, [id, cellsRef, handleToggle]);
+    return () => {
+      document.removeEventListener(`toggle-${id}`, handleToggle);
+      document.removeEventListener(`toggle-${id}`, handleToggle);
+    };
+  }, [id, cellsRef, handleToggle, handleRefresh]);
 
-  const handleTouchStart = (e) => {
-    e.stopPropagation();
-    if (modRef.current) {
-      if (on) modStart(e);
-    } else {
-      prevCellRef.current = id;
-      if (!(erasing && !on)) handleToggle();
-    }
-  };
+  // const handleTouchStart = (e) => {
+  //   e.stopPropagation();
+  //   if (modRef.current) {
+  //     if (on) modStart(e);
+  //   } else {
+  //     prevCellRef.current = id;
+  //     if (!(erasing && !on)) handleToggle();
+  //   }
+  // };
 
-  const prevVal = useRef(null);
-  const xRef = useRef(null);
-  const yRef = useRef(null);
-  const modStart = (e) => {
-    prevVal.current =
-      modRef.current === 'pitch'
-        ? pitch
-        : modRef.current === 'velocity'
-        ? velocity
-        : length;
-    xRef.current = e.changedTouches[0].clientX;
-    yRef.current = e.changedTouches[0].clientY;
-  };
+  // const prevVal = useRef(null);
+  // const xRef = useRef(null);
+  // const yRef = useRef(null);
+  // const modStart = (e) => {
+  //   prevVal.current =
+  //     modRef.current === 'pitch'
+  //       ? pitch
+  //       : modRef.current === 'velocity'
+  //       ? velocity
+  //       : length;
+  //   xRef.current = e.changedTouches[0].clientX;
+  //   yRef.current = e.changedTouches[0].clientY;
+  // };
 
-  const handleTouchMove = (e) => {
-    if (!modRef.current || !on) return;
-    e.stopPropagation();
-    const newX = e.changedTouches[0].clientX;
-    const newY = e.changedTouches[0].clientY;
-    if (modRef.current === 'pitch') {
-      if (newY - yRef.current > 1) {
-        setPitch((pitch) => pitch - 1);
-      } else if (newY - yRef.current < -1) {
-        setPitch((pitch) => pitch + 1);
-      }
-    } else if (modRef.current === 'velocity') {
-      if (newY - yRef.current > 1) {
-        setVelocity((velocity) => velocity - 0.05);
-      } else if (newY - yRef.current < -1) {
-        setVelocity((velocity) => velocity + 0.05);
-      }
-    } else {
-      if (newX - xRef.current > 1) {
-        setLength((length) => length + 0.05);
-      } else if (newX - xRef.current < -1) {
-        setLength((length) => length - 0.05);
-      }
-    }
-    xRef.current = newX;
-    yRef.current = newY;
-  };
+  // const handleTouchMove = (e) => {
+  //   if (!modRef.current || !on) return;
+  //   e.stopPropagation();
+  //   const newX = e.changedTouches[0].clientX;
+  //   const newY = e.changedTouches[0].clientY;
+  //   if (modRef.current === 'pitch') {
+  //     if (newY - yRef.current > 1) {
+  //       setPitch((pitch) => pitch - 1);
+  //     } else if (newY - yRef.current < -1) {
+  //       setPitch((pitch) => pitch + 1);
+  //     }
+  //   } else if (modRef.current === 'velocity') {
+  //     if (newY - yRef.current > 1) {
+  //       setVelocity((velocity) => velocity - 0.05);
+  //     } else if (newY - yRef.current < -1) {
+  //       setVelocity((velocity) => velocity + 0.05);
+  //     }
+  //   } else {
+  //     if (newX - xRef.current > 1) {
+  //       setLength((length) => length + 0.05);
+  //     } else if (newX - xRef.current < -1) {
+  //       setLength((length) => length - 0.05);
+  //     }
+  //   }
+  //   xRef.current = newX;
+  //   yRef.current = newY;
+  // };
 
-  const handleTouchEnd = () => {
-    if (modRef.current) {
-      if (on) modEnd();
-    } else {
-      prevCellRef.current = null;
-    }
-  };
+  // const handleTouchEnd = () => {
+  //   if (modRef.current) {
+  //     if (on) modEnd();
+  //   } else {
+  //     prevCellRef.current = null;
+  //   }
+  // };
 
-  const modEnd = () => {
-    let newVal;
-    if (modRef.current === 'pitch') {
-      yRef.current = null;
-      newVal = pitch;
-      if (newVal < 12) {
-        newVal = 12;
-        setPitch(newVal);
-      } else if (newVal > 36) {
-        newVal = 36;
-        setPitch(newVal);
-      }
-    } else if (modRef.current === 'velocity') {
-      yRef.current = null;
-      newVal = velocity;
-      if (newVal < 0) {
-        newVal = 0.1;
-        setVelocity(newVal);
-      } else if (newVal > 1) {
-        newVal = 1;
-        setVelocity(newVal);
-      }
-    } else {
-      xRef.current = null;
-      newVal = length;
-      if (newVal < 0) {
-        newVal = 0.01;
-        setLength(newVal);
-      } else if (newVal > 1) {
-        newVal = 1;
-        setLength(newVal);
-      }
-    }
-    modify(prevVal.current, newVal, step);
-  };
+  // const modEnd = () => {
+  //   let newVal;
+  //   if (modRef.current === 'pitch') {
+  //     yRef.current = null;
+  //     newVal = pitch;
+  //     if (newVal < 12) {
+  //       newVal = 12;
+  //       setPitch(newVal);
+  //     } else if (newVal > 36) {
+  //       newVal = 36;
+  //       setPitch(newVal);
+  //     }
+  //   } else if (modRef.current === 'velocity') {
+  //     yRef.current = null;
+  //     newVal = velocity;
+  //     if (newVal < 0) {
+  //       newVal = 0.1;
+  //       setVelocity(newVal);
+  //     } else if (newVal > 1) {
+  //       newVal = 1;
+  //       setVelocity(newVal);
+  //     }
+  //   } else {
+  //     xRef.current = null;
+  //     newVal = length;
+  //     if (newVal < 0) {
+  //       newVal = 0.01;
+  //       setLength(newVal);
+  //     } else if (newVal > 1) {
+  //       newVal = 1;
+  //       setLength(newVal);
+  //     }
+  //   }
+  //   modify(prevVal.current, newVal, step);
+  // };
 
   // const cellMemo = useMemo(() => {
   // console.log('rendering cell: ', i);
   const modStyle = {
-    opacity: on ? velocity : 1,
-    width: `${100 * length}%`,
+    opacity: state.on ? state.velocity : 1,
+    width: `${100 * state.length}%`,
   };
   return (
     <div className='cell-wrapper'>
       <div
         ref={cellRef}
         id={id}
-        className={on ? 'cell on' : 'cell'}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+        className={state.on ? 'cell on' : 'cell'}
+        // onTouchStart={handleTouchStart}
+        // onTouchMove={handleTouchMove}
+        // onTouchEnd={handleTouchEnd}
       >
-        <div className={on ? 'cell-mods' : ''} style={modStyle}>
-          <p className={on && pitch > 24 ? 'pitch-up show' : 'pitch-up'}>
-            +{pitch - 24}
+        <div className={state.on ? 'cell-mods' : ''} style={modStyle}>
+          <p
+            className={
+              state.on && state.pitch > 24 ? 'pitch-up show' : 'pitch-up'
+            }
+          >
+            +{state.pitch - 24}
           </p>
-          <p className={on && pitch < 24 ? 'pitch-down show' : 'pitch-down'}>
-            {pitch - 24}
+          <p
+            className={
+              state.on && state.pitch < 24 ? 'pitch-down show' : 'pitch-down'
+            }
+          >
+            {state.pitch - 24}
           </p>
           <div
             className={
-              on && slice === 2
+              state.on && state.slice === 2
                 ? 'slice slice-2'
-                : on && slice === 3
+                : state.on && state.slice === 3
                 ? 'slice slice-3'
                 : 'slice'
             }
           >
             <SawIcon />
           </div>
-          <div className={on && slice > 2 ? 'slice slice-2' : 'slice'}>
+          <div
+            className={state.on && state.slice > 2 ? 'slice slice-2' : 'slice'}
+          >
             <SawIcon />
           </div>
         </div>
         <div className='bg' />
         <div
-          className={on ? `bg-color bg${color} show` : `bg-color bg${color}`}
+          className={
+            state.on
+              ? `bg-color bg${state.color} show`
+              : `bg-color bg${state.color}`
+          }
         />
         <div className='cursor' />
         <div className='border-flashing' />

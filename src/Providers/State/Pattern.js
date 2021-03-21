@@ -21,60 +21,65 @@ export const PatternStateProvider = ({ children }) => {
   );
 
   //! SELECT SOUND ALERT
-  const gridRef = useRef(null);
   const [selectedSound, setSelectedSound] = useState(-1);
   useEffect(() => {
-    const grid = gridRef.current;
-    if (selectedSound === -1) {
-      if (grid) {
-        grid.addEventListener('click', alertSelectSound);
-      }
-    }
-    return () => {
-      if (grid) grid.removeEventListener('click', alertSelectSound);
-    };
-  }, [selectedSound, alertSelectSound]);
+    console.log(selectedSound);
+  }, [selectedSound]);
+  // useEffect(() => {
+  //   const grid = gridRef.current;
+  //   if (selectedSound === -1) {
+  //     if (grid) {
+  //       grid.addEventListener('click', alertSelectSound);
+  //     }
+  //   }
+  //   return () => {
+  //     if (grid) grid.removeEventListener('click', alertSelectSound);
+  //   };
+  // }, [selectedSound, alertSelectSound]);
 
   //! THE PATTERN
   const patternRef = useRef(
     deepCopyPattern(getLS('pattern') || analog.pattern)
   );
   const updatePatternLS = () => setLS('pattern', patternRef.current);
+
+  const gridRef = useRef(null);
   const cellsRef = useRef({});
-  const [refreshAll, setRefreshAll] = useState(false);
 
-  //! MODE: PAINTING/ERASING
-  const [painting, setPainting] = useState(true);
-  const [erasing, setErasing] = useState(false);
-  useEffect(() => {
-    if (erasing) {
-      setPainting(false);
-    } else {
-      setPainting(true);
-    }
-  }, [erasing]);
+  const modeRef = useRef('painting');
 
-  const prevCellRef = useRef(null);
+  // //! MODE: PAINTING/ERASING
+  // const [painting, setPainting] = useState(true);
+  // const [erasing, setErasing] = useState(false);
+  // useEffect(() => {
+  //   if (erasing) {
+  //     setPainting(false);
+  //   } else {
+  //     setPainting(true);
+  //   }
+  // }, [erasing]);
 
-  const [mod, setMod, modRef] = useStateAndRef(null);
-  useEffect(() => {
-    if (mod) {
-      setPainting(false);
-    } else {
-      setPainting(true);
-    }
-  }, [mod]);
+  // const prevCellRef = useRef(null);
 
-  const [slicing, setSlicing, slicingRef] = useStateAndRef(false);
-  useEffect(() => {
-    if (slicing) {
-      setPainting(false);
-    } else {
-      setPainting(true);
-    }
-  }, [slicing]);
+  // const [mod, setMod, modRef] = useStateAndRef(null);
+  // useEffect(() => {
+  //   if (mod) {
+  //     setPainting(false);
+  //   } else {
+  //     setPainting(true);
+  //   }
+  // }, [mod]);
 
-  const [copying, setCopying] = useState(false);
+  // const [slicing, setSlicing, slicingRef] = useStateAndRef(false);
+  // useEffect(() => {
+  //   if (slicing) {
+  //     setPainting(false);
+  //   } else {
+  //     setPainting(true);
+  //   }
+  // }, [slicing]);
+
+  // const [copying, setCopying] = useState(false);
 
   const [clearOneDisabled, setClearOneDisabled] = useState(false);
   const [clearAllDisabled, setClearAllDisabled] = useState(false);
@@ -103,23 +108,23 @@ export const PatternStateProvider = ({ children }) => {
         patternRef,
         updatePatternLS,
         cellsRef,
-        refreshAll,
-        setRefreshAll,
-        erasing,
-        setErasing,
-        painting,
-        setPainting,
-        prevCellRef,
+        // refreshAll,
+        // setRefreshAll,
+        // erasing,
+        // setErasing,
+        // painting,
+        // setPainting,
+        // prevCellRef,
         selectedSound,
         setSelectedSound,
-        mod,
-        setMod,
-        modRef,
-        slicing,
-        setSlicing,
-        slicingRef,
-        copying,
-        setCopying,
+        // mod,
+        // setMod,
+        // modRef,
+        // slicing,
+        // setSlicing,
+        // slicingRef,
+        // copying,
+        // setCopying,
         show,
         setShow,
         clearOneDisabled,

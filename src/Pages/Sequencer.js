@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { TransportPanel } from '../Sections/TransportPanel';
-import { Grid } from '../Sections/Grid';
+import { Grid } from '../features/sequencer/Grid';
 import { PastePattern } from '../Sections/PastePattern';
 import { SoundPanel } from '../Sections/SoundPanel';
 import { Clear, UndoRedo } from '../Sections/UndoRedoClear';

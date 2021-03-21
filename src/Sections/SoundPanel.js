@@ -36,9 +36,9 @@ export const SoundPanel = () => {
   const { solo, mute, handleSolo, handleMute } = useSoloAndMute();
   const [showEditMenu, setShowEditMenu] = useState(false);
 
-  useEffect(() => {
-    if (!showEditMenu) setSelectedSound(-1);
-  }, [showEditMenu, setSelectedSound]);
+  // useEffect(() => {
+  //   if (!showEditMenu) setSelectedSound(-1);
+  // }, [showEditMenu, setSelectedSound]);
 
   const handleSelect = (i) => {
     setSelectedSound(i === selectedSound ? -1 : i);
@@ -59,6 +59,7 @@ export const SoundPanel = () => {
       if (mute) handleMute();
       setShowEditMenu(false);
     }
+    setSelectedSound(-1);
   };
 
   const handleErase = () => {

@@ -1,8 +1,9 @@
 export const analog = {
   _id: 'analog',
-  bpm: 100,
   name: 'analog',
   kit: 'analog',
+  bpm: 100,
+  length: 64,
   pattern: [
     [
       { noteOn: true, notes: [{ pitch: 24, velocity: 1, length: 1 }] },

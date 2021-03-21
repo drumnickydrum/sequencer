@@ -2,6 +2,10 @@
 
 ## Dev notes
 
+### 3/21/2021
+
+- Working on basic redux and redux toolkit.
+
 ### 3/20/2021
 
 - Clean up css from yesterday. Resolved low-performance paint issue (transitioning cursor bgcolor).
