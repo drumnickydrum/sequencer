@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import undoable from 'redux-undo';
 import { analog } from '../../defaults/defaultPatterns';
 
 const getNoteTally = (pattern) => {
@@ -112,4 +113,5 @@ export const {
   eraseAll,
 } = sequencerSlice.actions;
 
-export default sequencerSlice.reducer;
+const undoableReducer = undoable(sequencerSlice.reducer);
+export default undoableReducer;

@@ -5,6 +5,8 @@
 ### 3/21/2021
 
 - Working on basic redux and redux toolkit.
+- Installed redux-undo and it's pretty seamless. Wow.
+  - in store.js -> configureStore -> middleware -> getDefaultMiddleware({ immutableCheck: false }) otherwise there is a slow deep state check with every action.
 
 ### 3/20/2021
 

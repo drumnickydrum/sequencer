@@ -15,7 +15,7 @@ import { Kit } from '../../Providers/Kit';
 export const Grid = () => {
   const { kitRef } = useContext(Kit);
 
-  const length = useSelector((state) => state.sequencer.length);
+  const length = useSelector((state) => state.sequencer.present.length);
   const selectedSound = useSelector((state) => state.editor.selectedSound);
   const mode = useSelector((state) => state.editor.mode);
 
@@ -67,27 +67,27 @@ const Cell = ({
 
   const noteOn = useSelector((state) =>
     selectedSound !== -1
-      ? state.sequencer.pattern[step][selectedSound].noteOn
+      ? state.sequencer.present.pattern[step][selectedSound].noteOn
       : false
   );
   const slice = useSelector((state) =>
     selectedSound !== -1
-      ? state.sequencer.pattern[step][selectedSound].notes.length
+      ? state.sequencer.present.pattern[step][selectedSound].notes.length
       : 1
   );
   const pitch = useSelector((state) =>
     selectedSound !== -1
-      ? state.sequencer.pattern[step][selectedSound].notes[0].pitch
+      ? state.sequencer.present.pattern[step][selectedSound].notes[0].pitch
       : 24
   );
   const length = useSelector((state) =>
     selectedSound !== -1
-      ? state.sequencer.pattern[step][selectedSound].notes[0].length
+      ? state.sequencer.present.pattern[step][selectedSound].notes[0].length
       : 1
   );
   const velocity = useSelector((state) =>
     selectedSound !== -1
-      ? state.sequencer.pattern[step][selectedSound].notes[0].velocity
+      ? state.sequencer.present.pattern[step][selectedSound].notes[0].velocity
       : 1
   );
 
@@ -189,10 +189,10 @@ const Cell = ({
 
 const SoundCell = ({ id, step, i, sound }) => {
   const noteOn = useSelector(
-    (state) => state.sequencer.pattern[step][i].noteOn
+    (state) => state.sequencer.present.pattern[step][i].noteOn
   );
   const velocity = useSelector(
-    (state) => state.sequencer.pattern[step][i].notes[0].velocity
+    (state) => state.sequencer.present.pattern[step][i].notes[0].velocity
   );
   const scMemo = useMemo(() => {
     const classes = `sound-cell bg${sound.color}`;

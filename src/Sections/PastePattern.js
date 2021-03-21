@@ -31,7 +31,7 @@ export const PastePattern = () => {
 
 const SoundBtn = ({ i, sound, selectedSound }) => {
   const dispatch = useDispatch();
-  const pattern = useSelector((state) => state.sequencer.pattern);
+  const pattern = useSelector((state) => state.sequencer.present.pattern);
 
   const ref = useRef(null);
   const onClick = () => {

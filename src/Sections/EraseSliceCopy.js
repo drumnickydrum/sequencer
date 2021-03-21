@@ -7,7 +7,7 @@ import { ChevronLeftIcon, CopyIcon, EraserIcon, SawIcon } from '../icons';
 export const Erase = ({ onReturn, selectedSound }) => {
   const dispatch = useDispatch();
   const tally = useSelector(
-    (state) => state.sequencer.noteTally[selectedSound]
+    (state) => state.sequencer.present.noteTally[selectedSound]
   );
 
   const onEraseAll = () => {

@@ -7,4 +7,7 @@ export default configureStore({
     sequencer: sequencerReducer,
     editor: editorReducer,
   },
+  middleware: (getDefaultMiddleware) => {
+    getDefaultMiddleware({ immutableCheck: false });
+  },
 });
