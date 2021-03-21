@@ -8,8 +8,8 @@ import { paste } from '../features/sequencer/sequencerSlice';
 export const PastePattern = () => {
   const { kitRef } = useContext(Kit);
 
-  const selectedSound = useSelector((state) => state.editor.selectedSound);
-  const mode = useSelector((state) => state.editor.mode);
+  const selectedSound = useSelector((state) => state.editMode.selectedSound);
+  const mode = useSelector((state) => state.editMode.mode);
 
   return (
     <div id='paste-pattern' className={mode === MODES.COPYING ? 'show' : ''}>

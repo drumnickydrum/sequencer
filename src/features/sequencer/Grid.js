@@ -16,8 +16,8 @@ export const Grid = () => {
   const { kitRef } = useContext(Kit);
 
   const length = useSelector((state) => state.sequencer.present.length);
-  const selectedSound = useSelector((state) => state.editor.selectedSound);
-  const mode = useSelector((state) => state.editor.mode);
+  const selectedSound = useSelector((state) => state.editMode.selectedSound);
+  const mode = useSelector((state) => state.editMode.mode);
 
   const cellsRef = useRef({});
   const prevCellRef = useRef(null);

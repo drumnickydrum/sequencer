@@ -26,8 +26,8 @@ import { Button } from '../Components/Button';
 export const SoundPanel = () => {
   const dispatch = useDispatch();
 
-  const selectedSound = useSelector((state) => state.editor.selectedSound);
-  const mode = useSelector((state) => state.editor.mode);
+  const selectedSound = useSelector((state) => state.editMode.selectedSound);
+  const mode = useSelector((state) => state.editMode.mode);
 
   const { kitRef } = useContext(Kit);
 
