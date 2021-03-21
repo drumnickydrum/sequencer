@@ -8,10 +8,12 @@ import React, {
 } from 'react';
 import { useSelector } from 'react-redux';
 import { SawIcon } from '../../icons';
+import { Kit } from '../../Providers/Kit';
 import { PatternState } from '../../Providers/State/Pattern';
 
 export const Grid = () => {
   const { selectedSound } = useContext(PatternState);
+  const { kitRef } = useContext(Kit);
   const length = useSelector((state) => state.sequencer.length);
   const grid = [];
   for (let i = 0; i < length; i++) {
@@ -28,14 +30,20 @@ export const Grid = () => {
       {grid.map((_, step) => {
         const id = `cell-${step}`;
         return (
-          <Cell key={id} id={id} step={step} selectedSound={selectedSound} />
+          <Cell
+            key={id}
+            id={id}
+            step={step}
+            selectedSound={selectedSound}
+            kitRef={kitRef}
+          />
         );
       })}
     </div>
   );
 };
 
-const Cell = ({ id, step, selectedSound }) => {
+const Cell = ({ id, step, selectedSound, kitRef }) => {
   const noteOn = useSelector((state) =>
     selectedSound !== -1
       ? state.sequencer.pattern[step][selectedSound].noteOn
@@ -112,23 +120,14 @@ const Cell = ({ id, step, selectedSound }) => {
         />
         <div className='cursor' />
         <div className='border-flashing' />
-        {/* <div className='sound-cells'>
-          {kitRef.current.sounds.map((_, sound) => {
-            const scId = `${id}-${sound}`;
-            const color = patternRef.current[step][sound].noteOn
-              ? `bg${sound}`
-              : '';
-            const velocity = patternRef.current[step][sound].notes[0];
+        <div className='sound-cells'>
+          {kitRef.current.sounds.map((sound, i) => {
+            const scId = `${id}-sound-${i}`;
             return (
-              <SoundCell
-                key={scId}
-                id={scId}
-                color={color}
-                velocity={velocity}
-              />
+              <SoundCell key={scId} id={scId} step={step} i={i} sound={sound} />
             );
           })}
-        </div> */}
+        </div>
       </div>
     </div>
   );
@@ -137,12 +136,19 @@ const Cell = ({ id, step, selectedSound }) => {
   // return cellMemo;
 };
 
-const SoundCell = ({ id, color, velocity }) => {
-  // const soundCellMemo = useMemo(() => {
-  // console.log('rendering soundCell: ', id);
-  const classes = `sound-cell ${color}`;
-  return <div id={id} className={classes} style={{ opacity: velocity }} />;
-  // }, [velocity]);
-
-  // return soundCellMemo;
+const SoundCell = ({ id, step, i, sound }) => {
+  const noteOn = useSelector(
+    (state) => state.sequencer.pattern[step][i].noteOn
+  );
+  const velocity = useSelector(
+    (state) => state.sequencer.pattern[step][i].notes[0].velocity
+  );
+  const classes = `sound-cell bg${sound.color}`;
+  return (
+    <div
+      id={id}
+      className={classes}
+      style={{ opacity: noteOn ? velocity : 0 }}
+    />
+  );
 };
