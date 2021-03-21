@@ -1,9 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { analog } from '../../defaults/defaultPatterns';
 
-const INITIAL_STATE = { ...analog };
-INITIAL_STATE.eraseOneDisabled = false;
-INITIAL_STATE.eraseAllDisabled = false;
+const getNoteTally = (pattern) => {
+  let noteTally = { total: 0 };
+  pattern[0].forEach((_, i) => {
+    noteTally[i] = 0;
+  });
+  pattern.forEach((step) => {
+    step.forEach((sound, i) => {
+      if (sound.noteOn) {
+        noteTally[i]++;
+        noteTally.total++;
+      }
+    });
+  });
+  return noteTally;
+};
+
+const INITIAL_STATE = { ...analog, noteTally: getNoteTally(analog.pattern) };
 
 const initSoundStep = (sound) => {
   sound.noteOn = false;
@@ -13,12 +27,18 @@ const initSoundStep = (sound) => {
 
 export const sequencerSlice = createSlice({
   name: 'sequencer',
-  initialState: analog,
+  initialState: INITIAL_STATE,
   reducers: {
     toggleCell: (state, { payload: { step, selectedSound } }) => {
-      state.pattern[step][selectedSound].noteOn = !state.pattern[step][
-        selectedSound
-      ].noteOn;
+      const noteOn = !state.pattern[step][selectedSound].noteOn;
+      state.pattern[step][selectedSound].noteOn = noteOn;
+      if (noteOn) {
+        state.noteTally[selectedSound]++;
+        state.noteTally.total++;
+      } else {
+        state.noteTally[selectedSound]--;
+        state.noteTally.total--;
+      }
     },
     sliceCell: (state, { payload: { step, selectedSound } }) => {
       let notes = state.pattern[step][selectedSound].notes;
@@ -34,17 +54,25 @@ export const sequencerSlice = createSlice({
           ...note,
         }));
       });
+      state.noteTally.total +=
+        state.noteTally[selectedSound] - state.noteTally[sound];
+      state.noteTally[sound] = state.noteTally[selectedSound];
     },
     eraseSound: (state, { payload: { selectedSound } }) => {
       state.pattern.forEach((step) => {
         initSoundStep(step[selectedSound]);
       });
+      state.noteTally.total -= state.noteTally[selectedSound];
+      state.noteTally[selectedSound] = 0;
     },
     eraseAll: (state) => {
       state.pattern.forEach((step) => {
         step.forEach((sound) => {
           initSoundStep(sound);
         });
+      });
+      Object.keys(state.noteTally).forEach((tally) => {
+        state.noteTally[tally] = 0;
       });
     },
     //   modify: (state, { payload: { selectedSound, step, mode, value } }) => {

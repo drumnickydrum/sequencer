@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import { Button, NavLeft, NavRight } from '../Components/Button';
+import { useSelector, useDispatch } from 'react-redux';
+import { Button } from '../Components/Button';
+import { eraseAll } from '../features/sequencer/sequencerSlice';
 import { ClearAllIcon, RedoIcon, UndoIcon } from '../icons';
-import { PatternAction } from '../Providers/Actions/Pattern';
 import { Kit } from '../Providers/Kit';
-import { PatternState } from '../Providers/State/Pattern';
 import { Undo } from '../Providers/UndoProvider';
 
 export const UndoRedo = () => {
@@ -44,24 +44,24 @@ export const UndoRedo = () => {
 };
 
 export const Clear = () => {
-  const { clearAllDisabled } = useContext(PatternState);
-  const { clearPattern } = useContext(PatternAction);
+  const dispatch = useDispatch();
+  const total = useSelector((state) => state.sequencer.noteTally.total);
+
+  const onClick = () => dispatch(eraseAll());
 
   return (
     <div className='menu-items'>
       <Button
         id='clear-all'
         classes='menu-btn'
-        disabled={clearAllDisabled}
-        onClick={() => clearPattern()}
+        disabled={total === 0}
+        onClick={onClick}
       >
         <ClearAllIcon />
         <label htmlFor='clear-all' className='menu-label'>
           clear pattern
         </label>
       </Button>
-
-      {/* <NavLeft /> */}
     </div>
   );
 };

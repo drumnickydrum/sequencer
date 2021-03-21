@@ -1,8 +1,6 @@
 import React, { useContext, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { PatternAction } from '../Providers/Actions/Pattern';
 import { Kit } from '../Providers/Kit';
-import { PatternState } from '../Providers/State/Pattern';
 import * as icons from '../icons/kit';
 import { MODES } from '../features/sequencer/editorSlice';
 import { paste } from '../features/sequencer/sequencerSlice';
