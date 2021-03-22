@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { eraseSound } from '../../reducers/sequencerSlice';
-import { Button } from '../../../../Components/Button';
+import { Button } from '../../../../components/Button';
 import {
   ChevronLeftIcon,
   CopyIcon,

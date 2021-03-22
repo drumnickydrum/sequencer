@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useContext, useState } from 'react';
 import { LoadPattern } from './LoadPattern';
 import { SavePattern } from './SavePattern';
-import { User, INITIAL_USER } from '../../../../Providers/User';
+import { User, INITIAL_USER } from '../../../../providers/User';
 
 export const LoadSavePattern = () => {
   const { user, setUser } = useContext(User);

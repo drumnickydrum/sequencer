@@ -15,8 +15,8 @@ import * as icons from '../../../../icons/kit';
 import { Kit } from '../../providers/Kit';
 import { Erase, Slice, Copy } from './EraseSliceCopy';
 import { PitchVelocityLength } from './PitchVelocityLength';
-import { Status } from '../../../../Providers/Status';
-import { Button } from '../../../../Components/Button';
+import { Status } from '../../../../providers/Status';
+import { Button } from '../../../../components/Button';
 
 export const SoundPanel = () => {
   const dispatch = useDispatch();

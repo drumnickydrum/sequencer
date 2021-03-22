@@ -3,7 +3,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Transport } from '../../providers/Transport';
-import { User } from '../../../../Providers/User';
+import { User } from '../../../../providers/User';
 
 export const SavePattern = () => {
   const bpm = useSelector((state) => state.sequencer.present.bpm);

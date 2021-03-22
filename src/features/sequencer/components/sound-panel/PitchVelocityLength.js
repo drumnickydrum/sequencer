@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { MODES } from '../../reducers/editModeSlice';
-import { Button } from '../../../../Components/Button';
+import { Button } from '../../../../components/Button';
 import {
   PitchSwipe,
   VelocitySwipe,

@@ -8,7 +8,7 @@ import { Clear } from './components/bottom/Clear';
 import { LoadSaveButton } from './components/bottom/LoadSaveButton';
 import { ChangeKit } from './components/bottom/ChangeKit';
 import { LoadSavePattern } from './components/load/LoadSavePattern';
-import { ScrollLeft, ScrollRight } from '../../Components/Button';
+import { ScrollLeft, ScrollRight } from '../../components/Button';
 import { KitProvider } from './providers/Kit';
 import { TransportProvider } from './providers/Transport';
 import { PatternRefProvider } from './providers/PatternRef';

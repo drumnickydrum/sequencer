@@ -6,7 +6,7 @@ import * as defaultPatterns from '../../defaults/defaultPatterns';
 import { loadSequence } from '../../reducers/sequencerSlice';
 import { DeleteIcon } from '../../../../icons';
 import { Transport } from '../../providers/Transport';
-import { User } from '../../../../Providers/User';
+import { User } from '../../../../providers/User';
 
 export const LoadPattern = () => {
   const dispatch = useDispatch();

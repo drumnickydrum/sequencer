@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Button } from '../../../../Components/Button';
+import { Button } from '../../../../components/Button';
 import { OpenIcon, SaveIcon } from '../../../../icons';
 
 export const LoadSaveButton = () => {

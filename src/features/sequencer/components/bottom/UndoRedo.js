@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { ActionCreators as UndoActionCreators } from 'redux-undo';
 import { connect } from 'react-redux';
-import { Button } from '../../../../Components/Button';
+import { Button } from '../../../../components/Button';
 import { RedoIcon, UndoIcon } from '../../../../icons';
 import { Kit } from '../../providers/Kit';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { eraseAll } from '../../reducers/sequencerSlice';
 import { ClearAllIcon } from '../../../../icons';
-import { Button } from '../../../../Components/Button';
+import { Button } from '../../../../components/Button';
 import { MODES, setMode } from '../../reducers/editModeSlice';
 
 export const Clear = () => {

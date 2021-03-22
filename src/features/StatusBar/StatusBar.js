@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Status } from '../../Providers/Status';
+import { Status } from '../../providers/Status';
 
 export const StatusBar = () => {
   const { status } = useContext(Status);

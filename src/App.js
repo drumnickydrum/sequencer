@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { UserProvider } from './Providers/User';
-import { StatusProvider } from './Providers/Status';
+import { UserProvider } from './providers/User';
+import { StatusProvider } from './providers/Status';
 import { LoginPage } from './features/Login/LoginPage';
-import { SequencerPage } from './features/sequencer/Sequencer';
+import { SequencerPage } from './features/Sequencer/Sequencer';
 import { StatusBar } from './features/StatusBar/StatusBar';
 
 export default function App() {
