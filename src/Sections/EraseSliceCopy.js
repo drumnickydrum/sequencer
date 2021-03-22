@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { eraseSound } from '../features/sequencer/sequencerSlice';
 import { Button } from '../Components/Button';
 import { ChevronLeftIcon, CopyIcon, EraserIcon, SawIcon } from '../icons';
-import { MODES, setMode } from '../features/sequencer/editModeSlice';
 
 export const Erase = ({ onReturn, selectedSound }) => {
   const dispatch = useDispatch();

@@ -7,6 +7,7 @@
 - Working on basic redux and redux toolkit.
 - Installed redux-undo and it's pretty seamless. Wow.
   - in store.js -> configureStore -> middleware -> getDefaultMiddleware({ immutableCheck: false }) otherwise there is a slow deep state check with every action.
+- Disabled erase and slice when tally for sound is 0. Erasing to 0 also brings you back to the edit menu.
 
 ### 3/20/2021
 
