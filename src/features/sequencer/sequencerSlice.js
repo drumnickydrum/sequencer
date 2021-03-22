@@ -2,37 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import undoable from 'redux-undo';
 import { analog } from '../../defaults/defaultPatterns';
 import { getLS } from '../../utils/storage';
-
-// const deepCopyStep = (step) => {
-//   return step.map((sound) => {
-//     let newNotes = sound.notes.map((note) => {
-//       return { ...note };
-//     });
-//     return { noteOn: sound.noteOn, notes: newNotes };
-//   });
-// };
-
-// const deepCopyPattern = (pattern) => {
-//   return pattern.map((step) => {
-//     return deepCopyStep(step);
-//   });
-// };
-
-const getNoteTally = (pattern) => {
-  let noteTally = { total: 0 };
-  pattern[0].forEach((_, i) => {
-    noteTally[i] = 0;
-  });
-  pattern.forEach((step) => {
-    step.forEach((sound, i) => {
-      if (sound.noteOn) {
-        noteTally[i]++;
-        noteTally.total++;
-      }
-    });
-  });
-  return noteTally;
-};
+import { getNoteTally, inc, dec, initSoundStep } from './utils';
 
 const INITIAL_PATTERN = getLS('pattern') || analog.pattern;
 
@@ -42,12 +12,6 @@ const INITIAL_STATE = {
   noteTally: getNoteTally(analog.pattern),
 };
 
-const initSoundStep = (sound) => {
-  sound.noteOn = false;
-  sound.notes.length = 0;
-  sound.notes.push({ pitch: 24, velocity: 1, length: 1 });
-};
-
 export const sequencerSlice = createSlice({
   name: 'sequencer',
   initialState: INITIAL_STATE,
@@ -55,13 +19,8 @@ export const sequencerSlice = createSlice({
     toggleCell: (state, { payload: { step, selectedSound } }) => {
       const noteOn = !state.pattern[step][selectedSound].noteOn;
       state.pattern[step][selectedSound].noteOn = noteOn;
-      if (noteOn) {
-        state.noteTally[selectedSound]++;
-        state.noteTally.total++;
-      } else {
-        state.noteTally[selectedSound]--;
-        state.noteTally.total--;
-      }
+      if (noteOn) inc(state.noteTally, selectedSound);
+      else dec(state.noteTally, selectedSound);
     },
     sliceCell: (state, { payload: { step, selectedSound } }) => {
       let notes = state.pattern[step][selectedSound].notes;
@@ -83,8 +42,7 @@ export const sequencerSlice = createSlice({
     },
     eraseCell: (state, { payload: { step, selectedSound } }) => {
       initSoundStep(state.pattern[step][selectedSound]);
-      state.noteTally[selectedSound]--;
-      state.noteTally.total--;
+      dec(state.noteTally, selectedSound);
     },
     eraseSound: (state, { payload: { selectedSound } }) => {
       state.pattern.forEach((step) => {
