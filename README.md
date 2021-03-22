@@ -2,6 +2,10 @@
 
 ## Dev notes
 
+### 3/22/2021
+
+- PatternRef provider keeps latest updates of pattern state from redux.
+
 ### 3/21/2021
 
 - Working on basic redux and redux toolkit.

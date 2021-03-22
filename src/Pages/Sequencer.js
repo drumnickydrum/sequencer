@@ -12,24 +12,27 @@ import { ScrollLeft, ScrollRight } from '../Components/Button';
 import { KitProvider } from '../Providers/Kit';
 import { PatternProvider } from '../Providers/Pattern';
 import { TransportProvider } from '../Providers/Transport';
+import { PatternRefProvider } from '../Providers/PatternRef';
 
 export const SequencerPage = () => {
   return (
     <KitProvider>
       <PatternProvider>
-        <TransportProvider>
-          <div id='sequencer'>
-            <div id='main'>
-              <Grid />
-              <PastePattern />
+        <PatternRefProvider>
+          <TransportProvider>
+            <div id='sequencer'>
+              <div id='main'>
+                <Grid />
+                <PastePattern />
+              </div>
+              <div id='sound-panel'>
+                <SoundPanel />
+              </div>
+              <Bottom />
             </div>
-            <div id='sound-panel'>
-              <SoundPanel />
-            </div>
-            <Bottom />
-          </div>
-          <LoadSavePattern />
-        </TransportProvider>
+            <LoadSavePattern />
+          </TransportProvider>
+        </PatternRefProvider>
       </PatternProvider>
     </KitProvider>
   );

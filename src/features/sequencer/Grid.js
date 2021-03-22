@@ -11,6 +11,7 @@ import { MODES } from './editModeSlice';
 import { toggleCell, sliceCell, eraseCell } from './sequencerSlice';
 import { SawIcon } from '../../icons';
 import { Kit } from '../../Providers/Kit';
+import { PatternRef } from '../../Providers/PatternRef';
 
 export const Grid = () => {
   const { kitRef } = useContext(Kit);
@@ -19,7 +20,8 @@ export const Grid = () => {
   const selectedSound = useSelector((state) => state.editMode.selectedSound);
   const mode = useSelector((state) => state.editMode.mode);
 
-  const cellsRef = useRef({});
+  const { cellsRef } = useContext(PatternRef);
+  // const cellsRef = useRef({});
   const prevCellRef = useRef(null);
 
   const handleDrag = (e) => {

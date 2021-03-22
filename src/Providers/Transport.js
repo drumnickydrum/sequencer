@@ -1,18 +1,21 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import * as Tone from 'tone';
-import { PatternState } from './State/Pattern';
+import { PatternRef } from './PatternRef';
 import { MIDI_NOTES } from '../utils/MIDI_NOTES';
 import { Kit } from './Kit';
+import { useSelector } from 'react-redux';
 
 export const Transport = React.createContext();
 export const TransportProvider = ({ children }) => {
-  const { patternRef, cellsRef, patternBpm } = useContext(PatternState);
+  const { patternRef, cellsRef } = useContext(PatternRef);
   const { kitRef, buffersLoaded, soundsRef } = useContext(Kit);
   const stepRef = useRef(0);
 
+  const bpm = useSelector((state) => state.sequencer.present.bpm);
+
   useEffect(() => {
-    Tone.Transport.bpm.value = patternBpm;
-  }, [patternBpm]);
+    Tone.Transport.bpm.value = bpm;
+  }, [bpm]);
 
   const [transportState, setTransportState] = useState(Tone.Transport.state);
 
