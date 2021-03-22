@@ -28,6 +28,11 @@ export const SoundPanel = () => {
 
   const selectedSound = useSelector((state) => state.editMode.selectedSound);
   const mode = useSelector((state) => state.editMode.mode);
+  const tally = useSelector(
+    (state) => state.sequencer.present.noteTally[selectedSound]
+  );
+
+  console.log(mode);
 
   const { kitRef } = useContext(Kit);
 
@@ -86,6 +91,7 @@ export const SoundPanel = () => {
             <div className='sound-edit-dummy' />
             <Button
               classes={'sound-edit-btn'}
+              disabled={tally === 0}
               onClick={() => selectMode(MODES.ERASING)}
             >
               <div className='sound-edit-icon-div'>
@@ -95,6 +101,7 @@ export const SoundPanel = () => {
             </Button>
             <Button
               classes='sound-edit-btn'
+              disabled={tally === 0}
               onClick={() => selectMode(MODES.SLICING)}
             >
               <div className='sound-edit-icon-div'>

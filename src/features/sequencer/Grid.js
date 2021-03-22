@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { MODES } from './editModeSlice';
-import { toggleCell, sliceCell } from './sequencerSlice';
+import { toggleCell, sliceCell, eraseCell } from './sequencerSlice';
 import { SawIcon } from '../../icons';
 import { Kit } from '../../Providers/Kit';
 
@@ -22,6 +22,33 @@ export const Grid = () => {
   const cellsRef = useRef({});
   const prevCellRef = useRef(null);
 
+  const handleDrag = (e) => {
+    if (
+      mode !== MODES.PAINTING &&
+      mode !== MODES.ERASING &&
+      mode !== MODES.SLICING
+    )
+      return;
+    const touch = e.touches[0];
+    const cell = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (cell) {
+      const id = cell.id;
+      if (!id.match(/cell/)) return;
+      if (prevCellRef.current !== id) {
+        prevCellRef.current = id;
+        if (cell.classList.contains('on')) {
+          if (mode === MODES.ERASING || mode === MODES.SLICING) {
+            document.dispatchEvent(cellsRef.current[id].events.tap);
+          }
+        } else {
+          if (mode === MODES.PAINTING) {
+            document.dispatchEvent(cellsRef.current[id].events.tap);
+          }
+        }
+      }
+    }
+  };
+
   const grid = [];
   for (let i = 0; i < length; i++) {
     grid.push(1);
@@ -31,10 +58,9 @@ export const Grid = () => {
     <div
       // ref={gridRef}
       id='grid'
-      // className={selectedSound === -1 ? '' : 'no-drag'}
-      // onTouchMove={handleDrag}
+      className={selectedSound === -1 ? '' : 'no-drag'}
+      onTouchMove={handleDrag}
     >
-      {/* {patternRef.current.map((_, step) => { */}
       {grid.map((_, step) => {
         const id = `cell-${step}`;
         return (
@@ -91,11 +117,15 @@ const Cell = ({
       : 1
   );
 
-  const handleToggle = useCallback(() => {
+  const onTap = useCallback(() => {
     if (selectedSound !== -1) {
       if (mode === MODES.SLICING) {
         if (noteOn) {
           dispatch(sliceCell({ step, selectedSound }));
+        }
+      } else if (mode === MODES.ERASING) {
+        if (noteOn) {
+          dispatch(eraseCell({ step, selectedSound }));
         }
       } else {
         dispatch(toggleCell({ step, selectedSound }));
@@ -107,20 +137,20 @@ const Cell = ({
   useEffect(() => {
     cellsRef.current[id] = { events: {} };
     cellsRef.current[id].cellRef = cellRef;
-    const toggleEvent = new Event(`toggle-${id}`);
-    document.addEventListener(`toggle-${id}`, handleToggle);
-    cellsRef.current[id].events.toggle = toggleEvent;
+    const tapEvent = new Event(`tap-${id}`);
+    document.addEventListener(`tap-${id}`, onTap);
+    cellsRef.current[id].events.tap = tapEvent;
     return () => {
-      document.removeEventListener(`toggle-${id}`, handleToggle);
+      document.removeEventListener(`tap-${id}`, onTap);
     };
-  }, [id, cellsRef, handleToggle]);
+  }, [id, cellsRef, onTap]);
 
-  const handleTouchStart = (e) => {
+  const onTouchStart = (e) => {
     e.stopPropagation();
     // if (modRef.current) {
     // if (on) modStart(e);
     prevCellRef.current = id;
-    if (!(mode === MODES.ERASING && !noteOn)) handleToggle();
+    if (!(mode === MODES.ERASING && !noteOn)) onTap();
   };
 
   const modStyle = {
@@ -133,7 +163,7 @@ const Cell = ({
         ref={cellRef}
         id={id}
         className={noteOn ? 'cell on' : 'cell'}
-        onTouchStart={handleTouchStart}
+        onTouchStart={onTouchStart}
         // onTouchMove={handleTouchMove}
         // onTouchEnd={handleTouchEnd}
       >

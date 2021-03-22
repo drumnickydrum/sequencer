@@ -2,6 +2,21 @@ import { createSlice } from '@reduxjs/toolkit';
 import undoable from 'redux-undo';
 import { analog } from '../../defaults/defaultPatterns';
 
+const deepCopyStep = (step) => {
+  return step.map((sound) => {
+    let newNotes = sound.notes.map((note) => {
+      return { ...note };
+    });
+    return { noteOn: sound.noteOn, notes: newNotes };
+  });
+};
+
+const deepCopyPattern = (pattern) => {
+  return pattern.map((step) => {
+    return deepCopyStep(step);
+  });
+};
+
 const getNoteTally = (pattern) => {
   let noteTally = { total: 0 };
   pattern[0].forEach((_, i) => {
@@ -59,6 +74,11 @@ export const sequencerSlice = createSlice({
         state.noteTally[selectedSound] - state.noteTally[sound];
       state.noteTally[sound] = state.noteTally[selectedSound];
     },
+    eraseCell: (state, { payload: { step, selectedSound } }) => {
+      initSoundStep(state.pattern[step][selectedSound]);
+      state.noteTally[selectedSound]--;
+      state.noteTally.total--;
+    },
     eraseSound: (state, { payload: { selectedSound } }) => {
       state.pattern.forEach((step) => {
         initSoundStep(step[selectedSound]);
@@ -109,6 +129,7 @@ export const {
   toggleCell,
   sliceCell,
   paste,
+  eraseCell,
   eraseSound,
   eraseAll,
 } = sequencerSlice.actions;
