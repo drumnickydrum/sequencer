@@ -147,76 +147,100 @@ const Cell = ({
     };
   }, [id, cellsRef, onTap]);
 
-  const onTouchStart = (e) => {
-    e.stopPropagation();
-    // if (modRef.current) {
-    // if (on) modStart(e);
-    prevCellRef.current = id;
-    if (!(mode === MODES.ERASING && !noteOn)) onTap();
-  };
+  const onTouchStart = useCallback(
+    (e) => {
+      e.stopPropagation();
+      // if (modRef.current) {
+      // if (on) modStart(e);
+      prevCellRef.current = id;
+      if (!(mode === MODES.ERASING && !noteOn)) onTap();
+    },
+    [id, mode, noteOn, onTap, prevCellRef]
+  );
 
-  const modStyle = {
-    opacity: noteOn ? velocity : 1,
-    width: `${100 * length}%`,
-  };
-  return (
-    <div className='cell-wrapper'>
-      <div
-        ref={cellRef}
-        id={id}
-        className={noteOn ? 'cell on' : 'cell'}
-        onTouchStart={onTouchStart}
-        // onTouchMove={handleTouchMove}
-        // onTouchEnd={handleTouchEnd}
-      >
-        <div className={noteOn ? 'cell-mods' : ''} style={modStyle}>
-          <p className={noteOn && pitch > 24 ? 'pitch-up show' : 'pitch-up'}>
-            +{pitch - 24}
-          </p>
-          <p
-            className={noteOn && pitch < 24 ? 'pitch-down show' : 'pitch-down'}
-          >
-            {pitch - 24}
-          </p>
+  const cellMemo = useMemo(() => {
+    console.log('rendering cell: ', step);
+    const modStyle = {
+      opacity: noteOn ? velocity : 1,
+      width: `${100 * length}%`,
+    };
+    return (
+      <div className='cell-wrapper'>
+        <div
+          ref={cellRef}
+          id={id}
+          className={noteOn ? 'cell on' : 'cell'}
+          onTouchStart={onTouchStart}
+          // onTouchMove={handleTouchMove}
+          // onTouchEnd={handleTouchEnd}
+        >
+          <div className={noteOn ? 'cell-mods' : ''} style={modStyle}>
+            <p className={noteOn && pitch > 24 ? 'pitch-up show' : 'pitch-up'}>
+              +{pitch - 24}
+            </p>
+            <p
+              className={
+                noteOn && pitch < 24 ? 'pitch-down show' : 'pitch-down'
+              }
+            >
+              {pitch - 24}
+            </p>
+            <div
+              className={
+                noteOn && slice === 2
+                  ? 'slice slice-2'
+                  : noteOn && slice === 3
+                  ? 'slice slice-3'
+                  : 'slice'
+              }
+            >
+              <SawIcon />
+            </div>
+            <div className={noteOn && slice > 2 ? 'slice slice-2' : 'slice'}>
+              <SawIcon />
+            </div>
+          </div>
+          <div className='bg' />
           <div
             className={
-              noteOn && slice === 2
-                ? 'slice slice-2'
-                : noteOn && slice === 3
-                ? 'slice slice-3'
-                : 'slice'
+              noteOn
+                ? `bg-color bg${selectedSound} show`
+                : `bg-color bg${selectedSound}`
             }
-          >
-            <SawIcon />
+          />
+          <div className='cursor' />
+          <div className='border-flashing' />
+          <div className='sound-cells'>
+            {kitRef.current.sounds.map((sound, i) => {
+              const scId = `${id}-sound-${i}`;
+              return (
+                <SoundCell
+                  key={scId}
+                  id={scId}
+                  step={step}
+                  i={i}
+                  sound={sound}
+                />
+              );
+            })}
           </div>
-          <div className={noteOn && slice > 2 ? 'slice slice-2' : 'slice'}>
-            <SawIcon />
-          </div>
-        </div>
-        <div className='bg' />
-        <div
-          className={
-            noteOn
-              ? `bg-color bg${selectedSound} show`
-              : `bg-color bg${selectedSound}`
-          }
-        />
-        <div className='cursor' />
-        <div className='border-flashing' />
-        <div className='sound-cells'>
-          {kitRef.current.sounds.map((sound, i) => {
-            const scId = `${id}-sound-${i}`;
-            return (
-              <SoundCell key={scId} id={scId} step={step} i={i} sound={sound} />
-            );
-          })}
         </div>
       </div>
-    </div>
-  );
-  // }, [color, on, pitch, velocity, length, pattern[step].updated]);
+    );
+  }, [
+    noteOn,
+    velocity,
+    length,
+    id,
+    onTouchStart,
+    pitch,
+    slice,
+    selectedSound,
+    kitRef,
+    step,
+  ]);
 
-  // return cellMemo;
+  return cellMemo;
 };
 
 const SoundCell = ({ id, step, i, sound }) => {
