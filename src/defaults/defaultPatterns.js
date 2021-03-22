@@ -1066,9 +1066,10 @@ export const analog = {
 
 export const house = {
   _id: 'defaultHouse',
-  bpm: 120,
   name: 'house',
   kit: 'house',
+  bpm: 120,
+  length: 64,
   pattern: [
     [
       { noteOn: true, notes: [{ pitch: 24, velocity: 1, length: 1 }] },
@@ -1778,9 +1779,10 @@ export const house = {
 };
 export const lush = {
   _id: 'defaultLush',
-  bpm: 80,
   name: 'lush',
   kit: 'lush',
+  bpm: 80,
+  length: 64,
   pattern: [
     [
       { noteOn: true, notes: [{ pitch: 24, velocity: 1, length: 1 }] },
@@ -2491,9 +2493,10 @@ export const lush = {
 
 export const vinyl = {
   _id: 'defaultVinyl',
-  bpm: 90,
   name: 'vinyl',
   kit: 'vinyl',
+  bpm: 90,
+  length: 64,
   pattern: [
     [
       { noteOn: true, notes: [{ pitch: 24, velocity: 1, length: 1 }] },

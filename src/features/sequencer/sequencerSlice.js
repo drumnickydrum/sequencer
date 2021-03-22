@@ -1,15 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
-import undoable from 'redux-undo';
+import undoable, { excludeAction } from 'redux-undo';
+import { ignoreActions } from 'redux-ignore';
 import { analog } from '../../defaults/defaultPatterns';
 import { getLS } from '../../utils/storage';
 import { getNoteTally, inc, dec, initSoundStep } from './utils';
 
-const INITIAL_PATTERN = getLS('pattern') || analog.pattern;
+// const INITIAL_PATTERN = getLS('pattern') || analog.pattern;
+const INITIAL_PATTERN = analog.pattern;
 
 const INITIAL_STATE = {
   ...analog,
   pattern: INITIAL_PATTERN,
   noteTally: getNoteTally(analog.pattern),
+  temp: {},
 };
 
 export const sequencerSlice = createSlice({
@@ -61,6 +64,19 @@ export const sequencerSlice = createSlice({
         state.noteTally[tally] = 0;
       });
     },
+    loadSequence: (state, { payload: { sequence } }) => {
+      state._id = sequence._id;
+      state.name = sequence.name;
+      state.kit = sequence.kit;
+      state.bpm = sequence.bpm;
+      state.length = sequence.length;
+      state.pattern = sequence.pattern;
+      state.noteTally = getNoteTally(state.pattern);
+    },
+    loadSequenceFinally: (state) => {},
+    changeKit: (state, { payload: { kit } }) => {
+      state.kit = kit;
+    },
   },
 });
 
@@ -71,7 +87,12 @@ export const {
   eraseCell,
   eraseSound,
   eraseAll,
+  loadSequence,
+  loadSequenceFinally,
+  changeKit,
 } = sequencerSlice.actions;
 
-const undoableReducer = undoable(sequencerSlice.reducer);
-export default undoableReducer;
+const reducer = ignoreActions(undoable(sequencerSlice.reducer), [
+  loadSequenceFinally,
+]);
+export default reducer;

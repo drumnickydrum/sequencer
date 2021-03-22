@@ -161,16 +161,8 @@ export const SoundPanel = () => {
 };
 
 const SoundBtn = ({ i, sound, selectSound }) => {
-  const { soundsRef } = useContext(Kit);
-
-  const ref = useRef(null);
-  useEffect(() => {
-    if (ref.current) soundsRef.current[i] = ref;
-  });
-
   return (
     <Button
-      fwdRef={ref}
       classes={`sound sound-btn color${i}`}
       onClick={() => selectSound(i)}
     >

@@ -11,7 +11,7 @@ export const LoadSavePattern = () => {
   const { show, setShow } = useContext(PatternState);
   const [fetching, setFetching] = useState(false);
 
-  const handleLogout = async () => {
+  const logout = async () => {
     try {
       setFetching(true);
       await axios({
@@ -28,7 +28,7 @@ export const LoadSavePattern = () => {
     }
   };
 
-  const handleTab = (type) => {
+  const changeTab = (type) => {
     setShow(type);
   };
 
@@ -43,14 +43,14 @@ export const LoadSavePattern = () => {
           <button
             id='load-tab'
             className={loadStyle}
-            onClick={() => handleTab('load')}
+            onClick={() => changeTab('load')}
           >
             <label htmlFor='load-tab'>Load</label>
           </button>
           <button
             id='save-tab'
             className={saveStyle}
-            onClick={() => handleTab('save')}
+            onClick={() => changeTab('save')}
           >
             <label htmlFor='save-tab'>Save</label>
           </button>
@@ -63,7 +63,7 @@ export const LoadSavePattern = () => {
               ) : (
                 <p>Logged in as: {user.username}</p>
               )}
-              <button disabled={fetching} onClick={handleLogout}>
+              <button disabled={fetching} onClick={logout}>
                 logout
               </button>
             </div>

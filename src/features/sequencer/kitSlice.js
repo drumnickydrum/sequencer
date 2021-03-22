@@ -1,10 +1,11 @@
-import * as Tone from 'tone';
 import { createSlice } from '@reduxjs/toolkit';
-import undoable from 'redux-undo';
+import undoable, { excludeAction } from 'redux-undo';
+import { ignoreActions } from 'redux-ignore';
 import * as defaultKits from '../../defaults/defaultKits';
 import { getLS } from '../../utils/storage';
 
-const loadedKit = getLS('kit') || 'analog';
+// const loadedKit = getLS('kit') || 'analog';
+const loadedKit = 'analog';
 const INITIAL_SOUNDS = defaultKits[loadedKit].sounds.map((sound) => ({
   ...sound,
 }));
@@ -23,11 +24,11 @@ export const kitSlice = createSlice({
       }));
       state.name = kit;
       state.sounds = newSounds;
+      console.log('loadKit');
     },
   },
 });
 
 export const { loadKit } = kitSlice.actions;
 
-const undoableReducer = undoable(kitSlice.reducer);
-export default undoableReducer;
+export default kitSlice.reducer;

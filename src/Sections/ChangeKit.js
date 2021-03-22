@@ -3,15 +3,15 @@ import { ChevronDownIcon } from '../icons';
 import * as kits from '../defaults/defaultKits';
 import { Kit } from '../Providers/Kit';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadKit } from '../features/sequencer/kitSlice';
+import { changeKit } from '../features/sequencer/sequencerSlice';
 
 export const ChangeKit = () => {
   const dispatch = useDispatch();
-  const kit = useSelector((state) => state.kit.present.name);
+  const kit = useSelector((state) => state.sequencer.present.kit);
   const { buffersLoaded } = useContext(Kit);
 
-  const handleChange = ({ target: { value } }) => {
-    dispatch(loadKit({ kit: value }));
+  const onChange = ({ target: { value } }) => {
+    dispatch(changeKit({ kit: value }));
   };
 
   return (
@@ -25,7 +25,7 @@ export const ChangeKit = () => {
             id='kit-select'
             className='kit-select'
             value={kit}
-            onChange={handleChange}
+            onChange={onChange}
           >
             {Object.keys(kits).map((kitName, i) => {
               return (

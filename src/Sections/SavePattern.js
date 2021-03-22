@@ -10,7 +10,7 @@ export const SavePattern = () => {
   const { patternRef, patternBpm } = useContext(PatternState);
   const { stop } = useContext(Transport);
   const { user, setUser, fetching } = useContext(User);
-  const kit = useSelector((state) => state.kit.present.name);
+  const kit = useSelector((state) => state.kit.name);
 
   const [newName, setNewName] = useState('');
 

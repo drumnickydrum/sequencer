@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 export const Transport = React.createContext();
 export const TransportProvider = ({ children }) => {
   const { patternRef, cellsRef } = useContext(PatternRef);
-  const { kitRef, buffersLoaded, soundsRef, loadSamples } = useContext(Kit);
+  const { kitRef, buffersLoaded, loadSamples } = useContext(Kit);
 
   const stepRef = useRef(0);
 
@@ -124,16 +124,12 @@ export const TransportProvider = ({ children }) => {
   };
 
   const animateSound = (time, step) => {
+    const soundBtns = document.querySelectorAll('.sound-btn');
     Tone.Draw.schedule(() => {
       patternRef.current[step].forEach((sound, i) => {
         if (sound.noteOn) {
-          if (soundsRef.current[i].current) {
-            soundsRef.current[i].current.classList.add('pulse');
-            setTimeout(
-              () => soundsRef.current[i].current.classList.remove('pulse'),
-              0
-            );
-          }
+          soundBtns[i].classList.add('pulse');
+          setTimeout(() => soundBtns[i].classList.remove('pulse'), 0);
         }
       });
     }, time);

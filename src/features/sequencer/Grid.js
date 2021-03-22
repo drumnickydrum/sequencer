@@ -51,10 +51,13 @@ export const Grid = () => {
     }
   };
 
-  const grid = [];
-  for (let i = 0; i < length; i++) {
-    grid.push(1);
-  }
+  let grid = useMemo(() => {
+    let grid = [];
+    for (let i = 0; i < length; i++) {
+      grid.push(1);
+    }
+    return grid;
+  }, [length]);
 
   return (
     <div
@@ -159,7 +162,6 @@ const Cell = ({
   );
 
   const cellMemo = useMemo(() => {
-    console.log('rendering cell: ', step);
     const modStyle = {
       opacity: noteOn ? velocity : 1,
       width: `${100 * length}%`,

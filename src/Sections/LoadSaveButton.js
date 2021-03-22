@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Button, NavLeft, NavRight } from '../Components/Button';
+import { Button } from '../Components/Button';
 import { OpenIcon, SaveIcon } from '../icons';
 import { PatternState } from '../Providers/State/Pattern';
 
@@ -35,9 +35,6 @@ export const LoadSaveButton = () => {
         </label>
       </Button>
       <span className='menu-dummy' />
-
-      {/* <NavLeft /> */}
-      {/* <NavRight /> */}
     </div>
   );
 };

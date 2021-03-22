@@ -1,20 +1,19 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as defaultPatterns from '../defaults/defaultPatterns';
+import { loadSequence } from '../features/sequencer/sequencerSlice';
 import { DeleteIcon } from '../icons';
-import { PatternAction } from '../Providers/Actions/Pattern';
-import { PatternState } from '../Providers/State/Pattern';
 import { Transport } from '../Providers/Transport';
 import { User } from '../Providers/User';
-import { useChangeKit } from '../utils/useChangeKit';
 
 export const LoadPattern = () => {
-  const { patternId } = useContext(PatternState);
-  const { loadPattern } = useContext(PatternAction);
+  const dispatch = useDispatch();
+  const _id = useSelector((state) => state.sequencer.present._id);
+
   const { stop } = useContext(Transport);
   const { user, fetching } = useContext(User);
-  const { changeKit } = useChangeKit();
 
   const [error, setError] = useState('');
   useEffect(() => {
@@ -22,16 +21,16 @@ export const LoadPattern = () => {
     return () => clearTimeout(timeout);
   }, [error]);
 
-  const handleClick = (e, type, id) => {
+  const selectPattern = (e, type, id) => {
     e.stopPropagation();
-    let newPattern;
+    let sequence;
     if (type === 'dp')
-      newPattern = Object.values(defaultPatterns).find(
+      sequence = Object.values(defaultPatterns).find(
         (pattern) => pattern._id === id
       );
     if (type === 'up')
-      newPattern = user.patterns.find((pattern) => pattern._id === id);
-    loadPattern(newPattern, changeKit);
+      sequence = user.patterns.find((pattern) => pattern._id === id);
+    dispatch(loadSequence({ sequence }));
   };
 
   return (
@@ -67,12 +66,12 @@ export const LoadPattern = () => {
                     <p>Bpm</p>
                     <p>Delete</p>
                   </div>
-                  {user.patterns.map((pattern) => (
+                  {user.patterns.map((pattern, i) => (
                     <UserPattern
-                      key={pattern._id}
+                      key={`up-${_id}-${i}`}
                       pattern={pattern}
-                      patternId={patternId}
-                      handleClick={handleClick}
+                      _id={_id}
+                      selectPattern={selectPattern}
                       setError={setError}
                     />
                   ))}
@@ -93,9 +92,9 @@ export const LoadPattern = () => {
             const id = defaultPatterns[pattern]._id;
             return (
               <div
-                key={id}
-                className={id === patternId ? 'pattern selected' : 'pattern'}
-                onClick={(e) => handleClick(e, 'dp', id)}
+                key={`dp-${id}`}
+                className={id === _id ? 'pattern selected' : 'pattern'}
+                onClick={(e) => selectPattern(e, 'dp', id)}
               >
                 <p>{pattern}</p>
                 <p>{defaultPatterns[pattern].kit}</p>
@@ -110,7 +109,7 @@ export const LoadPattern = () => {
   );
 };
 
-const UserPattern = ({ pattern, patternId, handleClick, setError }) => {
+const UserPattern = ({ pattern, _id, selectPattern, setError }) => {
   const { setUser } = useContext(User);
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -156,9 +155,9 @@ const UserPattern = ({ pattern, patternId, handleClick, setError }) => {
   ) : (
     <div
       className={
-        pattern._id === patternId ? 'pattern select selected' : 'pattern select'
+        pattern._id === _id ? 'pattern select selected' : 'pattern select'
       }
-      onClick={(e) => handleClick(e, 'up', pattern._id)}
+      onClick={(e) => selectPattern(e, 'up', pattern._id)}
     >
       <p>{pattern.name}</p>
       <p>{pattern.kit}</p>
