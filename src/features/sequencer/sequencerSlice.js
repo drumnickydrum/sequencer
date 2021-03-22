@@ -1,21 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 import undoable from 'redux-undo';
 import { analog } from '../../defaults/defaultPatterns';
+import { getLS } from '../../utils/storage';
 
-const deepCopyStep = (step) => {
-  return step.map((sound) => {
-    let newNotes = sound.notes.map((note) => {
-      return { ...note };
-    });
-    return { noteOn: sound.noteOn, notes: newNotes };
-  });
-};
+// const deepCopyStep = (step) => {
+//   return step.map((sound) => {
+//     let newNotes = sound.notes.map((note) => {
+//       return { ...note };
+//     });
+//     return { noteOn: sound.noteOn, notes: newNotes };
+//   });
+// };
 
-const deepCopyPattern = (pattern) => {
-  return pattern.map((step) => {
-    return deepCopyStep(step);
-  });
-};
+// const deepCopyPattern = (pattern) => {
+//   return pattern.map((step) => {
+//     return deepCopyStep(step);
+//   });
+// };
 
 const getNoteTally = (pattern) => {
   let noteTally = { total: 0 };
@@ -33,7 +34,13 @@ const getNoteTally = (pattern) => {
   return noteTally;
 };
 
-const INITIAL_STATE = { ...analog, noteTally: getNoteTally(analog.pattern) };
+const INITIAL_PATTERN = getLS('pattern') || analog.pattern;
+
+const INITIAL_STATE = {
+  ...analog,
+  pattern: INITIAL_PATTERN,
+  noteTally: getNoteTally(analog.pattern),
+};
 
 const initSoundStep = (sound) => {
   sound.noteOn = false;
