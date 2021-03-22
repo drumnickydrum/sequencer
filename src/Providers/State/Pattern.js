@@ -23,7 +23,7 @@ export const PatternStateProvider = ({ children }) => {
   //! SELECT SOUND ALERT
   const [selectedSound, setSelectedSound] = useState(-1);
   useEffect(() => {
-    console.log(selectedSound);
+    // console.log(selectedSound);
   }, [selectedSound]);
   // useEffect(() => {
   //   const grid = gridRef.current;

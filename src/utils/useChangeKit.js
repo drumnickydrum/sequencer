@@ -1,31 +1,32 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import * as Tone from 'tone';
-import * as kits from '../defaults/defaultKits';
+import { loadKit } from '../features/sequencer/kitSlice';
 import { Kit } from '../Providers/Kit';
 import { Transport } from '../Providers/Transport';
 
 export const useChangeKit = () => {
-  const {
-    kitRef,
-    setCurrentKit,
-    disposeSamples,
-    loadSamples,
-    setBuffersLoaded,
-  } = useContext(Kit);
-  const { stop, setRestart } = useContext(Transport);
+  const { stop, restart, setRestart } = useContext(Transport);
+  const { setBuffersLoaded } = useContext(Kit);
+  const dispatch = useDispatch();
+
+  const restartKitRef = useRef(null);
+  useEffect(() => {
+    if (restart && restartKitRef.current) {
+      dispatch(loadKit({ kit: restartKitRef.current }));
+      restartKitRef.current = null;
+    }
+  }, [dispatch, restart]);
 
   const changeKit = (kit) => {
+    setBuffersLoaded(false);
     if (Tone.Transport.state === 'started') {
       stop();
+      restartKitRef.current = kit;
       setRestart(true);
+    } else {
+      dispatch(loadKit({ kit }));
     }
-    setBuffersLoaded(false);
-    disposeSamples();
-    const newSounds = kits[kit].sounds.map((sound) => ({ ...sound }));
-    const newKit = { name: kit, sounds: newSounds };
-    kitRef.current = newKit;
-    loadSamples(kit);
-    setCurrentKit(kit);
   };
 
   return { changeKit };

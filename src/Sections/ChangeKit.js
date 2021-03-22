@@ -1,26 +1,17 @@
 import React, { useContext } from 'react';
 import { ChevronDownIcon } from '../icons';
 import * as kits from '../defaults/defaultKits';
-import { useChangeKit } from '../utils/useChangeKit';
 import { Kit } from '../Providers/Kit';
-import { Undo } from '../Providers/UndoProvider';
-import { NavRight } from '../Components/Button';
-import { Status } from '../Providers/Status';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadKit } from '../features/sequencer/kitSlice';
 
 export const ChangeKit = () => {
-  const { addToUndo } = useContext(Undo);
-  const { currentKit, buffersLoaded } = useContext(Kit);
-  const { changeKit } = useChangeKit();
-  const { changeStatus } = useContext(Status);
+  const dispatch = useDispatch();
+  const kit = useSelector((state) => state.kit.present.name);
+  const { buffersLoaded } = useContext(Kit);
 
   const handleChange = ({ target: { value } }) => {
-    const prevKit = currentKit;
-    function change(kit) {
-      changeKit(kit);
-      changeStatus(`change kit: ${kit}`);
-    }
-    change(value);
-    addToUndo(change, prevKit, value);
+    dispatch(loadKit({ kit: value }));
   };
 
   return (
@@ -33,13 +24,13 @@ export const ChangeKit = () => {
           <select
             id='kit-select'
             className='kit-select'
-            value={currentKit}
+            value={kit}
             onChange={handleChange}
           >
-            {Object.keys(kits).map((kit, i) => {
+            {Object.keys(kits).map((kitName, i) => {
               return (
-                <option key={`ck-${i}-${kit}`} value={kit}>
-                  {kit}
+                <option key={`ck-${i}-${kitName}`} value={kitName}>
+                  {kitName}
                 </option>
               );
             })}

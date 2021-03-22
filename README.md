@@ -4,7 +4,8 @@
 
 ### 3/22/2021
 
-- PatternRef provider keeps latest updates of pattern state from redux.
+- `PatternRefProvider` keeps latest updates of pattern state from redux.
+- `kitSlice` gets `changeKit` into undo. Had to move the logic for restarting into `KitProvider` to make sure buffers are loaded before restarting. Rage click all you want.
 
 ### 3/21/2021
 

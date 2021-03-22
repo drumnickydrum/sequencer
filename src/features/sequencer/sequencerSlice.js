@@ -61,32 +61,6 @@ export const sequencerSlice = createSlice({
         state.noteTally[tally] = 0;
       });
     },
-    //   modify: (state, { payload: { selectedSound, step, mode, value } }) => {
-    //     // state.pattern[step][selectedSound].notes.forEach(note=>{
-    //     //   note
-    //     // })
-    //   },
-    //   modifyAll: (state, { payload: { selectedSound, mode, value } }) => {
-    //     state.pattern.forEach((step) => {
-    //       let newVal = step[selectedSound].notes[0][mode]
-    //       switch(mode) {
-    //         case MODES.MOD_VELOCITY:
-    //           note[mode] += value;
-    //           break;
-    //         case MODES.MOD_LENGTH:
-    //           note[mode] *= value *
-    //       step[selectedSound].notes.forEach((note) => {
-
-    //       });
-    //     });
-    //   },
-    //   resetMods: (state, { payload: { mode, selectedSound } }) => {
-    //     state.pattern.forEach((step) => {
-    //       step[selectedSound].notes.forEach((note) => {
-    //         note[mode] = INITIAL_MODS[mode];
-    //       });
-    //     });
-    //   },
   },
 });
 

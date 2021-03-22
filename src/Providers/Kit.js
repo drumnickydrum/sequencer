@@ -1,18 +1,23 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useSelector } from 'react-redux';
 import * as Tone from 'tone';
-import * as defaultKits from '../defaults/defaultKits';
-import { getLS, useStateAndLS } from '../utils/storage';
-
-const kit = getLS('kit') || 'analog';
-const initialSounds = defaultKits[kit].sounds.map((sound) => ({ ...sound }));
-const initialKit = { name: defaultKits[kit].name, sounds: initialSounds };
+import { setLS } from '../utils/storage';
 
 export const Kit = React.createContext();
 export const KitProvider = ({ children }) => {
+  const kit = useSelector((state) => state.kit.present);
+  const kitRef = useRef({ name: 'empty', sounds: kit.sounds });
   const [buffersLoaded, setBuffersLoaded] = useState(false);
 
-  const [currentKit, setCurrentKit] = useStateAndLS('kit', initialKit.name);
-  const kitRef = useRef(initialKit);
+  const disposeSamples = useCallback(() => {
+    for (let i = 0; i < 9; i++) {
+      kitRef.current.sounds[i].sampler.dispose();
+      delete kitRef.current.sounds[i].sampler;
+      kitRef.current.sounds[i].channel.dispose();
+      delete kitRef.current.sounds[i].channel;
+    }
+  }, []);
+  document.addEventListener('disposeKit', disposeSamples);
 
   const loadSamples = (kit) => {
     console.log('loading samples');
@@ -42,18 +47,18 @@ export const KitProvider = ({ children }) => {
     }
   };
 
-  const disposeSamples = () => {
-    for (let i = 0; i < 9; i++) {
-      kitRef.current.sounds[i].sampler.dispose();
-      delete kitRef.current.sounds[i].sampler;
-      kitRef.current.sounds[i].channel.dispose();
-      delete kitRef.current.sounds[i].channel;
-    }
-  };
-
   useEffect(() => {
-    loadSamples('default');
-  }, []);
+    kitRef.current.name = kit.name;
+    kitRef.current.sounds = kit.sounds.map((sound) => ({ ...sound }));
+    setLS('kit', kit.name);
+    console.log('kit changed to: ', kit.name);
+    if (Tone.Transport.state === 'started') {
+      setBuffersLoaded(false);
+      document.dispatchEvent(new Event('prepRestart'));
+    } else {
+      loadSamples(kit.name);
+    }
+  }, [disposeSamples, kit]);
 
   const soundsRef = useRef({});
 
@@ -61,13 +66,10 @@ export const KitProvider = ({ children }) => {
     <Kit.Provider
       value={{
         kitRef,
-        currentKit,
-        setCurrentKit,
-        disposeSamples,
-        loadSamples,
         buffersLoaded,
         setBuffersLoaded,
         soundsRef,
+        loadSamples,
       }}
     >
       {children}

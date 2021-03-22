@@ -32,8 +32,6 @@ export const SoundPanel = () => {
     (state) => state.sequencer.present.noteTally[selectedSound]
   );
 
-  console.log(mode);
-
   const { kitRef } = useContext(Kit);
 
   const [showEditMenu, setShowEditMenu] = useState(false);

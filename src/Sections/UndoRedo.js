@@ -40,8 +40,8 @@ let UndoRedo = ({ canUndo, canRedo, onUndo, onRedo }) => {
 
 const mapStateToProps = (state) => {
   return {
-    canUndo: state.sequencer.past.length > 0,
-    canRedo: state.sequencer.future.length > 0,
+    canUndo: state.sequencer.past.length > 0 || state.kit.past.length > 0,
+    canRedo: state.sequencer.future.length > 0 || state.kit.future.length > 0,
   };
 };
 

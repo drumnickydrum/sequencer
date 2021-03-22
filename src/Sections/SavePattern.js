@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState, useContext, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Kit } from '../Providers/Kit';
 import { PatternState } from '../Providers/State/Pattern';
 import { Transport } from '../Providers/Transport';
 import { User } from '../Providers/User';
@@ -10,7 +10,7 @@ export const SavePattern = () => {
   const { patternRef, patternBpm } = useContext(PatternState);
   const { stop } = useContext(Transport);
   const { user, setUser, fetching } = useContext(User);
-  const { currentKit } = useContext(Kit);
+  const kit = useSelector((state) => state.kit.present.name);
 
   const [newName, setNewName] = useState('');
 
@@ -32,7 +32,7 @@ export const SavePattern = () => {
     const cleanName = newName.replace(/[^a-zA-Z0-9 ]/g, '');
     const newPattern = {
       name: cleanName,
-      kit: currentKit,
+      kit,
       patternBpm,
       pattern: patternRef.current,
     };

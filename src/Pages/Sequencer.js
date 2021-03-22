@@ -50,7 +50,7 @@ const Bottom = () => {
         behavior: 'smooth',
       });
     }
-    console.log('rendering bottom');
+    // console.log('rendering bottom');
   });
 
   const leftRef = useRef(null);

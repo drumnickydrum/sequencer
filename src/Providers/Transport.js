@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import * as Tone from 'tone';
+import { loadKit } from '../features/sequencer/kitSlice';
 import { PatternRef } from './PatternRef';
 import { MIDI_NOTES } from '../utils/MIDI_NOTES';
 import { Kit } from './Kit';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const Transport = React.createContext();
 export const TransportProvider = ({ children }) => {
+  const dispatch = useDispatch();
   const { patternRef, cellsRef } = useContext(PatternRef);
-  const { kitRef, buffersLoaded, soundsRef } = useContext(Kit);
+  const { kitRef, buffersLoaded, soundsRef, loadSamples } = useContext(Kit);
   const stepRef = useRef(0);
 
   const bpm = useSelector((state) => state.sequencer.present.bpm);
@@ -78,14 +80,28 @@ export const TransportProvider = ({ children }) => {
 
   const [restart, setRestart] = useState(false);
   useEffect(() => {
-    if (buffersLoaded && restart) {
-      setRestart(false);
-      start();
+    if (restart) {
+      if (buffersLoaded) {
+        setRestart(false);
+        start();
+      } else {
+        console.log('load samples from transport');
+        loadSamples(kitRef.current.name);
+      }
     }
-  }, [buffersLoaded, restart, start]);
+  }, [buffersLoaded, kitRef, loadSamples, restart, start]);
+
+  const prepRestart = (e) => {
+    e.stopImmediatePropagation();
+    console.log('prepping restart');
+    stop();
+    setRestart(true);
+  };
+  document.addEventListener('prepRestart', prepRestart);
 
   const schedulePattern = () => {
     Tone.Transport.scheduleRepeat((time) => {
+      if (!buffersLoaded) return;
       scheduleCell(time, stepRef.current);
       animateCell(
         time,
@@ -180,7 +196,15 @@ export const TransportProvider = ({ children }) => {
   };
 
   return (
-    <Transport.Provider value={{ transportState, start, stop, setRestart }}>
+    <Transport.Provider
+      value={{
+        transportState,
+        start,
+        stop,
+        restart,
+        setRestart,
+      }}
+    >
       {children}
     </Transport.Provider>
   );
