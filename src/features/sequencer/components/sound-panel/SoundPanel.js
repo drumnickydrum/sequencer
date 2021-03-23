@@ -24,19 +24,10 @@ export const SoundPanel = () => {
   const selectedSound = useSelector((state) => state.editMode.selectedSound);
   const mode = useSelector((state) => state.editMode.mode);
 
-  const disabled = useSelector(
-    (state) => state.sequencer.present.noteTally[selectedSound].empty
-  );
-
   const [showEditMenu, setShowEditMenu] = useState(false);
 
   const spMemo = useMemo(() => {
     console.log('rendering: SoundPanel');
-
-    const onClose = () => {
-      dispatch(close());
-      setShowEditMenu(false);
-    };
 
     const onReturn = () => {
       if (mode !== MODES.ERASING || mode !== MODES.COPYING) {
@@ -65,76 +56,101 @@ export const SoundPanel = () => {
           ) : mode === MODES.COPYING ? (
             <Copy onReturn={onReturn} />
           ) : (
-            <div className='sound-edit-menu'>
-              <Button classes='sound-edit-close' onClick={onClose}>
-                <CloseIcon />
-              </Button>
-              <div className='sound-edit-dummy' />
-              <Button
-                classes={'sound-edit-btn'}
-                disabled={disabled}
-                onClick={() => selectMode(MODES.ERASING)}
-              >
-                <div className='sound-edit-icon-div'>
-                  <EraserIcon />
-                  <p>Erase</p>
-                </div>
-              </Button>
-              <Button
-                classes='sound-edit-btn'
-                disabled={disabled}
-                onClick={() => selectMode(MODES.SLICING)}
-              >
-                <div className='sound-edit-icon-div'>
-                  <SawIcon />
-                  <p>Slice</p>
-                </div>
-              </Button>
-              <Button
-                classes='sound-edit-btn'
-                onClick={() => selectMode(MODES.COPYING)}
-              >
-                <div className='sound-edit-icon-div'>
-                  <CopyIcon />
-                  <p>Copy</p>
-                </div>
-              </Button>
-              <Button
-                classes='sound-edit-btn'
-                onClick={() => selectMode(MODES.MOD_VELOCITY)}
-              >
-                <div className='sound-edit-icon-div'>
-                  <VelocityIcon />
-                  <p>Velocity</p>
-                </div>
-              </Button>
-              <Button
-                classes='sound-edit-btn'
-                onClick={() => selectMode(MODES.MOD_LENGTH)}
-              >
-                <div className='sound-edit-icon-div'>
-                  <LengthIcon />
-                  <p>Length</p>
-                </div>
-              </Button>
-              <Button
-                classes='sound-edit-btn'
-                onClick={() => selectMode(MODES.MOD_PITCH)}
-              >
-                <div className='sound-edit-icon-div'>
-                  <PitchIcon />
-                  <p>Pitch</p>
-                </div>
-              </Button>
-            </div>
+            <SoundEditMenu
+              selectMode={selectMode}
+              setShowEditMenu={setShowEditMenu}
+            />
           )}
         </div>
         <SoundBtns setShowEditMenu={setShowEditMenu} />
       </>
     );
-  }, [disabled, dispatch, mode, selectedSound, showEditMenu]);
+  }, [dispatch, mode, selectedSound, showEditMenu]);
 
   return spMemo;
+};
+
+const SoundEditMenu = ({ selectMode, setShowEditMenu }) => {
+  const dispatch = useDispatch();
+  const selectedSound = useSelector((state) => state.editMode.selectedSound);
+  const disabled = useSelector(
+    (state) => state.sequencer.present.noteTally[selectedSound].empty
+  );
+
+  const soundEditMenuMemo = useMemo(() => {
+    console.log('rendering: SoundEditMenu');
+
+    const onClose = () => {
+      dispatch(close());
+      setShowEditMenu(false);
+    };
+
+    return (
+      <div className='sound-edit-menu'>
+        <Button classes='sound-edit-close' onClick={onClose}>
+          <CloseIcon />
+        </Button>
+        <div className='sound-edit-dummy' />
+        <Button
+          classes={'sound-edit-btn'}
+          disabled={disabled}
+          onClick={() => selectMode(MODES.ERASING)}
+        >
+          <div className='sound-edit-icon-div'>
+            <EraserIcon />
+            <p>Erase</p>
+          </div>
+        </Button>
+        <Button
+          classes='sound-edit-btn'
+          disabled={disabled}
+          onClick={() => selectMode(MODES.SLICING)}
+        >
+          <div className='sound-edit-icon-div'>
+            <SawIcon />
+            <p>Slice</p>
+          </div>
+        </Button>
+        <Button
+          classes='sound-edit-btn'
+          onClick={() => selectMode(MODES.COPYING)}
+        >
+          <div className='sound-edit-icon-div'>
+            <CopyIcon />
+            <p>Copy</p>
+          </div>
+        </Button>
+        <Button
+          classes='sound-edit-btn'
+          onClick={() => selectMode(MODES.MOD_VELOCITY)}
+        >
+          <div className='sound-edit-icon-div'>
+            <VelocityIcon />
+            <p>Velocity</p>
+          </div>
+        </Button>
+        <Button
+          classes='sound-edit-btn'
+          onClick={() => selectMode(MODES.MOD_LENGTH)}
+        >
+          <div className='sound-edit-icon-div'>
+            <LengthIcon />
+            <p>Length</p>
+          </div>
+        </Button>
+        <Button
+          classes='sound-edit-btn'
+          onClick={() => selectMode(MODES.MOD_PITCH)}
+        >
+          <div className='sound-edit-icon-div'>
+            <PitchIcon />
+            <p>Pitch</p>
+          </div>
+        </Button>
+      </div>
+    );
+  }, [disabled, dispatch, selectMode, setShowEditMenu]);
+  return soundEditMenuMemo;
 };
 
 const SoundBtns = ({ setShowEditMenu }) => {
