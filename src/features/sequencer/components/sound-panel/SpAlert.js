@@ -30,7 +30,7 @@ export const SpAlert = () => {
     const index = message.indexOf('#');
     const spAlert = message.substr(index + 1);
 
-    return (
+    return spAlert ? (
       <div className='sp-alert-wrapper'>
         <div id='sp-alert' className={classes}>
           <span className='menu-dummy' />
@@ -39,7 +39,7 @@ export const SpAlert = () => {
           <span className='menu-dummy' />
         </div>
       </div>
-    );
+    ) : null;
   }, [classes, message]);
   return spAlertMemo;
 };

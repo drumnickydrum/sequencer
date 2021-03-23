@@ -33,6 +33,7 @@ export const editModeSlice = createSlice({
     edit: (state, { payload: { sound } }) => {
       state.selectedSound = sound;
       state.mode = MODES.PAINTING;
+      state.spAlert = { ...INITIAL_STATE.spAlert };
     },
     setMode: (state, { payload: { mode } }) => {
       state.mode = mode;

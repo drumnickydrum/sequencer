@@ -1,4 +1,5 @@
 import React from 'react';
+import * as Tone from 'tone';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { LoginPage } from './features/Login/LoginPage';
 import { SequencerPage } from './features/Sequencer/Sequencer';
@@ -17,10 +18,19 @@ export default function App() {
   );
 }
 
+const initialClick = async () => {
+  await Tone.start();
+  console.log('audio ready');
+  document.removeEventListener('click', initialClick);
+};
+document.addEventListener('click', initialClick);
+
+Tone.getDestination().volume.value = -12;
+
 window.addEventListener('orientationchange', resize);
-// window.addEventListener('blur', () => {
-//   window.addEventListener('focus', resize);
-// });
+window.addEventListener('blur', () => {
+  window.addEventListener('focus', resize);
+});
 
 function resize() {
   // var originalBodyStyle = getComputedStyle(document.body).getPropertyValue(
@@ -30,5 +40,5 @@ function resize() {
   setTimeout(function () {
     document.body.style.display = 'initial';
   }, 10);
-  // window.removeEventListener('focus', resize);
+  window.removeEventListener('focus', resize);
 }

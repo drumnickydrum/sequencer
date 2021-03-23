@@ -1,4 +1,4 @@
-import { useEffect, useRef, useContext, useCallback } from 'react';
+import { useEffect, useRef, useContext } from 'react';
 import * as Tone from 'tone';
 import { PatternRef } from '../providers/PatternRef';
 import { MIDI_NOTES } from '../utils/MIDI_NOTES';
@@ -179,12 +179,3 @@ const removeCursor = (length, step) => {
   if (prevCell) prevCell.dataset.cursor = false;
   if (nextCell) nextCell.dataset.cursor = false;
 };
-
-const initialClick = async () => {
-  await Tone.start();
-  console.log('audio ready');
-  document.removeEventListener('click', initialClick);
-};
-document.addEventListener('click', initialClick);
-
-Tone.getDestination().volume.value = -12;
