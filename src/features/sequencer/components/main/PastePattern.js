@@ -15,17 +15,19 @@ export const PastePattern = () => {
     console.log('rendering: PastePattern');
     return (
       <div id='paste-pattern' className={pasting ? 'show' : ''}>
-        <div id='paste-pattern-sounds'>
-          {kitRef.current.sounds.map((sound, i) => {
-            return (
-              <SoundBtn
-                key={`paste-pattern-${sound.name}`}
-                i={i}
-                sound={sound}
-              />
-            );
-          })}
-        </div>
+        {pasting && (
+          <div id='paste-pattern-sounds'>
+            {kitRef.current.sounds.map((sound, i) => {
+              return (
+                <SoundBtn
+                  key={`paste-pattern-${sound.name}`}
+                  i={i}
+                  sound={sound}
+                />
+              );
+            })}
+          </div>
+        )}
       </div>
     );
   }, [kitRef, pasting]);
