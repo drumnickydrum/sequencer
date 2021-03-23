@@ -33,6 +33,7 @@ export const LoadPattern = () => {
     dispatch(loadSequence({ sequence }));
   };
 
+  //console.log('rendering: LoadPattern');
   return (
     <div className='load-pattern'>
       <h1 className='pattern-title'>Load Pattern</h1>
@@ -134,6 +135,7 @@ const UserPattern = ({ pattern, _id, selectPattern, setError }) => {
     }
   };
 
+  //console.log('rendering: UserPattern');
   return showConfirm ? (
     <div className='confirm-delete'>
       <p>Are you sure?</p>

@@ -11,6 +11,7 @@ export const PastePattern = () => {
   const selectedSound = useSelector((state) => state.editMode.selectedSound);
   const mode = useSelector((state) => state.editMode.mode);
 
+  //console.log('rendering: PastePattern');
   return (
     <div id='paste-pattern' className={mode === MODES.COPYING ? 'show' : ''}>
       <div id='paste-pattern-sounds'>
@@ -45,6 +46,8 @@ const SoundBtn = ({ i, sound, selectedSound }) => {
   let classes = `sound borderDefault`;
   const selected = i === selectedSound;
   if (selected) classes += ' flashing';
+
+  //console.log('rendering: SoundBtn');
   return (
     <div className={classes} onClick={onClick}>
       {selected ? (

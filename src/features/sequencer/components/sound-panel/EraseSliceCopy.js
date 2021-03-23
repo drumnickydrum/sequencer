@@ -23,6 +23,7 @@ export const Erase = ({ onReturn, selectedSound }) => {
     dispatch(eraseSound({ selectedSound }));
   };
 
+  //console.log('rendering: Erase');
   return (
     <div className='sound-edit-detail'>
       <Button classes='sound-edit-close' onClick={onReturn}>
@@ -45,6 +46,7 @@ export const Erase = ({ onReturn, selectedSound }) => {
 };
 
 export const Slice = ({ onReturn }) => {
+  //console.log('rendering: Slice');
   return (
     <div className='sound-edit-detail'>
       <Button classes='sound-edit-close' onClick={onReturn}>
@@ -60,6 +62,7 @@ export const Slice = ({ onReturn }) => {
 };
 
 export const Copy = ({ onReturn }) => {
+  //console.log('rendering: Copy');
   return (
     <div className='sound-edit-detail'>
       <Button classes='sound-edit-close' onClick={onReturn}>

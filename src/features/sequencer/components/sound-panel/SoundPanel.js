@@ -10,6 +10,7 @@ import {
   SawIcon,
   VelocityIcon,
 } from '../../../../icons';
+import * as defaultKits from '../../defaults/defaultKits';
 import * as icons from '../../../../icons/kit';
 import { Kit } from '../../providers/Kit';
 import { Erase, Slice, Copy } from './EraseSliceCopy';
@@ -27,21 +28,14 @@ export const SoundPanel = () => {
     (state) => state.sequencer.present.noteTally[selectedSound].empty
   );
 
-  const { kitRef } = useContext(Kit);
-
   const [showEditMenu, setShowEditMenu] = useState(false);
 
   const spMemo = useMemo(() => {
-    console.log('rendering sound-panel');
+    console.log('rendering: SoundPanel');
 
     const onClose = () => {
       dispatch(close());
       setShowEditMenu(false);
-    };
-
-    const selectSound = (i) => {
-      dispatch(edit({ sound: i }));
-      setShowEditMenu(true);
     };
 
     const onReturn = () => {
@@ -135,8 +129,30 @@ export const SoundPanel = () => {
             </div>
           )}
         </div>
-        <div className='sound-menu'>
-          {kitRef.current.sounds.map((sound, i) => (
+        <SoundBtns setShowEditMenu={setShowEditMenu} />
+      </>
+    );
+  }, [disabled, dispatch, mode, selectedSound, showEditMenu]);
+
+  return spMemo;
+};
+
+const SoundBtns = ({ setShowEditMenu }) => {
+  const dispatch = useDispatch();
+  const kit = useSelector((state) => state.sequencer.present.kit);
+
+  const soundBtnsMemo = useMemo(() => {
+    console.log('rendering: SoundBtns');
+
+    const selectSound = (i) => {
+      dispatch(edit({ sound: i }));
+      setShowEditMenu(true);
+    };
+
+    return (
+      <div className='sound-menu'>
+        {defaultKits[kit] &&
+          defaultKits[kit].sounds.map((sound, i) => (
             <SoundBtn
               key={`sound-menu-${sound.name}`}
               i={i}
@@ -144,12 +160,10 @@ export const SoundPanel = () => {
               selectSound={selectSound}
             />
           ))}
-        </div>
-      </>
+      </div>
     );
-  }, [disabled, dispatch, kitRef, mode, selectedSound, showEditMenu]);
-
-  return spMemo;
+  }, [dispatch, kit, setShowEditMenu]);
+  return soundBtnsMemo;
 };
 
 const SoundBtn = ({ i, sound, selectSound }) => {

@@ -173,6 +173,7 @@ export const TransportProvider = ({ children }) => {
     }
   };
 
+  //console.log('returning: TransportProvider');
   return (
     <Transport.Provider value={{ start, stop, pauseFlashing, startFlashing }}>
       {children}

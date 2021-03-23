@@ -19,6 +19,7 @@ export const Clear = () => {
     }
   };
 
+  //console.log('rendering: Clear');
   return (
     <div className='menu-items'>
       <Button

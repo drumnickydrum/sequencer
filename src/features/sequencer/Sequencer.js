@@ -14,6 +14,7 @@ import { TransportProvider } from './providers/Transport';
 import { PatternRefProvider } from './providers/PatternRef';
 
 export const SequencerPage = () => {
+  //console.log('rendering: SequencerPage');
   return (
     <KitProvider>
       <PatternRefProvider>
@@ -88,6 +89,7 @@ const Bottom = () => {
     scrollEnd.current = setTimeout(() => disableScroll(), 100);
   };
 
+  //console.log('rendering: Bottom');
   return (
     <div ref={bottomRef} id='bottom' onScroll={handleScroll}>
       <ChangeKit />

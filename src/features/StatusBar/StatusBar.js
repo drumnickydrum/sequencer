@@ -25,6 +25,8 @@ export const StatusBar = () => {
 
   const index = message.indexOf('#');
   const status = message.substr(index + 1);
+
+  //console.log('rendering: StatusBar');
   return (
     <div className='status-bar'>
       <p ref={ref} className='status' id='status'>

@@ -16,6 +16,7 @@ export const PatternRefProvider = ({ children }) => {
 
   const cellsRef = useRef({});
 
+  //console.log('returning: PatternRefProvider');
   return (
     <PatternRef.Provider value={{ patternRef, cellsRef }}>
       {children}
