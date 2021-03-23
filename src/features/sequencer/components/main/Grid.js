@@ -13,12 +13,9 @@ import {
   eraseCell,
 } from '../../reducers/sequencerSlice';
 import { SawIcon } from '../../../../icons';
-import { Kit } from '../../providers/Kit';
 import { PatternRef } from '../../providers/PatternRef';
 
 export const Grid = () => {
-  const { kitRef } = useContext(Kit);
-
   const length = useSelector((state) => state.sequencer.present.length);
   const selectedSound = useSelector((state) => state.editMode.selectedSound);
   const mode = useSelector((state) => state.editMode.mode);
@@ -56,20 +53,19 @@ export const Grid = () => {
   let grid = useMemo(() => {
     let grid = [];
     for (let i = 0; i < length; i++) {
-      grid.push(1);
+      grid.push(i);
     }
     return grid;
   }, [length]);
 
-  // console.log('rendering: Grid');
+  console.log('rendering: Grid');
   return (
     <div
-      // ref={gridRef}
       id='grid'
       className={selectedSound === -1 ? '' : 'no-drag'}
       onTouchMove={onTouchMove}
     >
-      {grid.map((_, step) => {
+      {grid.map((step) => {
         const id = `cell-${step}`;
         return (
           <Cell
@@ -78,7 +74,6 @@ export const Grid = () => {
             step={step}
             selectedSound={selectedSound}
             mode={mode}
-            kitRef={kitRef}
             cellsRef={cellsRef}
             prevCellRef={prevCellRef}
           />
@@ -88,15 +83,7 @@ export const Grid = () => {
   );
 };
 
-const Cell = ({
-  id,
-  step,
-  selectedSound,
-  mode,
-  kitRef,
-  cellsRef,
-  prevCellRef,
-}) => {
+const Cell = ({ id, step, selectedSound, mode, cellsRef, prevCellRef }) => {
   const dispatch = useDispatch();
 
   const noteOn = useSelector((state) =>
@@ -217,20 +204,7 @@ const Cell = ({
           />
           <div className='cursor' />
           <div className='border-flashing' />
-          <div className='sound-cells'>
-            {kitRef.current.sounds.map((sound, i) => {
-              const scId = `${id}-sound-${i}`;
-              return (
-                <SoundCell
-                  key={scId}
-                  id={scId}
-                  step={step}
-                  i={i}
-                  sound={sound}
-                />
-              );
-            })}
-          </div>
+          <SoundCells id={id} step={step} />
         </div>
       </div>
     );
@@ -243,14 +217,34 @@ const Cell = ({
     pitch,
     slice,
     selectedSound,
-    kitRef,
     step,
   ]);
 
   return cellMemo;
 };
 
-const SoundCell = ({ id, step, i, sound }) => {
+const SoundCells = ({ id, step }) => {
+  const sampleCount = useSelector(
+    (state) => state.sequencer.present.sampleCount
+  );
+
+  let grid = [];
+  for (let i = 0; i < sampleCount; i++) {
+    grid.push(i);
+  }
+
+  console.log('rendering: SoundCells');
+  return (
+    <div className='sound-cells'>
+      {grid.map((i) => {
+        const scId = `${id}-sound-${i}`;
+        return <SoundCell key={scId} id={scId} step={step} i={i} />;
+      })}
+    </div>
+  );
+};
+
+const SoundCell = ({ id, step, i }) => {
   const noteOn = useSelector(
     (state) => state.sequencer.present.pattern[step][i].noteOn
   );
@@ -259,7 +253,7 @@ const SoundCell = ({ id, step, i, sound }) => {
   );
   const scMemo = useMemo(() => {
     // console.log('rendering: SoundCell');
-    const classes = `sound-cell bg${sound.color}`;
+    const classes = `sound-cell bg${i}`;
     return (
       <div
         id={id}
@@ -267,6 +261,6 @@ const SoundCell = ({ id, step, i, sound }) => {
         style={{ opacity: noteOn ? velocity : 0 }}
       />
     );
-  }, [id, sound.color, velocity, noteOn]);
+  }, [i, id, noteOn, velocity]);
   return scMemo;
 };

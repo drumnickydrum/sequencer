@@ -30,7 +30,7 @@ export const LoadSavePattern = () => {
   if (show === 'load') loadStyle += ' selected';
   if (show === 'save') saveStyle += ' selected';
 
-  console.log('rendering: LoadSavePattern');
+  // console.log('rendering: LoadSavePattern');
   return (
     <>
       <div className={show ? 'load-save-pattern show' : 'load-save-pattern'}>

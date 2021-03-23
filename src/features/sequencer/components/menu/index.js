@@ -59,7 +59,7 @@ export const Menu = () => {
     scrollEnd.current = setTimeout(() => disableScroll(), 100);
   };
 
-  console.log('rendering: Menu');
+  // console.log('rendering: Menu');
   return (
     <div ref={menuRef} id='menu' onScroll={handleScroll}>
       <ChangeKit />

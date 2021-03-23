@@ -6,7 +6,7 @@ import { SequencerPage } from './features/Sequencer/Sequencer';
 import { StatusBar } from './features/StatusBar/StatusBar';
 
 export default function App() {
-  console.log('rendering: App');
+  // console.log('rendering: App');
   return (
     <Router>
       <Switch>

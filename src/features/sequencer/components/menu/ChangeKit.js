@@ -10,7 +10,7 @@ export const ChangeKit = () => {
   const buffersLoaded = useSelector((state) => state.tone.buffersLoaded);
 
   const changeKitMemo = useMemo(() => {
-    console.log('rendering: ChangeKit');
+    // console.log('rendering: ChangeKit');
 
     const onChange = ({ target: { value } }) => {
       dispatch(changeKit(value));

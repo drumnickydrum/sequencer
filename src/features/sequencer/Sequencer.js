@@ -9,7 +9,7 @@ import { Transport } from './components/Transport';
 import { PatternRefProvider } from './providers/PatternRef';
 
 export const SequencerPage = () => {
-  console.log('rendering: SequencerPage');
+  // console.log('rendering: SequencerPage');
   return (
     <KitProvider>
       <PatternRefProvider>

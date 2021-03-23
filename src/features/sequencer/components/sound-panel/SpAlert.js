@@ -25,7 +25,7 @@ export const SpAlert = () => {
   }, [message]);
 
   const spAlertMemo = useMemo(() => {
-    console.log('rendering: SpAlert');
+    // console.log('rendering: SpAlert');
 
     const index = message.indexOf('#');
     const spAlert = message.substr(index + 1);

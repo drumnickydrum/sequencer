@@ -27,7 +27,7 @@ export const SoundPanel = () => {
   const [showEditMenu, setShowEditMenu] = useState(false);
 
   const spMemo = useMemo(() => {
-    console.log('rendering: SoundPanel');
+    // console.log('rendering: SoundPanel');
 
     const onReturn = () => {
       if (mode !== MODES.ERASING || mode !== MODES.COPYING) {
@@ -78,7 +78,7 @@ const SoundEditMenu = ({ selectMode, setShowEditMenu }) => {
   );
 
   const soundEditMenuMemo = useMemo(() => {
-    console.log('rendering: SoundEditMenu');
+    // console.log('rendering: SoundEditMenu');
 
     const onClose = () => {
       dispatch(close());
@@ -158,7 +158,7 @@ const SoundBtns = ({ setShowEditMenu }) => {
   const kit = useSelector((state) => state.sequencer.present.kit);
 
   const soundBtnsMemo = useMemo(() => {
-    console.log('rendering: SoundBtns');
+    // console.log('rendering: SoundBtns');
 
     const selectSound = (i) => {
       dispatch(edit({ sound: i }));

@@ -19,7 +19,7 @@ export const TransportPanel = () => {
   let timerRef = useRef(null);
 
   const transportMemo = useMemo(() => {
-    console.log('rendering: TransportPanel');
+    // console.log('rendering: TransportPanel');
 
     const onChange = ({ target: { value } }) => {
       if (value.match(/\D/)) return;

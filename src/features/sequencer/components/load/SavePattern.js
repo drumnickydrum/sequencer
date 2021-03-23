@@ -51,7 +51,7 @@ export const SavePattern = ({ stopSequencer }) => {
     }
   };
 
-  console.log('rendering: SavePattern');
+  // console.log('rendering: SavePattern');
   return (
     <div className='save-pattern'>
       {!user.username ? (
