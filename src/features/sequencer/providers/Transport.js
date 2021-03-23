@@ -88,6 +88,7 @@ export const TransportProvider = ({ children }) => {
       if (buffersLoaded) {
         dispatch(setRestart(false));
         console.log(Tone.Transport.state, 'restarting');
+        stepRef.current = 0;
         start();
       }
     }
@@ -96,12 +97,16 @@ export const TransportProvider = ({ children }) => {
   const schedulePattern = () => {
     Tone.Transport.scheduleRepeat((time) => {
       if (!buffersLoaded) return;
-      scheduleCell(time, stepRef.current);
-      animateCell(
-        time,
-        cellsRef.current[`cell-${stepRef.current}`].cellRef.current
-      );
-      animateSound(time, stepRef.current);
+      try {
+        scheduleCell(time, stepRef.current);
+        animateCell(
+          time,
+          cellsRef.current[`cell-${stepRef.current}`].cellRef.current
+        );
+        animateSound(time, stepRef.current);
+      } catch (e) {
+        console.log('schedulePattern ->\n', e);
+      }
       stepRef.current = (stepRef.current + 1) % patternRef.current.length;
     }, '16n');
   };
@@ -137,36 +142,32 @@ export const TransportProvider = ({ children }) => {
       if (noteOn) {
         // console.time('schedule note');
         let slice = notes.length;
-        try {
+        kitRef.current.sounds[sound].sampler.triggerAttackRelease(
+          MIDI_NOTES[notes[0].pitch],
+          notes[0].length,
+          time,
+          notes[0].velocity
+        );
+        if (slice === 2) {
           kitRef.current.sounds[sound].sampler.triggerAttackRelease(
-            MIDI_NOTES[notes[0].pitch],
-            notes[0].length,
-            time,
-            notes[0].velocity
+            MIDI_NOTES[notes[1].pitch],
+            notes[1].length,
+            time + Tone.Time('32n'),
+            notes[1].velocity
           );
-          if (slice === 2) {
-            kitRef.current.sounds[sound].sampler.triggerAttackRelease(
-              MIDI_NOTES[notes[1].pitch],
-              notes[1].length,
-              time + Tone.Time('32n'),
-              notes[1].velocity
-            );
-          } else if (slice === 3) {
-            kitRef.current.sounds[sound].sampler.triggerAttackRelease(
-              MIDI_NOTES[notes[1].pitch],
-              notes[1].length,
-              time + Tone.Time('32t'),
-              notes[1].velocity
-            );
-            kitRef.current.sounds[sound].sampler.triggerAttackRelease(
-              MIDI_NOTES[notes[2].pitch],
-              notes[2].length,
-              time + Tone.Time('32t') + Tone.Time('32t'),
-              notes[2].velocity
-            );
-          }
-        } catch (e) {
-          console.log('oops');
+        } else if (slice === 3) {
+          kitRef.current.sounds[sound].sampler.triggerAttackRelease(
+            MIDI_NOTES[notes[1].pitch],
+            notes[1].length,
+            time + Tone.Time('32t'),
+            notes[1].velocity
+          );
+          kitRef.current.sounds[sound].sampler.triggerAttackRelease(
+            MIDI_NOTES[notes[2].pitch],
+            notes[2].length,
+            time + Tone.Time('32t') + Tone.Time('32t'),
+            notes[2].velocity
+          );
         }
         // console.timeEnd('schedule note');
       }

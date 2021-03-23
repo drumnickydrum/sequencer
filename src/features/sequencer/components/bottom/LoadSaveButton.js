@@ -1,12 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Button } from '../../../../components/Button';
 import { OpenIcon, SaveIcon } from '../../../../icons';
+import { setShow } from '../../../../reducers/appSlice';
 
 export const LoadSaveButton = () => {
-  const setShow = () => {};
-  const handleClick = (type) => {
-    if (type === 'load') setShow('load');
-    if (type === 'save') setShow('save');
+  const dispatch = useDispatch();
+
+  const onClick = (type) => {
+    if (type === 'load') dispatch(setShow('load'));
+    if (type === 'save') dispatch(setShow('save'));
     document.getElementById('root').scrollTop = 0;
   };
 
@@ -16,7 +19,7 @@ export const LoadSaveButton = () => {
       <Button
         id='load-pattern'
         classes='menu-btn'
-        onClick={() => handleClick('load')}
+        onClick={() => onClick('load')}
       >
         <OpenIcon />
         <label htmlFor='load-pattern' className='menu-label'>
@@ -26,7 +29,7 @@ export const LoadSaveButton = () => {
       <Button
         id='save-pattern'
         classes='menu-btn'
-        onClick={() => handleClick('save')}
+        onClick={() => onClick('save')}
       >
         <SaveIcon />
         <label htmlFor='save-pattern' className='menu-label'>

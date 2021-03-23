@@ -23,7 +23,7 @@ export const toneSlice = createSlice({
     },
     prepRestart: (state) => {
       stopAndCancelEvents();
-      state.transportState = 'paused';
+      state.transportState = 'stopped';
       state.buffersLoaded = false;
       state.restart = true;
       console.log('done prepping');
