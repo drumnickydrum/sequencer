@@ -16,7 +16,6 @@ export const toneSlice = createSlice({
       state.buffersLoaded = payload;
     },
     setTransportState: (state, { payload }) => {
-      console.log(payload);
       if (payload === 'stopped') Tone.Transport.stop();
       if (payload === 'started') Tone.Transport.start();
       if (payload === 'paused') Tone.Transport.pause();

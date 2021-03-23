@@ -3,6 +3,7 @@ import { LoadPattern } from './LoadPattern';
 import { SavePattern } from './SavePattern';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, setShow } from '../../../../reducers/appSlice';
+import { setTransportState } from '../../reducers/toneSlice';
 
 export const LoadSavePattern = () => {
   const dispatch = useDispatch();
@@ -20,7 +21,9 @@ export const LoadSavePattern = () => {
 
   const onClose = () => dispatch(setShow(''));
 
-  const stopSequencer = () => document.dispatchEvent(new Event('stop'));
+  const stopSequencer = () => {
+    dispatch(setTransportState('stopped'));
+  };
 
   let loadStyle = 'load-save-tab';
   let saveStyle = loadStyle;
