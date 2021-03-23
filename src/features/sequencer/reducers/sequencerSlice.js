@@ -76,8 +76,11 @@ export const sequencerSlice = createSlice({
       state.pattern = sequence.pattern;
       state.noteTally = getNoteTally(state.pattern);
     },
-    changeKit: (state, { payload: { kit } }) => {
-      state.kit = kit;
+    changeKit: (state, { payload }) => {
+      state.kit = payload;
+    },
+    changeBpm: (state, { payload }) => {
+      state.bpm = payload;
     },
   },
 });
@@ -112,6 +115,7 @@ export const {
   loadSequence,
   loadSequenceFinally,
   changeKit,
+  changeBpm,
 } = sequencerSlice.actions;
 
 const reducer = undoable(sequencerSlice.reducer);

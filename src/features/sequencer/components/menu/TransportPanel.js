@@ -1,18 +1,32 @@
-import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '../../../../components/Button';
 import { StopIcon, StartIcon, PauseIcon } from '../../../../icons';
 import { Transport } from '../../providers/Transport';
+import { changeBpm } from '../../reducers/sequencerSlice';
 
 export const TransportPanel = () => {
+  const dispatch = useDispatch();
   const { start, stop } = useContext(Transport);
 
   const transportState = useSelector((state) => state.tone.transportState);
   const bpm = useSelector((state) => state.sequencer.present.bpm);
 
-  const handleChange = ({ target: { value } }) => {
+  const [tempBpm, setTempBpm] = useState(bpm);
+  useEffect(() => {
+    let timer;
+    if (tempBpm !== bpm) {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        dispatch(changeBpm(tempBpm));
+      }, 500);
+    }
+  }, [bpm, dispatch, tempBpm]);
+
+  const onChange = ({ target: { value } }) => {
     if (value.match(/\D/)) return;
     // setPatternBpm(value > 300 ? 300 : value);
+    setTempBpm(value > 300 ? 300 : value);
   };
 
   console.log('rendering: TransportPanel');
@@ -28,7 +42,7 @@ export const TransportPanel = () => {
           <label htmlFor='start'>start</label>
         </Button>
         <div className='input'>
-          <input id='bpm' type='tel' value={bpm} onChange={handleChange} />
+          <input id='bpm' type='tel' value={tempBpm} onChange={onChange} />
           <label htmlFor='bpm' id='bpm-label'>
             bpm
           </label>
