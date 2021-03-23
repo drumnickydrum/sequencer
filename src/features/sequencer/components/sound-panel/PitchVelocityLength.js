@@ -53,7 +53,7 @@ export const PitchVelocityLength = ({ mode, selectedSound, onReturn }) => {
 
   const label = mode && mode.substr(4).toLowerCase();
 
-  //console.log('rendering: PitchVelocityLength');
+  console.log('rendering: PitchVelocityLength');
   return (
     <div className={`sound-edit-detail color${selectedSound}`}>
       <Button classes='sound-edit-close' onClick={onReturn}>

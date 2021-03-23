@@ -1222,6 +1222,11 @@ div[data-cursor='true'] .cursor {
   background: var(--lime-3q);
 }
 
+#stop,
+#start {
+  border-radius: 0.3rem;
+}
+
 #stop label,
 #start label {
   visibility: hidden;

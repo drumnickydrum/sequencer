@@ -15,7 +15,7 @@ export const TransportPanel = () => {
     // setPatternBpm(value > 300 ? 300 : value);
   };
 
-  //console.log('rendering: TransportPanel');
+  console.log('rendering: TransportPanel');
   return (
     <div className='menu-items transport'>
       <div className='transport-wrapper'>

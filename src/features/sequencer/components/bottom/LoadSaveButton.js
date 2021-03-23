@@ -13,7 +13,7 @@ export const LoadSaveButton = () => {
     document.getElementById('root').scrollTop = 0;
   };
 
-  //console.log('rendering: LoadSaveButton');
+  console.log('rendering: LoadSaveButton');
   return (
     <div className='menu-items'>
       <span className='menu-dummy' />

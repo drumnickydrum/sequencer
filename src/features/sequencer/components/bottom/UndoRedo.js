@@ -7,7 +7,7 @@ import { RedoIcon, UndoIcon } from '../../../../icons';
 let UndoRedo = ({ canUndo, canRedo, onUndo, onRedo }) => {
   const buffersLoaded = useSelector((state) => state.tone.buffersLoaded);
 
-  //console.log('rendering: UndoRedo');
+  console.log('rendering: UndoRedo');
   return (
     <div className='menu-items'>
       <span className='menu-dummy' />

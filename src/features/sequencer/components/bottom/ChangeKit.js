@@ -13,7 +13,7 @@ export const ChangeKit = () => {
     dispatch(changeKit({ kit: value }));
   };
 
-  //console.log('rendering: ChangeKit');
+  console.log('rendering: ChangeKit');
   return (
     <div className='menu-items change-kit'>
       <div className='change-kit-wrapper'>

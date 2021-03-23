@@ -78,7 +78,7 @@ export const KitProvider = ({ children }) => {
     }
   }, [dispatch, disposeSamples, kit, loadSamples]);
 
-  //console.log('returning: KitProvider');
+  console.log('returning: KitProvider');
   return (
     <Kit.Provider
       value={{

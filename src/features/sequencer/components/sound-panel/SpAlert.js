@@ -27,7 +27,7 @@ export const SpAlert = () => {
   const index = message.indexOf('#');
   const spAlert = message.substr(index + 1);
 
-  //console.log('rendering: SpAlert');
+  console.log('rendering: SpAlert');
   return (
     <div className='sp-alert-wrapper'>
       <div id='sp-alert' className={classes}>

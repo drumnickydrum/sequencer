@@ -61,7 +61,7 @@ export const Grid = () => {
     return grid;
   }, [length]);
 
-  //console.log('rendering: Grid');
+  // console.log('rendering: Grid');
   return (
     <div
       // ref={gridRef}
@@ -166,7 +166,7 @@ const Cell = ({
   );
 
   const cellMemo = useMemo(() => {
-    //console.log('rendering: Cell');
+    // console.log('rendering: Cell');
     const modStyle = {
       opacity: noteOn ? velocity : 1,
       width: `${100 * length}%`,
@@ -258,7 +258,7 @@ const SoundCell = ({ id, step, i, sound }) => {
     (state) => state.sequencer.present.pattern[step][i].notes[0].velocity
   );
   const scMemo = useMemo(() => {
-    //console.log('rendering: SoundCell');
+    // console.log('rendering: SoundCell');
     const classes = `sound-cell bg${sound.color}`;
     return (
       <div
