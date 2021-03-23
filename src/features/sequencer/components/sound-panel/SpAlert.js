@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { PointDownIcon } from '../../../../icons';
 
@@ -24,18 +24,22 @@ export const SpAlert = () => {
     };
   }, [message]);
 
-  const index = message.indexOf('#');
-  const spAlert = message.substr(index + 1);
+  const spAlertMemo = useMemo(() => {
+    console.log('rendering: SpAlert');
 
-  console.log('rendering: SpAlert');
-  return (
-    <div className='sp-alert-wrapper'>
-      <div id='sp-alert' className={classes}>
-        <span className='menu-dummy' />
-        <p className='alert'>{spAlert}</p>
-        <PointDownIcon />
-        <span className='menu-dummy' />
+    const index = message.indexOf('#');
+    const spAlert = message.substr(index + 1);
+
+    return (
+      <div className='sp-alert-wrapper'>
+        <div id='sp-alert' className={classes}>
+          <span className='menu-dummy' />
+          <p className='alert'>{spAlert}</p>
+          <PointDownIcon />
+          <span className='menu-dummy' />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }, [classes, message]);
+  return spAlertMemo;
 };
