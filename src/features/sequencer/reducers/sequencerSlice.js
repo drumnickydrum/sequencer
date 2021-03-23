@@ -13,7 +13,6 @@ const INITIAL_STATE = {
   ...analog,
   pattern: INITIAL_PATTERN,
   noteTally: getNoteTally(analog.pattern),
-  sampleCount: INITIAL_PATTERN[0].length,
 };
 
 export const sequencerSlice = createSlice({

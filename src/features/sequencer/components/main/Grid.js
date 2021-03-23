@@ -12,6 +12,7 @@ import {
   sliceCell,
   eraseCell,
 } from '../../reducers/sequencerSlice';
+import * as defaultKits from '../../defaults/defaultKits';
 import { SawIcon } from '../../../../icons';
 import { PatternRef } from '../../providers/PatternRef';
 
@@ -224,12 +225,11 @@ const Cell = ({ id, step, selectedSound, mode, cellsRef, prevCellRef }) => {
 };
 
 const SoundCells = ({ id, step }) => {
-  const sampleCount = useSelector(
-    (state) => state.sequencer.present.sampleCount
-  );
+  const kit = useSelector((state) => state.sequencer.present.kit);
+  const sounds = defaultKits[kit].sounds;
 
   let grid = [];
-  for (let i = 0; i < sampleCount; i++) {
+  for (let i = 0; i < sounds.length; i++) {
     grid.push(i);
   }
 
