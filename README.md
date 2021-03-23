@@ -2,6 +2,23 @@
 
 ## Dev notes
 
+### 3/23/2021
+
+- Lifting rest of state into redux store.
+
+### 3/22/2021
+
+- `PatternRefProvider` keeps latest updates of pattern state from redux.
+- `kitSlice` gets `changeKit` into undo. Had to move the logic for restarting into `KitProvider` to make sure buffers are loaded before restarting. Rage click all you want.
+- Brought back `useMemo` for `Cell` component.
+
+### 3/21/2021
+
+- Working on basic redux and redux toolkit.
+- Installed redux-undo and it's pretty seamless. Wow.
+  - in store.js -> configureStore -> middleware -> getDefaultMiddleware({ immutableCheck: false }) otherwise there is a slow deep state check with every action.
+- Disabled erase and slice when tally for sound is 0. Erasing to 0 also brings you back to the edit menu.
+
 ### 3/20/2021
 
 - Clean up css from yesterday. Resolved low-performance paint issue (transitioning cursor bgcolor).

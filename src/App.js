@@ -1,39 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { KitProvider } from './Providers/Kit';
-import { PatternProvider } from './Providers/Pattern';
-import { TransportProvider } from './Providers/Transport';
-import { InfoProvider } from './Providers/Info';
-import { UndoProvider } from './Providers/UndoProvider';
-import { UserProvider } from './Providers/User';
-import { StatusProvider } from './Providers/Status';
-import { LoginPage } from './Pages/LoginPage';
-import { SequencerPage } from './Pages/Sequencer';
-import { StatusBar } from './Sections/StatusBar';
+import { LoginPage } from './features/Login/LoginPage';
+import { SequencerPage } from './features/Sequencer/Sequencer';
+import { StatusBar } from './features/StatusBar/StatusBar';
 
 export default function App() {
   return (
-    <StatusProvider>
-      <UserProvider>
-        <InfoProvider>
-          <UndoProvider>
-            <KitProvider>
-              <PatternProvider>
-                <TransportProvider>
-                  <Router>
-                    <Switch>
-                      <Route path='/' exact component={SequencerPage} />
-                      <Route path='/login' component={LoginPage} />
-                    </Switch>
-                  </Router>
-                  <StatusBar />
-                </TransportProvider>
-              </PatternProvider>
-            </KitProvider>
-          </UndoProvider>
-        </InfoProvider>
-      </UserProvider>
-    </StatusProvider>
+    <Router>
+      <Switch>
+        <Route path='/' exact component={SequencerPage} />
+        <Route path='/login' component={LoginPage} />
+      </Switch>
+      <StatusBar />
+    </Router>
   );
 }
 
