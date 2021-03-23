@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '../../../../components/Button';
 import { StopIcon, StartIcon, PauseIcon } from '../../../../icons';
@@ -14,19 +14,20 @@ export const TransportPanel = () => {
 
   const [tempBpm, setTempBpm] = useState(bpm);
   useEffect(() => {
-    let timer;
-    if (tempBpm !== bpm) {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        dispatch(changeBpm(tempBpm));
-      }, 500);
-    }
-  }, [bpm, dispatch, tempBpm]);
+    if (bpm !== tempBpm) setTempBpm(bpm);
+  }, [bpm, tempBpm]);
 
+  let timerRef = useRef(null);
   const onChange = ({ target: { value } }) => {
     if (value.match(/\D/)) return;
-    // setPatternBpm(value > 300 ? 300 : value);
-    setTempBpm(value > 300 ? 300 : value);
+    const newTempo = value > 300 ? 300 : value;
+    if (newTempo !== bpm) {
+      clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => {
+        dispatch(changeBpm(newTempo));
+      }, 1000);
+    }
+    setTempBpm(newTempo);
   };
 
   console.log('rendering: TransportPanel');
