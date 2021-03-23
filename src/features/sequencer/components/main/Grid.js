@@ -1,5 +1,4 @@
 import React, {
-  useState,
   useEffect,
   useContext,
   useMemo,
@@ -7,7 +6,7 @@ import React, {
   useCallback,
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { MODES } from '../../reducers/editModeSlice';
+import { MODES, setSpAlert } from '../../reducers/editModeSlice';
 import {
   toggleCell,
   sliceCell,
@@ -25,10 +24,9 @@ export const Grid = () => {
   const mode = useSelector((state) => state.editMode.mode);
 
   const { cellsRef } = useContext(PatternRef);
-  // const cellsRef = useRef({});
   const prevCellRef = useRef(null);
 
-  const handleDrag = (e) => {
+  const onTouchMove = (e) => {
     if (
       mode !== MODES.PAINTING &&
       mode !== MODES.ERASING &&
@@ -63,12 +61,13 @@ export const Grid = () => {
     return grid;
   }, [length]);
 
+  // console.log('rendering: Grid');
   return (
     <div
       // ref={gridRef}
       id='grid'
       className={selectedSound === -1 ? '' : 'no-drag'}
-      onTouchMove={handleDrag}
+      onTouchMove={onTouchMove}
     >
       {grid.map((_, step) => {
         const id = `cell-${step}`;
@@ -157,15 +156,17 @@ const Cell = ({
   const onTouchStart = useCallback(
     (e) => {
       e.stopPropagation();
+      if (selectedSound === -1) dispatch(setSpAlert('select a sound to edit'));
       // if (modRef.current) {
       // if (on) modStart(e);
       prevCellRef.current = id;
       if (!(mode === MODES.ERASING && !noteOn)) onTap();
     },
-    [id, mode, noteOn, onTap, prevCellRef]
+    [dispatch, id, mode, noteOn, onTap, prevCellRef, selectedSound]
   );
 
   const cellMemo = useMemo(() => {
+    // console.log('rendering: Cell');
     const modStyle = {
       opacity: noteOn ? velocity : 1,
       width: `${100 * length}%`,
@@ -257,6 +258,7 @@ const SoundCell = ({ id, step, i, sound }) => {
     (state) => state.sequencer.present.pattern[step][i].notes[0].velocity
   );
   const scMemo = useMemo(() => {
+    // console.log('rendering: SoundCell');
     const classes = `sound-cell bg${sound.color}`;
     return (
       <div

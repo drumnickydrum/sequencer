@@ -11,18 +11,19 @@ import {
 
 export const Erase = ({ onReturn, selectedSound }) => {
   const dispatch = useDispatch();
-  const tally = useSelector(
-    (state) => state.sequencer.present.noteTally[selectedSound]
+  const disabled = useSelector(
+    (state) => state.sequencer.present.noteTally[selectedSound].empty
   );
 
   useEffect(() => {
-    if (tally === 0) onReturn();
-  }, [onReturn, tally]);
+    if (disabled) onReturn();
+  }, [onReturn, disabled]);
 
   const onEraseAll = () => {
     dispatch(eraseSound({ selectedSound }));
   };
 
+  console.log('rendering: Erase');
   return (
     <div className='sound-edit-detail'>
       <Button classes='sound-edit-close' onClick={onReturn}>
@@ -33,7 +34,7 @@ export const Erase = ({ onReturn, selectedSound }) => {
         <p className=''>Click and drag to erase cells</p>
         <Button
           classes='sound-edit-btn mod-all'
-          disabled={tally === 0}
+          disabled={disabled}
           onClick={onEraseAll}
         >
           Erase All
@@ -45,6 +46,7 @@ export const Erase = ({ onReturn, selectedSound }) => {
 };
 
 export const Slice = ({ onReturn }) => {
+  console.log('rendering: Slice');
   return (
     <div className='sound-edit-detail'>
       <Button classes='sound-edit-close' onClick={onReturn}>
@@ -60,6 +62,7 @@ export const Slice = ({ onReturn }) => {
 };
 
 export const Copy = ({ onReturn }) => {
+  console.log('rendering: Copy');
   return (
     <div className='sound-edit-detail'>
       <Button classes='sound-edit-close' onClick={onReturn}>

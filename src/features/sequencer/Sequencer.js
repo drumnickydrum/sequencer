@@ -2,11 +2,11 @@ import React, { useEffect, useRef } from 'react';
 import { Grid } from './components/main/Grid';
 import { PastePattern } from './components/main/PastePattern';
 import { SoundPanel } from './components/sound-panel/SoundPanel';
-import { TransportPanel } from './components/bottom/TransportPanel';
-import { UndoRedo } from './components/bottom/UndoRedo';
-import { Clear } from './components/bottom/Clear';
-import { LoadSaveButton } from './components/bottom/LoadSaveButton';
-import { ChangeKit } from './components/bottom/ChangeKit';
+import { TransportPanel } from './components/menu/TransportPanel';
+import { UndoRedo } from './components/menu/UndoRedo';
+import { Clear } from './components/menu/Clear';
+import { LoadSaveButton } from './components/menu/LoadSaveButton';
+import { ChangeKit } from './components/menu/ChangeKit';
 import { LoadSavePattern } from './components/load/LoadSavePattern';
 import { ScrollLeft, ScrollRight } from '../../components/Button';
 import { KitProvider } from './providers/Kit';
@@ -14,6 +14,7 @@ import { TransportProvider } from './providers/Transport';
 import { PatternRefProvider } from './providers/PatternRef';
 
 export const SequencerPage = () => {
+  console.log('rendering: SequencerPage');
   return (
     <KitProvider>
       <PatternRefProvider>
@@ -26,7 +27,7 @@ export const SequencerPage = () => {
             <div id='sound-panel'>
               <SoundPanel />
             </div>
-            <Bottom />
+            <Menu />
           </div>
           <LoadSavePattern />
         </TransportProvider>
@@ -35,14 +36,14 @@ export const SequencerPage = () => {
   );
 };
 
-const Bottom = () => {
-  const bottomRef = useRef(null);
+const Menu = () => {
+  const menuRef = useRef(null);
   const scrollbarRef = useRef(null);
 
   useEffect(() => {
-    if (bottomRef.current) {
+    if (menuRef.current) {
       const width = scrollbarRef.current.clientWidth;
-      bottomRef.current.scrollTo({
+      menuRef.current.scrollTo({
         left: width * 2,
         behavior: 'smooth',
       });
@@ -60,8 +61,8 @@ const Bottom = () => {
       dir === 'right'
         ? scrollbarRef.current.clientWidth
         : scrollbarRef.current.clientWidth * -1;
-    const start = bottomRef.current.scrollLeft;
-    bottomRef.current.scrollTo({ left: start + offset, behavior: 'smooth' });
+    const start = menuRef.current.scrollLeft;
+    menuRef.current.scrollTo({ left: start + offset, behavior: 'smooth' });
     scrollEnd.current = setTimeout(() => disableScroll(), 500);
   };
 
@@ -71,11 +72,11 @@ const Bottom = () => {
   };
 
   const disableScroll = () => {
-    if (bottomRef.current.scrollLeft <= 0) {
+    if (menuRef.current.scrollLeft <= 0) {
       leftRef.current.disabled = true;
     }
     if (
-      bottomRef.current.scrollLeft + scrollbarRef.current.clientWidth >=
+      menuRef.current.scrollLeft + scrollbarRef.current.clientWidth >=
       5 * scrollbarRef.current.clientWidth
     ) {
       rightRef.current.disabled = true;
@@ -88,8 +89,9 @@ const Bottom = () => {
     scrollEnd.current = setTimeout(() => disableScroll(), 100);
   };
 
+  console.log('rendering: Menu');
   return (
-    <div ref={bottomRef} id='bottom' onScroll={handleScroll}>
+    <div ref={menuRef} id='menu' onScroll={handleScroll}>
       <ChangeKit />
       <LoadSaveButton />
       <TransportPanel />

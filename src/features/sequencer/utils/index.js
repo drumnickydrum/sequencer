@@ -1,27 +1,40 @@
 export const getNoteTally = (pattern) => {
-  let noteTally = { total: 0 };
+  let noteTally = {
+    '-1': { count: 0, empty: true },
+    total: { count: 0, empty: true },
+  };
   pattern[0].forEach((_, i) => {
-    noteTally[i] = 0;
+    noteTally[i] = { count: 0, empty: true };
   });
   pattern.forEach((step) => {
     step.forEach((sound, i) => {
       if (sound.noteOn) {
-        noteTally[i]++;
-        noteTally.total++;
+        noteTally[i].count++;
+        noteTally.total.count++;
       }
     });
   });
+  for (let i = 0; i < pattern[0].length; i++) {
+    if (noteTally[i].count) {
+      noteTally[i].empty = false;
+      noteTally.total.empty = false;
+    }
+  }
   return noteTally;
 };
 
 export const inc = (noteTally, sound) => {
-  noteTally[sound]++;
-  noteTally.total++;
+  noteTally[sound].count++;
+  noteTally[sound].empty = false;
+  noteTally.total.count++;
+  noteTally.total.count = false;
 };
 
 export const dec = (noteTally, sound) => {
-  noteTally[sound]--;
-  noteTally.total--;
+  noteTally[sound].count--;
+  if (noteTally[sound].count === 0) noteTally[sound].empty = true;
+  noteTally.total.count--;
+  if (noteTally.total.count === 0) noteTally.total.empty = true;
 };
 
 export const initSoundStep = (sound) => {

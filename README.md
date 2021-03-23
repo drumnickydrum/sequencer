@@ -5,6 +5,7 @@
 ### 3/23/2021
 
 - Lifting rest of state into redux store.
+- Memoizing lots of components. Anything that sees changes in state were re-rendering for no reason.
 
 ### 3/22/2021
 
