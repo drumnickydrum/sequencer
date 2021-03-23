@@ -26,7 +26,6 @@ export const toneSlice = createSlice({
       state.transportState = 'stopped';
       state.buffersLoaded = false;
       state.restart = true;
-      console.log('done prepping');
     },
   },
 });

@@ -19,6 +19,7 @@ export const INITIAL_MODS = {
 const INITIAL_STATE = {
   selectedSound: -1,
   mode: null,
+  spAlert: { count: 0, message: '' },
 };
 
 export const editModeSlice = createSlice({
@@ -36,9 +37,13 @@ export const editModeSlice = createSlice({
     setMode: (state, { payload: { mode } }) => {
       state.mode = mode;
     },
+    setSpAlert: (state, { payload }) => {
+      state.spAlert.count++;
+      state.spAlert.message = `${state.spAlert.count}#${payload}`;
+    },
   },
 });
 
-export const { close, edit, setMode } = editModeSlice.actions;
+export const { close, edit, setMode, setSpAlert } = editModeSlice.actions;
 
 export default editModeSlice.reducer;

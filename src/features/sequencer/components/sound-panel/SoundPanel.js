@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { close, edit, setMode, MODES } from '../../reducers/editModeSlice';
 import {
@@ -9,13 +9,12 @@ import {
   PitchIcon,
   SawIcon,
   VelocityIcon,
-  PointDownIcon,
 } from '../../../../icons';
 import * as icons from '../../../../icons/kit';
 import { Kit } from '../../providers/Kit';
 import { Erase, Slice, Copy } from './EraseSliceCopy';
 import { PitchVelocityLength } from './PitchVelocityLength';
-import { Status } from '../../../../providers/Status';
+import { SpAlert } from './SpAlert';
 import { Button } from '../../../../components/Button';
 
 export const SoundPanel = () => {
@@ -57,18 +56,9 @@ export const SoundPanel = () => {
     dispatch(setMode({ mode }));
   };
 
-  const { spAlert } = useContext(Status);
-  const index = spAlert.indexOf('#');
-  const alert = spAlert.substr(index + 1);
-
   return (
     <>
-      <div id='sp-alert' className='sp-alert'>
-        <span className='menu-dummy' />
-        <p className='alert'>{alert}</p>
-        <PointDownIcon />
-        <span className='menu-dummy' />
-      </div>
+      <SpAlert />
       <div className={showEditMenu ? 'sound-edit show' : 'sound-edit'}>
         {mode === MODES.ERASING ? (
           <Erase onReturn={onReturn} selectedSound={selectedSound} />

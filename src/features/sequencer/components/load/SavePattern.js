@@ -1,16 +1,20 @@
-import axios from 'axios';
 import React, { useState, useContext, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { setFetching } from '../../../../reducers/appSlice';
 import { Transport } from '../../providers/Transport';
-import { User } from '../../../../providers/User';
+import { saveSequence } from '../../reducers/sequencerSlice';
 
 export const SavePattern = () => {
+  const dispatch = useDispatch();
+
   const bpm = useSelector((state) => state.sequencer.present.bpm);
   const pattern = useSelector((state) => state.sequencer.present.pattern);
 
   const { stop } = useContext(Transport);
-  const { user, setUser, fetching } = useContext(User);
+
+  const user = useSelector((state) => state.app.user);
+  const fetching = useSelector((state) => state.app.fetching);
   const kit = useSelector((state) => state.kit.name);
 
   const [newName, setNewName] = useState('');
@@ -27,9 +31,9 @@ export const SavePattern = () => {
     return () => clearTimeout(timeout);
   }, [error]);
 
-  const handleSave = async (e) => {
-    if (!newName) return;
+  const save = async (e) => {
     e.preventDefault();
+    if (!newName) return setError('name required');
     const cleanName = newName.replace(/[^a-zA-Z0-9 ]/g, '');
     const newPattern = {
       name: cleanName,
@@ -39,17 +43,14 @@ export const SavePattern = () => {
     };
     setNewName('');
     try {
-      const res = await axios({
-        url: 'http://localhost:4000/user/pattern/add',
-        method: 'POST',
-        data: newPattern,
-        withCredentials: true,
-      });
+      dispatch(setFetching(true));
+      await dispatch(saveSequence(newPattern));
       setConfirmation('Pattern saved!');
-      setUser(res.data);
     } catch (e) {
-      console.log('FAIL ->\n', e);
+      console.log('Save Sequence ERROR ->\n', e);
       setError('Server error: please try again later.');
+    } finally {
+      dispatch(setFetching(false));
     }
   };
 
@@ -72,7 +73,7 @@ export const SavePattern = () => {
           </div>
         </div>
       ) : (
-        <form id='save-form' onSubmit={handleSave}>
+        <form id='save-form' onSubmit={save}>
           <h1 className='pattern-title'>Save Pattern</h1>
 
           <div className='save-pattern-input'>

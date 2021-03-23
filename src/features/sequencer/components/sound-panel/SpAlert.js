@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { PointDownIcon } from '../../../../icons';
 
-export const StatusBar = () => {
-  const message = useSelector((state) => state.app.status.message);
+export const SpAlert = () => {
+  const message = useSelector((state) => state.editMode.spAlert.message);
   const ref = useRef(null);
 
   useEffect(() => {
@@ -24,12 +25,13 @@ export const StatusBar = () => {
   }, [message]);
 
   const index = message.indexOf('#');
-  const status = message.substr(index + 1);
+  const spAlert = message.substr(index + 1);
   return (
-    <div className='status-bar'>
-      <p ref={ref} className='status' id='status'>
-        {status}
-      </p>
+    <div ref={ref} id='sp-alert' className='sp-alert'>
+      <span className='menu-dummy' />
+      <p className='alert'>{spAlert}</p>
+      <PointDownIcon />
+      <span className='menu-dummy' />
     </div>
   );
 };

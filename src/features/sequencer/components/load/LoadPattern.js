@@ -1,19 +1,19 @@
-import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as defaultPatterns from '../../defaults/defaultPatterns';
-import { loadSequence } from '../../reducers/sequencerSlice';
+import { deleteSequence, loadSequence } from '../../reducers/sequencerSlice';
 import { DeleteIcon } from '../../../../icons';
 import { Transport } from '../../providers/Transport';
-import { User } from '../../../../providers/User';
+import { setFetching } from '../../../../reducers/appSlice';
 
 export const LoadPattern = () => {
   const dispatch = useDispatch();
   const _id = useSelector((state) => state.sequencer.present._id);
 
   const { stop } = useContext(Transport);
-  const { user, fetching } = useContext(User);
+  const user = useSelector((state) => state.app.user);
+  const fetching = useSelector((state) => state.app.fetching);
 
   const [error, setError] = useState('');
   useEffect(() => {
@@ -110,9 +110,11 @@ export const LoadPattern = () => {
 };
 
 const UserPattern = ({ pattern, _id, selectPattern, setError }) => {
-  const { setUser } = useContext(User);
+  const dispatch = useDispatch();
+
+  const fetching = useSelector((state) => state.app.fetching);
+
   const [showConfirm, setShowConfirm] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const handleShowConfirm = (e, val) => {
     e.stopPropagation();
@@ -121,33 +123,27 @@ const UserPattern = ({ pattern, _id, selectPattern, setError }) => {
 
   const handleDelete = async (e) => {
     e.stopPropagation();
-    setLoading(true);
     try {
-      const res = await axios({
-        url: 'http://localhost:4000/user/pattern/delete',
-        method: 'POST',
-        data: { _id: pattern._id },
-        withCredentials: true,
-      });
-      console.log('success!\n');
-      setUser(res.data);
+      dispatch(setFetching(true));
+      dispatch(deleteSequence(pattern._id));
     } catch (e) {
-      console.log('FAIL ->\n', e);
+      console.log('Delete Sequence ERROR ->\n', e);
       setError('Server error: please try again later.');
-      setLoading(false);
+    } finally {
+      dispatch(setFetching(false));
     }
   };
 
   return showConfirm ? (
     <div className='confirm-delete'>
       <p>Are you sure?</p>
-      <button className='red' onClick={handleDelete} disabled={loading}>
+      <button className='red' onClick={handleDelete} disabled={fetching}>
         DELETE
       </button>
       <button
         className='purple'
         onClick={(e) => handleShowConfirm(e, false)}
-        disabled={loading}
+        disabled={fetching}
       >
         CANCEL
       </button>

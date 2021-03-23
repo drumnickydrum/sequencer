@@ -87,7 +87,6 @@ export const TransportProvider = ({ children }) => {
     if (restart) {
       if (buffersLoaded) {
         dispatch(setRestart(false));
-        console.log(Tone.Transport.state, 'restarting');
         stepRef.current = 0;
         start();
       }
@@ -105,7 +104,7 @@ export const TransportProvider = ({ children }) => {
         );
         animateSound(time, stepRef.current);
       } catch (e) {
-        console.log('schedulePattern ->\n', e);
+        console.log('schedulePattern ERROR ->\n', e);
       }
       stepRef.current = (stepRef.current + 1) % patternRef.current.length;
     }, '16n');

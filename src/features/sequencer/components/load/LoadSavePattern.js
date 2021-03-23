@@ -1,40 +1,22 @@
-import axios from 'axios';
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import { LoadPattern } from './LoadPattern';
 import { SavePattern } from './SavePattern';
-import { User, INITIAL_USER } from '../../../../providers/User';
 import { useDispatch, useSelector } from 'react-redux';
-import { setShow } from '../../../../reducers/appSlice';
+import { logout, setShow } from '../../../../reducers/appSlice';
 
 export const LoadSavePattern = () => {
   const dispatch = useDispatch();
 
-  const { user, setUser } = useContext(User);
+  const user = useSelector((state) => state.app.user);
 
   const show = useSelector((state) => state.app.show);
-
-  const [fetching, setFetching] = useState(false);
-
-  const logout = async () => {
-    try {
-      setFetching(true);
-      await axios({
-        url: 'http://localhost:4000/user/logout',
-        method: 'GET',
-        withCredentials: true,
-      });
-      console.log('Success! \n');
-      setUser(INITIAL_USER);
-    } catch (e) {
-      console.log('FAIL ->\n', e);
-    } finally {
-      setFetching(false);
-    }
-  };
+  const fetching = useSelector((state) => state.app.fetching);
 
   const changeTab = (type) => {
     dispatch(setShow(type));
   };
+
+  const onLogout = () => dispatch(logout());
 
   const onClose = () => dispatch(setShow(''));
 
@@ -69,7 +51,7 @@ export const LoadSavePattern = () => {
               ) : (
                 <p>Logged in as: {user.username}</p>
               )}
-              <button disabled={fetching} onClick={logout}>
+              <button disabled={fetching} onClick={onLogout}>
                 logout
               </button>
             </div>

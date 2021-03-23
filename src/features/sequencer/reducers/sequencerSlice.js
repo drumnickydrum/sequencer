@@ -1,8 +1,10 @@
+import axios from 'axios';
 import { createSlice } from '@reduxjs/toolkit';
 import undoable from 'redux-undo';
 import { analog } from '../defaults/defaultPatterns';
 import { getLS } from '../../../utils/storage';
 import { getNoteTally, inc, dec, initSoundStep } from '../utils';
+import { setUser } from '../../../reducers/appSlice';
 
 // const INITIAL_PATTERN = getLS('pattern') || analog.pattern;
 const INITIAL_PATTERN = analog.pattern;
@@ -71,11 +73,32 @@ export const sequencerSlice = createSlice({
       state.pattern = sequence.pattern;
       state.noteTally = getNoteTally(state.pattern);
     },
+    saveSequence: (state, { payload }) => {},
     changeKit: (state, { payload: { kit } }) => {
       state.kit = kit;
     },
   },
 });
+
+export const saveSequence = async (sequence) => async (dispatch) => {
+  const res = await axios({
+    url: 'http://localhost:4000/user/pattern/add',
+    method: 'POST',
+    data: sequence,
+    withCredentials: true,
+  });
+  dispatch(setUser(res.data));
+};
+
+export const deleteSequence = async (sequence) => async (dispatch) => {
+  const res = await axios({
+    url: 'http://localhost:4000/user/pattern/delete',
+    method: 'POST',
+    data: { _id: sequence },
+    withCredentials: true,
+  });
+  dispatch(setUser(res.data));
+};
 
 export const {
   toggleCell,

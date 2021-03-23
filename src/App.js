@@ -1,24 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { UserProvider } from './providers/User';
-import { StatusProvider } from './providers/Status';
 import { LoginPage } from './features/Login/LoginPage';
 import { SequencerPage } from './features/Sequencer/Sequencer';
 import { StatusBar } from './features/StatusBar/StatusBar';
 
 export default function App() {
   return (
-    <StatusProvider>
-      <UserProvider>
-        <Router>
-          <Switch>
-            <Route path='/' exact component={SequencerPage} />
-            <Route path='/login' component={LoginPage} />
-          </Switch>
-        </Router>
-        <StatusBar />
-      </UserProvider>
-    </StatusProvider>
+    <Router>
+      <Switch>
+        <Route path='/' exact component={SequencerPage} />
+        <Route path='/login' component={LoginPage} />
+      </Switch>
+      <StatusBar />
+    </Router>
   );
 }
 
