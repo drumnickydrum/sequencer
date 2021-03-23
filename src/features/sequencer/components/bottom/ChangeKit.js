@@ -1,14 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { ChevronDownIcon } from '../../../../icons';
 import * as kits from '../../defaults/defaultKits';
-import { Kit } from '../../providers/Kit';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeKit } from '../../reducers/sequencerSlice';
 
 export const ChangeKit = () => {
   const dispatch = useDispatch();
   const kit = useSelector((state) => state.sequencer.present.kit);
-  const { buffersLoaded } = useContext(Kit);
+  const buffersLoaded = useSelector((state) => state.tone.buffersLoaded);
 
   const onChange = ({ target: { value } }) => {
     dispatch(changeKit({ kit: value }));

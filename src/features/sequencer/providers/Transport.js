@@ -1,24 +1,26 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useEffect, useRef, useContext, useCallback } from 'react';
 import * as Tone from 'tone';
 import { PatternRef } from './PatternRef';
 import { MIDI_NOTES } from '../utils/MIDI_NOTES';
 import { Kit } from './Kit';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setRestart, setTransportState } from '../reducers/toneSlice';
 
 export const Transport = React.createContext();
 export const TransportProvider = ({ children }) => {
+  const dispatch = useDispatch();
   const { patternRef, cellsRef } = useContext(PatternRef);
-  const { kitRef, buffersLoaded, loadSamples } = useContext(Kit);
+  const { kitRef } = useContext(Kit);
+
+  const transportState = useSelector((state) => state.tone.transportState);
+  const buffersLoaded = useSelector((state) => state.tone.buffersLoaded);
 
   const stepRef = useRef(0);
 
   const bpm = useSelector((state) => state.sequencer.present.bpm);
-
   useEffect(() => {
     Tone.Transport.bpm.value = bpm;
   }, [bpm]);
-
-  const [transportState, setTransportState] = useState(Tone.Transport.state);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const start = () => {
@@ -26,27 +28,15 @@ export const TransportProvider = ({ children }) => {
     if (transportState !== 'started') {
       pauseFlashing();
       if (transportState === 'stopped') schedulePattern();
-      setTransportState('started');
+      dispatch(setTransportState('started'));
       Tone.Transport.start();
     } else {
       pause();
     }
   };
 
-  const stop = () => {
-    setTransportState('stopped');
-    Tone.Transport.stop();
-    Tone.Transport.position = 0;
-    Tone.Transport.cancel(0);
-    const scheduledEvents = Tone.Transport._scheduledEvents;
-    Object.keys(scheduledEvents).forEach((id) => Tone.Transport.clear(id));
-    removeCursor();
-    startFlashing();
-    stepRef.current = 0;
-  };
-
   const pause = () => {
-    setTransportState('paused');
+    dispatch(setTransportState('paused'));
     Tone.Transport.pause();
     addCursor();
     startFlashing();
@@ -67,7 +57,7 @@ export const TransportProvider = ({ children }) => {
       'true';
   };
 
-  const removeCursor = () => {
+  const removeCursor = useCallback(() => {
     const len = patternRef.current.length;
     const step = stepRef.current;
     const prevStep = step - 1 > 0 ? step - 1 : len - 1;
@@ -75,28 +65,33 @@ export const TransportProvider = ({ children }) => {
     cellsRef.current[`cell-${step}`].cellRef.current.dataset.cursor = false;
     cellsRef.current[`cell-${prevStep}`].cellRef.current.dataset.cursor = false;
     cellsRef.current[`cell-${nextStep}`].cellRef.current.dataset.cursor = false;
-  };
+  }, [cellsRef, patternRef]);
 
-  const [restart, setRestart] = useState(false);
+  const stop = useCallback(() => {
+    dispatch(setTransportState('stopped'));
+    stopAndCancelEvents();
+    removeCursor();
+    startFlashing();
+    stepRef.current = 0;
+  }, [dispatch, removeCursor]);
+
+  // just in case
+  useEffect(() => {
+    if (!buffersLoaded && transportState === 'started') {
+      stop();
+    }
+  }, [buffersLoaded, stop, transportState]);
+
+  const restart = useSelector((state) => state.tone.restart);
   useEffect(() => {
     if (restart) {
       if (buffersLoaded) {
-        setRestart(false);
+        dispatch(setRestart(false));
+        console.log(Tone.Transport.state, 'restarting');
         start();
-      } else {
-        console.log('load samples from transport');
-        loadSamples(kitRef.current.name);
       }
     }
-  }, [buffersLoaded, kitRef, loadSamples, restart, start]);
-
-  const prepRestart = (e) => {
-    e.stopImmediatePropagation();
-    console.log('prepping restart');
-    stop();
-    setRestart(true);
-  };
-  document.addEventListener('prepRestart', prepRestart);
+  }, [buffersLoaded, dispatch, restart, start]);
 
   const schedulePattern = () => {
     Tone.Transport.scheduleRepeat((time) => {
@@ -142,48 +137,36 @@ export const TransportProvider = ({ children }) => {
       if (noteOn) {
         // console.time('schedule note');
         let slice = notes.length;
-        let [pitch, velocity, length] = getModdedValues(
-          kitRef.current.sounds[sound],
-          notes[0]
-        );
-        kitRef.current.sounds[sound].sampler.triggerAttackRelease(
-          pitch,
-          length,
-          time,
-          velocity
-        );
-        if (slice === 2) {
-          let [pitch2, velocity2, length2] = getModdedValues(
-            kitRef.current.sounds[sound],
-            notes[1]
-          );
+        try {
           kitRef.current.sounds[sound].sampler.triggerAttackRelease(
-            pitch2,
-            length2,
-            time + Tone.Time('32n'),
-            velocity2
+            MIDI_NOTES[notes[0].pitch],
+            notes[0].length,
+            time,
+            notes[0].velocity
           );
-        } else if (slice === 3) {
-          let [pitch2, velocity2, length2] = getModdedValues(
-            kitRef.current.sounds[sound],
-            notes[1]
-          );
-          let [pitch3, velocity3, length3] = getModdedValues(
-            kitRef.current.sounds[sound],
-            notes[2]
-          );
-          kitRef.current.sounds[sound].sampler.triggerAttackRelease(
-            pitch2,
-            length2,
-            time + Tone.Time('32t'),
-            velocity2
-          );
-          kitRef.current.sounds[sound].sampler.triggerAttackRelease(
-            pitch3,
-            length3,
-            time + Tone.Time('32t') + Tone.Time('32t'),
-            velocity3
-          );
+          if (slice === 2) {
+            kitRef.current.sounds[sound].sampler.triggerAttackRelease(
+              MIDI_NOTES[notes[1].pitch],
+              notes[1].length,
+              time + Tone.Time('32n'),
+              notes[1].velocity
+            );
+          } else if (slice === 3) {
+            kitRef.current.sounds[sound].sampler.triggerAttackRelease(
+              MIDI_NOTES[notes[1].pitch],
+              notes[1].length,
+              time + Tone.Time('32t'),
+              notes[1].velocity
+            );
+            kitRef.current.sounds[sound].sampler.triggerAttackRelease(
+              MIDI_NOTES[notes[2].pitch],
+              notes[2].length,
+              time + Tone.Time('32t') + Tone.Time('32t'),
+              notes[2].velocity
+            );
+          }
+        } catch (e) {
+          console.log('oops');
         }
         // console.timeEnd('schedule note');
       }
@@ -191,26 +174,16 @@ export const TransportProvider = ({ children }) => {
   };
 
   return (
-    <Transport.Provider
-      value={{
-        transportState,
-        start,
-        stop,
-        restart,
-        setRestart,
-      }}
-    >
-      {children}
-    </Transport.Provider>
+    <Transport.Provider value={{ start, stop }}>{children}</Transport.Provider>
   );
 };
 
-const getModdedValues = (sound, { pitch, velocity, length }) => {
-  pitch += sound.pitchMod;
-  pitch = MIDI_NOTES[pitch];
-  velocity *= sound.velocityMod;
-  length *= sound.lengthMod * sound.duration;
-  return [pitch, velocity, length];
+export const stopAndCancelEvents = () => {
+  Tone.Transport.stop();
+  Tone.Transport.position = 0;
+  Tone.Transport.cancel(0);
+  const scheduledEvents = Tone.Transport._scheduledEvents;
+  Object.keys(scheduledEvents).forEach((id) => Tone.Transport.clear(id));
 };
 
 const initialClick = async () => {

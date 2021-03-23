@@ -1,12 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { ActionCreators as UndoActionCreators } from 'redux-undo';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { Button } from '../../../../components/Button';
 import { RedoIcon, UndoIcon } from '../../../../icons';
-import { Kit } from '../../providers/Kit';
 
 let UndoRedo = ({ canUndo, canRedo, onUndo, onRedo }) => {
-  const { buffersLoaded } = useContext(Kit);
+  const buffersLoaded = useSelector((state) => state.tone.buffersLoaded);
 
   return (
     <div className='menu-items'>

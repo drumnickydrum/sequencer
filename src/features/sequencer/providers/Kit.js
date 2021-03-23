@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useRef, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Tone from 'tone';
 import { setLS } from '../../../utils/storage';
 import * as defaultKits from '../defaults/defaultKits';
+import { setBuffersLoaded, prepRestart } from '../reducers/toneSlice';
 
 const getInitialKit = (kit) => {
   const sounds = defaultKits[kit].sounds.map((sound) => ({
@@ -16,12 +17,13 @@ const getInitialKit = (kit) => {
 
 export const Kit = React.createContext();
 export const KitProvider = ({ children }) => {
+  const dispatch = useDispatch();
+
   const kit = useSelector((state) => state.sequencer.present.kit);
   const kitRef = useRef(getInitialKit(kit));
-  const [buffersLoaded, setBuffersLoaded] = useState(false);
 
   const disposeSamples = useCallback(() => {
-    console.log('disposing: ', kitRef.current.name);
+    console.log('disposing previous kit');
     for (let i = 0; i < 9; i++) {
       kitRef.current.sounds[i].sampler?.dispose();
       delete kitRef.current.sounds[i].sampler;
@@ -30,62 +32,61 @@ export const KitProvider = ({ children }) => {
     }
   }, []);
 
-  const loadSamples = (kit) => {
-    console.log('loading samples');
-    for (let i = 0; i < 9; i++) {
-      kitRef.current.sounds[i].sampler = new Tone.Sampler({
-        urls: {
-          C2: kitRef.current.sounds[i].sample,
-        },
-        onload: () => {
-          kitRef.current.sounds[i].duration = kitRef.current.sounds[
-            i
-          ].sampler._buffers._buffers.get('36')._buffer.duration;
-          if (i === 8) {
-            console.log(kit, 'buffers loaded');
-            setBuffersLoaded(true);
-          }
-        },
-      });
-      kitRef.current.sounds[i].channel = new Tone.Channel({
-        volume: 0,
-        pan: 0,
-        channelCount: 2,
-      }).toDestination();
-      kitRef.current.sounds[i].sampler.connect(
-        kitRef.current.sounds[i].channel
-      );
-    }
-  };
+  const loadSamples = useCallback(
+    (kit) => {
+      if (kitRef.current.sounds[0].sampler) disposeSamples();
+      console.log('loading samples');
+      for (let i = 0; i < 9; i++) {
+        kitRef.current.sounds[i].sampler = new Tone.Sampler({
+          urls: {
+            C2: kitRef.current.sounds[i].sample,
+          },
+          onload: () => {
+            kitRef.current.sounds[i].duration = kitRef.current.sounds[
+              i
+            ].sampler._buffers._buffers.get('36')._buffer.duration;
+            if (i === 8) {
+              console.log(kit, 'buffers loaded');
+              dispatch(setBuffersLoaded(true));
+            }
+          },
+        });
+        kitRef.current.sounds[i].channel = new Tone.Channel({
+          volume: 0,
+          pan: 0,
+          channelCount: 2,
+        }).toDestination();
+        kitRef.current.sounds[i].sampler.connect(
+          kitRef.current.sounds[i].channel
+        );
+      }
+    },
+    [dispatch, disposeSamples]
+  );
 
   useEffect(() => {
     loadSamples(kitRef.current.name);
-  }, []);
+  }, [loadSamples]);
 
   useEffect(() => {
+    if (Tone.Transport.state === 'started') {
+      dispatch(prepRestart());
+    }
+    console.log(Tone.Transport.state);
     kitRef.current.name = defaultKits[kit].name;
     kitRef.current.sounds = defaultKits[kit].sounds.map((sound) => ({
       ...sound,
     }));
     console.log('kit changed to: ', kitRef.current.name);
-    if (Tone.Transport.state === 'started') {
-      setBuffersLoaded(false);
-      document.dispatchEvent(new Event('prepRestart'));
-      disposeSamples();
-    } else {
-      if (kitRef.current.sounds.length > 0) {
-        disposeSamples();
-        loadSamples(kitRef.current.name);
-      }
+    if (kitRef.current.sounds.length > 0) {
+      loadSamples(kitRef.current.name);
     }
-  }, [disposeSamples, kit]);
+  }, [dispatch, disposeSamples, kit, loadSamples]);
 
   return (
     <Kit.Provider
       value={{
         kitRef,
-        buffersLoaded,
-        setBuffersLoaded,
         loadSamples,
       }}
     >

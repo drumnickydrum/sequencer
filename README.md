@@ -2,6 +2,10 @@
 
 ## Dev notes
 
+### 3/23/2021
+
+- Lifting rest of state into redux store.
+
 ### 3/22/2021
 
 - `PatternRefProvider` keeps latest updates of pattern state from redux.

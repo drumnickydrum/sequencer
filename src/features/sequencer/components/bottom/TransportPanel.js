@@ -5,8 +5,9 @@ import { StopIcon, StartIcon, PauseIcon } from '../../../../icons';
 import { Transport } from '../../providers/Transport';
 
 export const TransportPanel = () => {
-  const { transportState, start, stop } = useContext(Transport);
+  const { start, stop } = useContext(Transport);
 
+  const transportState = useSelector((state) => state.tone.transportState);
   const bpm = useSelector((state) => state.sequencer.present.bpm);
 
   const handleChange = ({ target: { value } }) => {
