@@ -1,17 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as defaultPatterns from '../../defaults/defaultPatterns';
 import { deleteSequence, loadSequence } from '../../reducers/sequencerSlice';
 import { DeleteIcon } from '../../../../icons';
-import { Transport } from '../../providers/Transport';
 import { setFetching } from '../../../../reducers/appSlice';
 
-export const LoadPattern = () => {
+export const LoadPattern = ({ stopSequencer }) => {
   const dispatch = useDispatch();
   const _id = useSelector((state) => state.sequencer.present._id);
 
-  const { stop } = useContext(Transport);
   const user = useSelector((state) => state.app.user);
   const fetching = useSelector((state) => state.app.fetching);
 
@@ -46,7 +44,7 @@ export const LoadPattern = () => {
               </p>
               <Link
                 className='login-btn'
-                onTouchStart={stop}
+                onTouchStart={stopSequencer}
                 to='/login'
                 disabled={fetching}
               >

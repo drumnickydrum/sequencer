@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import * as Tone from 'tone';
-import { stopAndCancelEvents } from '../providers/Transport';
+import { stopAndCancelEvents } from '../components/Transport';
 
 const INITIAL_STATE = {
   buffersLoaded: false,
   transportState: Tone.Transport.state,
-  restart: false,
+  restarting: false,
 };
 
 export const toneSlice = createSlice({
@@ -16,16 +16,24 @@ export const toneSlice = createSlice({
       state.buffersLoaded = payload;
     },
     setTransportState: (state, { payload }) => {
+      console.log(payload);
+      if (payload === 'stopped') Tone.Transport.stop();
+      if (payload === 'started') Tone.Transport.start();
+      if (payload === 'paused') Tone.Transport.pause();
       state.transportState = payload;
     },
-    setRestart: (state, { payload }) => {
-      state.restart = payload;
+    setRestarting: (state, { payload }) => {
+      state.restarting = payload;
     },
     prepRestart: (state) => {
       stopAndCancelEvents();
       state.transportState = 'stopped';
       state.buffersLoaded = false;
-      state.restart = true;
+      state.restarting = true;
+    },
+    restart: (state) => {
+      state.restarting = false;
+      state.transportState = 'started';
     },
   },
 });
@@ -33,8 +41,9 @@ export const toneSlice = createSlice({
 export const {
   setBuffersLoaded,
   setTransportState,
-  setRestart,
+  setRestarting,
   prepRestart,
+  restart,
 } = toneSlice.actions;
 
 export default toneSlice.reducer;

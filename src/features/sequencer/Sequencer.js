@@ -10,7 +10,7 @@ import { ChangeKit } from './components/menu/ChangeKit';
 import { LoadSavePattern } from './components/load/LoadSavePattern';
 import { ScrollLeft, ScrollRight } from '../../components/Button';
 import { KitProvider } from './providers/Kit';
-import { TransportProvider } from './providers/Transport';
+import { Transport } from './components/Transport';
 import { PatternRefProvider } from './providers/PatternRef';
 
 export const SequencerPage = () => {
@@ -18,19 +18,18 @@ export const SequencerPage = () => {
   return (
     <KitProvider>
       <PatternRefProvider>
-        <TransportProvider>
-          <div id='sequencer'>
-            <div id='main'>
-              <Grid />
-              <PastePattern />
-            </div>
-            <div id='sound-panel'>
-              <SoundPanel />
-            </div>
-            <Menu />
+        <div id='sequencer'>
+          <div id='main'>
+            <Grid />
+            <PastePattern />
           </div>
-          <LoadSavePattern />
-        </TransportProvider>
+          <div id='sound-panel'>
+            <SoundPanel />
+          </div>
+          <Menu />
+        </div>
+        <LoadSavePattern />
+        <Transport />
       </PatternRefProvider>
     </KitProvider>
   );

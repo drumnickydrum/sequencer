@@ -20,6 +20,8 @@ export const LoadSavePattern = () => {
 
   const onClose = () => dispatch(setShow(''));
 
+  const stopSequencer = () => document.dispatchEvent(new Event('stop'));
+
   let loadStyle = 'load-save-tab';
   let saveStyle = loadStyle;
   if (show === 'load') loadStyle += ' selected';
@@ -59,8 +61,8 @@ export const LoadSavePattern = () => {
             </div>
           </>
         )}
-        {show === 'save' && <SavePattern />}
-        {show === 'load' && <LoadPattern />}
+        {show === 'save' && <SavePattern stopSequencer={stopSequencer} />}
+        {show === 'load' && <LoadPattern stopSequencer={stopSequencer} />}
       </div>
       <div className={show ? 'bottom-btn show' : 'bottom-btn'}>
         <button className='load-save-pattern-close' onClick={onClose}>

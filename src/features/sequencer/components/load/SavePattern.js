@@ -1,17 +1,14 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setFetching } from '../../../../reducers/appSlice';
-import { Transport } from '../../providers/Transport';
 import { saveSequence } from '../../reducers/sequencerSlice';
 
-export const SavePattern = () => {
+export const SavePattern = ({ stopSequencer }) => {
   const dispatch = useDispatch();
 
   const bpm = useSelector((state) => state.sequencer.present.bpm);
   const pattern = useSelector((state) => state.sequencer.present.pattern);
-
-  const { stop } = useContext(Transport);
 
   const user = useSelector((state) => state.app.user);
   const fetching = useSelector((state) => state.app.fetching);
@@ -65,7 +62,7 @@ export const SavePattern = () => {
             </p>
             <Link
               className='login-btn'
-              onTouchStart={stop}
+              onTouchStart={stopSequencer}
               to='/login'
               disabled={fetching}
             >
