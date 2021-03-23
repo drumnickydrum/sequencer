@@ -11,13 +11,13 @@ import {
 
 export const Erase = ({ onReturn, selectedSound }) => {
   const dispatch = useDispatch();
-  const tally = useSelector(
-    (state) => state.sequencer.present.noteTally[selectedSound]
+  const disabled = useSelector(
+    (state) => state.sequencer.present.noteTally[selectedSound].empty
   );
 
   useEffect(() => {
-    if (tally === 0) onReturn();
-  }, [onReturn, tally]);
+    if (disabled) onReturn();
+  }, [onReturn, disabled]);
 
   const onEraseAll = () => {
     dispatch(eraseSound({ selectedSound }));
@@ -33,7 +33,7 @@ export const Erase = ({ onReturn, selectedSound }) => {
         <p className=''>Click and drag to erase cells</p>
         <Button
           classes='sound-edit-btn mod-all'
-          disabled={tally === 0}
+          disabled={disabled}
           onClick={onEraseAll}
         >
           Erase All

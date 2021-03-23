@@ -174,7 +174,9 @@ export const TransportProvider = ({ children }) => {
   };
 
   return (
-    <Transport.Provider value={{ start, stop }}>{children}</Transport.Provider>
+    <Transport.Provider value={{ start, stop, pauseFlashing, startFlashing }}>
+      {children}
+    </Transport.Provider>
   );
 };
 

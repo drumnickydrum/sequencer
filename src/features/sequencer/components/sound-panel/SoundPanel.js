@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { close, edit, setMode, MODES } from '../../reducers/editModeSlice';
 import {
@@ -22,127 +22,134 @@ export const SoundPanel = () => {
 
   const selectedSound = useSelector((state) => state.editMode.selectedSound);
   const mode = useSelector((state) => state.editMode.mode);
-  const tally = useSelector(
-    (state) => state.sequencer.present.noteTally[selectedSound]
+
+  const disabled = useSelector(
+    (state) => state.sequencer.present.noteTally[selectedSound].empty
   );
 
   const { kitRef } = useContext(Kit);
 
   const [showEditMenu, setShowEditMenu] = useState(false);
 
-  const onClose = () => {
-    dispatch(close());
-    setShowEditMenu(false);
-  };
+  const spMemo = useMemo(() => {
+    console.log('rendering sound-panel');
 
-  const selectSound = (i) => {
-    dispatch(edit({ sound: i }));
-    setShowEditMenu(true);
-  };
+    const onClose = () => {
+      dispatch(close());
+      setShowEditMenu(false);
+    };
 
-  const onReturn = () => {
-    if (mode !== MODES.ERASING || mode !== MODES.COPYING) {
-      const cells = document.querySelectorAll('.on');
-      cells.forEach((cell) => cell.classList.remove('flashing'));
-    }
-    dispatch(setMode({ mode: MODES.PAINTING }));
-  };
+    const selectSound = (i) => {
+      dispatch(edit({ sound: i }));
+      setShowEditMenu(true);
+    };
 
-  const selectMode = (mode) => {
-    if (mode !== MODES.ERASING && mode !== MODES.COPYING) {
-      const cells = document.querySelectorAll('.on');
-      cells.forEach((cell) => cell.classList.add('flashing'));
-    }
-    dispatch(setMode({ mode }));
-  };
+    const onReturn = () => {
+      if (mode !== MODES.ERASING || mode !== MODES.COPYING) {
+        const cells = document.querySelectorAll('.on');
+        cells.forEach((cell) => cell.classList.remove('flashing'));
+      }
+      dispatch(setMode({ mode: MODES.PAINTING }));
+    };
 
-  return (
-    <>
-      <SpAlert />
-      <div className={showEditMenu ? 'sound-edit show' : 'sound-edit'}>
-        {mode === MODES.ERASING ? (
-          <Erase onReturn={onReturn} selectedSound={selectedSound} />
-        ) : mode === MODES.SLICING ? (
-          <Slice onReturn={onReturn} />
-        ) : mode === MODES.COPYING ? (
-          <Copy onReturn={onReturn} />
-        ) : (
-          <div className='sound-edit-menu'>
-            <Button classes='sound-edit-close' onClick={onClose}>
-              <CloseIcon />
-            </Button>
-            <div className='sound-edit-dummy' />
-            <Button
-              classes={'sound-edit-btn'}
-              disabled={tally === 0}
-              onClick={() => selectMode(MODES.ERASING)}
-            >
-              <div className='sound-edit-icon-div'>
-                <EraserIcon />
-                <p>Erase</p>
-              </div>
-            </Button>
-            <Button
-              classes='sound-edit-btn'
-              disabled={tally === 0}
-              onClick={() => selectMode(MODES.SLICING)}
-            >
-              <div className='sound-edit-icon-div'>
-                <SawIcon />
-                <p>Slice</p>
-              </div>
-            </Button>
-            <Button
-              classes='sound-edit-btn'
-              onClick={() => selectMode(MODES.COPYING)}
-            >
-              <div className='sound-edit-icon-div'>
-                <CopyIcon />
-                <p>Copy</p>
-              </div>
-            </Button>
-            <Button
-              classes='sound-edit-btn'
-              onClick={() => selectMode(MODES.MOD_VELOCITY)}
-            >
-              <div className='sound-edit-icon-div'>
-                <VelocityIcon />
-                <p>Velocity</p>
-              </div>
-            </Button>
-            <Button
-              classes='sound-edit-btn'
-              onClick={() => selectMode(MODES.MOD_LENGTH)}
-            >
-              <div className='sound-edit-icon-div'>
-                <LengthIcon />
-                <p>Length</p>
-              </div>
-            </Button>
-            <Button
-              classes='sound-edit-btn'
-              onClick={() => selectMode(MODES.MOD_PITCH)}
-            >
-              <div className='sound-edit-icon-div'>
-                <PitchIcon />
-                <p>Pitch</p>
-              </div>
-            </Button>
-          </div>
-        )}
-      </div>
-      <div className='sound-menu'>
-        {kitRef.current.sounds.map((sound, i) => (
-          <SoundBtn
-            key={`sound-menu-${sound.name}`}
-            i={i}
-            sound={sound}
-            selectSound={selectSound}
-          />
-        ))}
-      </div>
-    </>
-  );
+    const selectMode = (mode) => {
+      if (mode !== MODES.ERASING && mode !== MODES.COPYING) {
+        const cells = document.querySelectorAll('.on');
+        cells.forEach((cell) => cell.classList.add('flashing'));
+      }
+      dispatch(setMode({ mode }));
+    };
+
+    return (
+      <>
+        <SpAlert />
+        <div className={showEditMenu ? 'sound-edit show' : 'sound-edit'}>
+          {mode === MODES.ERASING ? (
+            <Erase onReturn={onReturn} selectedSound={selectedSound} />
+          ) : mode === MODES.SLICING ? (
+            <Slice onReturn={onReturn} />
+          ) : mode === MODES.COPYING ? (
+            <Copy onReturn={onReturn} />
+          ) : (
+            <div className='sound-edit-menu'>
+              <Button classes='sound-edit-close' onClick={onClose}>
+                <CloseIcon />
+              </Button>
+              <div className='sound-edit-dummy' />
+              <Button
+                classes={'sound-edit-btn'}
+                disabled={disabled}
+                onClick={() => selectMode(MODES.ERASING)}
+              >
+                <div className='sound-edit-icon-div'>
+                  <EraserIcon />
+                  <p>Erase</p>
+                </div>
+              </Button>
+              <Button
+                classes='sound-edit-btn'
+                disabled={disabled}
+                onClick={() => selectMode(MODES.SLICING)}
+              >
+                <div className='sound-edit-icon-div'>
+                  <SawIcon />
+                  <p>Slice</p>
+                </div>
+              </Button>
+              <Button
+                classes='sound-edit-btn'
+                onClick={() => selectMode(MODES.COPYING)}
+              >
+                <div className='sound-edit-icon-div'>
+                  <CopyIcon />
+                  <p>Copy</p>
+                </div>
+              </Button>
+              <Button
+                classes='sound-edit-btn'
+                onClick={() => selectMode(MODES.MOD_VELOCITY)}
+              >
+                <div className='sound-edit-icon-div'>
+                  <VelocityIcon />
+                  <p>Velocity</p>
+                </div>
+              </Button>
+              <Button
+                classes='sound-edit-btn'
+                onClick={() => selectMode(MODES.MOD_LENGTH)}
+              >
+                <div className='sound-edit-icon-div'>
+                  <LengthIcon />
+                  <p>Length</p>
+                </div>
+              </Button>
+              <Button
+                classes='sound-edit-btn'
+                onClick={() => selectMode(MODES.MOD_PITCH)}
+              >
+                <div className='sound-edit-icon-div'>
+                  <PitchIcon />
+                  <p>Pitch</p>
+                </div>
+              </Button>
+            </div>
+          )}
+        </div>
+        <div className='sound-menu'>
+          {kitRef.current.sounds.map((sound, i) => (
+            <SoundBtn
+              key={`sound-menu-${sound.name}`}
+              i={i}
+              sound={sound}
+              selectSound={selectSound}
+            />
+          ))}
+        </div>
+      </>
+    );
+  }, [disabled, dispatch, kitRef, mode, selectedSound, showEditMenu]);
+
+  return spMemo;
 };
 
 const SoundBtn = ({ i, sound, selectSound }) => {

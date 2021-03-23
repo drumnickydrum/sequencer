@@ -8,7 +8,9 @@ import { MODES, setMode } from '../../reducers/editModeSlice';
 export const Clear = () => {
   const dispatch = useDispatch();
   const mode = useSelector((state) => state.editMode.mode);
-  const tally = useSelector((state) => state.sequencer.present.noteTally.total);
+  const disabled = useSelector(
+    (state) => state.sequencer.present.noteTally.total.empty
+  );
 
   const onClick = () => {
     dispatch(eraseAll());
@@ -22,7 +24,7 @@ export const Clear = () => {
       <Button
         id='clear-all'
         classes='menu-btn'
-        disabled={tally === 0}
+        disabled={disabled}
         onClick={onClick}
       >
         <ClearAllIcon />

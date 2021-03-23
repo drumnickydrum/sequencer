@@ -73,7 +73,6 @@ export const sequencerSlice = createSlice({
       state.pattern = sequence.pattern;
       state.noteTally = getNoteTally(state.pattern);
     },
-    saveSequence: (state, { payload }) => {},
     changeKit: (state, { payload: { kit } }) => {
       state.kit = kit;
     },
