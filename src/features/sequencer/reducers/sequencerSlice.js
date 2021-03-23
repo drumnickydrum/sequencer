@@ -39,9 +39,9 @@ export const sequencerSlice = createSlice({
           ...note,
         }));
       });
-      state.noteTally.total +=
-        state.noteTally[selectedSound] - state.noteTally[sound];
-      state.noteTally[sound] = state.noteTally[selectedSound];
+      state.noteTally.total.count +=
+        state.noteTally[selectedSound].count - state.noteTally[sound].count;
+      state.noteTally[sound] = { ...state.noteTally[selectedSound] };
     },
     eraseCell: (state, { payload: { step, selectedSound } }) => {
       initSoundStep(state.pattern[step][selectedSound]);
@@ -51,8 +51,9 @@ export const sequencerSlice = createSlice({
       state.pattern.forEach((step) => {
         initSoundStep(step[selectedSound]);
       });
-      state.noteTally.total -= state.noteTally[selectedSound];
-      state.noteTally[selectedSound] = 0;
+      state.noteTally.total.count -= state.noteTally[selectedSound].count;
+      state.noteTally[selectedSound].count = 0;
+      state.noteTally[selectedSound].empty = true;
     },
     eraseAll: (state) => {
       state.pattern.forEach((step) => {
@@ -61,8 +62,10 @@ export const sequencerSlice = createSlice({
         });
       });
       Object.keys(state.noteTally).forEach((tally) => {
-        state.noteTally[tally] = 0;
+        state.noteTally[tally].count = 0;
       });
+      state.noteTally.total.count = 0;
+      state.noteTally.total.empty = true;
     },
     loadSequence: (state, { payload: { sequence } }) => {
       state._id = sequence._id;
