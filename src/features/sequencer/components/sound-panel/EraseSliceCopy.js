@@ -9,8 +9,9 @@ import {
   SawIcon,
 } from '../../../../icons';
 
-export const Erase = ({ onReturn, selectedSound }) => {
+export const Erase = ({ onReturn }) => {
   const dispatch = useDispatch();
+  const selectedSound = useSelector((state) => state.editMode.selectedSound);
   const disabled = useSelector(
     (state) => state.sequencer.present.noteTally[selectedSound].empty
   );

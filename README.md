@@ -2,6 +2,11 @@
 
 ## Dev notes
 
+### 3/24/2021
+
+- Pitch/Velocity/Length mods are back.
+- Fixed the redux-thunk middleware bug after store config.
+
 ### 3/23/2021
 
 - Lifting rest of state into redux store.

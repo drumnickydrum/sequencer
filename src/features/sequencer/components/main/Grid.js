@@ -6,31 +6,21 @@ import React, {
   useCallback,
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { MODES, setSpAlert } from '../../reducers/editModeSlice';
-import {
-  toggleCell,
-  sliceCell,
-  eraseCell,
-} from '../../reducers/sequencerSlice';
+import { modCell } from '../../reducers/sequencerSlice';
 import * as defaultKits from '../../defaults/defaultKits';
 import { SawIcon } from '../../../../icons';
 import { PatternRef } from '../../providers/PatternRef';
+import { MIDI_NOTES } from '../../utils/MIDI_NOTES';
 
 export const Grid = () => {
   const length = useSelector((state) => state.sequencer.present.length);
   const selectedSound = useSelector((state) => state.editMode.selectedSound);
-  const mode = useSelector((state) => state.editMode.mode);
 
   const { cellsRef } = useContext(PatternRef);
   const prevCellRef = useRef(null);
 
   const onTouchMove = (e) => {
-    if (
-      mode !== MODES.PAINTING &&
-      mode !== MODES.ERASING &&
-      mode !== MODES.SLICING
-    )
-      return;
+    if (selectedSound === -1) return;
     const touch = e.touches[0];
     const cell = document.elementFromPoint(touch.clientX, touch.clientY);
     if (cell) {
@@ -38,15 +28,7 @@ export const Grid = () => {
       if (!id.match(/cell/)) return;
       if (prevCellRef.current !== id) {
         prevCellRef.current = id;
-        if (cell.classList.contains('on')) {
-          if (mode === MODES.ERASING || mode === MODES.SLICING) {
-            document.dispatchEvent(cellsRef.current[id].events.tap);
-          }
-        } else {
-          if (mode === MODES.PAINTING) {
-            document.dispatchEvent(cellsRef.current[id].events.tap);
-          }
-        }
+        document.dispatchEvent(cellsRef.current[id].events.tap);
       }
     }
   };
@@ -59,7 +41,7 @@ export const Grid = () => {
     return grid;
   }, [length]);
 
-  console.log('rendering: Grid');
+  // console.log('rendering: Grid');
   return (
     <div
       id='grid'
@@ -74,7 +56,6 @@ export const Grid = () => {
             id={id}
             step={step}
             selectedSound={selectedSound}
-            mode={mode}
             cellsRef={cellsRef}
             prevCellRef={prevCellRef}
           />
@@ -84,7 +65,7 @@ export const Grid = () => {
   );
 };
 
-const Cell = ({ id, step, selectedSound, mode, cellsRef, prevCellRef }) => {
+const Cell = ({ id, step, selectedSound, cellsRef, prevCellRef }) => {
   const dispatch = useDispatch();
 
   const noteOn = useSelector((state) =>
@@ -113,52 +94,39 @@ const Cell = ({ id, step, selectedSound, mode, cellsRef, prevCellRef }) => {
       : 1
   );
 
-  const onTap = useCallback(() => {
-    if (selectedSound !== -1) {
-      if (mode === MODES.SLICING) {
-        if (noteOn) {
-          dispatch(sliceCell({ step, selectedSound }));
-        }
-      } else if (mode === MODES.ERASING) {
-        if (noteOn) {
-          dispatch(eraseCell({ step, selectedSound }));
-        }
-      } else {
-        dispatch(toggleCell({ step, selectedSound }));
-      }
-    }
-  }, [dispatch, mode, noteOn, selectedSound, step]);
+  const tapCell = useCallback(() => {
+    dispatch(modCell(step, noteOn));
+  }, [dispatch, noteOn, step]);
 
   const cellRef = useRef(null);
   useEffect(() => {
     cellsRef.current[id] = { events: {} };
     cellsRef.current[id].cellRef = cellRef;
     const tapEvent = new Event(`tap-${id}`);
-    document.addEventListener(`tap-${id}`, onTap);
+    document.addEventListener(`tap-${id}`, tapCell);
     cellsRef.current[id].events.tap = tapEvent;
     return () => {
-      document.removeEventListener(`tap-${id}`, onTap);
+      document.removeEventListener(`tap-${id}`, tapCell);
     };
-  }, [id, cellsRef, onTap]);
+  }, [id, cellsRef, tapCell]);
 
   const onTouchStart = useCallback(
     (e) => {
       e.stopPropagation();
-      if (selectedSound === -1) dispatch(setSpAlert('select a sound to edit'));
-      // if (modRef.current) {
-      // if (on) modStart(e);
       prevCellRef.current = id;
-      if (!(mode === MODES.ERASING && !noteOn)) onTap();
+      tapCell();
     },
-    [dispatch, id, mode, noteOn, onTap, prevCellRef, selectedSound]
+    [id, tapCell, prevCellRef]
   );
 
   const cellMemo = useMemo(() => {
     // console.log('rendering: Cell');
     const modStyle = {
-      opacity: noteOn ? velocity : 1,
-      width: `${100 * length}%`,
+      opacity: noteOn ? velocity : 0,
+      width: length === 1 ? '100%' : `${100 * length * 3}%`,
     };
+    const midiNote = MIDI_NOTES.indexOf(pitch);
+    const pitchShift = midiNote - 24;
     return (
       <div className='cell-wrapper'>
         <div
@@ -166,19 +134,19 @@ const Cell = ({ id, step, selectedSound, mode, cellsRef, prevCellRef }) => {
           id={id}
           className={noteOn ? 'cell on' : 'cell'}
           onTouchStart={onTouchStart}
-          // onTouchMove={handleTouchMove}
-          // onTouchEnd={handleTouchEnd}
         >
-          <div className={noteOn ? 'cell-mods' : ''} style={modStyle}>
-            <p className={noteOn && pitch > 24 ? 'pitch-up show' : 'pitch-up'}>
-              +{pitch - 24}
+          <div className={noteOn ? 'cell-mods' : ''}>
+            <p
+              className={noteOn && midiNote > 24 ? 'pitch-up show' : 'pitch-up'}
+            >
+              +{pitchShift}
             </p>
             <p
               className={
-                noteOn && pitch < 24 ? 'pitch-down show' : 'pitch-down'
+                noteOn && midiNote < 24 ? 'pitch-down show' : 'pitch-down'
               }
             >
-              {pitch - 24}
+              {pitchShift}
             </p>
             <div
               className={
@@ -197,6 +165,7 @@ const Cell = ({ id, step, selectedSound, mode, cellsRef, prevCellRef }) => {
           </div>
           <div className='bg' />
           <div
+            style={modStyle}
             className={
               noteOn
                 ? `bg-color bg${selectedSound} show`
@@ -233,7 +202,7 @@ const SoundCells = ({ id, step }) => {
     grid.push(i);
   }
 
-  console.log('rendering: SoundCells');
+  // console.log('rendering: SoundCells');
   return (
     <div className='sound-cells'>
       {grid.map((i) => {

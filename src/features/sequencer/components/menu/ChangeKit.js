@@ -22,12 +22,14 @@ export const ChangeKit = () => {
           <label htmlFor='kit-select'>Select Kit: </label>
           <div
             className={
-              buffersLoaded ? 'custom-select' : 'custom-select disabled'
+              buffersLoaded
+                ? 'custom-select-wrapper'
+                : 'custom-select-wrapper disabled'
             }
           >
             <select
               id='kit-select'
-              className='kit-select'
+              className='custom-select'
               value={kit}
               onChange={onChange}
             >

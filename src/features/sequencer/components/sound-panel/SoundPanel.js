@@ -1,4 +1,4 @@
-import React, { useState, useContext, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { close, edit, setMode, MODES } from '../../reducers/editModeSlice';
 import {
@@ -12,7 +12,6 @@ import {
 } from '../../../../icons';
 import * as defaultKits from '../../defaults/defaultKits';
 import * as icons from '../../../../icons/kit';
-import { Kit } from '../../providers/Kit';
 import { Erase, Slice, Copy } from './EraseSliceCopy';
 import { PitchVelocityLength } from './PitchVelocityLength';
 import { SpAlert } from './SpAlert';
@@ -21,7 +20,6 @@ import { Button } from '../../../../components/Button';
 export const SoundPanel = () => {
   const dispatch = useDispatch();
 
-  const selectedSound = useSelector((state) => state.editMode.selectedSound);
   const mode = useSelector((state) => state.editMode.mode);
 
   const [showEditMenu, setShowEditMenu] = useState(false);
@@ -31,17 +29,13 @@ export const SoundPanel = () => {
 
     const onReturn = () => {
       if (mode !== MODES.ERASING || mode !== MODES.COPYING) {
-        const cells = document.querySelectorAll('.on');
-        cells.forEach((cell) => cell.classList.remove('flashing'));
+        hideEditable();
       }
       dispatch(setMode({ mode: MODES.PAINTING }));
     };
 
     const selectMode = (mode) => {
-      if (mode !== MODES.ERASING && mode !== MODES.COPYING) {
-        const cells = document.querySelectorAll('.on');
-        cells.forEach((cell) => cell.classList.add('flashing'));
-      }
+      if (mode === MODES.SLICING) showEditable();
       dispatch(setMode({ mode }));
     };
 
@@ -50,11 +44,18 @@ export const SoundPanel = () => {
         <SpAlert />
         <div className={showEditMenu ? 'sound-edit show' : 'sound-edit'}>
           {mode === MODES.ERASING ? (
-            <Erase onReturn={onReturn} selectedSound={selectedSound} />
+            <Erase onReturn={onReturn} />
           ) : mode === MODES.SLICING ? (
-            <Slice onReturn={onReturn} />
+            <Slice onReturn={onReturn} showEditable={showEditable} />
           ) : mode === MODES.COPYING ? (
             <Copy onReturn={onReturn} />
+          ) : mode !== MODES.PAINTING ? (
+            <PitchVelocityLength
+              onReturn={onReturn}
+              mode={mode}
+              showEditable={showEditable}
+              hideEditable={hideEditable}
+            />
           ) : (
             <SoundEditMenu
               selectMode={selectMode}
@@ -65,7 +66,7 @@ export const SoundPanel = () => {
         <SoundBtns setShowEditMenu={setShowEditMenu} />
       </>
     );
-  }, [dispatch, mode, selectedSound, showEditMenu]);
+  }, [dispatch, mode, showEditMenu]);
 
   return spMemo;
 };
@@ -122,6 +123,7 @@ const SoundEditMenu = ({ selectMode, setShowEditMenu }) => {
         </Button>
         <Button
           classes='sound-edit-btn'
+          disabled={disabled}
           onClick={() => selectMode(MODES.MOD_VELOCITY)}
         >
           <div className='sound-edit-icon-div'>
@@ -131,6 +133,7 @@ const SoundEditMenu = ({ selectMode, setShowEditMenu }) => {
         </Button>
         <Button
           classes='sound-edit-btn'
+          disabled={disabled}
           onClick={() => selectMode(MODES.MOD_LENGTH)}
         >
           <div className='sound-edit-icon-div'>
@@ -140,6 +143,7 @@ const SoundEditMenu = ({ selectMode, setShowEditMenu }) => {
         </Button>
         <Button
           classes='sound-edit-btn'
+          disabled={disabled}
           onClick={() => selectMode(MODES.MOD_PITCH)}
         >
           <div className='sound-edit-icon-div'>
@@ -196,9 +200,12 @@ const SoundBtn = ({ i, sound, selectSound }) => {
   );
 };
 
-/* ) : mode !== MODES.PAINTING ? (
-          <PitchVelocityLength
-            mode={mode}
-            selectedSound={selectedSound}
-            onReturn={onReturn}
-          /> */
+const hideEditable = () => {
+  const cells = document.querySelectorAll('.on');
+  cells.forEach((cell) => cell.classList.remove('flashing'));
+};
+
+const showEditable = () => {
+  const cells = document.querySelectorAll('.on');
+  cells.forEach((cell) => cell.classList.add('flashing'));
+};

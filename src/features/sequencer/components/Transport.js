@@ -1,7 +1,6 @@
 import { useEffect, useRef, useContext } from 'react';
 import * as Tone from 'tone';
 import { PatternRef } from '../providers/PatternRef';
-import { MIDI_NOTES } from '../utils/MIDI_NOTES';
 import { Kit } from '../providers/Kit';
 import { useDispatch, useSelector } from 'react-redux';
 import { restart, setTransportState } from '../reducers/toneSlice';
@@ -116,27 +115,27 @@ const scheduleCell = (time, step, sounds) => {
     if (noteOn) {
       let slice = notes.length;
       sounds[sound].sampler.triggerAttackRelease(
-        MIDI_NOTES[notes[0].pitch],
+        notes[0].pitch,
         notes[0].length,
         time,
         notes[0].velocity
       );
       if (slice === 2) {
         sounds[sound].sampler.triggerAttackRelease(
-          MIDI_NOTES[notes[1].pitch],
+          notes[1].pitch,
           notes[1].length,
           time + Tone.Time('32n'),
           notes[1].velocity
         );
       } else if (slice === 3) {
         sounds[sound].sampler.triggerAttackRelease(
-          MIDI_NOTES[notes[1].pitch],
+          notes[1].pitch,
           notes[1].length,
           time + Tone.Time('32t'),
           notes[1].velocity
         );
         sounds[sound].sampler.triggerAttackRelease(
-          MIDI_NOTES[notes[2].pitch],
+          notes[2].pitch,
           notes[2].length,
           time + Tone.Time('32t') + Tone.Time('32t'),
           notes[2].velocity

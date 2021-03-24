@@ -12,6 +12,9 @@ export default configureStore({
     app: appReducer,
   },
   middleware: (getDefaultMiddleware) => {
-    getDefaultMiddleware({ immutableCheck: false });
+    return getDefaultMiddleware({
+      immutableCheck: false,
+      serializableCheck: false,
+    });
   },
 });

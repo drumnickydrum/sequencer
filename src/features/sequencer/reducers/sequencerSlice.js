@@ -5,6 +5,7 @@ import { analog } from '../defaults/defaultPatterns';
 import { getLS } from '../../../utils/storage';
 import { getNoteTally, inc, dec, initSoundStep } from '../utils';
 import { setUser } from '../../../reducers/appSlice';
+import { INITIAL_MODS, MODES, setSpAlert } from './editModeSlice';
 
 // const INITIAL_PATTERN = getLS('pattern') || analog.pattern;
 const INITIAL_PATTERN = analog.pattern;
@@ -67,6 +68,29 @@ export const sequencerSlice = createSlice({
       state.noteTally.total.count = 0;
       state.noteTally.total.empty = true;
     },
+    modCell: (state, { payload: { selectedSound, type, value, step } }) => {
+      if (type === MODES.MOD_LENGTH && value < 1) value *= 0.25;
+      state.pattern[step][selectedSound].notes.forEach((note) => {
+        note[type] = value;
+      });
+    },
+    modAll: (state, { payload: { selectedSound, type, value } }) => {
+      if (type === MODES.MOD_LENGTH && value < 1) value *= 0.25;
+      state.pattern.forEach((step) => {
+        if (step[selectedSound].noteOn) {
+          step[selectedSound].notes.forEach((note) => {
+            note[type] = value;
+          });
+        }
+      });
+    },
+    resetMods: (state, { payload: { selectedSound, type } }) => {
+      state.pattern.forEach((step) => {
+        step[selectedSound].notes.forEach((note) => {
+          note[type] = INITIAL_MODS[type];
+        });
+      });
+    },
     loadSequence: (state, { payload: { sequence } }) => {
       state._id = sequence._id;
       state.name = sequence.name;
@@ -84,6 +108,47 @@ export const sequencerSlice = createSlice({
     },
   },
 });
+
+export const modCell = (step, noteOn) => (dispatch, getState) => {
+  const selectedSound = getState().editMode.selectedSound;
+  if (selectedSound === -1) {
+    dispatch(setSpAlert('select a sound to edit'));
+    return;
+  }
+  const mode = getState().editMode.mode;
+  switch (mode) {
+    case MODES.PAINTING:
+      if (!noteOn)
+        dispatch(sequencerSlice.actions.toggleCell({ step, selectedSound }));
+      break;
+    case MODES.ERASING:
+      if (noteOn)
+        dispatch(sequencerSlice.actions.eraseCell({ step, selectedSound }));
+      break;
+    case MODES.SLICING:
+      if (noteOn)
+        dispatch(sequencerSlice.actions.sliceCell({ step, selectedSound }));
+      break;
+    case MODES.MOD_LENGTH:
+    case MODES.MOD_PITCH:
+    case MODES.MOD_VELOCITY:
+      if (noteOn) {
+        const value = getState().editMode.mods[mode];
+        console.log(value);
+        dispatch(
+          sequencerSlice.actions.modCell({
+            step,
+            selectedSound,
+            type: mode,
+            value,
+          })
+        );
+      }
+      break;
+    default:
+      return null;
+  }
+};
 
 export const saveSequence = async (sequence) => async (dispatch) => {
   const res = await axios({
@@ -112,6 +177,8 @@ export const {
   eraseCell,
   eraseSound,
   eraseAll,
+  modAll,
+  resetMods,
   loadSequence,
   loadSequenceFinally,
   changeKit,

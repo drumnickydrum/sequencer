@@ -1,110 +1,125 @@
-import React, { useState, useContext } from 'react';
-import { useDispatch } from 'react-redux';
-import { MODES } from '../../reducers/editModeSlice';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { INITIAL_MODS, MODES, setModVal } from '../../reducers/editModeSlice';
 import { Button } from '../../../../components/Button';
-import {
-  PitchSwipe,
-  VelocitySwipe,
-  LengthSwipe,
-  ChevronLeftIcon,
-} from '../../../../icons';
-import { Kit } from '../../providers/Kit';
+import { ChevronLeftIcon, ChevronDownIcon } from '../../../../icons';
+import { modAll, resetMods } from '../../reducers/sequencerSlice';
+import { MIDI_NOTES } from '../../utils/MIDI_NOTES';
 
-export const PitchVelocityLength = ({ mode, selectedSound, onReturn }) => {
+export const PitchVelocityLength = ({
+  onReturn,
+  mode,
+  showEditable,
+  hideEditable,
+}) => {
   const dispatch = useDispatch();
+  const selectedSound = useSelector((state) => state.editMode.selectedSound);
+  const value = useSelector((state) => state.editMode.mods[mode]);
 
-  const { kitRef } = useContext(Kit);
-  const modify = () => {};
-  const resetMods = () => {};
-  const [showModAll, setShowModAll] = useState(false);
-
-  const [value, setValue] = useState(
-    kitRef.current.sounds[selectedSound][`${mode}Mod`]
-  );
+  const [editAll, setEditAll] = useState(true);
 
   const onChange = ({ target: { value } }) => {
-    setValue(parseFloat(value));
+    dispatch(setModVal(value));
   };
 
-  const editAllPitch = (change) => {
-    if (change === 'inc') {
-      if (value !== 12) {
-        modify(value, value + 1);
-        setValue((value) => value + 1);
-      }
+  const dispatchModAll = () => {
+    dispatch(
+      modAll({
+        selectedSound,
+        type: mode,
+        value,
+      })
+    );
+  };
+
+  const toggleAll = () => {
+    if (editAll) {
+      setEditAll(false);
+      showEditable();
+    } else {
+      dispatchModAll();
+      setEditAll(true);
+      hideEditable();
     }
-    if (change === 'dec') {
-      if (value !== -12) {
-        modify(value, value - 1);
-        setValue((value) => value - 1);
-      }
-    }
   };
 
-  const sliderEnd = () => {
-    const prevVal = kitRef.current.sounds[selectedSound][`${mode}Mod`];
-    // if (value !== prevVal) dispatch(modifyAll({ selectedSound, mode, value }));
+  // velocity & length
+  const onTouchEnd = () => {
+    if (editAll) dispatchModAll();
   };
 
-  const handleReset = () => {
-    setValue(mode === MODES.MOD_PITCH ? 0 : 1);
-    resetMods(mode);
+  useEffect(() => {
+    if (mode === MODES.MOD_PITCH && editAll)
+      dispatch(
+        modAll({
+          selectedSound,
+          type: MODES.MOD_PITCH,
+          value,
+        })
+      );
+  }, [dispatch, editAll, mode, selectedSound, value]);
+
+  const onReset = () => {
+    dispatch(setModVal(INITIAL_MODS[mode]));
+    dispatch(resetMods({ selectedSound, type: mode }));
   };
 
-  const label = mode && mode.substr(4).toLowerCase();
-
-  // console.log('rendering: PitchVelocityLength');
   return (
-    <div className={`sound-edit-detail color${selectedSound}`}>
+    <div className='sound-edit-detail col'>
       <Button classes='sound-edit-close' onClick={onReturn}>
         <ChevronLeftIcon />
       </Button>
-      <div className='sound-edit-dummy' />
-      <div className='sound-edit-all'>
-        <label htmlFor={`slider-${mode}`}>{label}</label>
-        {showModAll ? (
-          mode === MODES.MOD_PITCH ? (
-            <div className='pitch-input'>
-              <Button classes='pitch-dec' onClick={() => editAllPitch('dec')}>
-                -
-              </Button>
-              <p className='pitch-val'>{value}</p>
-              <Button classes='pitch-inc' onClick={() => editAllPitch('inc')}>
-                +
-              </Button>
+      <div className='mod-wrapper'>
+        {mode === MODES.MOD_PITCH ? (
+          <>
+            <label htmlFor='pitch-select'>Select Pitch: </label>
+            <div className='custom-select-wrapper'>
+              <select
+                id='pitch-select'
+                className='custom-select'
+                value={value}
+                onChange={onChange}
+              >
+                {/* limit C1-C3 */}
+                {MIDI_NOTES.slice(12, 37).map((note) => {
+                  return (
+                    <option key={`pitch-${note}`} value={note}>
+                      {note}
+                    </option>
+                  );
+                })}
+              </select>
+              <ChevronDownIcon />
             </div>
-          ) : (
+          </>
+        ) : (
+          <>
             <input
               type='range'
+              id='mod-velocity-slider'
               min={0.1}
               max={1}
               step={0.01}
               value={value}
               onChange={onChange}
-              onTouchEnd={sliderEnd}
+              onTouchEnd={onTouchEnd}
             />
-          )
-        ) : (
-          <Button classes='sound-edit-btn reset' onClick={handleReset}>
-            reset
+            <div className='mod-value-wrapper'>
+              <label htmlFor='mod-velocity-slider' className='mod-label'>
+                Velocity Value:
+              </label>
+              <p className='mod-value'>{value}</p>
+            </div>
+          </>
+        )}
+        <div className='mod-btns'>
+          <Button classes='sound-edit-btn mod-all' onClick={onReset}>
+            Reset All
           </Button>
-        )}
-
-        <Button
-          classes='sound-edit-btn mod-all'
-          onClick={() => setShowModAll((showModAll) => !showModAll)}
-        >
-          {showModAll ? 'show reset' : 'show mod all'}
-        </Button>
-      </div>
-      <div className='mod-animation'>
-        {mode === MODES.MOD_PITCH ? (
-          <PitchSwipe />
-        ) : mode === MODES.MOD_VELOCITY ? (
-          <VelocitySwipe />
-        ) : (
-          <LengthSwipe />
-        )}
+          <Button classes='sound-edit-btn mod-all' onClick={toggleAll}>
+            {editAll ? 'Tap Cell' : 'Apply All'}
+          </Button>
+        </div>
       </div>
     </div>
   );

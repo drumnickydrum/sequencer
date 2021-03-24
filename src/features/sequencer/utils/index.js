@@ -40,5 +40,5 @@ export const dec = (noteTally, sound) => {
 export const initSoundStep = (sound) => {
   sound.noteOn = false;
   sound.notes.length = 0;
-  sound.notes.push({ pitch: 24, velocity: 1, length: 1 });
+  sound.notes.push({ pitch: 'C2', velocity: 1, length: 1 });
 };
