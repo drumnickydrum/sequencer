@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { createSlice } from '@reduxjs/toolkit';
-import undoable from 'redux-undo';
+import undoable, { groupByActionTypes } from 'redux-undo';
 import { analog } from '../defaults/defaultPatterns';
 import { getLS } from '../../../utils/storage';
 import { getNoteTally, inc, dec, initSoundStep } from '../utils';
@@ -142,10 +142,9 @@ export const modCell = (step, noteOn) => (dispatch, getState) => {
     case MODES.MOD_VELOCITY:
       if (noteOn) {
         const value = getState().editMode.mods[mode];
-        console.log(value);
         dispatch(
-          step,
           sequencerSlice.actions.modCell({
+            step,
             selectedSound,
             type: mode,
             value,
@@ -193,5 +192,13 @@ export const {
   changeBpm,
 } = sequencerSlice.actions;
 
-const reducer = undoable(sequencerSlice.reducer);
+const reducer = undoable(sequencerSlice.reducer, {
+  groupBy: groupByActionTypes([
+    'sequencer/paintCell',
+    'sequencer/eraseCell',
+    'sequencer/sliceCell',
+    'sequencer/modCell',
+  ]),
+});
+
 export default reducer;
