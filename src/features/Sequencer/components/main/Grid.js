@@ -121,57 +121,44 @@ const Cell = ({ id, step, selectedSound, cellsRef, prevCellRef }) => {
 
   const cellMemo = useMemo(() => {
     // console.log('rendering: Cell');
-    const modStyle = {
+    const cellClasses = noteOn ? 'cell on' : 'cell';
+    const midiNote = MIDI_NOTES.indexOf(pitch);
+    const pitchUpClasses =
+      noteOn && midiNote > 24 ? 'pitch-up show' : 'pitch-up';
+    const pitchDownClasses =
+      noteOn && midiNote < 24 ? 'pitch-down show' : 'pitch-down';
+    const pitchShift = midiNote - 24;
+    const slice1Classes =
+      noteOn && slice === 2
+        ? 'slice slice-2'
+        : noteOn && slice === 3
+        ? 'slice slice-3'
+        : 'slice';
+    const slice2Classes = noteOn && slice > 2 ? 'slice slice-2' : 'slice';
+    const bgColorStyle = {
       opacity: noteOn ? velocity : 0,
       width: length === 1 ? '100%' : `${100 * length * 3}%`,
     };
-    const midiNote = MIDI_NOTES.indexOf(pitch);
-    const pitchShift = midiNote - 24;
     return (
       <div className='cell-wrapper'>
         <div
           ref={cellRef}
           id={id}
-          className={noteOn ? 'cell on' : 'cell'}
+          className={cellClasses}
           onTouchStart={onTouchStart}
         >
-          <div className={noteOn ? 'cell-mods' : ''}>
-            <p
-              className={noteOn && midiNote > 24 ? 'pitch-up show' : 'pitch-up'}
-            >
-              +{pitchShift}
-            </p>
-            <p
-              className={
-                noteOn && midiNote < 24 ? 'pitch-down show' : 'pitch-down'
-              }
-            >
-              {pitchShift}
-            </p>
-            <div
-              className={
-                noteOn && slice === 2
-                  ? 'slice slice-2'
-                  : noteOn && slice === 3
-                  ? 'slice slice-3'
-                  : 'slice'
-              }
-            >
+          <div className='cell-mods'>
+            <p className={pitchUpClasses}>+{pitchShift}</p>
+            <p className={pitchDownClasses}>{pitchShift}</p>
+            <div className={slice1Classes}>
               <SawIcon />
             </div>
-            <div className={noteOn && slice > 2 ? 'slice slice-2' : 'slice'}>
+            <div className={slice2Classes}>
               <SawIcon />
             </div>
           </div>
           <div className='bg' />
-          <div
-            style={modStyle}
-            className={
-              noteOn
-                ? `bg-color bg${selectedSound} show`
-                : `bg-color bg${selectedSound}`
-            }
-          />
+          <div style={bgColorStyle} className={`bg-color bg${selectedSound}`} />
           <div className='cursor' />
           <div className='border-flashing' />
           <SoundCells id={id} step={step} />
