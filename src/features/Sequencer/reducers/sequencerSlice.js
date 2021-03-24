@@ -20,8 +20,8 @@ export const sequencerSlice = createSlice({
   name: 'sequencer',
   initialState: INITIAL_STATE,
   reducers: {
-    toggleCell: (state, { payload: { step, selectedSound } }) => {
-      const noteOn = !state.pattern[step][selectedSound].noteOn;
+    paintCell: (state, { payload: { step, selectedSound, noteOn } }) => {
+      // const noteOn = !state.pattern[step][selectedSound].noteOn;
       state.pattern[step][selectedSound].noteOn = noteOn;
       if (noteOn) inc(state.noteTally, selectedSound);
       else dec(state.noteTally, selectedSound);
@@ -118,8 +118,16 @@ export const modCell = (step, noteOn) => (dispatch, getState) => {
   const mode = getState().editMode.mode;
   switch (mode) {
     case MODES.PAINTING:
-      if (!noteOn)
-        dispatch(sequencerSlice.actions.toggleCell({ step, selectedSound }));
+      const toggleOn = getState().editMode.toggleOn;
+      console.log(toggleOn);
+      if ((toggleOn && !noteOn) || (!toggleOn && noteOn))
+        dispatch(
+          sequencerSlice.actions.paintCell({
+            step,
+            selectedSound,
+            noteOn: toggleOn,
+          })
+        );
       break;
     case MODES.ERASING:
       if (noteOn)
@@ -136,8 +144,8 @@ export const modCell = (step, noteOn) => (dispatch, getState) => {
         const value = getState().editMode.mods[mode];
         console.log(value);
         dispatch(
+          step,
           sequencerSlice.actions.modCell({
-            step,
             selectedSound,
             type: mode,
             value,
@@ -171,7 +179,7 @@ export const deleteSequence = async (sequence) => async (dispatch) => {
 };
 
 export const {
-  toggleCell,
+  paintCell,
   sliceCell,
   paste,
   eraseCell,

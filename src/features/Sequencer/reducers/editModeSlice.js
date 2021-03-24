@@ -21,6 +21,8 @@ const INITIAL_STATE = {
   mode: null,
   spAlert: { count: 0, message: '' },
   mods: { ...INITIAL_MODS },
+  tapCellById: {},
+  toggleOn: true,
 };
 
 export const editModeSlice = createSlice({
@@ -46,6 +48,12 @@ export const editModeSlice = createSlice({
     setModVal: (state, { payload }) => {
       state.mods[state.mode] = payload;
     },
+    setTapCellById: (state, { payload: { id, val } }) => {
+      state.tapCellById[id] = val;
+    },
+    setToggleOn: (state, { payload }) => {
+      state.toggleOn = payload;
+    },
   },
 });
 
@@ -55,6 +63,8 @@ export const {
   setMode,
   setSpAlert,
   setModVal,
+  setTapCellById,
+  setToggleOn,
 } = editModeSlice.actions;
 
 export default editModeSlice.reducer;

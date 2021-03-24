@@ -4,6 +4,7 @@ import React, {
   useMemo,
   useRef,
   useCallback,
+  useState,
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { modCell } from '../../reducers/sequencerSlice';
@@ -11,12 +12,13 @@ import * as defaultKits from '../../defaults/defaultKits';
 import { SawIcon } from '../../../../icons';
 import { PatternRef } from '../../providers/PatternRef';
 import { MIDI_NOTES } from '../../utils/MIDI_NOTES';
+import { setTapCellById, setToggleOn } from '../../reducers/editModeSlice';
 
 export const Grid = () => {
+  const dispatch = useDispatch();
   const length = useSelector((state) => state.sequencer.present.length);
   const selectedSound = useSelector((state) => state.editMode.selectedSound);
 
-  const { cellsRef } = useContext(PatternRef);
   const prevCellRef = useRef(null);
 
   const onTouchMove = (e) => {
@@ -27,8 +29,8 @@ export const Grid = () => {
       const id = cell.id;
       if (!id.match(/cell/)) return;
       if (prevCellRef.current !== id) {
+        dispatch(setTapCellById({ id, val: true }));
         prevCellRef.current = id;
-        document.dispatchEvent(cellsRef.current[id].events.tap);
       }
     }
   };
@@ -51,21 +53,14 @@ export const Grid = () => {
       {grid.map((step) => {
         const id = `cell-${step}`;
         return (
-          <Cell
-            key={id}
-            id={id}
-            step={step}
-            selectedSound={selectedSound}
-            cellsRef={cellsRef}
-            prevCellRef={prevCellRef}
-          />
+          <Cell key={id} id={id} step={step} selectedSound={selectedSound} />
         );
       })}
     </div>
   );
 };
 
-const Cell = ({ id, step, selectedSound, cellsRef, prevCellRef }) => {
+const Cell = ({ id, step, selectedSound }) => {
   const dispatch = useDispatch();
 
   const noteOn = useSelector((state) =>
@@ -98,25 +93,29 @@ const Cell = ({ id, step, selectedSound, cellsRef, prevCellRef }) => {
     dispatch(modCell(step, noteOn));
   }, [dispatch, noteOn, step]);
 
+  const tapCellAlert = useSelector((state) => state.editMode.tapCellById[id]);
+  useEffect(() => {
+    if (tapCellAlert) {
+      console.log('tapping cell: ', id);
+      tapCell();
+      dispatch(setTapCellById({ id, val: false }));
+    }
+  }, [dispatch, id, tapCell, tapCellAlert]);
+
+  const { cellsRef } = useContext(PatternRef);
   const cellRef = useRef(null);
   useEffect(() => {
     cellsRef.current[id] = { events: {} };
     cellsRef.current[id].cellRef = cellRef;
-    const tapEvent = new Event(`tap-${id}`);
-    document.addEventListener(`tap-${id}`, tapCell);
-    cellsRef.current[id].events.tap = tapEvent;
-    return () => {
-      document.removeEventListener(`tap-${id}`, tapCell);
-    };
-  }, [id, cellsRef, tapCell]);
+  }, [id, cellsRef]);
 
   const onTouchStart = useCallback(
     (e) => {
       e.stopPropagation();
-      prevCellRef.current = id;
+      dispatch(setToggleOn(!noteOn));
       tapCell();
     },
-    [id, tapCell, prevCellRef]
+    [dispatch, noteOn, tapCell]
   );
 
   const cellMemo = useMemo(() => {
