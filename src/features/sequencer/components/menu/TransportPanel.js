@@ -10,11 +10,11 @@ export const TransportPanel = () => {
 
   const transportState = useSelector((state) => state.tone.transportState);
   const bpm = useSelector((state) => state.sequencer.present.bpm);
+  useEffect(() => {
+    setTempBpm(bpm);
+  }, [bpm]);
 
   const [tempBpm, setTempBpm] = useState(bpm);
-  useEffect(() => {
-    if (bpm !== tempBpm) setTempBpm(bpm);
-  }, [bpm, tempBpm]);
 
   let timerRef = useRef(null);
 
@@ -24,13 +24,13 @@ export const TransportPanel = () => {
     const onChange = ({ target: { value } }) => {
       if (value.match(/\D/)) return;
       const newTempo = value > 300 ? 300 : value;
+      setTempBpm(newTempo);
       if (newTempo !== tempBpm) {
         clearTimeout(timerRef.current);
         timerRef.current = setTimeout(() => {
           dispatch(changeBpm(newTempo));
         }, 1000);
       }
-      setTempBpm(newTempo);
     };
 
     const onStop = () => {
