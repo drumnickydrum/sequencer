@@ -7,6 +7,7 @@
 - Pitch/Velocity/Length mods are back.
 - Fixed the redux-thunk middleware bug after store config.
 - Batched actions for undo!
+- Undo/Redo status updates
 
 ### 3/23/2021
 

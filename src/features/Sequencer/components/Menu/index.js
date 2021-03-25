@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { TransportPanel } from './TransportPanel';
 import { UndoRedo } from './UndoRedo';
-import { Clear } from './Clear';
+import { Erase } from './Erase';
 import { LoadSaveButton } from './LoadSaveButton';
 import { ChangeKit } from './ChangeKit';
 import { ScrollLeft, ScrollRight } from '../../../../components/Button';
@@ -66,7 +66,7 @@ export const Menu = () => {
       <LoadSaveButton />
       <TransportPanel />
       <UndoRedo />
-      <Clear />
+      <Erase />
       <div ref={scrollbarRef} className='scrollbar'>
         <ScrollLeft fwdRef={leftRef} onClick={() => scroll('left')} />
         <ScrollRight fwdRef={rightRef} onClick={() => scroll('right')} />

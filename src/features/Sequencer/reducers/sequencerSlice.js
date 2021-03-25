@@ -14,6 +14,7 @@ const INITIAL_STATE = {
   ...analog,
   pattern: INITIAL_PATTERN,
   noteTally: getNoteTally(analog.pattern),
+  undoStatus: '',
 };
 
 export const sequencerSlice = createSlice({
@@ -21,10 +22,10 @@ export const sequencerSlice = createSlice({
   initialState: INITIAL_STATE,
   reducers: {
     paintCell: (state, { payload: { step, selectedSound, noteOn } }) => {
-      // const noteOn = !state.pattern[step][selectedSound].noteOn;
       state.pattern[step][selectedSound].noteOn = noteOn;
       if (noteOn) inc(state.noteTally, selectedSound);
       else dec(state.noteTally, selectedSound);
+      state.undoStatus = `toggle cells | sound: ${selectedSound}`;
     },
     sliceCell: (state, { payload: { step, selectedSound } }) => {
       let notes = state.pattern[step][selectedSound].notes;
@@ -32,6 +33,7 @@ export const sequencerSlice = createSlice({
       const note = notes[0];
       if (len === 3) notes.length = 0;
       notes.push(note);
+      state.undoStatus = `slice cells | sound: ${selectedSound}`;
     },
     paste: (state, { payload: { sound, selectedSound } }) => {
       state.pattern.forEach((step) => {
@@ -43,10 +45,12 @@ export const sequencerSlice = createSlice({
       state.noteTally.total.count +=
         state.noteTally[selectedSound].count - state.noteTally[sound].count;
       state.noteTally[sound] = { ...state.noteTally[selectedSound] };
+      state.undoStatus = `copy cells from: ${selectedSound} to: ${sound}`;
     },
     eraseCell: (state, { payload: { step, selectedSound } }) => {
       initSoundStep(state.pattern[step][selectedSound]);
       dec(state.noteTally, selectedSound);
+      state.undoStatus = `erase cells | sound: ${selectedSound}`;
     },
     eraseSound: (state, { payload: { selectedSound } }) => {
       state.pattern.forEach((step) => {
@@ -55,6 +59,7 @@ export const sequencerSlice = createSlice({
       state.noteTally.total.count -= state.noteTally[selectedSound].count;
       state.noteTally[selectedSound].count = 0;
       state.noteTally[selectedSound].empty = true;
+      state.undoStatus = `erase all cells | sound: ${selectedSound}`;
     },
     eraseAll: (state) => {
       state.pattern.forEach((step) => {
@@ -67,12 +72,14 @@ export const sequencerSlice = createSlice({
       });
       state.noteTally.total.count = 0;
       state.noteTally.total.empty = true;
+      state.undoStatus = `erase sequence`;
     },
     modCell: (state, { payload: { selectedSound, type, value, step } }) => {
       if (type === MODES.MOD_LENGTH && value < 1) value *= 0.25;
       state.pattern[step][selectedSound].notes.forEach((note) => {
         note[type] = value;
       });
+      state.undoStatus = `modify cells | sound: ${selectedSound}`;
     },
     modAll: (state, { payload: { selectedSound, type, value } }) => {
       if (type === MODES.MOD_LENGTH && value < 1) value *= 0.25;
@@ -83,6 +90,7 @@ export const sequencerSlice = createSlice({
           });
         }
       });
+      state.undoStatus = `modify all cells | sound: ${selectedSound}`;
     },
     resetMods: (state, { payload: { selectedSound, type } }) => {
       state.pattern.forEach((step) => {
@@ -90,6 +98,7 @@ export const sequencerSlice = createSlice({
           note[type] = INITIAL_MODS[type];
         });
       });
+      state.undoStatus = `reset cell mods | sound: ${selectedSound}`;
     },
     loadSequence: (state, { payload: { sequence } }) => {
       state._id = sequence._id;
@@ -99,12 +108,15 @@ export const sequencerSlice = createSlice({
       state.length = sequence.length;
       state.pattern = sequence.pattern;
       state.noteTally = getNoteTally(state.pattern);
+      state.undoStatus = `load sequence: ${sequence.name}`;
     },
     changeKit: (state, { payload }) => {
       state.kit = payload;
+      state.undoStatus = `load kit: ${payload}`;
     },
     changeBpm: (state, { payload }) => {
       state.bpm = payload;
+      state.undoStatus = `change bpm: ${payload}`;
     },
   },
 });
@@ -119,7 +131,6 @@ export const modCell = (step, noteOn) => (dispatch, getState) => {
   switch (mode) {
     case MODES.PAINTING:
       const toggleOn = getState().editMode.toggleOn;
-      console.log(toggleOn);
       if ((toggleOn && !noteOn) || (!toggleOn && noteOn))
         dispatch(
           sequencerSlice.actions.paintCell({

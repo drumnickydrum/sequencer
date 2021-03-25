@@ -12,10 +12,10 @@ export const StatusBar = () => {
       if (ref.current) ref.current.classList.add('fade-out', 'fade-out-2');
       onTimer = setTimeout(() => {
         if (ref.current) ref.current.classList.remove('fade-out');
-      }, 500);
+      }, 1000);
       fadeTimer = setTimeout(() => {
         if (ref.current) ref.current.classList.remove('fade-out-2');
-      }, 0);
+      }, 500);
     }
     return () => {
       clearTimeout(onTimer);

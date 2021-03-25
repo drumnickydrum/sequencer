@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { eraseAll } from '../../reducers/sequencerSlice';
-import { ClearAllIcon } from '../../../../icons';
+import { EraseAllIcon } from '../../../../icons';
 import { Button } from '../../../../components/Button';
 import { MODES, setMode } from '../../reducers/editModeSlice';
 
-export const Clear = () => {
+export const Erase = () => {
   const dispatch = useDispatch();
   const mode = useSelector((state) => state.editMode.mode);
   const editing = mode && mode !== MODES.PAINTING;
@@ -13,7 +13,7 @@ export const Clear = () => {
     (state) => state.sequencer.present.noteTally.total.empty
   );
 
-  const clearMemo = useMemo(() => {
+  const eraseMemo = useMemo(() => {
     const onClick = () => {
       dispatch(eraseAll());
       if (editing) {
@@ -21,23 +21,23 @@ export const Clear = () => {
       }
     };
 
-    // console.log('rendering: Clear');
+    // console.log('rendering: Erase');
     return (
       <div className='menu-items'>
         <Button
-          id='clear-all'
+          id='erase-all'
           classes='menu-btn'
           disabled={disabled}
           onClick={onClick}
         >
-          <ClearAllIcon />
-          <label htmlFor='clear-all' className='menu-label'>
-            clear pattern
+          <EraseAllIcon />
+          <label htmlFor='erase-all' className='menu-label'>
+            erase pattern
           </label>
         </Button>
       </div>
     );
   }, [disabled, dispatch, editing]);
 
-  return clearMemo;
+  return eraseMemo;
 };

@@ -1,11 +1,28 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { ActionCreators as UndoActionCreators } from 'redux-undo';
-import { connect, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { Button } from '../../../../components/Button';
 import { RedoIcon, UndoIcon } from '../../../../icons';
+import { setStatus } from '../../../../reducers/appSlice';
 
 let UndoRedo = ({ canUndo, canRedo, onUndo, onRedo }) => {
+  const dispatch = useDispatch();
+
+  const undoStatus = useSelector((state) => state.sequencer.present.undoStatus);
+  const future = useSelector((state) => state.sequencer.future);
+  const redoStatus = future.length > 0 ? future[0].undoStatus : null;
+  console.log(future);
   const buffersLoaded = useSelector((state) => state.tone.buffersLoaded);
+
+  const handleUndo = useCallback(() => {
+    dispatch(setStatus('undo: ' + undoStatus));
+    onUndo();
+  }, [dispatch, onUndo, undoStatus]);
+
+  const handleRedo = useCallback(() => {
+    dispatch(setStatus('redo: ' + redoStatus));
+    onRedo();
+  }, [dispatch, onRedo, redoStatus]);
 
   const undoRedoMemo = useMemo(() => {
     // console.log('rendering: UndoRedo');
@@ -16,7 +33,7 @@ let UndoRedo = ({ canUndo, canRedo, onUndo, onRedo }) => {
           id='undo'
           classes='menu-btn'
           disabled={!canUndo || !buffersLoaded}
-          onClick={onUndo}
+          onClick={handleUndo}
         >
           <UndoIcon />
           <label htmlFor='undo' className='menu-label'>
@@ -27,7 +44,7 @@ let UndoRedo = ({ canUndo, canRedo, onUndo, onRedo }) => {
           id='redo'
           classes='menu-btn'
           disabled={!canRedo || !buffersLoaded}
-          onClick={onRedo}
+          onClick={handleRedo}
         >
           <RedoIcon />
           <label htmlFor='redo' className='menu-label'>
@@ -37,7 +54,7 @@ let UndoRedo = ({ canUndo, canRedo, onUndo, onRedo }) => {
         <span className='menu-dummy' />
       </div>
     );
-  }, [buffersLoaded, canRedo, canUndo, onRedo, onUndo]);
+  }, [buffersLoaded, canRedo, canUndo, handleRedo, handleUndo]);
   return undoRedoMemo;
 };
 

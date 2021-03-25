@@ -3,8 +3,8 @@ import { ReactComponent as Start } from './start.svg';
 import { ReactComponent as Pause } from './pause.svg';
 import { ReactComponent as Undo } from './undo.svg';
 import { ReactComponent as Redo } from './redo.svg';
-import { ReactComponent as ClearOne } from './clear-one.svg';
-import { ReactComponent as ClearAll } from './clear-all.svg';
+import { ReactComponent as EraseOne } from './erase-one.svg';
+import { ReactComponent as EraseAll } from './erase-all.svg';
 import { ReactComponent as Swipe } from './swipe.svg';
 import { ReactComponent as Saw } from './saw.svg';
 import { ReactComponent as Copy } from './copy.svg';
@@ -73,11 +73,11 @@ export const UndoIcon = ({ addClass = '' }) => (
 export const RedoIcon = ({ addClass = '' }) => (
   <Redo className={addClass + ' icon'} />
 );
-export const ClearOneIcon = ({ addClass = '' }) => (
-  <ClearOne className={addClass + ' icon'} />
+export const EraseOneIcon = ({ addClass = '' }) => (
+  <EraseOne className={addClass + ' icon'} />
 );
-export const ClearAllIcon = ({ addClass = '' }) => (
-  <ClearAll className={addClass + ' icon'} />
+export const EraseAllIcon = ({ addClass = '' }) => (
+  <EraseAll className={addClass + ' icon'} />
 );
 
 export const SwipeHorizontalIcon = () => <Swipe />;

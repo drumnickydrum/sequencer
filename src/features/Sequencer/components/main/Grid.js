@@ -96,7 +96,6 @@ const Cell = ({ id, step, selectedSound }) => {
   const tapCellAlert = useSelector((state) => state.editMode.tapCellById[id]);
   useEffect(() => {
     if (tapCellAlert) {
-      console.log('tapping cell: ', id);
       tapCell();
       dispatch(setTapCellById({ id, val: false }));
     }
