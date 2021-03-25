@@ -2,14 +2,14 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '../../../../components/Button';
 import { StopIcon, StartIcon, PauseIcon } from '../../../../icons';
-import { changeBpm } from '../../reducers/sequencerSlice';
+import { changeBpm } from '../../reducers/sequenceSlice';
 import { setTransportState } from '../../reducers/toneSlice';
 
 export const TransportPanel = () => {
   const dispatch = useDispatch();
 
   const transportState = useSelector((state) => state.tone.transportState);
-  const bpm = useSelector((state) => state.sequencer.present.bpm);
+  const bpm = useSelector((state) => state.sequence.present.bpm);
   useEffect(() => {
     setTempBpm(bpm);
   }, [bpm]);

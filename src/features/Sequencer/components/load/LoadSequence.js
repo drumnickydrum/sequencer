@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import * as defaultPatterns from '../../defaults/defaultPatterns';
-import { deleteSequence, loadSequence } from '../../reducers/sequencerSlice';
+import * as defaultSequences from '../../defaults/defaultSequences';
+import { deleteSequence, loadSequence } from '../../reducers/sequenceSlice';
 import { DeleteIcon } from '../../../../icons';
 import { setFetching } from '../../../../reducers/appSlice';
 
-export const LoadPattern = ({ stopSequencer }) => {
+export const LoadSequence = ({ stopSequencer }) => {
   const dispatch = useDispatch();
-  const _id = useSelector((state) => state.sequencer.present._id);
+  const _id = useSelector((state) => state.sequence.present._id);
 
   const user = useSelector((state) => state.app.user);
   const fetching = useSelector((state) => state.app.fetching);
@@ -19,28 +19,28 @@ export const LoadPattern = ({ stopSequencer }) => {
     return () => clearTimeout(timeout);
   }, [error]);
 
-  const selectPattern = (e, type, id) => {
+  const selectSequence = (e, type, id) => {
     e.stopPropagation();
     let sequence;
-    if (type === 'dp')
-      sequence = Object.values(defaultPatterns).find(
-        (pattern) => pattern._id === id
+    if (type === 'ds')
+      sequence = Object.values(defaultSequences).find(
+        (sequence) => sequence._id === id
       );
-    if (type === 'up')
-      sequence = user.patterns.find((pattern) => pattern._id === id);
+    if (type === 'us')
+      sequence = user.sequences.find((sequence) => sequence._id === id);
     dispatch(loadSequence({ sequence }));
   };
 
-  // console.log('rendering: LoadPattern');
+  // console.log('rendering: LoadSequence');
   return (
-    <div className='load-pattern'>
-      <h1 className='pattern-title'>Load Pattern</h1>
-      <div className='pattern-select'>
-        <div className='pattern-select-group'>
+    <div className='load-sequence'>
+      <h1 className='sequence-title'>Load Sequences</h1>
+      <div className='sequence-select'>
+        <div className='sequence-select-group'>
           {!user.username ? (
             <div className='login-div'>
-              <p className='pattern-select-sub'>
-                {fetching ? 'Logging in...' : 'Login to load user patterns'}
+              <p className='sequence-select-sub'>
+                {fetching ? 'Logging in...' : 'Login to load user sequences'}
               </p>
               <Link
                 className='login-btn'
@@ -53,24 +53,24 @@ export const LoadPattern = ({ stopSequencer }) => {
             </div>
           ) : (
             <>
-              <p className='pattern-select-sub'>User Patterns</p>
+              <p className='sequence-select-sub'>User Sequences</p>
               {error && <p className='error'>{error}</p>}
-              {user.patterns.length === 0 ? (
-                <p>No user patterns</p>
+              {user.sequences.length === 0 ? (
+                <p>No user sequences</p>
               ) : (
                 <>
-                  <div className='load-pattern-sub'>
+                  <div className='load-sequence-sub'>
                     <p>Name</p>
                     <p>Kit</p>
                     <p>Bpm</p>
                     <p>Delete</p>
                   </div>
-                  {user.patterns.map((pattern, i) => (
-                    <UserPattern
-                      key={`up-${_id}-${i}`}
-                      pattern={pattern}
+                  {user.sequences.map((sequence, i) => (
+                    <UserSequence
+                      key={`us-${_id}-${i}`}
+                      sequence={sequence}
                       _id={_id}
-                      selectPattern={selectPattern}
+                      selectSequence={selectSequence}
                       setError={setError}
                     />
                   ))}
@@ -79,25 +79,25 @@ export const LoadPattern = ({ stopSequencer }) => {
             </>
           )}
         </div>
-        <div className='pattern-select-group'>
-          <p className='pattern-select-sub'>Default Patterns</p>
-          <div className='load-pattern-sub'>
+        <div className='sequence-select-group'>
+          <p className='sequence-select-sub'>Default Sequences</p>
+          <div className='load-sequence-sub'>
             <p>Name</p>
             <p>Kit</p>
             <p>Bpm</p>
             <p></p>
           </div>
-          {Object.keys(defaultPatterns).map((pattern) => {
-            const id = defaultPatterns[pattern]._id;
+          {Object.keys(defaultSequences).map((sequence) => {
+            const id = defaultSequences[sequence]._id;
             return (
               <div
-                key={`dp-${id}`}
-                className={id === _id ? 'pattern selected' : 'pattern'}
-                onClick={(e) => selectPattern(e, 'dp', id)}
+                key={`ds-${id}`}
+                className={id === _id ? 'sequence selected' : 'sequence'}
+                onClick={(e) => selectSequence(e, 'ds', id)}
               >
-                <p>{pattern}</p>
-                <p>{defaultPatterns[pattern].kit}</p>
-                <p>{defaultPatterns[pattern].bpm}</p>
+                <p>{sequence}</p>
+                <p>{defaultSequences[sequence].kit}</p>
+                <p>{defaultSequences[sequence].bpm}</p>
                 <p></p>
               </div>
             );
@@ -108,7 +108,7 @@ export const LoadPattern = ({ stopSequencer }) => {
   );
 };
 
-const UserPattern = ({ pattern, _id, selectPattern, setError }) => {
+const UserSequence = ({ sequence, _id, selectSequence, setError }) => {
   const dispatch = useDispatch();
 
   const fetching = useSelector((state) => state.app.fetching);
@@ -124,7 +124,7 @@ const UserPattern = ({ pattern, _id, selectPattern, setError }) => {
     e.stopPropagation();
     try {
       dispatch(setFetching(true));
-      dispatch(deleteSequence(pattern._id));
+      dispatch(deleteSequence(sequence._id));
     } catch (e) {
       console.log('Delete Sequence ERROR ->\n', e);
       setError('Server error: please try again later.');
@@ -133,7 +133,7 @@ const UserPattern = ({ pattern, _id, selectPattern, setError }) => {
     }
   };
 
-  // console.log('rendering: UserPattern');
+  // console.log('rendering: UserSequence');
   return showConfirm ? (
     <div className='confirm-delete'>
       <p>Are you sure?</p>
@@ -151,13 +151,13 @@ const UserPattern = ({ pattern, _id, selectPattern, setError }) => {
   ) : (
     <div
       className={
-        pattern._id === _id ? 'pattern select selected' : 'pattern select'
+        sequence._id === _id ? 'sequence select selected' : 'sequence select'
       }
-      onClick={(e) => selectPattern(e, 'up', pattern._id)}
+      onClick={(e) => selectSequence(e, 'us', sequence._id)}
     >
-      <p>{pattern.name}</p>
-      <p>{pattern.kit}</p>
-      <p>{pattern.bpm}</p>
+      <p>{sequence.name}</p>
+      <p>{sequence.kit}</p>
+      <p>{sequence.bpm}</p>
       <div className='delete-btn' onClick={(e) => handleShowConfirm(e, true)}>
         <DeleteIcon />
       </div>

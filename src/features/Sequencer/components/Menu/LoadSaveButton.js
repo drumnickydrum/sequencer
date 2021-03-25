@@ -18,22 +18,22 @@ export const LoadSaveButton = () => {
     <div className='menu-items'>
       <span className='menu-dummy' />
       <Button
-        id='load-pattern'
+        id='load-sequence'
         classes='menu-btn'
         onClick={() => onClick('load')}
       >
         <OpenIcon />
-        <label htmlFor='load-pattern' className='menu-label'>
+        <label htmlFor='load-sequence' className='menu-label'>
           load
         </label>
       </Button>
       <Button
-        id='save-pattern'
+        id='save-sequence'
         classes='menu-btn'
         onClick={() => onClick('save')}
       >
         <SaveIcon />
-        <label htmlFor='save-pattern' className='menu-label'>
+        <label htmlFor='save-sequence' className='menu-label'>
           save
         </label>
       </Button>

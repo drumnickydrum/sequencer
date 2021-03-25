@@ -2,11 +2,11 @@ import React, { useMemo } from 'react';
 import { ChevronDownIcon } from '../../../../icons';
 import * as kits from '../../defaults/defaultKits';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeKit } from '../../reducers/sequencerSlice';
+import { changeKit } from '../../reducers/sequenceSlice';
 
 export const ChangeKit = () => {
   const dispatch = useDispatch();
-  const kit = useSelector((state) => state.sequencer.present.kit);
+  const kit = useSelector((state) => state.sequence.present.kit);
   const buffersLoaded = useSelector((state) => state.tone.buffersLoaded);
 
   const changeKitMemo = useMemo(() => {

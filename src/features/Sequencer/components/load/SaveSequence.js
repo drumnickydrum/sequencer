@@ -2,17 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setFetching } from '../../../../reducers/appSlice';
-import { saveSequence } from '../../reducers/sequencerSlice';
+import { saveSequence } from '../../reducers/sequenceSlice';
 
-export const SavePattern = ({ stopSequencer }) => {
+export const SaveSequence = ({ stopSequencer }) => {
   const dispatch = useDispatch();
 
-  const bpm = useSelector((state) => state.sequencer.present.bpm);
-  const pattern = useSelector((state) => state.sequencer.present.pattern);
+  const bpm = useSelector((state) => state.sequence.present.bpm);
+  const length = useSelector((state) => state.sequence.present.length);
+  const pattern = useSelector((state) => state.sequence.present.pattern);
+  const kit = useSelector((state) => state.sequence.present.kit);
 
   const user = useSelector((state) => state.app.user);
   const fetching = useSelector((state) => state.app.fetching);
-  const kit = useSelector((state) => state.kit.name);
 
   const [newName, setNewName] = useState('');
 
@@ -32,17 +33,18 @@ export const SavePattern = ({ stopSequencer }) => {
     e.preventDefault();
     if (!newName) return setError('name required');
     const cleanName = newName.replace(/[^a-zA-Z0-9 ]/g, '');
-    const newPattern = {
+    const newSequence = {
       name: cleanName,
       kit,
       bpm,
+      length,
       pattern,
     };
     setNewName('');
     try {
       dispatch(setFetching(true));
-      await dispatch(saveSequence(newPattern));
-      setConfirmation('Pattern saved!');
+      await dispatch(saveSequence(newSequence));
+      setConfirmation('Sequence saved!');
     } catch (e) {
       console.log('Save Sequence ERROR ->\n', e);
       setError('Server error: please try again later.');
@@ -51,14 +53,14 @@ export const SavePattern = ({ stopSequencer }) => {
     }
   };
 
-  // console.log('rendering: SavePattern');
+  // console.log('rendering: SaveSequence');
   return (
-    <div className='save-pattern'>
+    <div className='save-sequence'>
       {!user.username ? (
-        <div className='pattern-select-group'>
+        <div className='sequence-select-group'>
           <div className='login-div'>
-            <p className='pattern-select-sub'>
-              {fetching ? 'Logging in...' : 'Login to save user patterns'}
+            <p className='sequence-select-sub'>
+              {fetching ? 'Logging in...' : 'Login to save user sequences'}
             </p>
             <Link
               className='login-btn'
@@ -72,14 +74,14 @@ export const SavePattern = ({ stopSequencer }) => {
         </div>
       ) : (
         <form id='save-form' onSubmit={save}>
-          <h1 className='pattern-title'>Save Pattern</h1>
+          <h1 className='sequence-title'>Save Sequence</h1>
 
-          <div className='save-pattern-input'>
+          <div className='save-sequence-input'>
             <input
               type='text'
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
-              placeholder='Enter pattern name'
+              placeholder='Enter sequence name'
             />
             <button type='submit' disabled={!newName}>
               Save

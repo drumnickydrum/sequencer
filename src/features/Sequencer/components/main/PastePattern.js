@@ -2,14 +2,14 @@ import React, { useMemo, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as defaultKits from '../../defaults/defaultKits';
 import * as icons from '../../../../icons/kit';
-import { MODES } from '../../reducers/editModeSlice';
-import { paste } from '../../reducers/sequencerSlice';
+import { MODES } from '../../reducers/editorSlice';
+import { paste } from '../../reducers/sequenceSlice';
 
 export const PastePattern = () => {
-  const kit = useSelector((state) => state.sequencer.present.kit);
+  const kit = useSelector((state) => state.sequence.present.kit);
   const sounds = defaultKits[kit].sounds;
 
-  const mode = useSelector((state) => state.editMode.mode);
+  const mode = useSelector((state) => state.editor.mode);
   const pasting = mode === MODES.COPYING;
 
   const pastePatternMemo = useMemo(() => {
@@ -43,8 +43,8 @@ export const PastePattern = () => {
 
 const SoundBtn = ({ i, icon, color }) => {
   const dispatch = useDispatch();
-  const selectedSound = useSelector((state) => state.editMode.selectedSound);
-  const pattern = useSelector((state) => state.sequencer.present.pattern);
+  const selectedSound = useSelector((state) => state.editor.selectedSound);
+  const pattern = useSelector((state) => state.sequence.present.pattern);
   const ref = useRef(null);
 
   const onClick = () => {

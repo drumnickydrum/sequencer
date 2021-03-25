@@ -1,16 +1,16 @@
 import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { eraseAll } from '../../reducers/sequencerSlice';
+import { eraseAll } from '../../reducers/sequenceSlice';
 import { EraseAllIcon } from '../../../../icons';
 import { Button } from '../../../../components/Button';
-import { MODES, setMode } from '../../reducers/editModeSlice';
+import { MODES, setMode } from '../../reducers/editorSlice';
 
 export const Erase = () => {
   const dispatch = useDispatch();
-  const mode = useSelector((state) => state.editMode.mode);
+  const mode = useSelector((state) => state.editor.mode);
   const editing = mode && mode !== MODES.PAINTING;
   const disabled = useSelector(
-    (state) => state.sequencer.present.noteTally.total.empty
+    (state) => state.sequence.present.noteTally.total.empty
   );
 
   const eraseMemo = useMemo(() => {

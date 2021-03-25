@@ -198,7 +198,7 @@ body {
 }
 
 /*************************************/
-/************ Load Pattern ***********/
+/*********** Load Sequence ***********/
 /*************************************/
 
 .load-save-tabs {
@@ -220,7 +220,7 @@ body {
   opacity: 1;
 }
 
-.load-save-pattern {
+.load-save-sequence {
   position: absolute;
   z-index: 101;
   top: 0;
@@ -234,13 +234,13 @@ body {
   transition: 150ms;
 }
 
-.load-save-pattern.show {
+.load-save-sequence.show {
   opacity: 1;
   pointer-events: initial;
 }
 
-.load-pattern,
-.save-pattern {
+.load-sequence,
+.save-sequence {
   margin-top: 1rem;
   width: 100%;
   height: 100%;
@@ -287,7 +287,7 @@ body {
   color: var(--white);
 }
 
-.pattern-title {
+.sequence-title {
   width: 100%;
   margin-bottom: 0.5rem;
   padding: 0.5rem;
@@ -295,11 +295,11 @@ body {
   font-size: 1.25rem;
 }
 
-.load-pattern {
+.load-sequence {
   padding: 0.5rem;
 }
 
-.load-pattern-sub {
+.load-sequence-sub {
   width: 100%;
   padding: 0.5rem;
   display: grid;
@@ -310,23 +310,23 @@ body {
   border-left: none;
 }
 
-.pattern-select {
+.sequence-select {
   height: 100%;
   width: 100%;
 }
 
-.pattern-select-group {
+.sequence-select-group {
   border: 1px solid var(--purple-half);
   margin-bottom: 1rem;
   padding: 0.5rem;
 }
 
-.pattern-select-sub {
+.sequence-select-sub {
   padding: 0.5rem;
   text-align: center;
 }
 
-.pattern {
+.sequence {
   min-height: 3rem;
   width: 100%;
   padding: 0.25rem 0.5rem;
@@ -338,7 +338,7 @@ body {
   margin: 0.25rem 0;
 }
 
-.pattern.selected {
+.sequence.selected {
   background: var(--green-half);
 }
 
@@ -368,11 +368,11 @@ body {
   color: var(--white);
 }
 
-.save-pattern {
+.save-sequence {
   padding: 0 0.5rem;
 }
 
-.save-pattern-input {
+.save-sequence-input {
   width: 100%;
   margin: 0.5rem 0;
   display: flex;
@@ -406,8 +406,8 @@ body {
   border: 1px solid var(--white);
 }
 
-.save-pattern .error,
-.save-pattern .confirmation {
+.save-sequence .error,
+.save-sequence .confirmation {
 }
 
 .bottom-btn {
@@ -427,7 +427,7 @@ body {
   pointer-events: initial;
 }
 
-.load-save-pattern-close {
+.load-save-sequence-close {
   display: block;
   cursor: pointer;
   height: 2.5rem;
@@ -443,7 +443,7 @@ body {
 }
 
 /*************************************/
-/*********** Paste Pattern ***********/
+/********** Paste Sequence ***********/
 /*************************************/
 
 #paste-pattern {

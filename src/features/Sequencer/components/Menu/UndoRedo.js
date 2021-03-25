@@ -8,10 +8,9 @@ import { setStatus } from '../../../../reducers/appSlice';
 let UndoRedo = ({ canUndo, canRedo, onUndo, onRedo }) => {
   const dispatch = useDispatch();
 
-  const undoStatus = useSelector((state) => state.sequencer.present.undoStatus);
-  const future = useSelector((state) => state.sequencer.future);
+  const undoStatus = useSelector((state) => state.sequence.present.undoStatus);
+  const future = useSelector((state) => state.sequence.future);
   const redoStatus = future.length > 0 ? future[0].undoStatus : null;
-  console.log(future);
   const buffersLoaded = useSelector((state) => state.tone.buffersLoaded);
 
   const handleUndo = useCallback(() => {
@@ -60,8 +59,8 @@ let UndoRedo = ({ canUndo, canRedo, onUndo, onRedo }) => {
 
 const mapStateToProps = (state) => {
   return {
-    canUndo: state.sequencer.past.length > 0,
-    canRedo: state.sequencer.future.length > 0,
+    canUndo: state.sequence.past.length > 0,
+    canRedo: state.sequence.future.length > 0,
   };
 };
 

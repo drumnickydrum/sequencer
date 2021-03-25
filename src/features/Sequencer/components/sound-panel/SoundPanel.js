@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { close, edit, setMode, MODES } from '../../reducers/editModeSlice';
+import { close, edit, setMode, MODES } from '../../reducers/editorSlice';
 import {
   CloseIcon,
   CopyIcon,
@@ -20,7 +20,7 @@ import { Button } from '../../../../components/Button';
 export const SoundPanel = () => {
   const dispatch = useDispatch();
 
-  const mode = useSelector((state) => state.editMode.mode);
+  const mode = useSelector((state) => state.editor.mode);
 
   const [showEditMenu, setShowEditMenu] = useState(false);
 
@@ -73,9 +73,9 @@ export const SoundPanel = () => {
 
 const SoundEditMenu = ({ selectMode, setShowEditMenu }) => {
   const dispatch = useDispatch();
-  const selectedSound = useSelector((state) => state.editMode.selectedSound);
+  const selectedSound = useSelector((state) => state.editor.selectedSound);
   const disabled = useSelector(
-    (state) => state.sequencer.present.noteTally[selectedSound].empty
+    (state) => state.sequence.present.noteTally[selectedSound].empty
   );
 
   const soundEditMenuMemo = useMemo(() => {
@@ -159,7 +159,7 @@ const SoundEditMenu = ({ selectMode, setShowEditMenu }) => {
 
 const SoundBtns = ({ setShowEditMenu }) => {
   const dispatch = useDispatch();
-  const kit = useSelector((state) => state.sequencer.present.kit);
+  const kit = useSelector((state) => state.sequence.present.kit);
 
   const soundBtnsMemo = useMemo(() => {
     // console.log('rendering: SoundBtns');

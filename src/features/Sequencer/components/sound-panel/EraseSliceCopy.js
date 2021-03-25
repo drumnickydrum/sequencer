@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { eraseSound } from '../../reducers/sequencerSlice';
+import { eraseSound } from '../../reducers/sequenceSlice';
 import { Button } from '../../../../components/Button';
 import {
   ChevronLeftIcon,
@@ -11,9 +11,9 @@ import {
 
 export const Erase = ({ onReturn }) => {
   const dispatch = useDispatch();
-  const selectedSound = useSelector((state) => state.editMode.selectedSound);
+  const selectedSound = useSelector((state) => state.editor.selectedSound);
   const disabled = useSelector(
-    (state) => state.sequencer.present.noteTally[selectedSound].empty
+    (state) => state.sequence.present.noteTally[selectedSound].empty
   );
 
   useEffect(() => {

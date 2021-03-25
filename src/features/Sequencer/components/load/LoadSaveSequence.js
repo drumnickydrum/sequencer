@@ -1,11 +1,11 @@
 import React from 'react';
-import { LoadPattern } from './LoadPattern';
-import { SavePattern } from './SavePattern';
+import { LoadSequence } from './LoadSequence';
+import { SaveSequence } from './SaveSequence';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, setShow } from '../../../../reducers/appSlice';
 import { setTransportState } from '../../reducers/toneSlice';
 
-export const LoadSavePattern = () => {
+export const LoadSaveSequence = () => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.app.user);
@@ -30,10 +30,10 @@ export const LoadSavePattern = () => {
   if (show === 'load') loadStyle += ' selected';
   if (show === 'save') saveStyle += ' selected';
 
-  // console.log('rendering: LoadSavePattern');
+  // console.log('rendering: LoadSaveSequence');
   return (
     <>
-      <div className={show ? 'load-save-pattern show' : 'load-save-pattern'}>
+      <div className={show ? 'load-save-sequence show' : 'load-save-sequence'}>
         <div className='load-save-tabs'>
           <button
             id='load-tab'
@@ -64,11 +64,11 @@ export const LoadSavePattern = () => {
             </div>
           </>
         )}
-        {show === 'save' && <SavePattern stopSequencer={stopSequencer} />}
-        {show === 'load' && <LoadPattern stopSequencer={stopSequencer} />}
+        {show === 'save' && <SaveSequence stopSequencer={stopSequencer} />}
+        {show === 'load' && <LoadSequence stopSequencer={stopSequencer} />}
       </div>
       <div className={show ? 'bottom-btn show' : 'bottom-btn'}>
-        <button className='load-save-pattern-close' onClick={onClose}>
+        <button className='load-save-sequence-close' onClick={onClose}>
           Close
         </button>
       </div>

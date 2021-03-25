@@ -4,7 +4,7 @@ import { setLS } from '../../../utils/storage';
 
 export const PatternRef = React.createContext();
 export const PatternRefProvider = ({ children }) => {
-  const pattern = useSelector((state) => state.sequencer.present.pattern);
+  const pattern = useSelector((state) => state.sequence.present.pattern);
 
   const updatePatternLS = () => setLS('pattern', patternRef.current);
 

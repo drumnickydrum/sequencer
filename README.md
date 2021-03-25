@@ -8,6 +8,11 @@
 - Fixed the redux-thunk middleware bug after store config.
 - Batched actions for undo!
 - Undo/Redo status updates
+- Finally re-named for accuracy:
+  - Sequence (!Pattern)
+  - sequenceReducer (!sequencerReducer)
+  - editorReducer (!editModeReducer)
+  - Erase (!Clear)
 
 ### 3/23/2021
 

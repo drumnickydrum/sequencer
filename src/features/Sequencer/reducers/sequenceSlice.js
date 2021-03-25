@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { createSlice } from '@reduxjs/toolkit';
 import undoable, { groupByActionTypes } from 'redux-undo';
-import { analog } from '../defaults/defaultPatterns';
+import { analog } from '../defaults/defaultSequences';
 import { getLS } from '../../../utils/storage';
 import { getNoteTally, inc, dec, initSoundStep } from '../utils';
 import { setUser } from '../../../reducers/appSlice';
-import { INITIAL_MODS, MODES, setSpAlert } from './editModeSlice';
+import { INITIAL_MODS, MODES, setSpAlert } from './editorSlice';
 
 // const INITIAL_PATTERN = getLS('pattern') || analog.pattern;
 const INITIAL_PATTERN = analog.pattern;
@@ -17,7 +17,7 @@ const INITIAL_STATE = {
   undoStatus: '',
 };
 
-export const sequencerSlice = createSlice({
+export const sequenceSlice = createSlice({
   name: 'sequencer',
   initialState: INITIAL_STATE,
   reducers: {
@@ -122,18 +122,18 @@ export const sequencerSlice = createSlice({
 });
 
 export const modCell = (step, noteOn) => (dispatch, getState) => {
-  const selectedSound = getState().editMode.selectedSound;
+  const selectedSound = getState().editor.selectedSound;
   if (selectedSound === -1) {
     dispatch(setSpAlert('select a sound to edit'));
     return;
   }
-  const mode = getState().editMode.mode;
+  const mode = getState().editor.mode;
   switch (mode) {
     case MODES.PAINTING:
-      const toggleOn = getState().editMode.toggleOn;
+      const toggleOn = getState().editor.toggleOn;
       if ((toggleOn && !noteOn) || (!toggleOn && noteOn))
         dispatch(
-          sequencerSlice.actions.paintCell({
+          sequenceSlice.actions.paintCell({
             step,
             selectedSound,
             noteOn: toggleOn,
@@ -142,19 +142,19 @@ export const modCell = (step, noteOn) => (dispatch, getState) => {
       break;
     case MODES.ERASING:
       if (noteOn)
-        dispatch(sequencerSlice.actions.eraseCell({ step, selectedSound }));
+        dispatch(sequenceSlice.actions.eraseCell({ step, selectedSound }));
       break;
     case MODES.SLICING:
       if (noteOn)
-        dispatch(sequencerSlice.actions.sliceCell({ step, selectedSound }));
+        dispatch(sequenceSlice.actions.sliceCell({ step, selectedSound }));
       break;
     case MODES.MOD_LENGTH:
     case MODES.MOD_PITCH:
     case MODES.MOD_VELOCITY:
       if (noteOn) {
-        const value = getState().editMode.mods[mode];
+        const value = getState().editor.mods[mode];
         dispatch(
-          sequencerSlice.actions.modCell({
+          sequenceSlice.actions.modCell({
             step,
             selectedSound,
             type: mode,
@@ -170,7 +170,7 @@ export const modCell = (step, noteOn) => (dispatch, getState) => {
 
 export const saveSequence = async (sequence) => async (dispatch) => {
   const res = await axios({
-    url: 'http://localhost:4000/user/pattern/add',
+    url: 'http://localhost:4000/user/sequence/add',
     method: 'POST',
     data: sequence,
     withCredentials: true,
@@ -180,7 +180,7 @@ export const saveSequence = async (sequence) => async (dispatch) => {
 
 export const deleteSequence = async (sequence) => async (dispatch) => {
   const res = await axios({
-    url: 'http://localhost:4000/user/pattern/delete',
+    url: 'http://localhost:4000/user/sequence/delete',
     method: 'POST',
     data: { _id: sequence },
     withCredentials: true,
@@ -201,15 +201,16 @@ export const {
   loadSequenceFinally,
   changeKit,
   changeBpm,
-} = sequencerSlice.actions;
+} = sequenceSlice.actions;
 
-const reducer = undoable(sequencerSlice.reducer, {
+const reducer = undoable(sequenceSlice.reducer, {
   groupBy: groupByActionTypes([
     'sequencer/paintCell',
     'sequencer/eraseCell',
     'sequencer/sliceCell',
     'sequencer/modCell',
   ]),
+  limit: 100,
 });
 
 export default reducer;

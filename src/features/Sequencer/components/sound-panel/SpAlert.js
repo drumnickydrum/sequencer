@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { PointDownIcon } from '../../../../icons';
 
 export const SpAlert = () => {
-  const message = useSelector((state) => state.editMode.spAlert.message);
+  const message = useSelector((state) => state.editor.spAlert.message);
   const [classes, setClasses] = useState('sp-alert');
 
   useEffect(() => {

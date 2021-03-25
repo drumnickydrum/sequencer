@@ -7,17 +7,17 @@ import React, {
   useState,
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { modCell } from '../../reducers/sequencerSlice';
+import { modCell } from '../../reducers/sequenceSlice';
 import * as defaultKits from '../../defaults/defaultKits';
 import { SawIcon } from '../../../../icons';
 import { PatternRef } from '../../providers/PatternRef';
 import { MIDI_NOTES } from '../../utils/MIDI_NOTES';
-import { setTapCellById, setToggleOn } from '../../reducers/editModeSlice';
+import { setTapCellById, setToggleOn } from '../../reducers/editorSlice';
 
 export const Grid = () => {
   const dispatch = useDispatch();
-  const length = useSelector((state) => state.sequencer.present.length);
-  const selectedSound = useSelector((state) => state.editMode.selectedSound);
+  const length = useSelector((state) => state.sequence.present.length);
+  const selectedSound = useSelector((state) => state.editor.selectedSound);
 
   const prevCellRef = useRef(null);
 
@@ -65,27 +65,27 @@ const Cell = ({ id, step, selectedSound }) => {
 
   const noteOn = useSelector((state) =>
     selectedSound !== -1
-      ? state.sequencer.present.pattern[step][selectedSound].noteOn
+      ? state.sequence.present.pattern[step][selectedSound].noteOn
       : false
   );
   const slice = useSelector((state) =>
     selectedSound !== -1
-      ? state.sequencer.present.pattern[step][selectedSound].notes.length
+      ? state.sequence.present.pattern[step][selectedSound].notes.length
       : 1
   );
   const pitch = useSelector((state) =>
     selectedSound !== -1
-      ? state.sequencer.present.pattern[step][selectedSound].notes[0].pitch
+      ? state.sequence.present.pattern[step][selectedSound].notes[0].pitch
       : 24
   );
   const length = useSelector((state) =>
     selectedSound !== -1
-      ? state.sequencer.present.pattern[step][selectedSound].notes[0].length
+      ? state.sequence.present.pattern[step][selectedSound].notes[0].length
       : 1
   );
   const velocity = useSelector((state) =>
     selectedSound !== -1
-      ? state.sequencer.present.pattern[step][selectedSound].notes[0].velocity
+      ? state.sequence.present.pattern[step][selectedSound].notes[0].velocity
       : 1
   );
 
@@ -93,7 +93,7 @@ const Cell = ({ id, step, selectedSound }) => {
     dispatch(modCell(step, noteOn));
   }, [dispatch, noteOn, step]);
 
-  const tapCellAlert = useSelector((state) => state.editMode.tapCellById[id]);
+  const tapCellAlert = useSelector((state) => state.editor.tapCellById[id]);
   useEffect(() => {
     if (tapCellAlert) {
       tapCell();
@@ -179,7 +179,7 @@ const Cell = ({ id, step, selectedSound }) => {
 };
 
 const SoundCells = ({ id, step }) => {
-  const kit = useSelector((state) => state.sequencer.present.kit);
+  const kit = useSelector((state) => state.sequence.present.kit);
   const sounds = defaultKits[kit].sounds;
 
   let grid = [];
@@ -200,10 +200,10 @@ const SoundCells = ({ id, step }) => {
 
 const SoundCell = ({ id, step, i }) => {
   const noteOn = useSelector(
-    (state) => state.sequencer.present.pattern[step][i].noteOn
+    (state) => state.sequence.present.pattern[step][i].noteOn
   );
   const velocity = useSelector(
-    (state) => state.sequencer.present.pattern[step][i].notes[0].velocity
+    (state) => state.sequence.present.pattern[step][i].notes[0].velocity
   );
   const scMemo = useMemo(() => {
     // console.log('rendering: SoundCell');

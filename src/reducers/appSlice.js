@@ -7,7 +7,7 @@ export const INITIAL_USER = {
   facebookId: '',
   githubId: '',
   username: '',
-  patterns: [],
+  sequences: [],
 };
 
 const INITIAL_STATE = {

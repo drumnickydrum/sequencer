@@ -1,18 +1,3 @@
-export const INIT_PATTERN = () => {
-  let pattern = [];
-  let sounds = [];
-  for (let i = 0; i < 9; i++) {
-    sounds.push({
-      noteOn: true,
-      notes: [{ pitch: 'C2', velocity: 1, length: 1 }],
-    });
-  }
-  for (let i = 0; i < 64; i++) {
-    pattern.push(sounds);
-  }
-  return pattern;
-};
-
 export const analog = {
   _id: 'analog',
   name: 'analog',

@@ -25,8 +25,8 @@ const INITIAL_STATE = {
   toggleOn: true,
 };
 
-export const editModeSlice = createSlice({
-  name: 'editMode',
+export const editorSlice = createSlice({
+  name: 'editor',
   initialState: INITIAL_STATE,
   reducers: {
     close: (state) => {
@@ -65,6 +65,6 @@ export const {
   setModVal,
   setTapCellById,
   setToggleOn,
-} = editModeSlice.actions;
+} = editorSlice.actions;
 
-export default editModeSlice.reducer;
+export default editorSlice.reducer;

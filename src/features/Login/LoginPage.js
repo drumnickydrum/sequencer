@@ -77,7 +77,7 @@ export const LoginPage = () => {
         </button>
       </div>
       <div className='bottom-btn show'>
-        <Link className='load-save-pattern-close' to='/?load=true'>
+        <Link className='load-save-sequence-close' to='/?load=true'>
           Close
         </Link>
       </div>

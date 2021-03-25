@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid } from './components/main/Grid';
 import { PastePattern } from './components/main/PastePattern';
 import { SoundPanel } from './components/sound-panel/SoundPanel';
-import { LoadSavePattern } from './components/load/LoadSavePattern';
+import { LoadSaveSequence } from './components/load/LoadSaveSequence';
 import { Menu } from './components/Menu';
 import { KitProvider } from './providers/Kit';
 import { Transport } from './components/Transport';
@@ -23,7 +23,7 @@ export const SequencerPage = () => {
           </div>
           <Menu />
         </div>
-        <LoadSavePattern />
+        <LoadSaveSequence />
         <Transport />
       </PatternRefProvider>
     </KitProvider>

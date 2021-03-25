@@ -19,7 +19,7 @@ export const Kit = React.createContext();
 export const KitProvider = ({ children }) => {
   const dispatch = useDispatch();
 
-  const kit = useSelector((state) => state.sequencer.present.kit);
+  const kit = useSelector((state) => state.sequence.present.kit);
   const kitRef = useRef(getInitialKit(kit));
 
   const disposeSamples = useCallback(() => {

@@ -33,9 +33,6 @@ window.addEventListener('blur', () => {
 });
 
 function resize() {
-  // var originalBodyStyle = getComputedStyle(document.body).getPropertyValue(
-  //   'display'
-  // );
   document.body.style.display = 'none';
   setTimeout(function () {
     document.body.style.display = 'initial';

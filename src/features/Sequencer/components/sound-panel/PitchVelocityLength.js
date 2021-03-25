@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { INITIAL_MODS, MODES, setModVal } from '../../reducers/editModeSlice';
+import { INITIAL_MODS, MODES, setModVal } from '../../reducers/editorSlice';
 import { Button } from '../../../../components/Button';
 import { ChevronLeftIcon, ChevronDownIcon } from '../../../../icons';
-import { modAll, resetMods } from '../../reducers/sequencerSlice';
+import { modAll, resetMods } from '../../reducers/sequenceSlice';
 import { MIDI_NOTES } from '../../utils/MIDI_NOTES';
 
 export const PitchVelocityLength = ({
@@ -13,8 +13,8 @@ export const PitchVelocityLength = ({
   hideEditable,
 }) => {
   const dispatch = useDispatch();
-  const selectedSound = useSelector((state) => state.editMode.selectedSound);
-  const value = useSelector((state) => state.editMode.mods[mode]);
+  const selectedSound = useSelector((state) => state.editor.selectedSound);
+  const value = useSelector((state) => state.editor.mods[mode]);
 
   const [editAll, setEditAll] = useState(true);
 

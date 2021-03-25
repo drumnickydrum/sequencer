@@ -10,14 +10,14 @@ export const Transport = () => {
   const { patternRef, cellsRef } = useContext(PatternRef);
   const { kitRef } = useContext(Kit);
 
-  const length = useSelector((state) => state.sequencer.present.length);
+  const length = useSelector((state) => state.sequence.present.length);
   const transportState = useSelector((state) => state.tone.transportState);
   const prevTransportStateRef = useRef(transportState);
   const buffersLoaded = useSelector((state) => state.tone.buffersLoaded);
 
   const stepRef = useRef(0);
 
-  const bpm = useSelector((state) => state.sequencer.present.bpm);
+  const bpm = useSelector((state) => state.sequence.present.bpm);
   useEffect(() => {
     Tone.Transport.bpm.value = bpm;
   }, [bpm]);
